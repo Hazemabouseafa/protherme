@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/admin", "destination": "/admin.html" },
+    { "source": "/protherme/admin", "destination": "/admin.html" },
+    { "source": "/protherme", "destination": "/index.html" },
+    { "source": "/protherme/", "destination": "/index.html" }
+  ]
+}
