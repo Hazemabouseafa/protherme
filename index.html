@@ -46,18 +46,1006 @@
   <!-- AOS (Animate on Scroll) -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <!-- Custom Styles (Embedded for 100% reliable self-contained Vercel rendering) -->
+  <style>
+/* Custom Stylesheet for ProTherme Engineering Solutions */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root {
+  --primary-cyan: #06b6d4;
+  --primary-cyan-glow: rgba(6, 182, 212, 0.4);
+  --primary-green: #10b981;
+  --primary-green-glow: rgba(16, 185, 129, 0.35);
+  --bg-deep: #020617;
+  --bg-card: rgba(15, 23, 42, 0.75);
+}
+
+/* Base Typography & Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+  font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--bg-deep);
+  color: #f8fafc;
+}
+
+[dir=ltr] {
+  font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif;
+}
+
+[dir=rtl] {
+  font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 9999px;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #06b6d4;
+}
+
+/* Glassmorphism Styles */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel-cyan {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  box-shadow: 0 0 25px rgba(6, 182, 212, 0.05);
+}
+
+.glass-card-hover {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-6px);
+  border-color: rgba(6, 182, 212, 0.4);
+  box-shadow: 0 15px 35px -10px rgba(6, 182, 212, 0.25), 0 0 20px rgba(16, 185, 129, 0.1);
+  background: rgba(15, 23, 42, 0.85);
+}
+
+/* Neon Glow Accents */
+.text-glow-cyan {
+  text-shadow: 0 0 20px rgba(6, 182, 212, 0.6);
+}
+
+.text-glow-green {
+  text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+}
+
+.box-glow-cyan {
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.25);
+}
+
+.box-glow-emerald {
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+}
+
+/* Animated Gradient Background */
+.gradient-blob {
+  position: absolute;
+  filter: blur(90px);
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+  animation: floatOrb 12s ease-in-out infinite alternate;
+}
+
+@keyframes floatOrb {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    transform: translate(30px, -20px) scale(1.08);
+  }
+  100% {
+    transform: translate(-20px, 30px) scale(0.95);
+  }
+}
+
+/* Radar & Pulse Animations */
+@keyframes radarPulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.pulse-radar {
+  animation: radarPulse 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Shimmer Light Bar */
+@keyframes shimmerSweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+  animation: shimmerSweep 3.5s infinite;
+}
+
+/* Hotspot Pin Animation */
+.hotspot-pin {
+  position: relative;
+  cursor: pointer;
+}
+
+.hotspot-pin::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  background: rgba(6, 182, 212, 0.4);
+  animation: radarPulse 2s infinite;
+}
+
+/* Custom Range Input for Simulator */
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 4px;
+  background: #1e293b;
+  outline: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #06b6d4;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.8);
+  border: 2px solid #ffffff;
+  transition: transform 0.15s ease-in-out;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+/* Directional Arrow Inversion */
+[dir=rtl] .arrow-dir {
+  transform: scaleX(-1);
+}
+
+/* Floating Action Button */
+.fab-shadow {
+  box-shadow: 0 8px 32px rgba(6, 182, 212, 0.35);
+}
+
+/* Subtle Grid Background Pattern */
+.bg-grid-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ======================================================== */
+/* SUBTLE & ELEGANT MICRO-ANIMATIONS                         */
+/* ======================================================== */
+
+/* Subtle Floating Animation for Badges & Visual Elements */
+@keyframes subtleFloat {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-float-slow {
+  animation: subtleFloat 4s ease-in-out infinite alternate;
+}
+
+.animate-float-delayed {
+  animation: subtleFloat 4.5s ease-in-out 1.2s infinite alternate;
+}
+
+/* Gentle Glow Pulse for CTA & Key Accents */
+@keyframes gentleGlowPulse {
+  0% {
+    box-shadow: 0 0 16px rgba(6, 182, 212, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(6, 182, 212, 0.65), 0 0 15px rgba(16, 185, 129, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 16px rgba(6, 182, 212, 0.35);
+  }
+}
+
+.glow-pulse-subtle {
+  animation: gentleGlowPulse 3.5s ease-in-out infinite;
+}
+
+/* Subtle Interactive Lift & Shimmer on Cards */
+.interactive-lift {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease;
+}
+
+.interactive-lift:hover {
+  transform: translateY(-4px);
+  border-color: rgba(6, 182, 212, 0.45);
+  box-shadow: 0 12px 30px -10px rgba(6, 182, 212, 0.2);
+}
+
+/* Subtly Animated Badge Dot Beacon */
+@keyframes beaconBlink {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+.beacon-dot {
+  animation: beaconBlink 2.4s ease-in-out infinite;
+}
+
+/* Accessible Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+    /* Fallback: Ensure elements are never stuck invisible if AOS CDN fails or hangs */
+    html:not(.aos-init) [data-aos] {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  </style>
+
+  <!-- Translations Dictionary (Embedded) -->
+  <script>
+/**
+ * Bilingual Translation Dictionary for ProTherme Engineering Solutions
+ * Arabic (AR - RTL) and English (EN - LTR)
+ */
+var translations = {
+  ar: {
+    meta: {
+      dir: 'rtl',
+      lang: 'ar',
+      title: 'بروتيرم للحلول الهندسية | الممثل المعتمد لـ Global Hi-Tech Films'
+    },
+    nav: {
+      brand_sub: 'الممثل المعتمد لـ Global Hi-Tech Films',
+      services: 'الخدمات والحلول',
+      tech: 'تقنية Global Hi-Tech',
+      simulator: 'حاسبة الأداء',
+      gallery: 'معرض المشاريع',
+      about: 'عن بروتيرم',
+      contact: 'اتصل بنا',
+      call_now: '01010010030',
+      cta: 'طلب استشارة هندسية'
+    },
+    hero: {
+      badge: 'الممثل والموزع المعتمد لشركة Global Hi-Tech Films العالمية',
+      title_p1: 'حلول هندسية متطورة',
+      title_p2: 'للعزل الحراري وحماية الأسطح الفاخرة',
+      subtitle: 'نقدم في بروتيرم أحدث تقنيات النانو سيراميك وأفلام الحماية الفائقة المصنعة وفق أعلى المعايير الأمريكية من Global Hi-Tech Films — حجب حراري فائق يصل إلى 88% وحماية استثنائية للمباني، الرخام الفاخر، والسيارات.',
+      cta_primary: 'طلب استشارة ومعاينة مجانية',
+      cta_call: 'اتصال مباشر: 01010010030',
+      stat1_num: '88%',
+      stat1_label: 'عزل الأشعة تحت الحمراء (IR)',
+      stat2_num: '99.9%',
+      stat2_label: 'حجب الأشعة فوق البنفسجية (UV)',
+      stat3_num: '10-25',
+      stat3_label: 'سنوات ضمان دولي معتمد',
+      stat4_num: '0%',
+      stat4_label: 'تشويش إشارات الاتصال و 5G',
+      visual_badge: 'تنفيذ ميداني حي: واجهات زجاجية معمارية كبرى',
+      visual_badge_sub: 'فريق هندسي متخصص أثناء تركيب أفلام Global Hi-Tech',
+      hotspot1: 'حجب حراري بنسبة 85%',
+      hotspot2: 'وضوح بصري نقي 100%',
+      hotspot3: 'معايير تركيب هندسية معتمدة'
+    },
+    trust: {
+      tag: 'معايير الاعتماد والجودة',
+      t1: 'تصنيع متكامل رأسياً 100%',
+      t1_sub: 'جودة عالمية معتمدة من المصنع الأم',
+      t2: 'توفير يصل إلى 30% من الطاقة',
+      t2_sub: 'تخفيض فوري لأحمال التكييف',
+      t3: 'ضمان دولي حتى مدى الحياة',
+      t3_sub: 'شهادات ضمان أصلية ضد العيوب',
+      t4: 'فريق مهندسين وفنيين معتمدين',
+      t4_sub: 'دقة فائقة بدون فقاعات أو شوائب'
+    },
+    services: {
+      tag: 'مجالات التميز الهندسي',
+      title: '3 ركائز متكاملة لحماية أصولك واستثماراتك',
+      subtitle: 'نقدم حلولاً متقدمة مصممة خصيصاً للقطاعات المعمارية والفاخرة والتجارية، مدعومة بابتكارات Global Hi-Tech Films.',
+      p1: {
+        tag: 'الركيزة 01 - معمارية وهندسية',
+        name: 'أفلام زجاج المباني والعزل الحراري',
+        desc: 'حلول العزل المعماري بتقنية النانو سيراميك المتطورة للمباني الإدارية، الفلل الفاخرة، والواجهات الزجاجية الكبيرة لحجب الحرارة وحماية الديكور الداخلي.',
+        f1: 'حجب 99% من الأشعة فوق البنفسجية لحماية الأثاث والأرضيات من البهتان',
+        f2: 'تخفيض درجات الحرارة الداخلية حتى 12-15 درجة مئوية في ذروة الصيف',
+        f3: 'توفير فوري يصل إلى 30% من استهلاك أجهزة التكييف والكهرباء',
+        f4: 'رؤية بانورامية فائقة النقاء تمنع الوهج المزعج دون إعتام الإضاءة الطبيعية',
+        specs: 'IRR: حتى 88% | UVR: 99.9% | TSER: حتى 72%',
+        cta: 'طلب استشارة لواجهتك الزجاجية'
+      },
+      p2: {
+        tag: 'الركيزة 02 - حماية الديكورات الراقية',
+        name: 'حماية الأسطح الفاخرة: رخام، خشب، زجاج',
+        desc: 'أفلام بولي يوريثان شفافة وفائقة المقاومة مصممة خصيصاً لحماية طاولات الرخام الطبيعي النادر، الأخشاب الاستوائية، والأسطح الراقية من الأحماض والخدوش.',
+        f1: 'مقاومة تامة لبقع القهوة، عصائر الموالح، المواد الكيميائية، والزيوت',
+        f2: 'خاصية المعالجة الذاتية للخدوش الدقيقة بتأثير الحرارة والمحيط',
+        f3: 'طبقة غير مرئية تحافظ على الملمس الفاخر والعروق الطبيعية للرخام',
+        f4: 'مقاومة للاصفرار والتقشر مع لمعان فائق يدوم لسنوات طويلة',
+        specs: 'سماكة 7.5 - 8.5 ميل TPU | مقاومة كيميائية كاملة | معالجة ذاتية',
+        cta: 'طلب حماية الرخام والأسطح'
+      },
+      p3: {
+        tag: 'الركيزة 03 - التوريد والتوزيع التجاري',
+        name: 'توزيع أفلام حماية السيارات وPPF المعالج ذاتياً',
+        desc: 'التوزيع الحصري والتوريد المعتمد لمراكز العناية بالسيارات (Detailing Centers) في مصر والشرق الأوسط لأفلام حماية الطلاء وأفلام العازل الحراري.',
+        f1: 'توريد رولات أصلية معتمدة مباشرة من Global Hi-Tech بأسعار تنافسية',
+        f2: 'أفلام PPF ذاتية المعالجة مع طبقة هيدروفوبيك فائقة المقاومة للماء والأوساخ',
+        f3: 'برامج تدريب وتأهيل لفنيي التركيب في المراكز مع شهادات اعتماد رسمية',
+        f4: 'أفلام عزل زجاج السيارات النانو سيراميك المتوافقة تماماً مع إشارات 5G وGPS',
+        specs: 'Top-Coat TPU | سماكات 8 - 10 ميل | نقاء PET بصري | توريد بالجملة',
+        cta: 'انضم لشبكة الموزعين والمراكز المعتمدة'
+      }
+    },
+    tech_standards: {
+      tag: 'لماذا Global Hi-Tech Films؟',
+      title: 'الريادة التقنية في صناعة الأفلام المتقدمة',
+      subtitle: 'تعد Global Hi-Tech Films من المصنعين القلائل عالمياً الذين يمتلكون دورة إنتاج رأسية كاملة بنسبة 100%، مما يمنح منتجاتنا دقة واعتمادية لا تضاهى.',
+      c1_title: 'تصنيع رأسي متكامل 100%',
+      c1_desc: 'من حبيبات البوليمر البكر وحتى المنتج النهائي بتقنية الترسيب الفراغي، جميع المراحل تحت رقابة مخبرية أمريكية صارمة.',
+      c2_title: 'تقنية النانو سيراميك غير المعدنية',
+      c2_desc: 'جزيئات سيراميك مجهرية بحجم النانو تعزل الأشعة تحت الحمراء بالكامل دون أي مكونات معدنية تسبب أكسدة أو تشويش شبكات الاتصال.',
+      c3_title: 'نقاء بصري خالي من الضبابية (Zero Haze)',
+      c3_desc: 'أغشية بوليستر فائقة الصفاء توفر وضوح رؤية استثنائي ليلاً ونهاراً وتمنع إجهاد العين وتشوه المناظر الطبيعية.',
+      c4_title: 'ضمان دولي صلب وموثق',
+      c4_desc: 'شهادات ضمان معتمدة من المصنع مباشرة تحمي استثمارك ضد تفكك الطبقات، تغير اللون، أو انخفاض قدرة العزل.'
+    },
+    simulator: {
+      tag: 'أداة المحاكاة الهندسية',
+      title: 'حاسبة أداء العزل الحراري التفاعلية',
+      subtitle: 'حرك المؤشر لاختيار نسبة نفاذية الضوء المرئي (VLT %) واكتشف القياسات الهندسية الدقيقة لكفاءة العزل وتوفير الطاقة.',
+      vlt_label: 'نسبة نفاذية الضوء المرئي (VLT):',
+      vlt_hint_dark: 'تظليل داكن (خصوصية قصوى وحجب شمس فائق)',
+      vlt_hint_mid: 'توازن هندسي مثالي (راحة بصرية وعزل قوي)',
+      vlt_hint_clear: 'شفافية نانو عالية النقاء (إضاءة طبيعية مع عزل حراري فائق)',
+      m_irr: 'عزل الأشعة تحت الحمراء (IR Heat Rejection)',
+      m_uv: 'حجب الأشعة فوق البنفسجية (UV Block)',
+      m_tser: 'إجمالي رفض الطاقة الشمسية (TSER)',
+      m_temp: 'انخفاض درجة الحرارة المتوقع',
+      m_hvac: 'توفير فواتير التكييف السنوية',
+      note: 'ملاحظة: بفضل تقنية النانو سيراميك من Global Hi-Tech، تحقق أفلامنا الشفافة عزل حراري يتفوق على الأفلام التجارية الداكنة.'
+    },
+    comparison: {
+      tag: 'المقارنة الفنية',
+      title: 'بروتيرم (Global Hi-Tech) مقابل الأفلام التجارية',
+      subtitle: 'تعرف على الفروق الجوهرية بين الحلول الهندسية المعتمدة والمنتجات المقلدة في السوق.',
+      th_feature: 'المعيار الهندسي',
+      th_pro: 'بروتيرم | Global Hi-Tech Films',
+      th_market: 'الأفلام التجارية المجهولة',
+      r1_title: 'تكنولوجيا العزل الأساسية',
+      r1_pro: 'نانو سيراميك وترسيب جزيئي غير معدني فائق الثبات',
+      r1_std: 'أصباغ ملونة رديئة تتلاشى في غضون أشهر',
+      r2_title: 'التأثير على إشارات الاتصال والإنترنت',
+      r2_pro: 'صفر تشويش — توافق تام مع 5G، Wi-Fi، وGPS',
+      r2_std: 'ضعف مستمر في إشارة الهاتف بسبب طبقات المعادن الرخيصة',
+      r3_title: 'مقاومة الاصفرار والضبابية',
+      r3_pro: 'صفاء بصري كريستالي ثابت بدون أي ضبابية (Haze < 0.8%)',
+      r3_std: 'ظهور ضبابية وتفكك في الطبقات خلال فترة وجيزة',
+      r4_title: 'الضمان والاعتمادية',
+      r4_pro: 'ضمان دولي موثق من 10 سنوات إلى مدى الحياة',
+      r4_std: 'وعود شفهية غير ملزمة بدون وكيل معتمد'
+    },
+    gallery: {
+      tag: 'سجل الإنجازات',
+      title: 'معرض المشاريع والتنفيذ الميداني',
+      subtitle: 'توثيق حقيقي من مواقع العمل يعكس حرفية ودقة التنفيذ الهندسي لخبراء بروتيرم.',
+      all: 'جميع المشاريع',
+      arch: 'واجهات زجاجية ومباني',
+      surface: 'حماية الأسطح الفاخرة',
+      auto: 'أفلام حماية السيارات PPF',
+      item1_badge: 'مشروع رئيسي مميز',
+      item1_title: 'عزل حراري لمعرض ومطعم Le Bistro (واجهات زجاجية بارتفاع 6 أمتار)',
+      item1_desc: 'تم تركيب أفلام Global Hi-Tech النانو سيراميك لعزل الحرارة الشديدة ومنع وهج الشمس في الساحة الخارجية مع الحفاظ على وضوح الرؤية بنسبة 100%.',
+      item2_title: 'حماية أسطح رخام ستاتوريو إيطالي فاخر',
+      item2_desc: 'تطبيق فيلم حماية 8.5 ميل معالج ذاتياً ومقاوم للأحماض على طاولات رخامية في قصر خاص.',
+      item3_title: 'عزل حراري لفيلا مستقلة بالتجمع الخامس',
+      item3_desc: 'تخفيض درجة حرارة الصالونات والواجهات الجنوبية بمقدار 14 درجة مئوية مع ضمان حماية الأقمشة واللوحات.',
+      item4_title: 'توريد وتركيب باقة حماية PPF لسيارة فارهة',
+      item4_desc: 'حماية كاملة لهيكل السيارة بأفلام TPU ذاتية المعالجة فائقة اللمعان لصالح أحد مراكز العناية المعتمدة.'
+    },
+    contact: {
+      tag: 'استشارة هندسية فورية',
+      title: 'تواصل معنا الآن أو اطلب معاينة مجانية لمشروعك',
+      subtitle: 'مهندسونا الاستشاريون جاهزون لتقديم أفضل دراسة فنية وعرض سعر مخصص لمشروعك.',
+      call_card_title: 'الخط الهاتفي المباشر',
+      call_card_desc: 'تواصل فوري مع فريق المبيعات والاستشارات',
+      call_num: '01010010030',
+      email_card_title: 'البريد الإلكتروني الرسمي',
+      email_card_desc: 'لإرسال المخططات الهندسية والمناقصات',
+      email_addr: 'sales@protherme.com',
+      whatsapp_title: 'محادثة واتساب فورية',
+      whatsapp_desc: 'رد سريع خلال دقائق للاستفسارات العاجلة',
+      form_title: 'طلب عرض سعر واستشارة هندسية',
+      name_label: 'الاسم بالكامل',
+      name_ph: 'مثال: م. أحمد الشريف',
+      phone_label: 'رقم الهاتف / الواتساب',
+      phone_ph: '01010010030',
+      service_label: 'نوع الخدمة المطلوبة',
+      service_default: '-- اختر الخدمة أو الركيزة --',
+      service_o1: 'أفلام زجاج المباني والعزل المعماري',
+      service_o2: 'حماية الأسطح الفاخرة (رخام، خشب، زجاج)',
+      service_o3: 'توزيع وتوريد أفلام السيارات وPPF لمراكز العناية',
+      service_o4: 'استشارة هندسية شاملة لمشروع كبير',
+      area_label: 'المساحة التقديرية (بالمتر المربع)',
+      area_ph: 'مثال: 75 م2 أو عدد النوافذ / الطاولات',
+      notes_label: 'ملاحظات أو تفاصيل إضافية',
+      notes_ph: 'اذكر أي تفاصيل حول نوع الزجاج، الموقع، أو المتطلبات الخاصة...',
+      submit_btn: 'إرسال طلب الاستشارة الهندسية',
+      submitting: 'جاري تسجيل الطلب وإرساله...',
+      success_title: 'تم استلام طلبكم بنجاح!',
+      success_desc: 'شكراً لتواصلكم مع بروتيرم. سيتواصل معكم أحد مهندسينا الاستشاريين خلال ساعتين لمناقشة التفاصيل وتحديد موعد المعاينة.',
+      close_modal: 'إغلاق'
+    },
+    footer: {
+      desc: 'شركة بروتيرم للحلول الهندسية — الممثل والموزع المعتمد لشركة Global Hi-Tech Films العالمية. رواد العزل الحراري المتطور، حماية الأسطح الفاخرة، وأفلام PPF المعالجة ذاتياً.',
+      col_links: 'روابط الموقع',
+      col_services: 'خدماتنا الرئيسية',
+      col_contact: 'معلومات الاتصال',
+      s1: 'عزل زجاج المباني',
+      s2: 'حماية الرخام والأسطح',
+      s3: 'توريد أفلام PPF للسيارات',
+      s4: 'معاينة هندسية للمشاريع',
+      hours_label: 'ساعات العمل الرسمية:',
+      hours_val: 'السبت - الخميس: 9:00 ص - 7:00 م',
+      partner_text: 'الممثل والموزع المعتمد لـ Global Hi-Tech Films العالمية (globalhitechfilms.com)',
+      copyright: '© 2026 بروتيرم للحلول الهندسية (ProTherme Engineering Solutions). جميع الحقوق محفوظة.',
+      back_to_top: 'للأعلى'
+    }
+  },
+  en: {
+    meta: {
+      dir: 'ltr',
+      lang: 'en',
+      title: 'ProTherme Engineering Solutions | Authorized Global Hi-Tech Films Representative'
+    },
+    nav: {
+      brand_sub: 'Official Partner of Global Hi-Tech Films',
+      services: 'Solutions',
+      tech: 'Global Hi-Tech Tech',
+      simulator: 'Simulator',
+      gallery: 'Projects',
+      about: 'About',
+      contact: 'Contact',
+      call_now: '01010010030',
+      cta: 'Request Consultation'
+    },
+    hero: {
+      badge: 'Authorized Representative & Distributor of Global Hi-Tech Films',
+      title_p1: 'Precision Engineering Solutions for',
+      title_p2: 'Thermal Rejection & Luxury Surface Protection',
+      subtitle: 'ProTherme delivers world-class Nano-Ceramic and advanced protective films backed by Global Hi-Tech Films — achieving up to 88% infrared heat rejection, 99.9% UV block, and lifetime durability for architectural facades, luxury marble/wood, and automotive PPF.',
+      cta_primary: 'Request Free Engineering Survey',
+      cta_call: 'Direct Call: 01010010030',
+      stat1_num: '88%',
+      stat1_label: 'Infrared Heat Rejection (IRR)',
+      stat2_num: '99.9%',
+      stat2_label: 'UV Radiation Block Protection',
+      stat3_num: '10-25',
+      stat3_label: 'Years Certified Global Warranty',
+      stat4_num: '0%',
+      stat4_label: 'Zero 5G & Signal Interference',
+      visual_badge: 'Live Field Project: Major Architectural Facade',
+      visual_badge_sub: 'Certified ProTherme engineering crew installing Global Hi-Tech films',
+      hotspot1: '85% Heat Blockage',
+      hotspot2: '100% Optical Clarity',
+      hotspot3: 'Certified Precision Installation'
+    },
+    trust: {
+      tag: 'Global Certification & Standards',
+      t1: '100% Vertically Integrated',
+      t1_sub: 'Pristine US/International standard manufacturing',
+      t2: 'Up to 30% Energy Savings',
+      t2_sub: 'Immediate reduction in HVAC cooling load',
+      t3: 'Up to Lifetime Warranty',
+      t3_sub: 'Official backing against bubbling & discoloration',
+      t4: 'Certified Engineering Team',
+      t4_sub: 'Dust-free flawless edge-to-edge finish'
+    },
+    services: {
+      tag: 'Engineering Excellence',
+      title: '3 Core Pillars Safeguarding Your High-End Assets',
+      subtitle: 'Pioneering protective solutions engineered specifically for architectural facades, luxury interior surfaces, and automotive detailing centers.',
+      p1: {
+        tag: 'Pillar 01 - Architectural & Commercial',
+        name: 'Architectural Window Films & Solar Control',
+        desc: 'Advanced nano-ceramic solar control films for corporate headquarters, luxury villas, and floor-to-ceiling glass facades to block heat, eliminate glare, and protect interiors.',
+        f1: '99% UV radiation rejection preventing costly bleaching of fabrics and floors',
+        f2: '12-15°C indoor temperature drop during peak summer heat waves',
+        f3: 'Up to 30% reduction in commercial HVAC and electricity consumption',
+        f4: 'Crystal-clear optical transparency maintaining panoramic views and natural light',
+        specs: 'IRR: Up to 88% | UVR: 99.9% | TSER: Up to 72%',
+        cta: 'Request Architectural Glass Survey'
+      },
+      p2: {
+        tag: 'Pillar 02 - Luxury Interior Protection',
+        name: 'Luxury Surface Protection: Marble, Wood & Glass',
+        desc: 'Optically transparent ultra-tough polyurethane shields designed specifically for Italian marble, exotic timber, and luxury glass tables against acids, etching, and scratches.',
+        f1: 'Complete resistance to lemon juice, wine, coffee stains, oils, and chemical spills',
+        f2: 'Self-healing micro-scratch recovery activated by ambient temperature',
+        f3: 'Invisible barrier preserving the authentic vein aesthetics and tactile touch',
+        f4: 'Anti-yellowing and anti-microbial finish with effortless wipe-down cleaning',
+        specs: '7.5 - 8.5 Mil TPU | Chemical Acid Resistant | Instant Self-Healing',
+        cta: 'Protect Luxury Marble & Furniture'
+      },
+      p3: {
+        tag: 'Pillar 03 - Commercial Wholesale Supply',
+        name: 'Automotive PPF & Tint Wholesale Distribution',
+        desc: 'Authorized direct wholesale supply for professional automotive detailing centers across Egypt and MENA, featuring genuine Global Hi-Tech TPU PPF rolls.',
+        f1: 'Supply of certified factory-sealed rolls backed by international warranties',
+        f2: 'Top-coat self-healing TPU with extreme hydrophobic water-beading performance',
+        f3: 'Technical training, installer onboarding, and official certification programs',
+        f4: 'Nano-Ceramic automotive window films 100% compatible with 5G and GPS',
+        specs: 'Top-Coat TPU | 8 - 10 Mil | Optical PET Core | Bulk Distribution',
+        cta: 'Join Certified Detailing Network'
+      }
+    },
+    tech_standards: {
+      tag: 'Why Global Hi-Tech Films?',
+      title: 'Technological Superiority in Specialty Films',
+      subtitle: 'Global Hi-Tech Films is one of the world\'s few 100% vertically integrated manufacturers, controlling every single phase from polymer synthesis to nano-sputtered finish.',
+      c1_title: '100% Vertically Integrated',
+      c1_desc: 'Manufactured in-house from pristine raw polyester chips to proprietary coating lines under ISO 9001 certified cleanroom environments.',
+      c2_title: 'Non-Metallic Nano-Ceramic Patents',
+      c2_desc: 'Sub-microscopic ceramic compounds reject intense solar infrared radiation without any conductive metals that corrode or block cellular signals.',
+      c3_title: 'Zero-Haze Optical Clarity',
+      c3_desc: 'Ultra-pure optical polyester eliminates blur and chromatic aberration, ensuring flawless night-time driving and crystal daytime vistas.',
+      c4_title: 'Rock-Solid International Warranty',
+      c4_desc: 'Genuine manufacturer-backed warranty cards protecting against bubbling, adhesive failure, color shifting, or thermal degradation.'
+    },
+    simulator: {
+      tag: 'Engineering Simulation',
+      title: 'Interactive Thermal Performance Simulator',
+      subtitle: 'Adjust the Visible Light Transmission (VLT %) slider to see instantaneous engineering calculations for heat rejection, UV shielding, and energy savings.',
+      vlt_label: 'Visible Light Transmission (VLT):',
+      vlt_hint_dark: 'Deep Privacy Shade (Maximum Glare & Solar Cut)',
+      vlt_hint_mid: 'Balanced Engineering Shade (Superior Comfort & Rejection)',
+      vlt_hint_clear: 'Ultra-Clear Nano Shield (Natural Daylight with High Heat Block)',
+      m_irr: 'Infrared Heat Rejection (IRR)',
+      m_uv: 'UV Radiation Rejection',
+      m_tser: 'Total Solar Energy Rejected (TSER)',
+      m_temp: 'Expected Indoor Temp Drop',
+      m_hvac: 'Estimated Annual HVAC Energy Savings',
+      note: 'Notice: Powered by Global Hi-Tech Nano-Ceramic technology, even high-transparency films outperform standard dark dyed films in heat rejection.'
+    },
+    comparison: {
+      tag: 'Technical Benchmark',
+      title: 'ProTherme (Global Hi-Tech) vs Commercial Market',
+      subtitle: 'Examine the technical differences between certified engineering films and generic market alternatives.',
+      th_feature: 'Engineering Metric',
+      th_pro: 'ProTherme | Global Hi-Tech Films',
+      th_market: 'Generic Market Films',
+      r1_title: 'Core Thermal Technology',
+      r1_pro: 'Sputtered Nano-Ceramic & Stable Inorganic Nanoparticles',
+      r1_std: 'Cheap dyed polyester that discolors and bubbles within months',
+      r2_title: 'Wireless & 5G Signal Loss',
+      r2_pro: 'Zero Attenuation — 100% transparent to 5G, Wi-Fi, and GPS',
+      r2_std: 'Frequent mobile signal dropouts due to cheap metallic layers',
+      r3_title: 'Haze & Optical Distortion',
+      r3_pro: 'Crystal camera-grade clarity (Haze < 0.8%)',
+      r3_std: 'Distorted vision, milky blur, and severe optical glare',
+      r4_title: 'Warranty & Official Backing',
+      r4_pro: '10 Years to Lifetime International Written Warranty',
+      r4_std: 'Verbal promises without genuine distributor backing'
+    },
+    gallery: {
+      tag: 'Proven Track Record',
+      title: 'Execution & Field Installation Showcase',
+      subtitle: 'Genuine unedited photos from live client sites showcasing our certified precision craftsmanship.',
+      all: 'All Projects',
+      arch: 'Architectural Facades',
+      surface: 'Surface Protection',
+      auto: 'Automotive PPF',
+      item1_badge: 'Featured Landmark Installation',
+      item1_title: 'Thermal Solar Glazing for Le Bistro Restaurant (6m Glass Facade)',
+      item1_desc: 'Precision application of Global Hi-Tech Nano-Ceramic architectural film on massive curtain glass walls, blocking 85% heat while preserving full plaza outdoor transparency.',
+      item2_title: 'Italian Statuario Luxury Marble Shielding',
+      item2_desc: 'Application of 8.5 mil self-healing acid-resistant TPU film on private estate dining and salon surfaces.',
+      item3_title: 'Private Luxury Villa Solar Film Installation (New Cairo)',
+      item3_desc: 'Reduced main living room temperature by 14°C while preserving panoramic landscaping views and luxury artwork.',
+      item4_title: 'Full Supercar TPU Paint Protection Package',
+      item4_desc: 'Wholesale delivery and certified installation of high-gloss self-healing TPU PPF for an authorized detailing facility.'
+    },
+    contact: {
+      tag: 'Instant Engineering Advisory',
+      title: 'Connect With Our Engineers or Request a Free Survey',
+      subtitle: 'Our technical team is ready to analyze your blueprints, visit your site, and prepare a tailored engineering proposal.',
+      call_card_title: 'Direct Phone Line',
+      call_card_desc: 'Immediate connection with technical & sales engineers',
+      call_num: '01010010030',
+      email_card_title: 'Official Corporate Email',
+      email_card_desc: 'For architectural blueprints and wholesale tenders',
+      email_addr: 'sales@protherme.com',
+      whatsapp_title: 'Instant WhatsApp Chat',
+      whatsapp_desc: 'Quick response within minutes for urgent quotes',
+      form_title: 'Request Engineering Consultation & Quote',
+      name_label: 'Full Name',
+      name_ph: 'e.g. Eng. Ahmed El-Sherif',
+      phone_label: 'Phone Number / WhatsApp',
+      phone_ph: '01010010030',
+      service_label: 'Required Service',
+      service_default: '-- Select Service or Pillar --',
+      service_o1: 'Architectural Window Films & Solar Control',
+      service_o2: 'Luxury Surface Protection (Marble / Wood / Glass)',
+      service_o3: 'Automotive PPF & Tint Wholesale Distribution',
+      service_o4: 'Comprehensive Commercial Facility Project',
+      area_label: 'Estimated Surface Area (Sq Meters)',
+      area_ph: 'e.g. 75 sqm or number of windows / tables',
+      notes_label: 'Project Details or Requirements',
+      notes_ph: 'Provide details on glass type, building location, or specific requirements...',
+      submit_btn: 'Submit Engineering Consultation Request',
+      submitting: 'Submitting Consultation Request...',
+      success_title: 'Consultation Request Received!',
+      success_desc: 'Thank you for contacting ProTherme. One of our senior engineering specialists will contact you within 2 hours to discuss specifications and schedule an on-site survey.',
+      close_modal: 'Close'
+    },
+    footer: {
+      desc: 'ProTherme Engineering Solutions — Authorized Representative and Distributor of Global Hi-Tech Films. Setting new benchmarks in architectural thermal insulation, luxury surface protection, and self-healing TPU PPF.',
+      col_links: 'Quick Links',
+      col_services: 'Core Services',
+      col_contact: 'Official Contact',
+      s1: 'Architectural Solar Films',
+      s2: 'Marble & Surface Protection',
+      s3: 'Automotive PPF Distribution',
+      s4: 'On-Site Engineering Survey',
+      hours_label: 'Operating Hours:',
+      hours_val: 'Saturday - Thursday: 9:00 AM - 7:00 PM',
+      partner_text: 'Authorized Representative & Distributor of Global Hi-Tech Films (globalhitechfilms.com)',
+      copyright: '© 2026 ProTherme Engineering Solutions. All Rights Reserved.',
+      back_to_top: 'Back to Top'
+    }
+  }
+};
+
+if (typeof window !== 'undefined') window.translations = translations;
+if (typeof globalThis !== 'undefined') globalThis.translations = translations;
+if (typeof module !== 'undefined' && module.exports) module.exports = translations;
+
+  </script>
+
+  <!-- Application Controller (Embedded) -->
+  <script>
+/**
+ * Main Application Logic for ProTherme Engineering Solutions
+ * Powered by Alpine.js + Live Dynamic CMS Integration
+ */
+function prothermeApp() {
+  return {
+    // Language State: 'ar' or 'en'
+    lang: localStorage.getItem('protherme_lang') || 'ar',
+    mobileMenuOpen: false,
+    
+    // Performance Simulator State
+    vlt: 35, // Visible Light Transmission %
+    
+    // Gallery State
+    galleryFilter: 'all',
+    lightboxOpen: false,
+    lightboxImage: null,
+    lightboxTitle: '',
+    lightboxDesc: '',
+
+    // Toast Notification
+    toastOpen: false,
+    toastMessage: '',
+
+    // Dynamic CMS Data Store
+    cms: {
+      visibility: {
+        topbar: true,
+        heroBadge: true,
+        heroStats: true,
+        trustBar: true,
+        pillar1: true,
+        pillar2: true,
+        pillar3: true,
+        simulator: true,
+        technology: true,
+        comparisonTable: true,
+        gallery: true,
+        speedDial: true
+      },
+      contacts: {
+        phone: '01010010030',
+        email: 'sales@protherme.com',
+        whatsapp: '+201010010030',
+        hours: {
+          ar: 'السبت - الخميس: 9:00 ص - 7:00 م',
+          en: 'Saturday - Thursday: 9:00 AM - 7:00 PM'
+        }
+      },
+      images: {
+        logo: 'assets/images/protherme-logo.jpg',
+        heroVisual: 'assets/images/installation-site-real.jpg',
+        pillar1: 'assets/images/arch-glass-villa.jpg',
+        pillar2: 'assets/images/marble-surface.jpg',
+        pillar3: 'assets/images/supercar-ppf.jpg',
+        gallery1: 'assets/images/installation-site-real.jpg',
+        gallery2: 'assets/images/marble-surface.jpg',
+        gallery3: 'assets/images/arch-glass-villa.jpg',
+        gallery4: 'assets/images/supercar-ppf.jpg'
+      },
+      buttons: {
+        heroPrimary: { ar: 'طلب استشارة هندسية فورية', en: 'Request Instant Consultation', target: '#contact', visible: true },
+        heroCall: { ar: 'اتصال مباشر', en: 'Direct Call', target: 'tel:01010010030', visible: true },
+        navCta: { ar: 'تواصل معنا الآن', en: 'Contact Now', target: '#contact', visible: true }
+      },
+      heroStats: {
+        stat1: { num: '88%', label_ar: 'عزل الأشعة تحت الحمراء (IR)', label_en: 'Infrared Heat Rejection (IRR)' },
+        stat2: { num: '99.9%', label_ar: 'حجب الأشعة فوق البنفسجية (UV)', label_en: 'UV Radiation Block Protection' },
+        stat3: { num: '10-25', label_ar: 'سنوات ضمان دولي معتمد', label_en: 'Years Certified Global Warranty' },
+        stat4: { num: '0%', label_ar: 'تشويش إشارات الاتصال و 5G', label_en: 'Zero 5G & Signal Interference' }
+      },
+      texts: {},
+      imageBadges: {}
+    },
+
+    async init() {
+      // Set initial direction and lang attribute on root HTML
+      this.updateDocumentAttributes();
+
+      // Load cached or API CMS Content
+      await this.loadCMSContent();
+
+      // Listen for CMS updates across tabs
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'protherme_cms_content' && e.newValue) {
+          try {
+            this.cms = JSON.parse(e.newValue);
+          } catch (err) {}
+        }
+      });
+
+      // Initialize AOS if loaded
+      if (typeof AOS !== 'undefined') {
+        AOS.init({
+          once: true,
+          duration: 800,
+          offset: 50,
+          easing: 'ease-out-cubic'
+        });
+      }
+    },
+
+    // Fetch CMS Content from Server API
+    async loadCMSContent() {
+      // Check localStorage cache first for instant render
+      const cached = localStorage.getItem('protherme_cms_content');
+      if (cached) {
+        try {
+          this.cms = Object.assign({}, this.cms, JSON.parse(cached));
+        } catch (e) {}
+      }
+
+      try {
+        const res = await fetch('/api/content');
+        if (res.ok) {
+          const remoteData = await res.json();
+          this.cms = remoteData;
+          localStorage.setItem('protherme_cms_content', JSON.stringify(remoteData));
+        }
+      } catch (err) {
+        console.warn('API sync unavailable, using default/cached CMS data:', err);
+      }
+    },
+
+    // Translation Lookup Helper (with CMS overrides support)
+    t(keyPath) {
+      // Check CMS texts override first
+      if (this.cms && this.cms.texts && this.cms.texts[this.lang]) {
+        const keys = keyPath.split('.');
+        let currentCMS = this.cms.texts[this.lang];
+        let foundCMS = true;
+        for (const k of keys) {
+          if (!currentCMS || currentCMS[k] === undefined) {
+            foundCMS = false;
+            break;
+          }
+          currentCMS = currentCMS[k];
+        }
+        if (foundCMS && typeof currentCMS === 'string') {
+          return currentCMS;
+        }
+      }
+
+      // Fallback to static dictionary
+      const keys = keyPath.split('.');
+      const dict = (typeof translations !== 'undefined' ? translations : (typeof window !== 'undefined' ? window.translations : {}));
+      let current = dict[this.lang];
+      for (const key of keys) {
+        if (!current || current[key] === undefined) {
+          let fallback = dict['en'];
+          for (const fbKey of keys) {
+            if (!fallback || fallback[fbKey] === undefined) return keyPath;
+            fallback = fallback[fbKey];
+          }
+          return fallback;
+        }
+        current = current[key];
+      }
+      return current;
+    },
+
+    // Switch Language Dynamically
+    switchLang(newLang) {
+      if (this.lang === newLang) return;
+      this.lang = newLang;
+      localStorage.setItem('protherme_lang', newLang);
+      this.updateDocumentAttributes();
+      
+      setTimeout(() => {
+        if (typeof AOS !== 'undefined') {
+          AOS.refresh();
+        }
+      }, 150);
+    },
+
+    toggleLanguage() {
+      this.switchLang(this.lang === 'ar' ? 'en' : 'ar');
+    },
+
+    updateDocumentAttributes() {
+      const dir = this.lang === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.setAttribute('dir', dir);
+      document.documentElement.setAttribute('lang', this.lang);
+      document.title = this.t('meta.title');
+    },
+
+    // Computed Simulator Metrics
+    get irrPercent() {
+      if (this.vlt <= 15) return 88;
+      if (this.vlt <= 35) return 85;
+      if (this.vlt <= 50) return 82;
+      return 79;
+    },
+
+    get uvPercent() {
+      return '99.9%';
+    },
+
+    get tserPercent() {
+      if (this.vlt <= 10) return 74;
+      if (this.vlt <= 20) return 69;
+      if (this.vlt <= 35) return 64;
+      if (this.vlt <= 50) return 58;
+      return 52;
+    },
+
+    get tempDrop() {
+      if (this.vlt <= 20) return '14 - 16 °C';
+      if (this.vlt <= 40) return '12 - 14 °C';
+      return '10 - 12 °C';
+    },
+
+    get hvacSavings() {
+      if (this.vlt <= 20) return '28% - 32%';
+      if (this.vlt <= 40) return '24% - 28%';
+      return '18% - 22%';
+    },
+
+    get vltHint() {
+      if (this.vlt <= 20) return this.t('simulator.vlt_hint_dark');
+      if (this.vlt <= 50) return this.t('simulator.vlt_hint_mid');
+      return this.t('simulator.vlt_hint_clear');
+    },
+
+    // Open Lightbox
+    openLightbox(imageSrc, titleKey, descKey) {
+      this.lightboxImage = imageSrc;
+      this.lightboxTitle = this.t(titleKey);
+      this.lightboxDesc = this.t(descKey);
+      this.lightboxOpen = true;
+      document.body.style.overflow = 'hidden';
+    },
+
+    closeLightbox() {
+      this.lightboxOpen = false;
+      document.body.style.overflow = '';
+    },
+
+    showToast(message) {
+      this.toastMessage = message;
+      this.toastOpen = true;
+      setTimeout(() => {
+        this.toastOpen = false;
+      }, 5000);
+    },
+
+    // Smooth Scroll Helper
+    scrollTo(elementId) {
+      this.mobileMenuOpen = false;
+      const element = document.getElementById(elementId);
+      if (element) {
+        const navHeight = 90;
+        const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - navHeight;
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+}
+window.prothermeApp = prothermeApp;
+if (window.Alpine) { window.Alpine.data('prothermeApp', prothermeApp); }
+document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alpine.data('prothermeApp', prothermeApp); } });
+  </script>
   
-  <!-- Translations Dictionary (Fallback) -->
-  <script src="assets/js/translations.js"></script>
-  
-  <!-- Alpine.js Application Controller -->
-  <script defer src="assets/js/app.js"></script>
+  <!-- Alpine.js CDN -->
   <script defer src="https://unpkg.com/alpinejs@3.13.5/dist/cdn.min.js"></script>
 </head>
 
-<body x-data="prothermeApp" class="bg-[#020617] text-slate-100 min-h-screen selection:bg-cyan-500 selection:text-black overflow-x-hidden relative">
+<body x-data="prothermeApp()" class="bg-[#020617] text-slate-100 min-h-screen selection:bg-cyan-500 selection:text-black overflow-x-hidden relative">
 
   <!-- Ambient Floating Neon Gradient Blobs -->
   <div class="gradient-blob w-[500px] h-[500px] bg-cyan-600/20 top-[-100px] right-[-100px]"></div>
