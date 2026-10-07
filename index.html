@@ -46,6 +46,8 @@
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
+  <!-- Three.js 3D Engine (Fast Lightweight CDN) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <!-- AOS (Animate on Scroll) -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   
@@ -1390,61 +1392,66 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
         </div>
 
-        <!-- HERO VISUAL: CYBER GLASS CONTAINER -->
+        <!-- HERO VISUAL: 3D THREE.JS INTERACTIVE NANO-SHIELD -->
         <div class="lg:col-span-5 relative" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
           
           <!-- Elegant Light Border Around Container -->
-          <div class="relative rounded-3xl p-2.5 bg-white border border-slate-200 shadow-xl shadow-slate-200/60 animate-gentle-float">
+          <div class="relative rounded-3xl p-2.5 bg-white border border-slate-200 shadow-xl shadow-slate-200/60">
             
-            <div class="relative rounded-2xl overflow-hidden bg-slate-100 aspect-[4/5] sm:aspect-[3/4] border border-slate-200 group">
-              <!-- Real Project Image Provided by User -->
+            <div id="hero-3d-wrapper" class="relative rounded-2xl overflow-hidden bg-slate-950 aspect-[4/5] sm:aspect-[3/4] border border-slate-800 group select-none">
+              
+              <!-- 3D WebGL Canvas Container -->
+              <div id="hero-3d-canvas" class="w-full h-full cursor-grab active:cursor-grabbing relative z-10"></div>
+
+              <!-- Fallback Background Image (Preserves CMS Hero Image Binding) -->
               <img 
-                :src="cms.images.heroVisual || 'assets/images/installation-site-real.jpg'" 
-                alt="ProTherme Real Glass Facade Film Installation" 
-                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out">
+                id="hero-fallback-img"
+                :src="cms.images.heroVisual || 'assets/images/hotel-enterprise.jpg'" 
+                alt="ProTherme Architectural Shield" 
+                class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none transition-opacity duration-700 opacity-20 filter blur-[1px]">
 
-              <!-- Subtle Gradient Overlay -->
-              <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent pointer-events-none"></div>
-
-              <!-- Top Badge -->
-              <div class="absolute top-4 start-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 text-xs font-bold text-slate-800 shadow-md animate-float-slow">
+              <!-- Top Badge (CMS Bound) -->
+              <div class="absolute top-4 start-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 text-xs font-bold text-slate-800 shadow-md">
                 <span class="w-2.5 h-2.5 rounded-full bg-cyan-600 beacon-dot"></span>
-                <span x-text="cms.imageBadges?.heroTop?.[lang] || 'Global Hi-Tech Certified Crew'"></span>
+                <span x-text="cms.imageBadges?.heroTop?.[lang] || 'طاقم هندسي معتمد من Global Hi-Tech'"></span>
               </div>
 
-              <!-- Hotspot 1: High Rejection -->
-              <div class="absolute top-[28%] end-[25%] z-20 group/spot cursor-pointer">
-                <div class="hotspot-pin w-6 h-6 rounded-full bg-cyan-600 text-white flex items-center justify-center font-bold text-xs shadow-md shadow-cyan-600/50">
-                  <i class="fa-solid fa-temperature-arrow-down text-[10px]"></i>
-                </div>
-                <div class="absolute top-8 end-[-30px] w-40 p-2.5 rounded-xl bg-white/95 backdrop-blur-md border border-cyan-200 text-[11px] text-slate-800 shadow-xl opacity-90 group-hover/spot:opacity-100 transition-opacity">
-                  <span class="font-bold text-cyan-700 block" x-text="t('hero.hotspot1')"></span>
-                  <span class="text-slate-600">Nano-Ceramic IR Shield</span>
-                </div>
+              <!-- 3D Interactive Mode Switcher Pill -->
+              <div class="absolute top-4 end-4 z-20 flex items-center bg-slate-900/85 backdrop-blur-md p-1 rounded-xl border border-white/20 shadow-lg text-[11px] font-bold text-white">
+                <button 
+                  id="btn-mode-protected"
+                  type="button"
+                  class="px-2.5 py-1 rounded-lg transition-all duration-200 flex items-center gap-1.5 bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-xs cursor-pointer">
+                  <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                  <span>مع العزل ❄️</span>
+                </button>
+                <button 
+                  id="btn-mode-unprotected"
+                  type="button"
+                  class="px-2.5 py-1 rounded-lg transition-all duration-200 flex items-center gap-1.5 text-slate-300 hover:text-white cursor-pointer">
+                  <span>بدون عزل 🔥</span>
+                </button>
               </div>
 
-              <!-- Hotspot 2: Precision Cut -->
-              <div class="absolute bottom-[40%] start-[20%] z-20 group/spot cursor-pointer">
-                <div class="hotspot-pin w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shadow-md shadow-emerald-600/50">
-                  <i class="fa-solid fa-check text-[10px]"></i>
-                </div>
-                <div class="absolute bottom-8 start-[-20px] w-44 p-2.5 rounded-xl bg-white/95 backdrop-blur-md border border-emerald-200 text-[11px] text-slate-800 shadow-xl opacity-90 group-hover/spot:opacity-100 transition-opacity">
-                  <span class="font-bold text-emerald-700 block" x-text="t('hero.hotspot3')"></span>
-                  <span class="text-slate-600">Dust-Free Seamless Fit</span>
-                </div>
+              <!-- 3D Interaction Drag Instruction Pill -->
+              <div class="absolute top-16 inset-x-0 mx-auto w-fit z-20 pointer-events-none px-3 py-1 rounded-full bg-slate-900/70 backdrop-blur-sm border border-white/10 text-[10px] text-cyan-200 font-mono flex items-center gap-1.5">
+                <i class="fa-solid fa-arrows-rotate text-[9px] animate-spin"></i>
+                <span>اسحب لتدوير المجسم 3D</span>
               </div>
 
-              <!-- Bottom Glass Card Over Image -->
-              <div class="absolute bottom-4 inset-x-4 p-4 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-xl z-20">
+              <!-- Live 3D Thermal Metrics Bar -->
+              <div class="absolute bottom-4 inset-x-4 p-3.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-xl z-20">
                 <div class="flex items-center justify-between">
                   <div>
-                    <h4 class="text-sm font-bold text-slate-950 flex items-center gap-2">
-                      <i class="fa-solid fa-building-columns text-cyan-600"></i>
-                      <span x-text="t('hero.visual_badge')"></span>
+                    <h4 id="hero-3d-status-title" class="text-xs sm:text-sm font-bold text-slate-950 flex items-center gap-2">
+                      <i class="fa-solid fa-shield-halved text-cyan-600"></i>
+                      <span>درع النانو سيراميك نشط (88% عزل حراري)</span>
                     </h4>
-                    <p class="text-xs text-slate-600 mt-0.5" x-text="t('hero.visual_badge_sub')"></p>
+                    <p id="hero-3d-status-desc" class="text-[11px] text-slate-600 mt-0.5">
+                      حجب 99.9% أشعة ضارة | انخفاض الحرارة: -14°C | وضوح بصري 100%
+                    </p>
                   </div>
-                  <button @click="openLightbox(cms.images.heroVisual || 'assets/images/installation-site-real.jpg', 'gallery.item1_title', 'gallery.item1_desc')" class="p-2.5 rounded-lg bg-cyan-50 text-cyan-700 hover:bg-cyan-600 hover:text-white transition-colors">
+                  <button @click="openLightbox(cms.images.heroVisual || 'assets/images/hotel-enterprise.jpg', 'gallery.item1_title', 'gallery.item1_desc')" class="p-2 rounded-lg bg-cyan-50 text-cyan-700 hover:bg-cyan-600 hover:text-white transition-colors cursor-pointer">
                     <i class="fa-solid fa-expand text-xs"></i>
                   </button>
                 </div>
@@ -1460,7 +1467,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               <i class="fa-solid fa-shield-halved"></i>
             </div>
             <div>
-              <div class="text-xs text-slate-500" x-text="cms.imageBadges?.heroCornerTag?.[lang] || 'Official Distributor'"></div>
+              <div class="text-xs text-slate-500" x-text="cms.imageBadges?.heroCornerTag?.[lang] || 'الممثل المعتمد'"></div>
               <div class="text-sm font-bold text-slate-950" x-text="cms.imageBadges?.heroCornerName?.[lang] || 'Global Hi-Tech Films'"></div>
             </div>
           </div>
@@ -2464,6 +2471,356 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
   <!-- AOS Script Init -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+
+  <!-- ========================================== -->
+  <!-- THREE.JS HERO 3D NANO-SHIELD ENGINE        -->
+  <!-- ========================================== -->
+  <script>
+  function initHeroThreeJS() {
+    const container = document.getElementById('hero-3d-canvas');
+    if (!container || typeof THREE === 'undefined') return;
+
+    let isProtected = true;
+    let isVisible = true;
+    let animId = null;
+
+    const scene = new THREE.Scene();
+    const width = container.clientWidth || 400;
+    const height = container.clientHeight || 500;
+    
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+    camera.position.set(0, 0, 7.2);
+
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(width, height);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.15;
+      container.innerHTML = '';
+      container.appendChild(renderer.domElement);
+    } catch (e) {
+      console.warn('WebGL initialization fallback', e);
+      const fallback = document.getElementById('hero-fallback-img');
+      if (fallback) fallback.style.opacity = '1';
+      return;
+    }
+
+    // Ambient & Directional Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+    scene.add(ambientLight);
+
+    const sunLight = new THREE.DirectionalLight(0xffedd5, 2.0);
+    sunLight.position.set(4, 5, 5);
+    scene.add(sunLight);
+
+    const coolInteriorLight = new THREE.PointLight(0x06b6d4, 1.4, 12);
+    coolInteriorLight.position.set(0, 0, -3);
+    scene.add(coolInteriorLight);
+
+    const heatLight = new THREE.PointLight(0xef4444, 0, 10);
+    heatLight.position.set(0, 0, 2);
+    scene.add(heatLight);
+
+    // Group for Rotation
+    const glassGroup = new THREE.Group();
+    scene.add(glassGroup);
+
+    // Architectural Glass Pane (Procedural)
+    const glassWidth = 3.6;
+    const glassHeight = 4.6;
+    const glassThick = 0.08;
+
+    const glassGeo = new THREE.BoxGeometry(glassWidth, glassHeight, glassThick);
+    const glassMat = new THREE.MeshPhysicalMaterial({
+      color: 0x93c5fd,
+      transmission: 0.88,
+      opacity: 0.92,
+      transparent: true,
+      roughness: 0.05,
+      metalness: 0.1,
+      ior: 1.52,
+      reflectivity: 0.9,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.04
+    });
+    const glassMesh = new THREE.Mesh(glassGeo, glassMat);
+    glassGroup.add(glassMesh);
+
+    // Nano-Ceramic Protective Shield Layer (Iridescent lattice)
+    const shieldGeo = new THREE.PlaneGeometry(glassWidth - 0.04, glassHeight - 0.04, 10, 12);
+    const shieldMat = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.28
+    });
+    const shieldMesh = new THREE.Mesh(shieldGeo, shieldMat);
+    shieldMesh.position.z = glassThick / 2 + 0.005;
+    glassGroup.add(shieldMesh);
+
+    // Architectural Aluminum Minimalist Frame
+    const frameMat = new THREE.MeshStandardMaterial({
+      color: 0x1e293b,
+      metalness: 0.85,
+      roughness: 0.25
+    });
+
+    const horizGeo = new THREE.BoxGeometry(glassWidth + 0.18, 0.09, 0.13);
+    const topMullion = new THREE.Mesh(horizGeo, frameMat);
+    topMullion.position.y = glassHeight / 2 + 0.045;
+    glassGroup.add(topMullion);
+
+    const botMullion = new THREE.Mesh(horizGeo, frameMat);
+    botMullion.position.y = -glassHeight / 2 - 0.045;
+    glassGroup.add(botMullion);
+
+    const vertGeo = new THREE.BoxGeometry(0.09, glassHeight + 0.18, 0.13);
+    const leftMullion = new THREE.Mesh(vertGeo, frameMat);
+    leftMullion.position.x = -glassWidth / 2 - 0.045;
+    glassGroup.add(leftMullion);
+
+    const rightMullion = new THREE.Mesh(vertGeo, frameMat);
+    rightMullion.position.x = glassWidth / 2 + 0.045;
+    glassGroup.add(rightMullion);
+
+    // Solar Radiation Photons / Particles
+    const particleCount = 140;
+    const particleGeo = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const velocities = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+
+    const colorSun = new THREE.Color(0xfb923c); // Hot solar amber
+    const colorShielded = new THREE.Color(0x06b6d4); // Cool cyan reflected
+    const colorHeatPass = new THREE.Color(0xef4444); // Fiery red penetrated
+
+    for (let i = 0; i < particleCount; i++) {
+      const idx = i * 3;
+      positions[idx] = (Math.random() - 0.5) * glassWidth * 1.2;
+      positions[idx + 1] = (Math.random() - 0.5) * glassHeight * 1.1;
+      positions[idx + 2] = 2.0 + Math.random() * 3.5;
+
+      velocities[idx] = (Math.random() - 0.5) * 0.01;
+      velocities[idx + 1] = (Math.random() - 0.5) * 0.01;
+      velocities[idx + 2] = -(0.035 + Math.random() * 0.03);
+
+      colors[idx] = colorSun.r;
+      colors[idx + 1] = colorSun.g;
+      colors[idx + 2] = colorSun.b;
+    }
+
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    particleGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const particleMat = new THREE.PointsMaterial({
+      size: 0.13,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.88,
+      blending: THREE.AdditiveBlending
+    });
+
+    const particleSystem = new THREE.Points(particleGeo, particleMat);
+    scene.add(particleSystem);
+
+    // Mouse / Touch Drag Interaction
+    let isDragging = false;
+    let prevMouseX = 0;
+    let prevMouseY = 0;
+    let targetRotY = 0.22;
+    let targetRotX = 0.05;
+
+    function onPointerDown(e) {
+      isDragging = true;
+      prevMouseX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      prevMouseY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+    }
+
+    function onPointerMove(e) {
+      if (!isDragging) return;
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      const clientY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+      const deltaX = clientX - prevMouseX;
+      const deltaY = clientY - prevMouseY;
+      prevMouseX = clientX;
+      prevMouseY = clientY;
+
+      targetRotY += deltaX * 0.008;
+      targetRotX += deltaY * 0.008;
+      targetRotX = Math.max(-0.4, Math.min(0.4, targetRotX));
+    }
+
+    function onPointerUp() {
+      isDragging = false;
+    }
+
+    container.addEventListener('mousedown', onPointerDown);
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('mouseup', onPointerUp);
+
+    container.addEventListener('touchstart', onPointerDown, { passive: true });
+    window.addEventListener('touchmove', onPointerMove, { passive: true });
+    window.addEventListener('touchend', onPointerUp);
+
+    // Mode Toggle Logic
+    const btnProtected = document.getElementById('btn-mode-protected');
+    const btnUnprotected = document.getElementById('btn-mode-unprotected');
+    const statusTitle = document.getElementById('hero-3d-status-title');
+    const statusDesc = document.getElementById('hero-3d-status-desc');
+
+    function updateMode(prot) {
+      isProtected = prot;
+      if (isProtected) {
+        if (btnProtected) {
+          btnProtected.className = 'px-2.5 py-1 rounded-lg transition-all duration-200 flex items-center gap-1.5 bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-xs cursor-pointer';
+        }
+        if (btnUnprotected) {
+          btnUnprotected.className = 'px-2.5 py-1 rounded-lg transition-all duration-200 flex items-center gap-1.5 text-slate-300 hover:text-white cursor-pointer';
+        }
+        glassMat.color.setHex(0x93c5fd);
+        shieldMesh.visible = true;
+        coolInteriorLight.intensity = 1.4;
+        heatLight.intensity = 0;
+        sunLight.color.setHex(0xffedd5);
+
+        if (statusTitle) {
+          statusTitle.innerHTML = '<i class="fa-solid fa-shield-halved text-cyan-600"></i><span>درع النانو سيراميك نشط (88% عزل حراري)</span>';
+        }
+        if (statusDesc) {
+          statusDesc.textContent = 'حجب 99.9% أشعة ضارة | انخفاض الحرارة: -14°C | وضوح بصري 100%';
+        }
+      } else {
+        if (btnProtected) {
+          btnProtected.className = 'px-2.5 py-1 rounded-lg transition-all duration-200 flex items-center gap-1.5 text-slate-300 hover:text-white cursor-pointer';
+        }
+        if (btnUnprotected) {
+          btnUnprotected.className = 'px-2.5 py-1 rounded-lg transition-all duration-200 flex items-center gap-1.5 bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-xs cursor-pointer';
+        }
+        glassMat.color.setHex(0xfca5a5);
+        shieldMesh.visible = false;
+        coolInteriorLight.intensity = 0.2;
+        heatLight.intensity = 2.2;
+        sunLight.color.setHex(0xff7733);
+
+        if (statusTitle) {
+          statusTitle.innerHTML = '<i class="fa-solid fa-fire text-red-500"></i><span class="text-red-700">بدون عزل: حرارة الشمس تخترق بالكامل</span>';
+        }
+        if (statusDesc) {
+          statusDesc.textContent = '0% حجب حراري | حرارة الغرفة تصل 45°C | بهتان وتلف الأثاث';
+        }
+      }
+    }
+
+    if (btnProtected) btnProtected.addEventListener('click', () => updateMode(true));
+    if (btnUnprotected) btnUnprotected.addEventListener('click', () => updateMode(false));
+
+    // Resize Handler
+    function onResize() {
+      if (!container || !renderer) return;
+      const w = container.clientWidth || 400;
+      const h = container.clientHeight || 500;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    }
+    window.addEventListener('resize', onResize);
+
+    // Performance Observer
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        isVisible = entries[0].isIntersecting;
+        if (isVisible && !animId) {
+          animate();
+        }
+      }, { threshold: 0.1 });
+      observer.observe(container);
+    }
+
+    // Animation Loop (60 FPS)
+    let clock = new THREE.Clock();
+
+    function animate() {
+      if (!isVisible) {
+        animId = null;
+        return;
+      }
+      animId = requestAnimationFrame(animate);
+
+      const time = clock.getElapsedTime();
+
+      if (!isDragging) {
+        targetRotY += Math.sin(time * 0.8) * 0.0012;
+      }
+      glassGroup.rotation.y += (targetRotY - glassGroup.rotation.y) * 0.06;
+      glassGroup.rotation.x += (targetRotX - glassGroup.rotation.x) * 0.06;
+      glassGroup.position.y = Math.sin(time * 1.5) * 0.07;
+
+      if (shieldMesh.visible) {
+        shieldMat.opacity = 0.22 + Math.sin(time * 3) * 0.1;
+      }
+
+      // Update Particles
+      const pos = particleGeo.attributes.position.array;
+      const col = particleGeo.attributes.color.array;
+
+      for (let i = 0; i < particleCount; i++) {
+        const idx = i * 3;
+        pos[idx] += velocities[idx];
+        pos[idx + 1] += velocities[idx + 1];
+        pos[idx + 2] += velocities[idx + 2];
+
+        // Impact with glass plane
+        if (pos[idx + 2] <= 0.1 && pos[idx + 2] >= -0.1) {
+          if (isProtected) {
+            velocities[idx + 2] = Math.abs(velocities[idx + 2]) * 1.25;
+            velocities[idx] += (Math.random() - 0.5) * 0.07;
+            velocities[idx + 1] += (Math.random() - 0.5) * 0.07;
+
+            col[idx] = colorShielded.r;
+            col[idx + 1] = colorShielded.g;
+            col[idx + 2] = colorShielded.b;
+          } else {
+            col[idx] = colorHeatPass.r;
+            col[idx + 1] = colorHeatPass.g;
+            col[idx + 2] = colorHeatPass.b;
+          }
+        }
+
+        // Reset Out-of-Bounds Particles
+        if (pos[idx + 2] > 6.0 || pos[idx + 2] < -3.5) {
+          pos[idx] = (Math.random() - 0.5) * glassWidth * 1.2;
+          pos[idx + 1] = (Math.random() - 0.5) * glassHeight * 1.1;
+          pos[idx + 2] = 2.0 + Math.random() * 2.5;
+
+          velocities[idx] = (Math.random() - 0.5) * 0.01;
+          velocities[idx + 1] = (Math.random() - 0.5) * 0.01;
+          velocities[idx + 2] = -(0.035 + Math.random() * 0.03);
+
+          col[idx] = colorSun.r;
+          col[idx + 1] = colorSun.g;
+          col[idx + 2] = colorSun.b;
+        }
+      }
+
+      particleGeo.attributes.position.needsUpdate = true;
+      particleGeo.attributes.color.needsUpdate = true;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  }
+
+  // Initialize Three.js after DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(initHeroThreeJS, 120));
+  } else {
+    setTimeout(initHeroThreeJS, 120);
+  }
+  </script>
 
 </body>
 </html>
