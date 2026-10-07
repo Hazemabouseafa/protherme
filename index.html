@@ -52,12 +52,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 :root {
-  --primary-cyan: #06b6d4;
-  --primary-cyan-glow: rgba(6, 182, 212, 0.4);
-  --primary-green: #10b981;
-  --primary-green-glow: rgba(16, 185, 129, 0.35);
-  --bg-deep: #020617;
-  --bg-card: rgba(15, 23, 42, 0.75);
+  --primary-cyan: #0284c7;
+  --primary-cyan-glow: rgba(2, 132, 199, 0.2);
+  --primary-green: #059669;
+  --primary-green-glow: rgba(5, 150, 105, 0.2);
+  --bg-deep: #f8fafc;
+  --bg-card: #ffffff;
 }
 
 /* Base Typography & Smooth Scroll */
@@ -65,7 +65,7 @@ html {
   scroll-behavior: smooth;
   font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
   background-color: var(--bg-deep);
-  color: #f8fafc;
+  color: #0f172a;
 }
 
 [dir=ltr] {
@@ -76,77 +76,79 @@ html {
   font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar for Light Theme */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #020617;
+  background: #f1f5f9;
 }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #cbd5e1;
   border-radius: 9999px;
-  border: 1px solid rgba(6, 182, 212, 0.3);
+  border: 1px solid rgba(2, 132, 199, 0.2);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #06b6d4;
+  background: #0284c7;
 }
 
-/* Glassmorphism Styles */
+/* Glassmorphism Styles (Crisp Modern Light Architecture) */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.7);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
 }
 
 .glass-panel-cyan {
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(6, 182, 212, 0.2);
-  box-shadow: 0 0 25px rgba(6, 182, 212, 0.05);
+  border: 1px solid rgba(2, 132, 199, 0.25);
+  box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.08);
 }
 
 .glass-card-hover {
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  background: rgba(15, 23, 42, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 .glass-card-hover:hover {
   transform: translateY(-6px);
-  border-color: rgba(6, 182, 212, 0.4);
-  box-shadow: 0 15px 35px -10px rgba(6, 182, 212, 0.25), 0 0 20px rgba(16, 185, 129, 0.1);
-  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(2, 132, 199, 0.45);
+  box-shadow: 0 20px 25px -5px rgba(2, 132, 199, 0.12), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  background: #ffffff;
 }
 
-/* Neon Glow Accents */
+/* Glow Accents for Light Theme */
 .text-glow-cyan {
-  text-shadow: 0 0 20px rgba(6, 182, 212, 0.6);
+  text-shadow: 0 0 20px rgba(2, 132, 199, 0.35);
 }
 
 .text-glow-green {
-  text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+  text-shadow: 0 0 20px rgba(5, 150, 105, 0.3);
 }
 
 .box-glow-cyan {
-  box-shadow: 0 0 30px rgba(6, 182, 212, 0.25);
+  box-shadow: 0 0 25px rgba(2, 132, 199, 0.18);
 }
 
 .box-glow-emerald {
-  box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 0 25px rgba(5, 150, 105, 0.15);
 }
 
 /* Animated Gradient Background */
 .gradient-blob {
   position: absolute;
-  filter: blur(90px);
+  filter: blur(100px);
   border-radius: 9999px;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.35;
-  animation: floatOrb 12s ease-in-out infinite alternate;
+  opacity: 0.4;
+  animation: floatOrb 14s ease-in-out infinite alternate;
 }
 
 @keyframes floatOrb {
@@ -264,9 +266,9 @@ input[type=range]::-webkit-slider-thumb:hover {
   box-shadow: 0 8px 32px rgba(6, 182, 212, 0.35);
 }
 
-/* Subtle Grid Background Pattern */
+/* Subtle Grid Background Pattern for Light Theme */
 .bg-grid-pattern {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(148, 163, 184, 0.25) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
@@ -295,13 +297,13 @@ input[type=range]::-webkit-slider-thumb:hover {
 /* Gentle Glow Pulse for CTA & Key Accents */
 @keyframes gentleGlowPulse {
   0% {
-    box-shadow: 0 0 16px rgba(6, 182, 212, 0.35);
+    box-shadow: 0 0 12px rgba(2, 132, 199, 0.2);
   }
   50% {
-    box-shadow: 0 0 30px rgba(6, 182, 212, 0.65), 0 0 15px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 0 25px rgba(2, 132, 199, 0.4), 0 0 12px rgba(5, 150, 105, 0.2);
   }
   100% {
-    box-shadow: 0 0 16px rgba(6, 182, 212, 0.35);
+    box-shadow: 0 0 12px rgba(2, 132, 199, 0.2);
   }
 }
 
@@ -316,8 +318,8 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 .interactive-lift:hover {
   transform: translateY(-4px);
-  border-color: rgba(6, 182, 212, 0.45);
-  box-shadow: 0 12px 30px -10px rgba(6, 182, 212, 0.2);
+  border-color: rgba(2, 132, 199, 0.45);
+  box-shadow: 0 12px 25px -8px rgba(2, 132, 199, 0.15);
 }
 
 /* Subtly Animated Badge Dot Beacon */
@@ -412,7 +414,7 @@ input[type=range]::-webkit-slider-thumb:hover {
       left: 0;
       width: 0%;
       height: 2px;
-      background: linear-gradient(90deg, #06b6d4, #10b981);
+      background: linear-gradient(90deg, #0284c7, #059669);
       transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
       border-radius: 9999px;
     }
@@ -429,7 +431,7 @@ input[type=range]::-webkit-slider-thumb:hover {
       position: absolute;
       inset: -4px;
       border-radius: 9999px;
-      border: 2px solid rgba(16, 185, 129, 0.5);
+      border: 2px solid rgba(5, 150, 105, 0.45);
       animation: rippleEffect 3s cubic-bezier(0, 0, 0.2, 1) infinite;
       pointer-events: none;
     }
@@ -438,7 +440,7 @@ input[type=range]::-webkit-slider-thumb:hover {
       position: absolute;
       inset: -4px;
       border-radius: 9999px;
-      border: 2px solid rgba(6, 182, 212, 0.5);
+      border: 2px solid rgba(2, 132, 199, 0.45);
       animation: rippleEffect 3s cubic-bezier(0, 0, 0.2, 1) 1.5s infinite;
       pointer-events: none;
     }
@@ -1155,14 +1157,14 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <script defer src="https://unpkg.com/alpinejs@3.13.5/dist/cdn.min.js"></script>
 </head>
 
-<body x-data="prothermeApp()" class="bg-[#020617] text-slate-100 min-h-screen selection:bg-cyan-500 selection:text-black overflow-x-hidden relative">
+<body x-data="prothermeApp()" class="bg-[#f8fafc] text-slate-800 min-h-screen selection:bg-cyan-500 selection:text-white overflow-x-hidden relative">
 
   <!-- Ambient Floating Neon Gradient Blobs (Contained to prevent any horizontal scroll) -->
   <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
-    <div class="gradient-blob w-[500px] h-[500px] bg-cyan-600/20 top-[-100px] right-[-100px]"></div>
-    <div class="gradient-blob w-[600px] h-[600px] bg-emerald-600/15 top-[600px] left-[-200px]" style="animation-delay: -3s;"></div>
-    <div class="gradient-blob w-[500px] h-[500px] bg-blue-600/15 top-[1800px] right-[-100px]" style="animation-delay: -6s;"></div>
-    <div class="gradient-blob w-[600px] h-[600px] bg-cyan-600/15 top-[3200px] left-[-150px]" style="animation-delay: -9s;"></div>
+    <div class="gradient-blob w-[500px] h-[500px] bg-cyan-200/50 top-[-100px] right-[-100px]"></div>
+    <div class="gradient-blob w-[600px] h-[600px] bg-emerald-100/60 top-[600px] left-[-200px]" style="animation-delay: -3s;"></div>
+    <div class="gradient-blob w-[500px] h-[500px] bg-sky-200/40 top-[1800px] right-[-100px]" style="animation-delay: -6s;"></div>
+    <div class="gradient-blob w-[600px] h-[600px] bg-teal-100/50 top-[3200px] left-[-150px]" style="animation-delay: -9s;"></div>
   </div>
 
   <!-- Background Grid Pattern -->
@@ -1171,26 +1173,26 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- TOPBAR / CREDENTIAL STRIP                  -->
   <!-- ========================================== -->
-  <div x-show="cms.visibility.topbar" class="relative z-50 bg-slate-950/90 border-b border-slate-800/80 text-xs py-2 px-4 backdrop-blur-md">
+  <div x-show="cms.visibility.topbar" class="relative z-50 bg-slate-100/90 border-b border-slate-200/90 text-xs py-2 px-4 backdrop-blur-md">
     <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
-      <div class="flex items-center gap-2 text-slate-300">
-        <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
-          <i class="fa-solid fa-award me-1.5 text-cyan-400"></i>
+      <div class="flex items-center gap-2 text-slate-600">
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-cyan-100/80 text-cyan-800 border border-cyan-200">
+          <i class="fa-solid fa-award me-1.5 text-cyan-600"></i>
           <span x-text="t('hero.badge')"></span>
         </span>
-        <a href="https://globalhitechfilms.com" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center text-slate-400 hover:text-cyan-300 transition-colors">
+        <a href="https://globalhitechfilms.com" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center text-slate-500 hover:text-cyan-700 transition-colors">
           <i class="fa-solid fa-arrow-up-right-from-square text-[10px] me-1"></i>
           <span>globalhitechfilms.com</span>
         </a>
       </div>
-      <div class="flex items-center gap-4 text-slate-300 ms-auto">
-        <a :href="'tel:' + cms.contacts.phone" class="inline-flex items-center gap-1.5 hover:text-cyan-400 transition-colors font-medium">
-          <i class="fa-solid fa-phone text-cyan-400"></i>
+      <div class="flex items-center gap-4 text-slate-600 ms-auto">
+        <a :href="'tel:' + cms.contacts.phone" class="inline-flex items-center gap-1.5 text-slate-700 hover:text-cyan-700 transition-colors font-semibold">
+          <i class="fa-solid fa-phone text-cyan-600"></i>
           <span dir="ltr" x-text="cms.contacts.phone"></span>
         </a>
-        <span class="text-slate-700">|</span>
-        <a :href="'mailto:' + cms.contacts.email" class="inline-flex items-center gap-1.5 hover:text-cyan-400 transition-colors">
-          <i class="fa-solid fa-envelope text-cyan-400"></i>
+        <span class="text-slate-300">|</span>
+        <a :href="'mailto:' + cms.contacts.email" class="inline-flex items-center gap-1.5 text-slate-600 hover:text-cyan-700 transition-colors">
+          <i class="fa-solid fa-envelope text-cyan-600"></i>
           <span x-text="cms.contacts.email"></span>
         </a>
       </div>
@@ -1200,51 +1202,51 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- STICKY NAVBAR                              -->
   <!-- ========================================== -->
-  <header class="sticky top-0 z-40 bg-[#020617]/85 backdrop-blur-xl border-b border-slate-800/80 transition-all duration-300">
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-slate-200/90 transition-all duration-300 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-20">
         
         <!-- BRAND LOGO -->
         <a href="#" class="flex items-center gap-3.5 group py-2">
-          <div class="relative p-1 bg-white/95 rounded-xl border border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-transform duration-300 group-hover:scale-105">
+          <div class="relative p-1 bg-white rounded-xl border border-slate-200 shadow-sm transition-transform duration-300 group-hover:scale-105">
             <img :src="cms.images.logo || 'assets/images/protherme-logo.jpg'" alt="ProTherme Engineering Solutions" class="h-11 w-auto object-contain rounded-lg">
           </div>
           <div class="flex flex-col">
-            <span class="text-xl font-black tracking-tight text-white group-hover:text-cyan-400 transition-colors">ProTherme</span>
-            <span class="text-[11px] text-cyan-400/90 font-medium" x-text="t('nav.brand_sub')"></span>
+            <span class="text-xl font-black tracking-tight text-slate-950 group-hover:text-cyan-700 transition-colors">ProTherme</span>
+            <span class="text-[11px] text-cyan-700 font-semibold" x-text="t('nav.brand_sub')"></span>
           </div>
         </a>
 
         <!-- DESKTOP NAVIGATION LINKS -->
         <nav class="hidden lg:flex items-center gap-1 xl:gap-2">
-          <button @click="scrollTo('services')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all nav-hover-line" x-text="t('nav.services')"></button>
-          <button x-show="cms.visibility.technology" @click="scrollTo('technology')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all nav-hover-line" x-text="t('nav.tech')"></button>
-          <button x-show="cms.visibility.gallery" @click="scrollTo('gallery')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all nav-hover-line" x-text="t('nav.gallery')"></button>
-          <button @click="scrollTo('contact')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all nav-hover-line" x-text="t('nav.contact')"></button>
+          <button @click="scrollTo('services')" class="px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all nav-hover-line" x-text="t('nav.services')"></button>
+          <button x-show="cms.visibility.technology" @click="scrollTo('technology')" class="px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all nav-hover-line" x-text="t('nav.tech')"></button>
+          <button x-show="cms.visibility.gallery" @click="scrollTo('gallery')" class="px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all nav-hover-line" x-text="t('nav.gallery')"></button>
+          <button @click="scrollTo('contact')" class="px-3 py-2 rounded-lg text-sm font-semibold text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all nav-hover-line" x-text="t('nav.contact')"></button>
         </nav>
 
         <!-- RIGHT ACTIONS: LANGUAGE SWITCHER & CTAS -->
         <div class="hidden sm:flex items-center gap-3">
           
           <!-- LANGUAGE SWITCHER BUTTON -->
-          <div class="relative bg-slate-900/90 p-1 rounded-xl border border-slate-700/80 flex items-center shadow-inner">
+          <div class="relative bg-slate-100 p-1 rounded-xl border border-slate-200 flex items-center shadow-xs">
             <button 
-              @click="switchLang('ar')" 
-              :class="lang === 'ar' ? 'bg-gradient-to-r from-cyan-600 to-cyan-500 text-white shadow-md' : 'text-slate-400 hover:text-white'"
-              class="px-2.5 py-1 text-xs font-bold rounded-lg transition-all duration-200">
-              عربي
-            </button>
-            <button 
-              @click="switchLang('en')" 
-              :class="lang === 'en' ? 'bg-gradient-to-r from-cyan-600 to-cyan-500 text-white shadow-md' : 'text-slate-400 hover:text-white'"
-              class="px-2.5 py-1 text-xs font-bold rounded-lg transition-all duration-200">
-              EN
-            </button>
+               @click="switchLang('ar')" 
+               :class="lang === 'ar' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-950'"
+               class="px-2.5 py-1 text-xs font-bold rounded-lg transition-all duration-200">
+               عربي
+             </button>
+             <button 
+               @click="switchLang('en')" 
+               :class="lang === 'en' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-950'"
+               class="px-2.5 py-1 text-xs font-bold rounded-lg transition-all duration-200">
+               EN
+             </button>
           </div>
 
           <!-- DIRECT CALL BUTTON -->
-          <a :href="'tel:' + cms.contacts.phone" class="hidden xl:inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-slate-200 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition-all hover:border-cyan-500/50">
-            <i class="fa-solid fa-phone text-cyan-400"></i>
+          <a :href="'tel:' + cms.contacts.phone" class="hidden xl:inline-flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all hover:border-cyan-400">
+            <i class="fa-solid fa-phone text-cyan-600"></i>
             <span dir="ltr" x-text="cms.contacts.phone"></span>
           </a>
 
@@ -1252,11 +1254,9 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <button 
             x-show="cms.buttons.navCta.visible"
             @click="scrollTo('contact')" 
-            class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-xs font-bold rounded-xl group bg-gradient-to-br from-cyan-500 via-emerald-500 to-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.35)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] transition-all duration-300 btn-shimmer">
-            <span class="relative px-4 py-2.5 transition-all ease-in duration-200 bg-slate-950 rounded-[10px] group-hover:bg-opacity-0 text-white">
-              <i class="fa-solid fa-headset me-1.5 text-cyan-400 group-hover:text-white"></i>
-              <span x-text="cms.buttons.navCta[lang] || t('nav.cta')"></span>
-            </span>
+            class="relative inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold rounded-xl group bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-md shadow-cyan-600/25 hover:shadow-lg hover:shadow-cyan-600/35 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 btn-shimmer">
+            <i class="fa-solid fa-headset me-1.5 text-cyan-200"></i>
+            <span x-text="cms.buttons.navCta[lang] || t('nav.cta')"></span>
           </button>
         </div>
 
@@ -1264,14 +1264,14 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         <div class="flex items-center gap-2 lg:hidden">
           <button 
             @click="toggleLanguage()" 
-            class="h-10 px-3 text-xs font-bold rounded-xl bg-slate-800 border border-slate-700 text-cyan-400 hover:text-white flex items-center justify-center transition-all active:scale-95">
+            class="h-10 px-3 text-xs font-bold rounded-xl bg-slate-100 border border-slate-200 text-cyan-700 hover:bg-slate-200 flex items-center justify-center transition-all active:scale-95">
             <span x-text="lang === 'ar' ? 'English' : 'عربي'"></span>
           </button>
           <button 
             @click="mobileMenuOpen = !mobileMenuOpen" 
             aria-label="قائمة التصفح"
             :aria-expanded="mobileMenuOpen"
-            class="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-300 hover:text-white focus:outline-none flex items-center justify-center transition-all active:scale-95">
+            class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200 focus:outline-none flex items-center justify-center transition-all active:scale-95">
             <i class="fa-solid text-base" :class="mobileMenuOpen ? 'fa-xmark' : 'fa-bars'"></i>
           </button>
         </div>
@@ -1280,18 +1280,18 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
     </div>
 
     <!-- MOBILE MENU DRAWER -->
-    <div x-show="mobileMenuOpen" x-transition.opacity.duration.200ms class="lg:hidden bg-slate-950/98 border-b border-slate-800 px-4 pt-3 pb-6 space-y-2 backdrop-blur-2xl">
-      <button @click="scrollTo('services')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-medium text-slate-200 hover:bg-slate-900 hover:text-cyan-400 active:bg-slate-800 transition-colors flex items-center justify-between" x-text="t('nav.services')"></button>
-      <button x-show="cms.visibility.technology" @click="scrollTo('technology')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-medium text-slate-200 hover:bg-slate-900 hover:text-cyan-400 active:bg-slate-800 transition-colors flex items-center justify-between" x-text="t('nav.tech')"></button>
-      <button x-show="cms.visibility.gallery" @click="scrollTo('gallery')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-medium text-slate-200 hover:bg-slate-900 hover:text-cyan-400 active:bg-slate-800 transition-colors flex items-center justify-between" x-text="t('nav.gallery')"></button>
-      <button @click="scrollTo('contact')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-medium text-slate-200 hover:bg-slate-900 hover:text-cyan-400 active:bg-slate-800 transition-colors flex items-center justify-between" x-text="t('nav.contact')"></button>
+    <div x-show="mobileMenuOpen" x-transition.opacity.duration.200ms class="lg:hidden bg-white/98 border-b border-slate-200 px-4 pt-3 pb-6 space-y-2 backdrop-blur-2xl shadow-xl">
+      <button @click="scrollTo('services')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-cyan-700 active:bg-slate-200 transition-colors flex items-center justify-between" x-text="t('nav.services')"></button>
+      <button x-show="cms.visibility.technology" @click="scrollTo('technology')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-cyan-700 active:bg-slate-200 transition-colors flex items-center justify-between" x-text="t('nav.tech')"></button>
+      <button x-show="cms.visibility.gallery" @click="scrollTo('gallery')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-cyan-700 active:bg-slate-200 transition-colors flex items-center justify-between" x-text="t('nav.gallery')"></button>
+      <button @click="scrollTo('contact')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-cyan-700 active:bg-slate-200 transition-colors flex items-center justify-between" x-text="t('nav.contact')"></button>
       
-      <div class="pt-3 border-t border-slate-800 space-y-2.5">
-        <a :href="'tel:' + cms.contacts.phone" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 font-bold text-sm active:scale-[0.99] transition-all">
-          <i class="fa-solid fa-phone text-cyan-400"></i>
+      <div class="pt-3 border-t border-slate-200 space-y-2.5">
+        <a :href="'tel:' + cms.contacts.phone" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-800 font-bold text-sm active:scale-[0.99] transition-all">
+          <i class="fa-solid fa-phone text-cyan-600"></i>
           <span dir="ltr" x-text="cms.contacts.phone"></span>
         </a>
-        <button @click="scrollTo('contact')" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 font-black text-sm shadow-lg shadow-cyan-500/20 active:scale-[0.99] transition-all btn-shimmer" x-text="cms.buttons.navCta[lang] || t('nav.cta')"></button>
+        <button @click="scrollTo('contact')" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-black text-sm shadow-md shadow-cyan-600/25 active:scale-[0.99] transition-all btn-shimmer" x-text="cms.buttons.navCta[lang] || t('nav.cta')"></button>
       </div>
     </div>
   </header>
@@ -1307,19 +1307,19 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         <div class="lg:col-span-7 space-y-6 text-start">
           
           <!-- AUTHORIZED PARTNER FLOATING BADGE -->
-          <div x-show="cms.visibility.heroBadge" data-aos="fade-down" data-aos-duration="600" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs sm:text-sm font-semibold shadow-[0_0_20px_rgba(6,182,212,0.15)] animate-float-slow">
-            <span class="w-2 h-2 rounded-full bg-emerald-400 beacon-dot shadow-[0_0_8px_#10b981]"></span>
+          <div x-show="cms.visibility.heroBadge" data-aos="fade-down" data-aos-duration="600" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs sm:text-sm font-semibold shadow-xs animate-float-slow">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 beacon-dot"></span>
             <span x-text="t('hero.badge')"></span>
           </div>
 
           <!-- HEADLINE WITH VIBRANT GRADIENT -->
-          <h1 data-aos="fade-up" data-aos-duration="700" class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.15]">
+          <h1 data-aos="fade-up" data-aos-duration="700" class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-950 leading-[1.15]">
             <span class="block" x-text="t('hero.title_p1')"></span>
-            <span class="block bg-gradient-to-r from-cyan-400 via-emerald-300 to-cyan-200 bg-clip-text text-transparent text-glow-cyan animate-gradient-text" x-text="t('hero.title_p2')"></span>
+            <span class="block bg-gradient-to-r from-cyan-700 via-teal-700 to-cyan-800 bg-clip-text text-transparent animate-gradient-text" x-text="t('hero.title_p2')"></span>
           </h1>
 
           <!-- SUBTITLE -->
-          <p data-aos="fade-up" data-aos-duration="700" data-aos-delay="100" class="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl font-normal" x-text="t('hero.subtitle')"></p>
+          <p data-aos="fade-up" data-aos-duration="700" data-aos-delay="100" class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl font-normal" x-text="t('hero.subtitle')"></p>
 
           <!-- DUAL CTA BUTTONS -->
           <div data-aos="fade-up" data-aos-duration="700" data-aos-delay="150" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-2">
@@ -1327,16 +1327,16 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               x-show="cms.buttons.heroPrimary.visible"
               @click.prevent="scrollTo('contact')" 
               :href="cms.buttons.heroPrimary.target" 
-              class="w-full sm:w-auto justify-center px-6 sm:px-7 py-3.5 sm:py-4 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 text-slate-950 font-black text-sm sm:text-base shadow-[0_0_25px_rgba(6,182,212,0.4)] hover:shadow-[0_0_35px_rgba(6,182,212,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2 cursor-pointer glow-pulse-subtle btn-shimmer">
-              <i class="fa-solid fa-headset text-slate-900"></i>
+              class="w-full sm:w-auto justify-center px-6 sm:px-7 py-3.5 sm:py-4 rounded-xl bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 text-white font-black text-sm sm:text-base shadow-lg shadow-cyan-600/25 hover:shadow-xl hover:shadow-cyan-600/35 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2 cursor-pointer glow-pulse-subtle btn-shimmer">
+              <i class="fa-solid fa-headset text-white"></i>
               <span x-text="cms.buttons.heroPrimary[lang] || t('hero.cta_primary')"></span>
             </a>
 
             <a 
               x-show="cms.buttons.heroCall.visible"
               :href="'tel:' + cms.contacts.phone" 
-              class="w-full sm:w-auto justify-center px-5 sm:px-6 py-3.5 sm:py-4 rounded-xl glass-panel text-slate-200 hover:text-white hover:border-cyan-500/60 font-bold text-sm sm:text-base hover:bg-slate-800/80 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2.5">
-              <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
+              class="w-full sm:w-auto justify-center px-5 sm:px-6 py-3.5 sm:py-4 rounded-xl bg-white border border-slate-300 text-slate-800 hover:text-cyan-700 hover:border-cyan-400 font-bold text-sm sm:text-base hover:bg-slate-50 hover:scale-[1.02] active:scale-[0.98] shadow-xs transition-all duration-200 flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-cyan-50 text-cyan-700 flex items-center justify-center">
                 <i class="fa-solid fa-phone"></i>
               </div>
               <span x-text="cms.buttons.heroCall[lang] || ('اتصال مباشر: ' + cms.contacts.phone)"></span>
@@ -1344,22 +1344,22 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           </div>
 
           <!-- LIVE STATS GRID -->
-          <div x-show="cms.visibility.heroStats" data-aos="fade-up" data-aos-duration="700" data-aos-delay="200" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-6 border-t border-slate-800/80">
-            <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 interactive-lift">
-              <div class="text-2xl sm:text-3xl font-black font-mono text-cyan-400" x-text="cms.heroStats.stat1.num"></div>
-              <div class="text-xs text-slate-400 font-medium mt-1" x-text="cms.heroStats.stat1['label_' + lang]"></div>
+          <div x-show="cms.visibility.heroStats" data-aos="fade-up" data-aos-duration="700" data-aos-delay="200" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-6 border-t border-slate-200">
+            <div class="p-3.5 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-cyan-400 interactive-lift">
+              <div class="text-2xl sm:text-3xl font-black font-mono text-cyan-700" x-text="cms.heroStats.stat1.num"></div>
+              <div class="text-xs text-slate-600 font-medium mt-1" x-text="cms.heroStats.stat1['label_' + lang]"></div>
             </div>
-            <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 interactive-lift">
-              <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-400" x-text="cms.heroStats.stat2.num"></div>
-              <div class="text-xs text-slate-400 font-medium mt-1" x-text="cms.heroStats.stat2['label_' + lang]"></div>
+            <div class="p-3.5 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-emerald-400 interactive-lift">
+              <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-700" x-text="cms.heroStats.stat2.num"></div>
+              <div class="text-xs text-slate-600 font-medium mt-1" x-text="cms.heroStats.stat2['label_' + lang]"></div>
             </div>
-            <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 interactive-lift">
-              <div class="text-2xl sm:text-3xl font-black font-mono text-cyan-300" x-text="cms.heroStats.stat3.num"></div>
-              <div class="text-xs text-slate-400 font-medium mt-1" x-text="cms.heroStats.stat3['label_' + lang]"></div>
+            <div class="p-3.5 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-cyan-400 interactive-lift">
+              <div class="text-2xl sm:text-3xl font-black font-mono text-cyan-700" x-text="cms.heroStats.stat3.num"></div>
+              <div class="text-xs text-slate-600 font-medium mt-1" x-text="cms.heroStats.stat3['label_' + lang]"></div>
             </div>
-            <div class="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 interactive-lift">
-              <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-300" x-text="cms.heroStats.stat4.num"></div>
-              <div class="text-xs text-slate-400 font-medium mt-1" x-text="cms.heroStats.stat4['label_' + lang]"></div>
+            <div class="p-3.5 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-emerald-400 interactive-lift">
+              <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-700" x-text="cms.heroStats.stat4.num"></div>
+              <div class="text-xs text-slate-600 font-medium mt-1" x-text="cms.heroStats.stat4['label_' + lang]"></div>
             </div>
           </div>
 
@@ -1368,58 +1368,58 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         <!-- HERO VISUAL: CYBER GLASS CONTAINER -->
         <div class="lg:col-span-5 relative" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
           
-          <!-- Neon Glow Border Around Container -->
-          <div class="relative rounded-3xl p-2 bg-gradient-to-b from-cyan-500/30 via-slate-800/60 to-emerald-500/20 shadow-[0_0_40px_rgba(6,182,212,0.2)] animate-gentle-float">
+          <!-- Elegant Light Border Around Container -->
+          <div class="relative rounded-3xl p-2.5 bg-white border border-slate-200 shadow-xl shadow-slate-200/60 animate-gentle-float">
             
-            <div class="relative rounded-2xl overflow-hidden bg-slate-950 aspect-[4/5] sm:aspect-[3/4] border border-cyan-500/30 group">
+            <div class="relative rounded-2xl overflow-hidden bg-slate-100 aspect-[4/5] sm:aspect-[3/4] border border-slate-200 group">
               <!-- Real Project Image Provided by User -->
               <img 
                 :src="cms.images.heroVisual || 'assets/images/installation-site-real.jpg'" 
                 alt="ProTherme Real Glass Facade Film Installation" 
-                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out filter brightness-[0.95] contrast-[1.05]">
+                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out">
 
               <!-- Subtle Gradient Overlay -->
-              <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-black/30 pointer-events-none"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent pointer-events-none"></div>
 
               <!-- Top Badge -->
-              <div class="absolute top-4 start-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-950/85 backdrop-blur-md border border-cyan-500/40 text-xs font-bold text-white shadow-lg animate-float-slow">
-                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 beacon-dot"></span>
+              <div class="absolute top-4 start-4 z-20 flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 text-xs font-bold text-slate-800 shadow-md animate-float-slow">
+                <span class="w-2.5 h-2.5 rounded-full bg-cyan-600 beacon-dot"></span>
                 <span x-text="cms.imageBadges?.heroTop?.[lang] || 'Global Hi-Tech Certified Crew'"></span>
               </div>
 
               <!-- Hotspot 1: High Rejection -->
               <div class="absolute top-[28%] end-[25%] z-20 group/spot cursor-pointer">
-                <div class="hotspot-pin w-6 h-6 rounded-full bg-cyan-500 text-slate-950 flex items-center justify-center font-bold text-xs shadow-lg shadow-cyan-500/50">
+                <div class="hotspot-pin w-6 h-6 rounded-full bg-cyan-600 text-white flex items-center justify-center font-bold text-xs shadow-md shadow-cyan-600/50">
                   <i class="fa-solid fa-temperature-arrow-down text-[10px]"></i>
                 </div>
-                <div class="absolute top-8 end-[-30px] w-40 p-2 rounded-xl bg-slate-950/90 backdrop-blur-md border border-cyan-500/40 text-[11px] text-white shadow-xl opacity-90 group-hover/spot:opacity-100 transition-opacity">
-                  <span class="font-bold text-cyan-400 block" x-text="t('hero.hotspot1')"></span>
-                  <span class="text-slate-300">Nano-Ceramic IR Shield</span>
+                <div class="absolute top-8 end-[-30px] w-40 p-2.5 rounded-xl bg-white/95 backdrop-blur-md border border-cyan-200 text-[11px] text-slate-800 shadow-xl opacity-90 group-hover/spot:opacity-100 transition-opacity">
+                  <span class="font-bold text-cyan-700 block" x-text="t('hero.hotspot1')"></span>
+                  <span class="text-slate-600">Nano-Ceramic IR Shield</span>
                 </div>
               </div>
 
               <!-- Hotspot 2: Precision Cut -->
               <div class="absolute bottom-[40%] start-[20%] z-20 group/spot cursor-pointer">
-                <div class="hotspot-pin w-6 h-6 rounded-full bg-emerald-500 text-slate-950 flex items-center justify-center font-bold text-xs shadow-lg shadow-emerald-500/50">
+                <div class="hotspot-pin w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shadow-md shadow-emerald-600/50">
                   <i class="fa-solid fa-check text-[10px]"></i>
                 </div>
-                <div class="absolute bottom-8 start-[-20px] w-44 p-2 rounded-xl bg-slate-950/90 backdrop-blur-md border border-emerald-500/40 text-[11px] text-white shadow-xl opacity-90 group-hover/spot:opacity-100 transition-opacity">
-                  <span class="font-bold text-emerald-400 block" x-text="t('hero.hotspot3')"></span>
-                  <span class="text-slate-300">Dust-Free Seamless Fit</span>
+                <div class="absolute bottom-8 start-[-20px] w-44 p-2.5 rounded-xl bg-white/95 backdrop-blur-md border border-emerald-200 text-[11px] text-slate-800 shadow-xl opacity-90 group-hover/spot:opacity-100 transition-opacity">
+                  <span class="font-bold text-emerald-700 block" x-text="t('hero.hotspot3')"></span>
+                  <span class="text-slate-600">Dust-Free Seamless Fit</span>
                 </div>
               </div>
 
               <!-- Bottom Glass Card Over Image -->
-              <div class="absolute bottom-4 inset-x-4 p-4 rounded-xl bg-slate-900/90 backdrop-blur-md border border-slate-700/80 shadow-2xl z-20">
+              <div class="absolute bottom-4 inset-x-4 p-4 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-xl z-20">
                 <div class="flex items-center justify-between">
                   <div>
-                    <h4 class="text-sm font-bold text-white flex items-center gap-2">
-                      <i class="fa-solid fa-building-columns text-cyan-400"></i>
+                    <h4 class="text-sm font-bold text-slate-950 flex items-center gap-2">
+                      <i class="fa-solid fa-building-columns text-cyan-600"></i>
                       <span x-text="t('hero.visual_badge')"></span>
                     </h4>
-                    <p class="text-xs text-slate-400 mt-0.5" x-text="t('hero.visual_badge_sub')"></p>
+                    <p class="text-xs text-slate-600 mt-0.5" x-text="t('hero.visual_badge_sub')"></p>
                   </div>
-                  <button @click="openLightbox(cms.images.heroVisual || 'assets/images/installation-site-real.jpg', 'gallery.item1_title', 'gallery.item1_desc')" class="p-2.5 rounded-lg bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500 hover:text-slate-950 transition-colors">
+                  <button @click="openLightbox(cms.images.heroVisual || 'assets/images/installation-site-real.jpg', 'gallery.item1_title', 'gallery.item1_desc')" class="p-2.5 rounded-lg bg-cyan-50 text-cyan-700 hover:bg-cyan-600 hover:text-white transition-colors">
                     <i class="fa-solid fa-expand text-xs"></i>
                   </button>
                 </div>
@@ -1430,13 +1430,13 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           </div>
 
           <!-- Decorative Floating Corner Card -->
-          <div class="hidden sm:flex absolute -bottom-6 -start-6 p-4 rounded-2xl bg-slate-900/95 border border-cyan-500/30 shadow-2xl backdrop-blur-xl z-30 items-center gap-3 animate-float-delayed">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-500 to-emerald-400 flex items-center justify-center text-slate-950 text-xl font-bold">
+          <div class="hidden sm:flex absolute -bottom-6 -start-6 p-4 rounded-2xl bg-white border border-slate-200 shadow-xl z-30 items-center gap-3 animate-float-delayed">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-600 to-teal-500 flex items-center justify-center text-white text-xl font-bold shadow-xs">
               <i class="fa-solid fa-shield-halved"></i>
             </div>
             <div>
-              <div class="text-xs text-slate-400" x-text="cms.imageBadges?.heroCornerTag?.[lang] || 'Official Distributor'"></div>
-              <div class="text-sm font-bold text-white" x-text="cms.imageBadges?.heroCornerName?.[lang] || 'Global Hi-Tech Films'"></div>
+              <div class="text-xs text-slate-500" x-text="cms.imageBadges?.heroCornerTag?.[lang] || 'Official Distributor'"></div>
+              <div class="text-sm font-bold text-slate-950" x-text="cms.imageBadges?.heroCornerName?.[lang] || 'Global Hi-Tech Films'"></div>
             </div>
           </div>
 
@@ -1449,47 +1449,47 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- TRUST & CERTIFICATION BAR                  -->
   <!-- ========================================== -->
-  <section x-show="cms.visibility.trustBar" class="py-10 bg-slate-950/70 border-y border-slate-800/80 relative z-10">
+  <section x-show="cms.visibility.trustBar" class="py-10 bg-white border-y border-slate-200 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
         
-        <div data-aos="fade-up" data-aos-delay="50" class="interactive-lift flex items-center gap-3.5 p-3 rounded-2xl bg-slate-900/30 border border-transparent hover:border-cyan-500/30">
-          <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl shrink-0">
+        <div data-aos="fade-up" data-aos-delay="50" class="interactive-lift flex items-center gap-3.5 p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80 hover:border-cyan-300 shadow-xs">
+          <div class="w-12 h-12 rounded-xl bg-cyan-100/70 border border-cyan-200 flex items-center justify-center text-cyan-700 text-xl shrink-0">
             <i class="fa-solid fa-industry"></i>
           </div>
           <div>
-            <div class="text-sm font-bold text-white" x-text="t('trust.t1')"></div>
-            <div class="text-xs text-slate-400" x-text="t('trust.t1_sub')"></div>
+            <div class="text-sm font-bold text-slate-900" x-text="t('trust.t1')"></div>
+            <div class="text-xs text-slate-500" x-text="t('trust.t1_sub')"></div>
           </div>
         </div>
 
-        <div data-aos="fade-up" data-aos-delay="100" class="interactive-lift flex items-center gap-3.5 p-3 rounded-2xl bg-slate-900/30 border border-transparent hover:border-emerald-500/30">
-          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl shrink-0">
+        <div data-aos="fade-up" data-aos-delay="100" class="interactive-lift flex items-center gap-3.5 p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80 hover:border-emerald-300 shadow-xs">
+          <div class="w-12 h-12 rounded-xl bg-emerald-100/70 border border-emerald-200 flex items-center justify-center text-emerald-700 text-xl shrink-0">
             <i class="fa-solid fa-bolt-lightning"></i>
           </div>
           <div>
-            <div class="text-sm font-bold text-white" x-text="t('trust.t2')"></div>
-            <div class="text-xs text-slate-400" x-text="t('trust.t2_sub')"></div>
+            <div class="text-sm font-bold text-slate-900" x-text="t('trust.t2')"></div>
+            <div class="text-xs text-slate-500" x-text="t('trust.t2_sub')"></div>
           </div>
         </div>
 
-        <div data-aos="fade-up" data-aos-delay="150" class="interactive-lift flex items-center gap-3.5 p-3 rounded-2xl bg-slate-900/30 border border-transparent hover:border-cyan-500/30">
-          <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl shrink-0">
+        <div data-aos="fade-up" data-aos-delay="150" class="interactive-lift flex items-center gap-3.5 p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80 hover:border-cyan-300 shadow-xs">
+          <div class="w-12 h-12 rounded-xl bg-cyan-100/70 border border-cyan-200 flex items-center justify-center text-cyan-700 text-xl shrink-0">
             <i class="fa-solid fa-certificate"></i>
           </div>
           <div>
-            <div class="text-sm font-bold text-white" x-text="t('trust.t3')"></div>
-            <div class="text-xs text-slate-400" x-text="t('trust.t3_sub')"></div>
+            <div class="text-sm font-bold text-slate-900" x-text="t('trust.t3')"></div>
+            <div class="text-xs text-slate-500" x-text="t('trust.t3_sub')"></div>
           </div>
         </div>
 
-        <div data-aos="fade-up" data-aos-delay="200" class="interactive-lift flex items-center gap-3.5 p-3 rounded-2xl bg-slate-900/30 border border-transparent hover:border-emerald-500/30">
-          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl shrink-0">
+        <div data-aos="fade-up" data-aos-delay="200" class="interactive-lift flex items-center gap-3.5 p-3.5 rounded-2xl bg-slate-50/80 border border-slate-200/80 hover:border-emerald-300 shadow-xs">
+          <div class="w-12 h-12 rounded-xl bg-emerald-100/70 border border-emerald-200 flex items-center justify-center text-emerald-700 text-xl shrink-0">
             <i class="fa-solid fa-user-gear"></i>
           </div>
           <div>
-            <div class="text-sm font-bold text-white" x-text="t('trust.t4')"></div>
-            <div class="text-xs text-slate-400" x-text="t('trust.t4_sub')"></div>
+            <div class="text-sm font-bold text-slate-900" x-text="t('trust.t4')"></div>
+            <div class="text-xs text-slate-500" x-text="t('trust.t4_sub')"></div>
           </div>
         </div>
 
@@ -1505,62 +1505,62 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
       
       <!-- Section Header -->
       <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-bold uppercase tracking-wider">
           <i class="fa-solid fa-layer-group"></i>
           <span x-text="t('services.tag')"></span>
         </div>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white" x-text="t('services.title')"></h2>
-        <p class="text-base sm:text-lg text-slate-300" x-text="t('services.subtitle')"></p>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950" x-text="t('services.title')"></h2>
+        <p class="text-base sm:text-lg text-slate-600" x-text="t('services.subtitle')"></p>
       </div>
 
       <!-- 3 Pillars Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         <!-- PILLAR 1: ARCHITECTURAL WINDOW FILMS -->
-        <div x-show="cms.visibility.pillar1" data-aos="fade-up" data-aos-delay="100" class="glass-card-hover rounded-3xl overflow-hidden flex flex-col group border border-slate-800">
+        <div x-show="cms.visibility.pillar1" data-aos="fade-up" data-aos-delay="100" class="glass-card-hover rounded-3xl overflow-hidden flex flex-col group border border-slate-200 bg-white shadow-sm hover:shadow-xl hover:border-cyan-400">
           <div class="relative h-60 overflow-hidden">
             <img :src="cms.images.pillar1 || 'assets/images/arch-glass-villa.jpg'" alt="Architectural Window Films" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent"></div>
             
-            <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-cyan-500/20 backdrop-blur-md border border-cyan-500/40 text-cyan-300 text-xs font-bold">
+            <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/90 backdrop-blur-md border border-slate-200 text-cyan-800 text-xs font-bold shadow-xs">
               <span x-text="t('pillars.p1.tag')"></span>
             </div>
             
-            <div class="absolute bottom-3 end-4 text-xs font-mono font-bold px-2.5 py-1 rounded-md bg-slate-950/80 text-cyan-400 border border-slate-700" x-text="cms.imageBadges?.pillar1?.[lang] || 'IRR: 88% | UV: 99.9%'">
+            <div class="absolute bottom-3 end-4 text-xs font-mono font-bold px-2.5 py-1 rounded-md bg-white/95 text-cyan-800 border border-slate-200 shadow-xs" x-text="cms.imageBadges?.pillar1?.[lang] || 'IRR: 88% | UV: 99.9%'">
             </div>
           </div>
 
           <div class="p-6 sm:p-8 flex-1 flex flex-col justify-between space-y-6">
             <div class="space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl">
+              <div class="w-12 h-12 rounded-2xl bg-cyan-50 border border-cyan-200 flex items-center justify-center text-cyan-700 text-xl">
                 <i class="fa-solid fa-building"></i>
               </div>
-              <h3 class="text-xl sm:text-2xl font-bold text-white group-hover:text-cyan-400 transition-colors" x-text="t('pillars.p1.name')"></h3>
-              <p class="text-sm text-slate-300 leading-relaxed" x-text="t('pillars.p1.desc')"></p>
+              <h3 class="text-xl sm:text-2xl font-bold text-slate-950 group-hover:text-cyan-700 transition-colors" x-text="t('pillars.p1.name')"></h3>
+              <p class="text-sm text-slate-600 leading-relaxed" x-text="t('pillars.p1.desc')"></p>
               
-              <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300 pt-2 border-t border-slate-800">
+              <ul class="space-y-2.5 text-xs sm:text-sm text-slate-700 pt-2 border-t border-slate-200">
                 <li class="flex items-start gap-2.5">
-                  <i class="fa-solid fa-circle-check text-cyan-400 mt-1 shrink-0"></i>
+                  <i class="fa-solid fa-circle-check text-cyan-600 mt-1 shrink-0"></i>
                   <span x-text="t('pillars.p1.f1')"></span>
                 </li>
                 <li class="flex items-start gap-2.5">
-                  <i class="fa-solid fa-circle-check text-cyan-400 mt-1 shrink-0"></i>
+                  <i class="fa-solid fa-circle-check text-cyan-600 mt-1 shrink-0"></i>
                   <span x-text="t('pillars.p1.f2')"></span>
                 </li>
                 <li class="flex items-start gap-2.5">
-                  <i class="fa-solid fa-circle-check text-cyan-400 mt-1 shrink-0"></i>
+                  <i class="fa-solid fa-circle-check text-cyan-600 mt-1 shrink-0"></i>
                   <span x-text="t('pillars.p1.f3')"></span>
                 </li>
                 <li class="flex items-start gap-2.5">
-                  <i class="fa-solid fa-circle-check text-cyan-400 mt-1 shrink-0"></i>
+                  <i class="fa-solid fa-circle-check text-cyan-600 mt-1 shrink-0"></i>
                   <span x-text="t('pillars.p1.f4')"></span>
                 </li>
               </ul>
             </div>
 
-            <div class="pt-4 border-t border-slate-800 space-y-3">
-              <div class="text-[11px] font-mono text-cyan-400/90" x-text="t('pillars.p1.specs')"></div>
-              <button @click="scrollTo('contact')" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-cyan-600 hover:text-slate-950 text-white font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 group-hover:bg-cyan-500 group-hover:text-slate-950">
+            <div class="pt-4 border-t border-slate-200 space-y-3">
+              <div class="text-[11px] font-mono text-cyan-700 font-semibold" x-text="t('pillars.p1.specs')"></div>
+              <button @click="scrollTo('contact')" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-cyan-700 text-white font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-xs">
                 <span x-text="t('pillars.p1.cta')"></span>
                 <i class="fa-solid fa-arrow-left arrow-dir"></i>
               </button>
@@ -1569,50 +1569,50 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         </div>
 
         <!-- PILLAR 2: LUXURY SURFACE PROTECTION (MARBLE & WOOD) -->
-        <div x-show="cms.visibility.pillar2" data-aos="fade-up" data-aos-delay="200" class="glass-card-hover rounded-3xl overflow-hidden flex flex-col group border border-slate-800">
+        <div x-show="cms.visibility.pillar2" data-aos="fade-up" data-aos-delay="200" class="glass-card-hover rounded-3xl overflow-hidden flex flex-col group border border-slate-200 bg-white shadow-sm hover:shadow-xl hover:border-emerald-400">
           <div class="relative h-60 overflow-hidden">
             <img :src="cms.images.pillar2 || 'assets/images/marble-surface.jpg'" alt="Luxury Surface Protection" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent"></div>
             
-            <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-emerald-500/20 backdrop-blur-md border border-emerald-500/40 text-emerald-300 text-xs font-bold">
+            <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/90 backdrop-blur-md border border-slate-200 text-emerald-800 text-xs font-bold shadow-xs">
               <span x-text="t('pillars.p2.tag')"></span>
             </div>
             
-            <div class="absolute bottom-3 end-4 text-xs font-mono font-bold px-2.5 py-1 rounded-md bg-slate-950/80 text-emerald-400 border border-slate-700" x-text="cms.imageBadges?.pillar2?.[lang] || '8.5 Mil | Self-Healing TPU'">
+            <div class="absolute bottom-3 end-4 text-xs font-mono font-bold px-2.5 py-1 rounded-md bg-white/95 text-emerald-800 border border-slate-200 shadow-xs" x-text="cms.imageBadges?.pillar2?.[lang] || '8.5 Mil | Self-Healing TPU'">
             </div>
           </div>
 
           <div class="p-6 sm:p-8 flex-1 flex flex-col justify-between space-y-6">
             <div class="space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 text-xl">
                 <i class="fa-solid fa-gem"></i>
               </div>
-              <h3 class="text-xl sm:text-2xl font-bold text-white group-hover:text-emerald-400 transition-colors" x-text="t('pillars.p2.name')"></h3>
-              <p class="text-sm text-slate-300 leading-relaxed" x-text="t('pillars.p2.desc')"></p>
+              <h3 class="text-xl sm:text-2xl font-bold text-slate-950 group-hover:text-emerald-700 transition-colors" x-text="t('pillars.p2.name')"></h3>
+              <p class="text-sm text-slate-600 leading-relaxed" x-text="t('pillars.p2.desc')"></p>
               
-              <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300 pt-2 border-t border-slate-800">
+              <ul class="space-y-2.5 text-xs sm:text-sm text-slate-700 pt-2 border-t border-slate-200">
                 <li class="flex items-start gap-2.5">
-                  <i class="fa-solid fa-circle-check text-emerald-400 mt-1 shrink-0"></i>
+                  <i class="fa-solid fa-circle-check text-emerald-600 mt-1 shrink-0"></i>
                   <span x-text="t('pillars.p2.f1')"></span>
                 </li>
                 <li class="flex items-start gap-2.5">
-                  <i class="fa-solid fa-circle-check text-emerald-400 mt-1 shrink-0"></i>
+                  <i class="fa-solid fa-circle-check text-emerald-600 mt-1 shrink-0"></i>
                   <span x-text="t('pillars.p2.f2')"></span>
                 </li>
                 <li class="flex items-start gap-2.5">
-                  <i class="fa-solid fa-circle-check text-emerald-400 mt-1 shrink-0"></i>
+                  <i class="fa-solid fa-circle-check text-emerald-600 mt-1 shrink-0"></i>
                   <span x-text="t('pillars.p2.f3')"></span>
                 </li>
                 <li class="flex items-start gap-2.5">
-                  <i class="fa-solid fa-circle-check text-emerald-400 mt-1 shrink-0"></i>
+                  <i class="fa-solid fa-circle-check text-emerald-600 mt-1 shrink-0"></i>
                   <span x-text="t('pillars.p2.f4')"></span>
                 </li>
               </ul>
             </div>
 
-            <div class="pt-4 border-t border-slate-800 space-y-3">
-              <div class="text-[11px] font-mono text-emerald-400/90" x-text="t('pillars.p2.specs')"></div>
-              <button @click="scrollTo('contact')" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-emerald-600 hover:text-slate-950 text-white font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 group-hover:bg-emerald-500 group-hover:text-slate-950">
+            <div class="pt-4 border-t border-slate-200 space-y-3">
+              <div class="text-[11px] font-mono text-emerald-700 font-semibold" x-text="t('pillars.p2.specs')"></div>
+              <button @click="scrollTo('contact')" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-xs">
                 <span x-text="t('pillars.p2.cta')"></span>
                 <i class="fa-solid fa-arrow-left arrow-dir"></i>
               </button>
@@ -1621,50 +1621,50 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         </div>
 
         <!-- PILLAR 3: AUTOMOTIVE PPF & TINT DISTRIBUTION -->
-        <div x-show="cms.visibility.pillar3" data-aos="fade-up" data-aos-delay="300" class="glass-card-hover rounded-3xl overflow-hidden flex flex-col group border border-slate-800">
+        <div x-show="cms.visibility.pillar3" data-aos="fade-up" data-aos-delay="300" class="glass-card-hover rounded-3xl overflow-hidden flex flex-col group border border-slate-200 bg-white shadow-sm hover:shadow-xl hover:border-cyan-400">
           <div class="relative h-60 overflow-hidden">
             <img :src="cms.images.pillar3 || 'assets/images/supercar-ppf.jpg'" alt="Automotive PPF Wholesale Distribution" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent"></div>
             
-            <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-cyan-500/20 backdrop-blur-md border border-cyan-500/40 text-cyan-300 text-xs font-bold">
+            <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/90 backdrop-blur-md border border-slate-200 text-cyan-800 text-xs font-bold shadow-xs">
               <span x-text="t('pillars.p3.tag')"></span>
             </div>
             
-            <div class="absolute bottom-3 end-4 text-xs font-mono font-bold px-2.5 py-1 rounded-md bg-slate-950/80 text-cyan-400 border border-slate-700" x-text="cms.imageBadges?.pillar3?.[lang] || 'Direct Wholesale Supply'">
+            <div class="absolute bottom-3 end-4 text-xs font-mono font-bold px-2.5 py-1 rounded-md bg-white/95 text-cyan-800 border border-slate-200 shadow-xs" x-text="cms.imageBadges?.pillar3?.[lang] || 'Direct Wholesale Supply'">
             </div>
           </div>
 
           <div class="p-6 sm:p-8 flex-1 flex flex-col justify-between space-y-6">
             <div class="space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl">
+              <div class="w-12 h-12 rounded-2xl bg-cyan-50 border border-cyan-200 flex items-center justify-center text-cyan-700 text-xl">
                 <i class="fa-solid fa-car-side"></i>
               </div>
-              <h3 class="text-xl sm:text-2xl font-bold text-white group-hover:text-cyan-400 transition-colors" x-text="t('pillars.p3.name')"></h3>
-              <p class="text-sm text-slate-300 leading-relaxed" x-text="t('pillars.p3.desc')"></p>
+              <h3 class="text-xl sm:text-2xl font-bold text-slate-950 group-hover:text-cyan-700 transition-colors" x-text="t('pillars.p3.name')"></h3>
+              <p class="text-sm text-slate-600 leading-relaxed" x-text="t('pillars.p3.desc')"></p>
               
-              <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300 pt-2 border-t border-slate-800">
+              <ul class="space-y-2.5 text-xs sm:text-sm text-slate-700 pt-2 border-t border-slate-200">
                 <li class="flex items-start gap-2.5">
-                  <i class="fa-solid fa-circle-check text-cyan-400 mt-1 shrink-0"></i>
+                  <i class="fa-solid fa-circle-check text-cyan-600 mt-1 shrink-0"></i>
                   <span x-text="t('pillars.p3.f1')"></span>
                 </li>
                 <li class="flex items-start gap-2.5">
-                  <i class="fa-solid fa-circle-check text-cyan-400 mt-1 shrink-0"></i>
+                  <i class="fa-solid fa-circle-check text-cyan-600 mt-1 shrink-0"></i>
                   <span x-text="t('pillars.p3.f2')"></span>
                 </li>
                 <li class="flex items-start gap-2.5">
-                  <i class="fa-solid fa-circle-check text-cyan-400 mt-1 shrink-0"></i>
+                  <i class="fa-solid fa-circle-check text-cyan-600 mt-1 shrink-0"></i>
                   <span x-text="t('pillars.p3.f3')"></span>
                 </li>
                 <li class="flex items-start gap-2.5">
-                  <i class="fa-solid fa-circle-check text-cyan-400 mt-1 shrink-0"></i>
+                  <i class="fa-solid fa-circle-check text-cyan-600 mt-1 shrink-0"></i>
                   <span x-text="t('pillars.p3.f4')"></span>
                 </li>
               </ul>
             </div>
 
-            <div class="pt-4 border-t border-slate-800 space-y-3">
-              <div class="text-[11px] font-mono text-cyan-400/90" x-text="t('pillars.p3.specs')"></div>
-              <button @click="scrollTo('contact')" class="w-full py-3 rounded-xl bg-slate-800 hover:bg-cyan-600 hover:text-slate-950 text-white font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 group-hover:bg-cyan-500 group-hover:text-slate-950">
+            <div class="pt-4 border-t border-slate-200 space-y-3">
+              <div class="text-[11px] font-mono text-cyan-700 font-semibold" x-text="t('pillars.p3.specs')"></div>
+              <button @click="scrollTo('contact')" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-cyan-700 text-white font-bold text-xs sm:text-sm transition-all duration-200 flex items-center justify-center gap-2 shadow-xs">
                 <span x-text="t('pillars.p3.cta')"></span>
                 <i class="fa-solid fa-arrow-left arrow-dir"></i>
               </button>
@@ -1685,57 +1685,57 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
       
       <!-- Section Header -->
       <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-bold uppercase tracking-wider">
           <i class="fa-solid fa-microchip"></i>
           <span x-text="t('tech_standards.tag')"></span>
         </div>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white" x-text="t('tech_standards.title')"></h2>
-        <p class="text-base sm:text-lg text-slate-300" x-text="t('tech_standards.subtitle')"></p>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950" x-text="t('tech_standards.title')"></h2>
+        <p class="text-base sm:text-lg text-slate-600" x-text="t('tech_standards.subtitle')"></p>
       </div>
 
       <!-- 4 Pillars of Technical Superiority -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
         
-        <div data-aos="fade-up" data-aos-delay="100" class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-cyan-500/40 transition-all space-y-3 interactive-lift">
-          <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl">
+        <div data-aos="fade-up" data-aos-delay="100" class="glass-panel p-6 rounded-2xl border border-slate-200 hover:border-cyan-400 bg-white transition-all space-y-3 interactive-lift shadow-xs">
+          <div class="w-12 h-12 rounded-xl bg-cyan-50 border border-cyan-200 flex items-center justify-center text-cyan-700 text-xl">
             <i class="fa-solid fa-arrows-split-up-and-left"></i>
           </div>
-          <h4 class="text-lg font-bold text-white" x-text="t('tech_standards.c1_title')"></h4>
-          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed" x-text="t('tech_standards.c1_desc')"></p>
+          <h4 class="text-lg font-bold text-slate-900" x-text="t('tech_standards.c1_title')"></h4>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" x-text="t('tech_standards.c1_desc')"></p>
         </div>
 
-        <div data-aos="fade-up" data-aos-delay="200" class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-emerald-500/40 transition-all space-y-3 interactive-lift">
-          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl">
+        <div data-aos="fade-up" data-aos-delay="200" class="glass-panel p-6 rounded-2xl border border-slate-200 hover:border-emerald-400 bg-white transition-all space-y-3 interactive-lift shadow-xs">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 text-xl">
             <i class="fa-solid fa-atom"></i>
           </div>
-          <h4 class="text-lg font-bold text-white" x-text="t('tech_standards.c2_title')"></h4>
-          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed" x-text="t('tech_standards.c2_desc')"></p>
+          <h4 class="text-lg font-bold text-slate-900" x-text="t('tech_standards.c2_title')"></h4>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" x-text="t('tech_standards.c2_desc')"></p>
         </div>
 
-        <div data-aos="fade-up" data-aos-delay="300" class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-cyan-500/40 transition-all space-y-3 interactive-lift">
-          <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-xl">
+        <div data-aos="fade-up" data-aos-delay="300" class="glass-panel p-6 rounded-2xl border border-slate-200 hover:border-cyan-400 bg-white transition-all space-y-3 interactive-lift shadow-xs">
+          <div class="w-12 h-12 rounded-xl bg-cyan-50 border border-cyan-200 flex items-center justify-center text-cyan-700 text-xl">
             <i class="fa-solid fa-eye"></i>
           </div>
-          <h4 class="text-lg font-bold text-white" x-text="t('tech_standards.c3_title')"></h4>
-          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed" x-text="t('tech_standards.c3_desc')"></p>
+          <h4 class="text-lg font-bold text-slate-900" x-text="t('tech_standards.c3_title')"></h4>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" x-text="t('tech_standards.c3_desc')"></p>
         </div>
 
-        <div data-aos="fade-up" data-aos-delay="400" class="glass-panel p-6 rounded-2xl border border-slate-800 hover:border-emerald-500/40 transition-all space-y-3 interactive-lift">
-          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl">
+        <div data-aos="fade-up" data-aos-delay="400" class="glass-panel p-6 rounded-2xl border border-slate-200 hover:border-emerald-400 bg-white transition-all space-y-3 interactive-lift shadow-xs">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 text-xl">
             <i class="fa-solid fa-shield-virus"></i>
           </div>
-          <h4 class="text-lg font-bold text-white" x-text="t('tech_standards.c4_title')"></h4>
-          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed" x-text="t('tech_standards.c4_desc')"></p>
+          <h4 class="text-lg font-bold text-slate-900" x-text="t('tech_standards.c4_title')"></h4>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" x-text="t('tech_standards.c4_desc')"></p>
         </div>
 
       </div>
 
       <!-- TECHNICAL COMPARISON TABLE -->
-      <div x-show="cms.visibility.comparisonTable" data-aos="fade-up" data-aos-delay="150" class="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-slate-800 overflow-x-auto">
+      <div x-show="cms.visibility.comparisonTable" data-aos="fade-up" data-aos-delay="150" class="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-slate-200 bg-white shadow-sm overflow-x-auto">
         <div class="mb-4 sm:mb-6">
-          <h3 class="text-xl sm:text-2xl font-bold text-white" x-text="t('comparison.title')"></h3>
-          <p class="text-xs sm:text-sm text-slate-400 mt-1" x-text="t('comparison.subtitle')"></p>
-          <div class="text-[11px] text-cyan-400/80 sm:hidden flex items-center gap-1.5 mt-2 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-800 w-fit">
+          <h3 class="text-xl sm:text-2xl font-bold text-slate-950" x-text="t('comparison.title')"></h3>
+          <p class="text-xs sm:text-sm text-slate-600 mt-1" x-text="t('comparison.subtitle')"></p>
+          <div class="text-[11px] text-cyan-800 sm:hidden flex items-center gap-1.5 mt-2 bg-cyan-50 px-3 py-1.5 rounded-lg border border-cyan-200 w-fit">
             <i class="fa-solid fa-arrows-left-right"></i>
             <span>مرر الجدول أفقياً للاطلاع على كامل المقارنة</span>
           </div>
@@ -1743,44 +1743,44 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
         <table class="w-full min-w-[500px] sm:min-w-0 text-start text-xs sm:text-sm">
           <thead>
-            <tr class="border-b border-slate-800 text-slate-400">
-              <th class="py-3 sm:py-4 px-3 sm:px-4 text-start font-semibold" x-text="t('comparison.th_feature')"></th>
-              <th class="py-3 sm:py-4 px-3 sm:px-4 text-start font-bold text-cyan-400 bg-cyan-500/5 rounded-t-xl" x-text="t('comparison.th_pro')"></th>
+            <tr class="border-b border-slate-200 text-slate-700">
+              <th class="py-3 sm:py-4 px-3 sm:px-4 text-start font-bold text-slate-800" x-text="t('comparison.th_feature')"></th>
+              <th class="py-3 sm:py-4 px-3 sm:px-4 text-start font-black text-white bg-gradient-to-r from-cyan-700 to-teal-700 rounded-t-xl shadow-xs" x-text="t('comparison.th_pro')"></th>
               <th class="py-3 sm:py-4 px-3 sm:px-4 text-start font-semibold text-slate-500" x-text="t('comparison.th_market')"></th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-slate-800/80">
+          <tbody class="divide-y divide-slate-200">
             <tr>
-              <td class="py-4 px-4 font-semibold text-white" x-text="t('comparison.r1_title')"></td>
-              <td class="py-4 px-4 text-cyan-300 font-medium bg-cyan-500/5">
-                <i class="fa-solid fa-check text-cyan-400 me-1.5"></i>
+              <td class="py-4 px-4 font-semibold text-slate-900" x-text="t('comparison.r1_title')"></td>
+              <td class="py-4 px-4 text-cyan-950 font-bold bg-cyan-50/70 border-x border-cyan-200">
+                <i class="fa-solid fa-check text-cyan-600 me-1.5"></i>
                 <span x-text="t('comparison.r1_pro')"></span>
               </td>
-              <td class="py-4 px-4 text-slate-400" x-text="t('comparison.r1_std')"></td>
+              <td class="py-4 px-4 text-slate-500 bg-slate-50/50" x-text="t('comparison.r1_std')"></td>
             </tr>
             <tr>
-              <td class="py-4 px-4 font-semibold text-white" x-text="t('comparison.r2_title')"></td>
-              <td class="py-4 px-4 text-cyan-300 font-medium bg-cyan-500/5">
-                <i class="fa-solid fa-check text-cyan-400 me-1.5"></i>
+              <td class="py-4 px-4 font-semibold text-slate-900" x-text="t('comparison.r2_title')"></td>
+              <td class="py-4 px-4 text-cyan-950 font-bold bg-cyan-50/70 border-x border-cyan-200">
+                <i class="fa-solid fa-check text-cyan-600 me-1.5"></i>
                 <span x-text="t('comparison.r2_pro')"></span>
               </td>
-              <td class="py-4 px-4 text-slate-400" x-text="t('comparison.r2_std')"></td>
+              <td class="py-4 px-4 text-slate-500 bg-slate-50/50" x-text="t('comparison.r2_std')"></td>
             </tr>
             <tr>
-              <td class="py-4 px-4 font-semibold text-white" x-text="t('comparison.r3_title')"></td>
-              <td class="py-4 px-4 text-cyan-300 font-medium bg-cyan-500/5">
-                <i class="fa-solid fa-check text-cyan-400 me-1.5"></i>
+              <td class="py-4 px-4 font-semibold text-slate-900" x-text="t('comparison.r3_title')"></td>
+              <td class="py-4 px-4 text-cyan-950 font-bold bg-cyan-50/70 border-x border-cyan-200">
+                <i class="fa-solid fa-check text-cyan-600 me-1.5"></i>
                 <span x-text="t('comparison.r3_pro')"></span>
               </td>
-              <td class="py-4 px-4 text-slate-400" x-text="t('comparison.r3_std')"></td>
+              <td class="py-4 px-4 text-slate-500 bg-slate-50/50" x-text="t('comparison.r3_std')"></td>
             </tr>
             <tr>
-              <td class="py-4 px-4 font-semibold text-white" x-text="t('comparison.r4_title')"></td>
-              <td class="py-4 px-4 text-cyan-300 font-medium bg-cyan-500/5 rounded-b-xl">
-                <i class="fa-solid fa-check text-cyan-400 me-1.5"></i>
+              <td class="py-4 px-4 font-semibold text-slate-900" x-text="t('comparison.r4_title')"></td>
+              <td class="py-4 px-4 text-cyan-950 font-bold bg-cyan-50/70 border-x border-cyan-200 rounded-b-xl">
+                <i class="fa-solid fa-check text-cyan-600 me-1.5"></i>
                 <span x-text="t('comparison.r4_pro')"></span>
               </td>
-              <td class="py-4 px-4 text-slate-400" x-text="t('comparison.r4_std')"></td>
+              <td class="py-4 px-4 text-slate-500 bg-slate-50/50" x-text="t('comparison.r4_std')"></td>
             </tr>
           </tbody>
         </table>
@@ -1792,42 +1792,42 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- PROJECT GALLERY & LIVE INSTALLATION        -->
   <!-- ========================================== -->
-  <section x-show="cms.visibility.gallery" id="gallery" class="py-24 bg-slate-950/80 border-t border-slate-800/80 relative z-10">
+  <section x-show="cms.visibility.gallery" id="gallery" class="py-24 bg-slate-100/60 border-t border-slate-200 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Section Header -->
       <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-12 space-y-4">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-bold uppercase tracking-wider">
           <i class="fa-solid fa-camera"></i>
           <span x-text="t('gallery.tag')"></span>
         </div>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white" x-text="t('gallery.title')"></h2>
-        <p class="text-base sm:text-lg text-slate-300" x-text="t('gallery.subtitle')"></p>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950" x-text="t('gallery.title')"></h2>
+        <p class="text-base sm:text-lg text-slate-600" x-text="t('gallery.subtitle')"></p>
       </div>
 
       <!-- Filter Buttons -->
       <div data-aos="fade-up" data-aos-delay="100" class="flex flex-wrap justify-center gap-2 mb-12">
         <button 
           @click="galleryFilter = 'all'" 
-          :class="galleryFilter === 'all' ? 'bg-cyan-500 text-slate-950 font-bold shadow-lg shadow-cyan-500/20' : 'bg-slate-900 text-slate-300 hover:text-white border border-slate-800'"
+          :class="galleryFilter === 'all' ? 'bg-cyan-600 text-white font-bold shadow-md shadow-cyan-600/25' : 'bg-white text-slate-700 hover:text-slate-950 hover:bg-slate-50 border border-slate-200 shadow-xs'"
           class="px-4 py-2 rounded-xl text-xs sm:text-sm transition-all duration-200" 
           x-text="t('gallery.all')">
         </button>
         <button 
           @click="galleryFilter = 'arch'" 
-          :class="galleryFilter === 'arch' ? 'bg-cyan-500 text-slate-950 font-bold shadow-lg shadow-cyan-500/20' : 'bg-slate-900 text-slate-300 hover:text-white border border-slate-800'"
+          :class="galleryFilter === 'arch' ? 'bg-cyan-600 text-white font-bold shadow-md shadow-cyan-600/25' : 'bg-white text-slate-700 hover:text-slate-950 hover:bg-slate-50 border border-slate-200 shadow-xs'"
           class="px-4 py-2 rounded-xl text-xs sm:text-sm transition-all duration-200" 
           x-text="t('gallery.arch')">
         </button>
         <button 
           @click="galleryFilter = 'surface'" 
-          :class="galleryFilter === 'surface' ? 'bg-cyan-500 text-slate-950 font-bold shadow-lg shadow-cyan-500/20' : 'bg-slate-900 text-slate-300 hover:text-white border border-slate-800'"
+          :class="galleryFilter === 'surface' ? 'bg-cyan-600 text-white font-bold shadow-md shadow-cyan-600/25' : 'bg-white text-slate-700 hover:text-slate-950 hover:bg-slate-50 border border-slate-200 shadow-xs'"
           class="px-4 py-2 rounded-xl text-xs sm:text-sm transition-all duration-200" 
           x-text="t('gallery.surface')">
         </button>
         <button 
           @click="galleryFilter = 'auto'" 
-          :class="galleryFilter === 'auto' ? 'bg-cyan-500 text-slate-950 font-bold shadow-lg shadow-cyan-500/20' : 'bg-slate-900 text-slate-300 hover:text-white border border-slate-800'"
+          :class="galleryFilter === 'auto' ? 'bg-cyan-600 text-white font-bold shadow-md shadow-cyan-600/25' : 'bg-white text-slate-700 hover:text-slate-950 hover:bg-slate-50 border border-slate-200 shadow-xs'"
           class="px-4 py-2 rounded-xl text-xs sm:text-sm transition-all duration-200" 
           x-text="t('gallery.auto')">
         </button>
@@ -1837,26 +1837,26 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         
         <!-- PROJECT 1: REAL UPLOADED INSTALLATION -->
-        <div x-show="galleryFilter === 'all' || galleryFilter === 'arch'" data-aos="fade-up" data-aos-delay="100" class="glass-card-hover rounded-3xl overflow-hidden group border border-slate-800 flex flex-col">
+        <div x-show="galleryFilter === 'all' || galleryFilter === 'arch'" data-aos="fade-up" data-aos-delay="100" class="glass-card-hover rounded-3xl overflow-hidden group border border-slate-200 bg-white shadow-sm hover:shadow-xl flex flex-col">
           <div class="relative h-72 sm:h-80 overflow-hidden cursor-pointer" @click="openLightbox(cms.images.gallery1 || 'assets/images/installation-site-real.jpg', 'gallery.item1_title', 'gallery.item1_desc')">
             <img :src="cms.images.gallery1 || 'assets/images/installation-site-real.jpg'" alt="Le Bistro Commercial Facade" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
             
-            <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-emerald-500/20 backdrop-blur-md border border-emerald-500/40 text-emerald-300 text-xs font-bold">
-              <i class="fa-solid fa-star me-1 text-yellow-400"></i>
+            <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-slate-200 text-emerald-800 text-xs font-bold shadow-xs">
+              <i class="fa-solid fa-star me-1 text-amber-500"></i>
               <span x-text="cms.imageBadges?.gallery1_badge?.[lang] || t('gallery.item1_badge')"></span>
             </div>
 
-            <div class="absolute bottom-4 end-4 w-10 h-10 rounded-xl bg-slate-950/80 text-cyan-400 flex items-center justify-center border border-cyan-500/30 group-hover:bg-cyan-500 group-hover:text-slate-950 transition-colors">
+            <div class="absolute bottom-4 end-4 w-10 h-10 rounded-xl bg-white/90 text-cyan-700 flex items-center justify-center border border-slate-200 shadow-sm group-hover:bg-cyan-600 group-hover:text-white transition-colors">
               <i class="fa-solid fa-expand text-sm"></i>
             </div>
           </div>
           <div class="p-6 flex-1 flex flex-col justify-between space-y-3">
             <div>
-              <h3 class="text-lg sm:text-xl font-bold text-white group-hover:text-cyan-400 transition-colors" x-text="t('gallery.item1_title')"></h3>
-              <p class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed" x-text="t('gallery.item1_desc')"></p>
+              <h3 class="text-lg sm:text-xl font-bold text-slate-950 group-hover:text-cyan-700 transition-colors" x-text="t('gallery.item1_title')"></h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed" x-text="t('gallery.item1_desc')"></p>
             </div>
-            <div class="flex items-center gap-2 pt-3 border-t border-slate-800 text-xs text-cyan-400 font-mono">
+            <div class="flex items-center gap-2 pt-3 border-t border-slate-200 text-xs text-cyan-700 font-mono font-semibold">
               <i class="fa-solid fa-location-dot"></i>
               <span x-text="cms.imageBadges?.gallery1_footer?.[lang] || 'Commercial Plaza | Le Bistro'"></span>
             </div>
@@ -1864,25 +1864,25 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         </div>
 
         <!-- PROJECT 2: ITALIAN MARBLE PROTECTION -->
-        <div x-show="galleryFilter === 'all' || galleryFilter === 'surface'" data-aos="fade-up" data-aos-delay="200" class="glass-card-hover rounded-3xl overflow-hidden group border border-slate-800 flex flex-col">
+        <div x-show="galleryFilter === 'all' || galleryFilter === 'surface'" data-aos="fade-up" data-aos-delay="200" class="glass-card-hover rounded-3xl overflow-hidden group border border-slate-200 bg-white shadow-sm hover:shadow-xl flex flex-col">
           <div class="relative h-72 sm:h-80 overflow-hidden cursor-pointer" @click="openLightbox(cms.images.gallery2 || 'assets/images/marble-surface.jpg', 'gallery.item2_title', 'gallery.item2_desc')">
             <img :src="cms.images.gallery2 || 'assets/images/marble-surface.jpg'" alt="Luxury Marble Protection" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
             
-            <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-cyan-500/20 backdrop-blur-md border border-cyan-500/40 text-cyan-300 text-xs font-bold">
+            <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-slate-200 text-cyan-800 text-xs font-bold shadow-xs">
               <span x-text="cms.imageBadges?.gallery2_badge?.[lang] || 'Surface Shield TPU'"></span>
             </div>
 
-            <div class="absolute bottom-4 end-4 w-10 h-10 rounded-xl bg-slate-950/80 text-cyan-400 flex items-center justify-center border border-cyan-500/30 group-hover:bg-cyan-500 group-hover:text-slate-950 transition-colors">
+            <div class="absolute bottom-4 end-4 w-10 h-10 rounded-xl bg-white/90 text-cyan-700 flex items-center justify-center border border-slate-200 shadow-sm group-hover:bg-cyan-600 group-hover:text-white transition-colors">
               <i class="fa-solid fa-expand text-sm"></i>
             </div>
           </div>
           <div class="p-6 flex-1 flex flex-col justify-between space-y-3">
             <div>
-              <h3 class="text-lg sm:text-xl font-bold text-white group-hover:text-cyan-400 transition-colors" x-text="t('gallery.item2_title')"></h3>
-              <p class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed" x-text="t('gallery.item2_desc')"></p>
+              <h3 class="text-lg sm:text-xl font-bold text-slate-950 group-hover:text-cyan-700 transition-colors" x-text="t('gallery.item2_title')"></h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed" x-text="t('gallery.item2_desc')"></p>
             </div>
-            <div class="flex items-center gap-2 pt-3 border-t border-slate-800 text-xs text-emerald-400 font-mono">
+            <div class="flex items-center gap-2 pt-3 border-t border-slate-200 text-xs text-emerald-700 font-mono font-semibold">
               <i class="fa-solid fa-shield-cat"></i>
               <span x-text="cms.imageBadges?.gallery2_footer?.[lang] || 'Acid-Proof | 8.5 Mil TPU'"></span>
             </div>
@@ -1890,25 +1890,25 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         </div>
 
         <!-- PROJECT 3: LUXURY VILLA ARCHITECTURAL GLAZING -->
-        <div x-show="galleryFilter === 'all' || galleryFilter === 'arch'" data-aos="fade-up" data-aos-delay="300" class="glass-card-hover rounded-3xl overflow-hidden group border border-slate-800 flex flex-col">
+        <div x-show="galleryFilter === 'all' || galleryFilter === 'arch'" data-aos="fade-up" data-aos-delay="300" class="glass-card-hover rounded-3xl overflow-hidden group border border-slate-200 bg-white shadow-sm hover:shadow-xl flex flex-col">
           <div class="relative h-72 sm:h-80 overflow-hidden cursor-pointer" @click="openLightbox(cms.images.gallery3 || 'assets/images/arch-glass-villa.jpg', 'gallery.item3_title', 'gallery.item3_desc')">
             <img :src="cms.images.gallery3 || 'assets/images/arch-glass-villa.jpg'" alt="Villa Solar Glazing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
             
-            <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-cyan-500/20 backdrop-blur-md border border-cyan-500/40 text-cyan-300 text-xs font-bold">
+            <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-slate-200 text-cyan-800 text-xs font-bold shadow-xs">
               <span x-text="cms.imageBadges?.gallery3_badge?.[lang] || 'Nano-Ceramic Architectural'"></span>
             </div>
 
-            <div class="absolute bottom-4 end-4 w-10 h-10 rounded-xl bg-slate-950/80 text-cyan-400 flex items-center justify-center border border-cyan-500/30 group-hover:bg-cyan-500 group-hover:text-slate-950 transition-colors">
+            <div class="absolute bottom-4 end-4 w-10 h-10 rounded-xl bg-white/90 text-cyan-700 flex items-center justify-center border border-slate-200 shadow-sm group-hover:bg-cyan-600 group-hover:text-white transition-colors">
               <i class="fa-solid fa-expand text-sm"></i>
             </div>
           </div>
           <div class="p-6 flex-1 flex flex-col justify-between space-y-3">
             <div>
-              <h3 class="text-lg sm:text-xl font-bold text-white group-hover:text-cyan-400 transition-colors" x-text="t('gallery.item3_title')"></h3>
-              <p class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed" x-text="t('gallery.item3_desc')"></p>
+              <h3 class="text-lg sm:text-xl font-bold text-slate-950 group-hover:text-cyan-700 transition-colors" x-text="t('gallery.item3_title')"></h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed" x-text="t('gallery.item3_desc')"></p>
             </div>
-            <div class="flex items-center gap-2 pt-3 border-t border-slate-800 text-xs text-cyan-400 font-mono">
+            <div class="flex items-center gap-2 pt-3 border-t border-slate-200 text-xs text-cyan-700 font-mono font-semibold">
               <i class="fa-solid fa-temperature-arrow-down"></i>
               <span x-text="cms.imageBadges?.gallery3_footer?.[lang] || '-14°C Temp Drop | 99% UV Block'"></span>
             </div>
@@ -1916,25 +1916,25 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         </div>
 
         <!-- PROJECT 4: AUTOMOTIVE SUPERCAR PPF -->
-        <div x-show="galleryFilter === 'all' || galleryFilter === 'auto'" data-aos="fade-up" data-aos-delay="400" class="glass-card-hover rounded-3xl overflow-hidden group border border-slate-800 flex flex-col">
+        <div x-show="galleryFilter === 'all' || galleryFilter === 'auto'" data-aos="fade-up" data-aos-delay="400" class="glass-card-hover rounded-3xl overflow-hidden group border border-slate-200 bg-white shadow-sm hover:shadow-xl flex flex-col">
           <div class="relative h-72 sm:h-80 overflow-hidden cursor-pointer" @click="openLightbox(cms.images.gallery4 || 'assets/images/supercar-ppf.jpg', 'gallery.item4_title', 'gallery.item4_desc')">
             <img :src="cms.images.gallery4 || 'assets/images/supercar-ppf.jpg'" alt="Supercar PPF" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
             
-            <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-cyan-500/20 backdrop-blur-md border border-cyan-500/40 text-cyan-300 text-xs font-bold">
+            <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-slate-200 text-cyan-800 text-xs font-bold shadow-xs">
               <span x-text="cms.imageBadges?.gallery4_badge?.[lang] || 'Self-Healing PPF'"></span>
             </div>
 
-            <div class="absolute bottom-4 end-4 w-10 h-10 rounded-xl bg-slate-950/80 text-cyan-400 flex items-center justify-center border border-cyan-500/30 group-hover:bg-cyan-500 group-hover:text-slate-950 transition-colors">
+            <div class="absolute bottom-4 end-4 w-10 h-10 rounded-xl bg-white/90 text-cyan-700 flex items-center justify-center border border-slate-200 shadow-sm group-hover:bg-cyan-600 group-hover:text-white transition-colors">
               <i class="fa-solid fa-expand text-sm"></i>
             </div>
           </div>
           <div class="p-6 flex-1 flex flex-col justify-between space-y-3">
             <div>
-              <h3 class="text-lg sm:text-xl font-bold text-white group-hover:text-cyan-400 transition-colors" x-text="t('gallery.item4_title')"></h3>
-              <p class="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed" x-text="t('gallery.item4_desc')"></p>
+              <h3 class="text-lg sm:text-xl font-bold text-slate-950 group-hover:text-cyan-700 transition-colors" x-text="t('gallery.item4_title')"></h3>
+              <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed" x-text="t('gallery.item4_desc')"></p>
             </div>
-            <div class="flex items-center gap-2 pt-3 border-t border-slate-800 text-xs text-cyan-400 font-mono">
+            <div class="flex items-center gap-2 pt-3 border-t border-slate-200 text-xs text-cyan-700 font-mono font-semibold">
               <i class="fa-solid fa-droplet"></i>
               <span x-text="cms.imageBadges?.gallery4_footer?.[lang] || 'Super-Hydrophobic | 10 Mil TPU'"></span>
             </div>
@@ -1954,68 +1954,68 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
       
       <!-- Section Header -->
       <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-bold uppercase tracking-wider">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-bold uppercase tracking-wider">
           <i class="fa-solid fa-headset"></i>
           <span x-text="t('contact.tag')"></span>
         </div>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white" x-text="t('contact.title')"></h2>
-        <p class="text-base sm:text-lg text-slate-300" x-text="t('contact.subtitle')"></p>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950" x-text="t('contact.title')"></h2>
+        <p class="text-base sm:text-lg text-slate-600" x-text="t('contact.subtitle')"></p>
       </div>
 
       <!-- 4 DIRECT HIGH-CONVERTING ACTION CARDS -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         
         <!-- CARD 1: DIRECT PHONE CALL -->
-        <div data-aos="fade-up" data-aos-delay="100" class="glass-card-hover p-8 rounded-3xl border border-slate-800 flex flex-col justify-between space-y-6 group relative overflow-hidden">
-          <div class="absolute -top-12 -end-12 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-all"></div>
+        <div data-aos="fade-up" data-aos-delay="100" class="glass-card-hover p-8 rounded-3xl border border-slate-200 bg-white shadow-sm hover:shadow-xl hover:border-cyan-400 flex flex-col justify-between space-y-6 group relative overflow-hidden">
+          <div class="absolute -top-12 -end-12 w-32 h-32 bg-cyan-100 rounded-full blur-2xl group-hover:bg-cyan-200/60 transition-all"></div>
           
           <div class="space-y-4 relative z-10">
             <div class="flex items-center justify-between">
-              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-600 to-cyan-400 text-slate-950 flex items-center justify-center text-2xl font-bold shadow-lg shadow-cyan-500/30 group-hover:scale-110 transition-transform">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-600 to-teal-500 text-white flex items-center justify-center text-2xl font-bold shadow-md shadow-cyan-600/30 group-hover:scale-110 transition-transform">
                 <i class="fa-solid fa-phone"></i>
               </div>
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-bold">
-                <span class="w-2 h-2 rounded-full bg-cyan-400 beacon-dot"></span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-bold">
+                <span class="w-2 h-2 rounded-full bg-cyan-600 beacon-dot"></span>
                 <span x-text="t('contact.call_badge')"></span>
               </span>
             </div>
 
-            <h3 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors" x-text="t('contact.call_title')"></h3>
-            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed" x-text="t('contact.call_desc')"></p>
+            <h3 class="text-xl font-bold text-slate-950 group-hover:text-cyan-700 transition-colors" x-text="t('contact.call_title')"></h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" x-text="t('contact.call_desc')"></p>
             
             <div class="pt-2">
-              <span class="text-2xl sm:text-3xl font-black font-mono text-cyan-400 block tracking-wider" dir="ltr" x-text="cms.contacts.phone"></span>
+              <span class="text-2xl sm:text-3xl font-black font-mono text-cyan-800 block tracking-wider" dir="ltr" x-text="cms.contacts.phone"></span>
             </div>
           </div>
 
           <a 
             :href="'tel:' + cms.contacts.phone" 
-            class="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 font-black text-sm shadow-lg shadow-cyan-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 btn-shimmer">
+            class="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-black text-sm shadow-md shadow-cyan-600/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 btn-shimmer">
             <i class="fa-solid fa-phone-volume"></i>
             <span x-text="t('contact.call_btn')"></span>
           </a>
         </div>
 
         <!-- CARD 2: DIRECT WHATSAPP ADVISORY -->
-        <div data-aos="fade-up" data-aos-delay="200" class="glass-card-hover p-8 rounded-3xl border border-slate-800 flex flex-col justify-between space-y-6 group relative overflow-hidden">
-          <div class="absolute -top-12 -end-12 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
+        <div data-aos="fade-up" data-aos-delay="200" class="glass-card-hover p-8 rounded-3xl border border-slate-200 bg-white shadow-sm hover:shadow-xl hover:border-emerald-400 flex flex-col justify-between space-y-6 group relative overflow-hidden">
+          <div class="absolute -top-12 -end-12 w-32 h-32 bg-emerald-100 rounded-full blur-2xl group-hover:bg-emerald-200/60 transition-all"></div>
 
           <div class="space-y-4 relative z-10">
             <div class="flex items-center justify-between">
-              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-green-400 text-slate-950 flex items-center justify-center text-3xl font-bold shadow-lg shadow-emerald-500/30 group-hover:scale-110 transition-transform">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-green-500 text-white flex items-center justify-center text-3xl font-bold shadow-md shadow-emerald-600/30 group-hover:scale-110 transition-transform">
                 <i class="fa-brands fa-whatsapp"></i>
               </div>
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-bold">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 beacon-dot"></span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold">
+                <span class="w-2 h-2 rounded-full bg-emerald-600 beacon-dot"></span>
                 <span x-text="t('contact.wa_badge')"></span>
               </span>
             </div>
 
-            <h3 class="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors" x-text="t('contact.wa_title')"></h3>
-            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed" x-text="t('contact.wa_desc')"></p>
+            <h3 class="text-xl font-bold text-slate-950 group-hover:text-emerald-700 transition-colors" x-text="t('contact.wa_title')"></h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" x-text="t('contact.wa_desc')"></p>
             
             <div class="pt-2">
-              <span class="text-2xl sm:text-3xl font-black font-mono text-emerald-400 block tracking-wider" dir="ltr" x-text="cms.contacts.whatsapp"></span>
+              <span class="text-2xl sm:text-3xl font-black font-mono text-emerald-800 block tracking-wider" dir="ltr" x-text="cms.contacts.whatsapp"></span>
             </div>
           </div>
 
@@ -2023,38 +2023,38 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '')" 
             target="_blank" 
             rel="noopener noreferrer" 
-            class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 text-slate-950 font-black text-sm shadow-lg shadow-emerald-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 btn-shimmer">
+            class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 text-white font-black text-sm shadow-md shadow-emerald-600/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 btn-shimmer">
             <i class="fa-brands fa-whatsapp text-lg"></i>
             <span x-text="t('contact.wa_btn')"></span>
           </a>
         </div>
 
         <!-- CARD 3: CORPORATE EMAIL -->
-        <div data-aos="fade-up" data-aos-delay="300" class="glass-card-hover p-8 rounded-3xl border border-slate-800 flex flex-col justify-between space-y-6 group relative overflow-hidden md:col-span-2 lg:col-span-1">
-          <div class="absolute -top-12 -end-12 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-all"></div>
+        <div data-aos="fade-up" data-aos-delay="300" class="glass-card-hover p-8 rounded-3xl border border-slate-200 bg-white shadow-sm hover:shadow-xl hover:border-cyan-400 flex flex-col justify-between space-y-6 group relative overflow-hidden md:col-span-2 lg:col-span-1">
+          <div class="absolute -top-12 -end-12 w-32 h-32 bg-cyan-100 rounded-full blur-2xl group-hover:bg-cyan-200/60 transition-all"></div>
 
           <div class="space-y-4 relative z-10">
             <div class="flex items-center justify-between">
-              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-400 text-slate-950 flex items-center justify-center text-2xl font-bold shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-500 text-white flex items-center justify-center text-2xl font-bold shadow-md shadow-blue-600/30 group-hover:scale-110 transition-transform">
                 <i class="fa-solid fa-envelope"></i>
               </div>
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-bold">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-bold">
                 <i class="fa-solid fa-file-lines text-xs"></i>
                 <span x-text="t('contact.email_badge')"></span>
               </span>
             </div>
 
-            <h3 class="text-xl font-bold text-white group-hover:text-cyan-400 transition-colors" x-text="t('contact.email_title')"></h3>
-            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed" x-text="t('contact.email_desc')"></p>
+            <h3 class="text-xl font-bold text-slate-950 group-hover:text-cyan-700 transition-colors" x-text="t('contact.email_title')"></h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed" x-text="t('contact.email_desc')"></p>
             
             <div class="pt-2">
-              <span class="text-xl sm:text-2xl font-bold font-mono text-cyan-300 block" dir="ltr" x-text="cms.contacts.email"></span>
+              <span class="text-xl sm:text-2xl font-bold font-mono text-slate-900 block" dir="ltr" x-text="cms.contacts.email"></span>
             </div>
           </div>
 
           <a 
             :href="'mailto:' + cms.contacts.email" 
-            class="w-full py-4 rounded-xl bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-white font-bold text-sm border border-slate-700 transition-all flex items-center justify-center gap-2">
+            class="w-full py-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 hover:text-slate-950 font-bold text-sm border border-slate-300 transition-all flex items-center justify-center gap-2 shadow-xs">
             <i class="fa-solid fa-paper-plane"></i>
             <span x-text="t('contact.email_btn')"></span>
           </a>
@@ -2063,23 +2063,23 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
       </div>
 
       <!-- SCHEDULE & DISTRIBUTOR CREDENTIAL BANNER -->
-      <div data-aos="fade-up" data-aos-delay="150" class="mt-12 p-8 rounded-3xl bg-slate-900/60 border border-cyan-500/20 flex flex-col md:flex-row items-center justify-between gap-6 backdrop-blur-xl">
+      <div data-aos="fade-up" data-aos-delay="150" class="mt-12 p-8 rounded-3xl bg-slate-50 border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm">
         <div class="flex items-center gap-4">
-          <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 text-2xl shrink-0">
+          <div class="w-14 h-14 rounded-2xl bg-cyan-100 border border-cyan-200 flex items-center justify-center text-cyan-700 text-2xl shrink-0">
             <i class="fa-solid fa-clock"></i>
           </div>
           <div>
-            <div class="text-xs text-cyan-400 font-bold uppercase tracking-wider" x-text="t('contact.hours_badge')"></div>
-            <div class="text-lg font-black text-white" x-text="cms.contacts.hours[lang] || t('footer.hours_val')"></div>
-            <div class="text-xs text-slate-400 mt-0.5" x-text="t('contact.hours_desc')"></div>
+            <div class="text-xs text-cyan-800 font-bold uppercase tracking-wider" x-text="t('contact.hours_badge')"></div>
+            <div class="text-lg font-black text-slate-950" x-text="cms.contacts.hours[lang] || t('footer.hours_val')"></div>
+            <div class="text-xs text-slate-500 mt-0.5" x-text="t('contact.hours_desc')"></div>
           </div>
         </div>
 
-        <div class="flex items-center gap-4 border-t md:border-t-0 md:border-s border-slate-800 pt-4 md:pt-0 md:ps-8">
-          <img src="assets/images/protherme-logo.jpg" alt="ProTherme" class="h-10 w-auto rounded-lg bg-white p-1">
-          <div class="text-xs text-slate-300">
-            <div class="font-bold text-white">Global Hi-Tech Films</div>
-            <div class="text-[11px] text-slate-400">Exclusive Certified Distributor</div>
+        <div class="flex items-center gap-4 border-t md:border-t-0 md:border-s border-slate-200 pt-4 md:pt-0 md:ps-8">
+          <img src="assets/images/protherme-logo.jpg" alt="ProTherme" class="h-10 w-auto rounded-lg bg-white p-1 border border-slate-200">
+          <div class="text-xs text-slate-600">
+            <div class="font-bold text-slate-900">Global Hi-Tech Films</div>
+            <div class="text-[11px] text-slate-500">Exclusive Certified Distributor</div>
           </div>
         </div>
       </div>
@@ -2090,47 +2090,47 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- FOOTER                                     -->
   <!-- ========================================== -->
-  <footer class="bg-slate-950 border-t border-slate-800/80 pt-16 pb-12 relative z-10 text-slate-400 text-sm">
+  <footer class="bg-slate-100 border-t border-slate-200 pt-16 pb-12 relative z-10 text-slate-600 text-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-slate-800">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-slate-200">
         
         <!-- Brand Info -->
         <div class="lg:col-span-5 space-y-4">
           <div class="flex items-center gap-3">
-            <img :src="cms.images.logo || 'assets/images/protherme-logo.jpg'" alt="ProTherme Logo" class="h-10 w-auto rounded-lg bg-white p-1">
-            <span class="text-xl font-black text-white">ProTherme</span>
+            <img :src="cms.images.logo || 'assets/images/protherme-logo.jpg'" alt="ProTherme Logo" class="h-10 w-auto rounded-lg bg-white p-1 border border-slate-200">
+            <span class="text-xl font-black text-slate-950">ProTherme</span>
           </div>
-          <p class="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-md" x-text="t('footer.desc')"></p>
-          <div class="text-xs text-cyan-400 font-semibold flex items-center gap-2">
-            <i class="fa-solid fa-shield-halved"></i>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-md" x-text="t('footer.desc')"></p>
+          <div class="text-xs text-cyan-800 font-semibold flex items-center gap-2">
+            <i class="fa-solid fa-shield-halved text-cyan-600"></i>
             <span x-text="t('footer.partner_text')"></span>
           </div>
 
           <!-- Dynamic Social Media Links -->
           <div x-show="cms.social && (cms.social.facebook || cms.social.instagram || cms.social.linkedin || cms.social.tiktok || cms.social.youtube)" class="flex items-center gap-2.5 pt-2 flex-wrap">
             <template x-if="cms.social && cms.social.facebook">
-              <a :href="cms.social.facebook" target="_blank" rel="noopener noreferrer" title="Facebook" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-blue-600/20 text-slate-400 hover:text-blue-400 border border-slate-800 hover:border-blue-500/40 flex items-center justify-center transition-all">
+              <a :href="cms.social.facebook" target="_blank" rel="noopener noreferrer" title="Facebook" class="w-9 h-9 rounded-xl bg-white hover:bg-blue-50 text-slate-600 hover:text-blue-600 border border-slate-200 hover:border-blue-400 flex items-center justify-center transition-all shadow-xs">
                 <i class="fa-brands fa-facebook-f text-sm"></i>
               </a>
             </template>
             <template x-if="cms.social && cms.social.instagram">
-              <a :href="cms.social.instagram" target="_blank" rel="noopener noreferrer" title="Instagram" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-pink-600/20 text-slate-400 hover:text-pink-400 border border-slate-800 hover:border-pink-500/40 flex items-center justify-center transition-all">
+              <a :href="cms.social.instagram" target="_blank" rel="noopener noreferrer" title="Instagram" class="w-9 h-9 rounded-xl bg-white hover:bg-pink-50 text-slate-600 hover:text-pink-600 border border-slate-200 hover:border-pink-400 flex items-center justify-center transition-all shadow-xs">
                 <i class="fa-brands fa-instagram text-sm"></i>
               </a>
             </template>
             <template x-if="cms.social && cms.social.linkedin">
-              <a :href="cms.social.linkedin" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-cyan-600/20 text-slate-400 hover:text-cyan-400 border border-slate-800 hover:border-cyan-500/40 flex items-center justify-center transition-all">
+              <a :href="cms.social.linkedin" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="w-9 h-9 rounded-xl bg-white hover:bg-cyan-50 text-slate-600 hover:text-cyan-700 border border-slate-200 hover:border-cyan-400 flex items-center justify-center transition-all shadow-xs">
                 <i class="fa-brands fa-linkedin-in text-sm"></i>
               </a>
             </template>
             <template x-if="cms.social && cms.social.tiktok">
-              <a :href="cms.social.tiktok" target="_blank" rel="noopener noreferrer" title="TikTok" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-800 hover:border-slate-600 flex items-center justify-center transition-all">
+              <a :href="cms.social.tiktok" target="_blank" rel="noopener noreferrer" title="TikTok" class="w-9 h-9 rounded-xl bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200 hover:border-slate-400 flex items-center justify-center transition-all shadow-xs">
                 <i class="fa-brands fa-tiktok text-sm"></i>
               </a>
             </template>
             <template x-if="cms.social && cms.social.youtube">
-              <a :href="cms.social.youtube" target="_blank" rel="noopener noreferrer" title="YouTube" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-red-600/20 text-slate-400 hover:text-red-400 border border-slate-800 hover:border-red-500/40 flex items-center justify-center transition-all">
+              <a :href="cms.social.youtube" target="_blank" rel="noopener noreferrer" title="YouTube" class="w-9 h-9 rounded-xl bg-white hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 hover:border-red-400 flex items-center justify-center transition-all shadow-xs">
                 <i class="fa-brands fa-youtube text-sm"></i>
               </a>
             </template>
@@ -2139,36 +2139,36 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
         <!-- Core Services Links -->
         <div class="lg:col-span-3 space-y-3">
-          <h4 class="text-sm font-bold text-white uppercase tracking-wider" x-text="t('footer.col_services')"></h4>
+          <h4 class="text-sm font-bold text-slate-950 uppercase tracking-wider" x-text="t('footer.col_services')"></h4>
           <ul class="space-y-2 text-xs">
-            <li><button @click="scrollTo('services')" class="hover:text-cyan-400 transition-colors" x-text="t('footer.s1')"></button></li>
-            <li><button @click="scrollTo('services')" class="hover:text-cyan-400 transition-colors" x-text="t('footer.s2')"></button></li>
-            <li><button @click="scrollTo('services')" class="hover:text-cyan-400 transition-colors" x-text="t('footer.s3')"></button></li>
-            <li><button @click="scrollTo('contact')" class="hover:text-cyan-400 transition-colors" x-text="t('footer.s4')"></button></li>
+            <li><button @click="scrollTo('services')" class="hover:text-cyan-700 text-slate-600 transition-colors font-medium" x-text="t('footer.s1')"></button></li>
+            <li><button @click="scrollTo('services')" class="hover:text-cyan-700 text-slate-600 transition-colors font-medium" x-text="t('footer.s2')"></button></li>
+            <li><button @click="scrollTo('services')" class="hover:text-cyan-700 text-slate-600 transition-colors font-medium" x-text="t('footer.s3')"></button></li>
+            <li><button @click="scrollTo('contact')" class="hover:text-cyan-700 text-slate-600 transition-colors font-medium" x-text="t('footer.s4')"></button></li>
           </ul>
         </div>
 
-        <!-- Official Contact & Admin Link -->
+        <!-- Official Contact Details -->
         <div class="lg:col-span-4 space-y-3">
-          <h4 class="text-sm font-bold text-white uppercase tracking-wider" x-text="t('footer.col_contact')"></h4>
+          <h4 class="text-sm font-bold text-slate-950 uppercase tracking-wider" x-text="t('footer.col_contact')"></h4>
           <ul class="space-y-2.5 text-xs">
             <li class="flex items-center gap-2.5">
-              <i class="fa-solid fa-phone text-cyan-400"></i>
-              <a :href="'tel:' + cms.contacts.phone" class="hover:text-white transition-colors font-mono font-bold" dir="ltr" x-text="cms.contacts.phone"></a>
+              <i class="fa-solid fa-phone text-cyan-600"></i>
+              <a :href="'tel:' + cms.contacts.phone" class="hover:text-cyan-700 text-slate-800 transition-colors font-mono font-bold" dir="ltr" x-text="cms.contacts.phone"></a>
             </li>
             <li class="flex items-center gap-2.5">
-              <i class="fa-solid fa-envelope text-cyan-400"></i>
-              <a :href="'mailto:' + cms.contacts.email" class="hover:text-white transition-colors" x-text="cms.contacts.email"></a>
+              <i class="fa-solid fa-envelope text-cyan-600"></i>
+              <a :href="'mailto:' + cms.contacts.email" class="hover:text-cyan-700 text-slate-800 transition-colors font-medium" x-text="cms.contacts.email"></a>
             </li>
             <li class="flex items-center gap-2.5">
-              <i class="fa-brands fa-whatsapp text-emerald-400"></i>
-              <a :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '')" target="_blank" class="hover:text-white transition-colors font-mono" dir="ltr" x-text="cms.contacts.whatsapp"></a>
+              <i class="fa-brands fa-whatsapp text-emerald-600"></i>
+              <a :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '')" target="_blank" class="hover:text-emerald-700 text-slate-800 transition-colors font-mono font-semibold" dir="ltr" x-text="cms.contacts.whatsapp"></a>
             </li>
             <li class="flex items-start gap-2.5 pt-1">
-              <i class="fa-solid fa-clock text-cyan-400 mt-0.5"></i>
+              <i class="fa-solid fa-clock text-cyan-600 mt-0.5"></i>
               <div>
-                <span class="block text-slate-400" x-text="t('footer.hours_label')"></span>
-                <span class="text-slate-300 font-medium" x-text="cms.contacts.hours[lang] || t('footer.hours_val')"></span>
+                <span class="block text-slate-500" x-text="t('footer.hours_label')"></span>
+                <span class="text-slate-800 font-semibold" x-text="cms.contacts.hours[lang] || t('footer.hours_val')"></span>
               </div>
             </li>
           </ul>
@@ -2180,7 +2180,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
       <!-- Copyright & Back to Top -->
       <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
         <p x-text="t('footer.copyright')"></p>
-        <button @click="window.scrollTo({ top: 0, behavior: 'smooth' })" class="flex items-center gap-2 hover:text-cyan-400 transition-colors">
+        <button @click="window.scrollTo({ top: 0, behavior: 'smooth' })" class="flex items-center gap-2 hover:text-cyan-700 text-slate-600 transition-colors font-semibold">
           <span x-text="t('footer.back_to_top')"></span>
           <i class="fa-solid fa-arrow-up"></i>
         </button>
@@ -2199,7 +2199,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
       target="_blank" 
       rel="noopener noreferrer" 
       title="WhatsApp" 
-      class="w-12 h-12 sm:w-13 sm:h-13 p-3 sm:p-3.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 flex items-center justify-center text-lg sm:text-xl shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:scale-110 active:scale-95 transition-all glow-pulse-subtle ripple-wa">
+      class="w-12 h-12 sm:w-13 sm:h-13 p-3 sm:p-3.5 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center text-lg sm:text-xl shadow-lg shadow-emerald-600/30 hover:scale-110 active:scale-95 transition-all glow-pulse-subtle ripple-wa">
       <i class="fa-brands fa-whatsapp"></i>
     </a>
 
@@ -2207,7 +2207,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
     <a 
       :href="'tel:' + cms.contacts.phone" 
       :title="'Call ' + cms.contacts.phone" 
-      class="w-12 h-12 sm:w-13 sm:h-13 p-3 sm:p-3.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 flex items-center justify-center text-lg sm:text-xl shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:scale-110 active:scale-95 transition-all glow-pulse-subtle ripple-call">
+      class="w-12 h-12 sm:w-13 sm:h-13 p-3 sm:p-3.5 rounded-full bg-cyan-600 hover:bg-cyan-500 text-white flex items-center justify-center text-lg sm:text-xl shadow-lg shadow-cyan-600/30 hover:scale-110 active:scale-95 transition-all glow-pulse-subtle ripple-call">
       <i class="fa-solid fa-phone"></i>
     </a>
   </div>
@@ -2218,18 +2218,18 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <div 
     x-show="lightboxOpen" 
     x-transition.opacity.duration.300ms 
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4" 
+    class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4" 
     style="display: none;">
-    <div @click.away="closeLightbox()" class="relative max-w-5xl w-full bg-slate-950 rounded-2xl overflow-hidden border border-cyan-500/30 shadow-2xl">
-      <button @click="closeLightbox()" class="absolute top-4 end-4 z-10 w-10 h-10 rounded-full bg-slate-900/80 text-white hover:text-cyan-400 flex items-center justify-center border border-slate-700">
+    <div @click.away="closeLightbox()" class="relative max-w-5xl w-full bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-2xl">
+      <button @click="closeLightbox()" class="absolute top-4 end-4 z-10 w-10 h-10 rounded-full bg-white/90 text-slate-700 hover:text-slate-950 flex items-center justify-center border border-slate-300 shadow-md">
         <i class="fa-solid fa-xmark text-lg"></i>
       </button>
-      <div class="max-h-[75vh] overflow-hidden flex items-center justify-center bg-black">
+      <div class="max-h-[75vh] overflow-hidden flex items-center justify-center bg-slate-950">
         <img :src="lightboxImage" alt="Enlarged Project View" class="max-h-[75vh] w-auto object-contain">
       </div>
-      <div class="p-6 bg-slate-900/90 border-t border-slate-800">
-        <h4 class="text-lg font-bold text-white" x-text="lightboxTitle"></h4>
-        <p class="text-xs sm:text-sm text-slate-300 mt-1" x-text="lightboxDesc"></p>
+      <div class="p-6 bg-white border-t border-slate-200">
+        <h4 class="text-lg font-bold text-slate-950" x-text="lightboxTitle"></h4>
+        <p class="text-xs sm:text-sm text-slate-600 mt-1" x-text="lightboxDesc"></p>
       </div>
     </div>
   </div>
