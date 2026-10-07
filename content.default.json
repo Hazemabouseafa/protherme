@@ -1,0 +1,362 @@
+{
+  "visibility": {
+    "topbar": true,
+    "heroBadge": true,
+    "heroStats": true,
+    "trustBar": true,
+    "pillar1": true,
+    "pillar2": true,
+    "pillar3": true,
+    "simulator": true,
+    "technology": true,
+    "comparisonTable": true,
+    "gallery": true,
+    "speedDial": true
+  },
+  "contacts": {
+    "phone": "01010010030",
+    "email": "sales@protherme.com",
+    "whatsapp": "+201010010030",
+    "hours": {
+      "ar": "السبت - الخميس: 9:00 ص - 7:00 م",
+      "en": "Saturday - Thursday: 9:00 AM - 7:00 PM"
+    }
+  },
+  "images": {
+    "logo": "assets/images/protherme-logo.jpg",
+    "heroVisual": "assets/images/installation-site-real.jpg",
+    "pillar1": "assets/images/arch-glass-villa.jpg",
+    "pillar2": "assets/images/marble-surface.jpg",
+    "pillar3": "assets/images/supercar-ppf.jpg",
+    "gallery1": "assets/images/installation-site-real.jpg",
+    "gallery2": "assets/images/marble-surface.jpg",
+    "gallery3": "assets/images/arch-glass-villa.jpg",
+    "gallery4": "assets/images/supercar-ppf.jpg"
+  },
+  "buttons": {
+    "heroPrimary": {
+      "ar": "طلب استشارة هندسية فورية",
+      "en": "Request Instant Consultation",
+      "target": "#contact",
+      "visible": true
+    },
+    "heroCall": {
+      "ar": "اتصال مباشر: 01010010030",
+      "en": "Direct Call: 01010010030",
+      "target": "tel:01010010030",
+      "visible": true
+    },
+    "navCta": {
+      "ar": "تواصل معنا الآن",
+      "en": "Contact Now",
+      "target": "#contact",
+      "visible": true
+    }
+  },
+  "heroStats": {
+    "stat1": {
+      "num": "88%",
+      "label_ar": "عزل الأشعة تحت الحمراء (IR)",
+      "label_en": "Infrared Heat Rejection (IRR)"
+    },
+    "stat2": {
+      "num": "99.9%",
+      "label_ar": "حجب الأشعة فوق البنفسجية (UV)",
+      "label_en": "UV Radiation Block Protection"
+    },
+    "stat3": {
+      "num": "10-25",
+      "label_ar": "سنوات ضمان دولي معتمد",
+      "label_en": "Years Certified Global Warranty"
+    },
+    "stat4": {
+      "num": "0%",
+      "label_ar": "تشويش إشارات الاتصال و 5G",
+      "label_en": "Zero 5G & Signal Interference"
+    }
+  },
+  "texts": {
+    "ar": {
+      "hero": {
+        "badge": "الممثل والموزع المعتمد لشركة Global Hi-Tech Films العالمية",
+        "title_p1": "حلول هندسية متطورة",
+        "title_p2": "للعزل الحراري وحماية الأسطح الفاخرة",
+        "subtitle": "نقدم في بروتيرم أحدث تقنيات النانو سيراميك وأفلام الحماية الفائقة المصنعة وفق أعلى المعايير الأمريكية من Global Hi-Tech Films — حجب حراري فائق يصل إلى 88% وحماية استثنائية للمباني، الرخام الفاخر، والسيارات.",
+        "visual_badge": "تنفيذ ميداني حي: واجهات زجاجية معمارية كبرى",
+        "visual_badge_sub": "فريق هندسي متخصص أثناء تركيب أفلام Global Hi-Tech"
+      },
+      "pillars": {
+        "p1": {
+          "tag": "الركيزة 01 - معمارية وهندسية",
+          "name": "أفلام زجاج المباني والعزل الحراري",
+          "desc": "حلول العزل المعماري بتقنية النانو سيراميك المتطورة للمباني الإدارية، الفلل الفاخرة، والواجهات الزجاجية الكبيرة لحجب الحرارة وحماية الديكور الداخلي.",
+          "f1": "حجب 99% من الأشعة فوق البنفسجية لحماية الأثاث والأرضيات من البهتان",
+          "f2": "تخفيض درجات الحرارة الداخلية حتى 12-15 درجة مئوية في ذروة الصيف",
+          "f3": "توفير فوري يصل إلى 30% من استهلاك أجهزة التكييف والكهرباء",
+          "f4": "رؤية بانورامية فائقة النقاء تمنع الوهج المزعج دون إعتام الإضاءة الطبيعية",
+          "specs": "IRR: حتى 88% | UVR: 99.9% | TSER: حتى 72%",
+          "cta": "تواصل للاستشارة المعمارية"
+        },
+        "p2": {
+          "tag": "الركيزة 02 - حماية الديكورات الراقية",
+          "name": "حماية الأسطح الفاخرة: رخام، خشب، زجاج",
+          "desc": "أفلام بولي يوريثان شفافة وفائقة المقاومة مصممة خصيصاً لحماية طاولات الرخام الطبيعي النادر، الأخشاب الاستوائية، والأسطح الراقية من الأحماض والخدوش.",
+          "f1": "مقاومة تامة لبقع القهوة، عصائر الموالح، المواد الكيميائية، والزيوت",
+          "f2": "خاصية المعالجة الذاتية للخدوش الدقيقة بتأثير الحرارة والمحيط",
+          "f3": "طبقة غير مرئية تحافظ على الملمس الفاخر والعروق الطبيعية للرخام",
+          "f4": "مقاومة للاصفرار والتقشر مع لمعان فائق يدوم لسنوات طويلة",
+          "specs": "سماكة 7.5 - 8.5 ميل TPU | مقاومة كيميائية كاملة | معالجة ذاتية",
+          "cta": "تواصل لحماية الأسطح"
+        },
+        "p3": {
+          "tag": "الركيزة 03 - التوريد والتوزيع التجاري",
+          "name": "توزيع أفلام حماية السيارات وPPF المعالج ذاتياً",
+          "desc": "التوزيع الحصري والتوريد المعتمد لمراكز العناية بالسيارات (Detailing Centers) في مصر والشرق الأوسط لأفلام حماية الطلاء وأفلام العازل الحراري.",
+          "f1": "توريد رولات أصلية معتمدة مباشرة من Global Hi-Tech بأسعار تنافسية",
+          "f2": "أفلام PPF ذاتية المعالجة مع طبقة هيدروفوبيك فائقة المقاومة للماء والأوساخ",
+          "f3": "برامج تدريب وتأهيل لفنيي التركيب في المراكز مع شهادات اعتماد رسمية",
+          "f4": "أفلام عزل زجاج السيارات النانو سيراميك المتوافقة تماماً مع إشارات 5G وGPS",
+          "specs": "Top-Coat TPU | سماكات 8 - 10 ميل | نقاء PET بصري | توريد بالجملة",
+          "cta": "انضم لشبكة الموزعين المعتمدين"
+        }
+      },
+      "tech_standards": {
+        "tag": "لماذا Global Hi-Tech Films؟",
+        "title": "الريادة التقنية في صناعة الأفلام المتقدمة",
+        "subtitle": "تعد Global Hi-Tech Films من المصنعين القلائل عالمياً الذين يمتلكون دورة إنتاج رأسية كاملة بنسبة 100%، مما يمنح منتجاتنا دقة واعتمادية لا تضاهى.",
+        "c1_title": "تصنيع رأسي متكامل 100%",
+        "c1_desc": "من حبيبات البوليمر البكر وحتى المنتج النهائي بتقنية الترسيب الفراغي، جميع المراحل تحت رقابة مخبرية أمريكية صارمة.",
+        "c2_title": "تقنية النانو سيراميك غير المعدنية",
+        "c2_desc": "جزيئات سيراميك مجهرية بحجم النانو تعزل الأشعة تحت الحمراء بالكامل دون أي مكونات معدنية تسبب أكسدة أو تشويش شبكات الاتصال.",
+        "c3_title": "نقاء بصري خالي من الضبابية (Zero Haze)",
+        "c3_desc": "أغشية بوليستر فائقة الصفاء توفر ووضوح رؤية استثنائي ليلاً ونهاراً وتمنع إجهاد العين وتشوه المناظر الطبيعية.",
+        "c4_title": "ضمان دولي صلب وموثق",
+        "c4_desc": "شهادات ضمان معتمدة من المصنع مباشرة تحمي استثمارك ضد تفكك الطبقات، تغير اللون، أو انخفاض قدرة العزل."
+      },
+      "comparison": {
+        "tag": "المقارنة الفنية",
+        "title": "بروتيرم (Global Hi-Tech) مقابل الأفلام التجارية",
+        "subtitle": "تعرف على الفروق الجوهرية بين الحلول الهندسية المعتمدة والمنتجات المقلدة في السوق.",
+        "th_feature": "المعيار الهندسي",
+        "th_pro": "بروتيرم | Global Hi-Tech Films",
+        "th_market": "الأفلام التجارية المجهولة",
+        "r1_title": "تكنولوجيا العزل الأساسية",
+        "r1_pro": "نانو سيراميك وترسيب جزيئي غير معدني فائق الثبات",
+        "r1_std": "أصباغ ملونة رديئة تتلاشى في غضون أشهر",
+        "r2_title": "التأثير على إشارات الاتصال والإنترنت",
+        "r2_pro": "صفر تشويش — توافق تام مع 5G، Wi-Fi، وGPS",
+        "r2_std": "ضعف مستمر في إشارة الهاتف بسبب طبقات المعادن الرخيصة",
+        "r3_title": "مقاومة الاصفرار والضبابية",
+        "r3_pro": "صفاء بصري كريستالي ثابت بدون أي ضبابية (Haze < 0.8%)",
+        "r3_std": "ظهور ضبابية وتفكك في الطبقات خلال فترة وجيزة",
+        "r4_title": "الضمان والاعتمادية",
+        "r4_pro": "ضمان دولي موثق من 10 سنوات إلى مدى الحياة",
+        "r4_std": "وعود شفهية غير ملزمة بدون وكيل معتمد"
+      },
+      "gallery": {
+        "tag": "سجل الإنجازات",
+        "title": "معرض المشاريع والتنفيذ الميداني",
+        "subtitle": "توثيق حقيقي من مواقع العمل يعكس حرفية ودقة التنفيذ الهندسي لخبراء بروتيرم.",
+        "item1_badge": "مشروع رئيسي مميز",
+        "item1_title": "عزل حراري لمعرض ومطعم Le Bistro (واجهات زجاجية بارتفاع 6 أمتار)",
+        "item1_desc": "تم تركيب أفلام Global Hi-Tech النانو سيراميك لعزل الحرارة الشديدة ومنع وهج الشمس في الساحة الخارجية مع الحفاظ على وضوح الرؤية بنسبة 100%.",
+        "item2_title": "حماية أسطح رخام ستاتوريو إيطالي فاخر",
+        "item2_desc": "تطبيق فيلم حماية 8.5 ميل معالج ذاتياً ومقاوم للأحماض على طاولات رخامية في قصر خاص.",
+        "item3_title": "عزل حراري لفيلا مستقلة بالتجمع الخامس",
+        "item3_desc": "تخفيض درجة حرارة الصالونات والواجهات الجنوبية بمقدار 14 درجة مئوية مع ضمان حماية الأقمشة واللوحات.",
+        "item4_title": "توريد وتركيب باقة حماية PPF لسيارة فارهة",
+        "item4_desc": "حماية كاملة لهيكل السيارة بأفلام TPU ذاتية المعالجة فائقة اللمعان لصالح أحد مراكز العناية المعتمدة."
+      },
+      "contact": {
+        "tag": "قنوات التواصل المباشر",
+        "title": "تواصل مباشرة مع المهندس الاستشاري",
+        "subtitle": "فريقنا الهندسي في خدمتكم على مدار الساعة لتقديم المعاينة الفنية والدراسة الهندسية الفورية.",
+        "call_badge": "متاح الآن للاتصال الفوري",
+        "call_title": "الخط الهاتفي المباشر",
+        "call_desc": "تواصل فوري ومباشر مع الإدارة الهندسية والمبيعات",
+        "call_btn": "اتصل بنا الآن",
+        "wa_badge": "رد سريع خلال دقائق",
+        "wa_title": "محادثة واتساب فورية",
+        "wa_desc": "أرسل صور موقعك أو استفسارك مباشرة عبر واتساب",
+        "wa_btn": "ابدأ محادثة واتساب",
+        "email_badge": "للمخططات والمناقصات",
+        "email_title": "البريد الإلكتروني المباشر",
+        "email_desc": "لاستقبال رسومات المشاريع والمقايسات الهندسية",
+        "email_btn": "إرسال بريد إلكتروني",
+        "hours_badge": "أوقات العمل الرسمية",
+        "hours_title": "المقر والاستشارات الميدانية",
+        "hours_desc": "الممثل والموزع المعتمد لشركة Global Hi-Tech Films العالمية"
+      }
+    },
+    "en": {
+      "hero": {
+        "badge": "Authorized Representative & Distributor of Global Hi-Tech Films",
+        "title_p1": "Precision Engineering Solutions for",
+        "title_p2": "Thermal Rejection & Luxury Surface Protection",
+        "subtitle": "ProTherme delivers world-class Nano-Ceramic and advanced protective films backed by Global Hi-Tech Films — achieving up to 88% infrared heat rejection, 99.9% UV block, and lifetime durability for architectural facades, luxury marble/wood, and automotive PPF.",
+        "visual_badge": "Live Field Project: Major Architectural Facade",
+        "visual_badge_sub": "Certified ProTherme engineering crew installing Global Hi-Tech films"
+      },
+      "pillars": {
+        "p1": {
+          "tag": "Pillar 01 - Architectural & Commercial",
+          "name": "Architectural Window Films & Solar Control",
+          "desc": "Advanced nano-ceramic solar control films for corporate headquarters, luxury villas, and floor-to-ceiling glass facades to block heat, eliminate glare, and protect interiors.",
+          "f1": "99% UV radiation rejection preventing costly bleaching of fabrics and floors",
+          "f2": "12-15°C indoor temperature drop during peak summer heat waves",
+          "f3": "Up to 30% reduction in commercial HVAC and electricity consumption",
+          "f4": "Crystal-clear optical transparency maintaining panoramic views and natural light",
+          "specs": "IRR: Up to 88% | UVR: 99.9% | TSER: Up to 72%",
+          "cta": "Contact for Architectural Consultation"
+        },
+        "p2": {
+          "tag": "Pillar 02 - Luxury Interior Protection",
+          "name": "Luxury Surface Protection: Marble, Wood & Glass",
+          "desc": "Optically transparent ultra-tough polyurethane shields designed specifically for Italian marble, exotic timber, and luxury glass tables against acids, etching, and scratches.",
+          "f1": "Complete resistance to lemon juice, wine, coffee stains, oils, and chemical spills",
+          "f2": "Self-healing micro-scratch recovery activated by ambient temperature",
+          "f3": "Invisible barrier preserving the authentic vein aesthetics and tactile touch",
+          "f4": "Anti-yellowing and anti-microbial finish with effortless wipe-down cleaning",
+          "specs": "7.5 - 8.5 Mil TPU | Chemical Acid Resistant | Instant Self-Healing",
+          "cta": "Contact for Surface Protection"
+        },
+        "p3": {
+          "tag": "Pillar 03 - Commercial Wholesale Supply",
+          "name": "Automotive PPF & Tint Wholesale Distribution",
+          "desc": "Authorized direct wholesale supply for professional automotive detailing centers across Egypt and MENA, featuring genuine Global Hi-Tech TPU PPF rolls.",
+          "f1": "Supply of certified factory-sealed rolls backed by international warranties",
+          "f2": "Top-coat self-healing TPU with extreme hydrophobic water-beading performance",
+          "f3": "Technical training, installer onboarding, and official certification programs",
+          "f4": "Nano-Ceramic automotive window films 100% compatible with 5G and GPS",
+          "specs": "Top-Coat TPU | 8 - 10 Mil | Optical PET Core | Bulk Distribution",
+          "cta": "Join Certified Detailing Network"
+        }
+      },
+      "tech_standards": {
+        "tag": "Why Global Hi-Tech Films?",
+        "title": "Technological Superiority in Specialty Films",
+        "subtitle": "Global Hi-Tech Films is one of the world's few 100% vertically integrated manufacturers, controlling every single phase from polymer synthesis to nano-sputtered finish.",
+        "c1_title": "100% Vertically Integrated",
+        "c1_desc": "Manufactured in-house from pristine raw polyester chips to proprietary coating lines under ISO 9001 certified cleanroom environments.",
+        "c2_title": "Non-Metallic Nano-Ceramic Patents",
+        "c2_desc": "Sub-microscopic ceramic compounds reject intense solar infrared radiation without any conductive metals that corrode or block cellular signals.",
+        "c3_title": "Zero-Haze Optical Clarity",
+        "c3_desc": "Ultra-pure optical polyester eliminates blur and chromatic aberration, ensuring flawless night-time driving and crystal daytime vistas.",
+        "c4_title": "Rock-Solid International Warranty",
+        "c4_desc": "Genuine manufacturer-backed warranty cards protecting against bubbling, adhesive failure, color shifting, or thermal degradation."
+      },
+      "comparison": {
+        "tag": "Technical Benchmark",
+        "title": "ProTherme (Global Hi-Tech) vs Commercial Market",
+        "subtitle": "Examine the technical differences between certified engineering films and generic market alternatives.",
+        "th_feature": "Engineering Metric",
+        "th_pro": "ProTherme | Global Hi-Tech Films",
+        "th_market": "Generic Market Films",
+        "r1_title": "Core Thermal Technology",
+        "r1_pro": "Sputtered Nano-Ceramic & Stable Inorganic Nanoparticles",
+        "r1_std": "Cheap dyed polyester that discolors and bubbles within months",
+        "r2_title": "Wireless & 5G Signal Loss",
+        "r2_pro": "Zero Attenuation — 100% transparent to 5G, Wi-Fi, and GPS",
+        "r2_std": "Frequent mobile signal dropouts due to cheap metallic layers",
+        "r3_title": "Haze & Optical Distortion",
+        "r3_pro": "Crystal camera-grade clarity (Haze < 0.8%)",
+        "r3_std": "Distorted vision, milky blur, and severe optical glare",
+        "r4_title": "Warranty & Official Backing",
+        "r4_pro": "10 Years to Lifetime International Written Warranty",
+        "r4_std": "Verbal promises without genuine distributor backing"
+      },
+      "gallery": {
+        "tag": "Proven Track Record",
+        "title": "Execution & Field Installation Showcase",
+        "subtitle": "Genuine unedited photos from live client sites showcasing our certified precision craftsmanship.",
+        "item1_badge": "Featured Landmark Installation",
+        "item1_title": "Thermal Solar Glazing for Le Bistro Restaurant (6m Glass Facade)",
+        "item1_desc": "Precision application of Global Hi-Tech Nano-Ceramic architectural film on massive curtain glass walls, blocking 85% heat while preserving full plaza outdoor transparency.",
+        "item2_title": "Italian Statuario Luxury Marble Shielding",
+        "item2_desc": "Application of 8.5 mil self-healing acid-resistant TPU film on private estate dining and salon surfaces.",
+        "item3_title": "Private Luxury Villa Solar Film Installation (New Cairo)",
+        "item3_desc": "Reduced main living room temperature by 14°C while preserving panoramic landscaping views and luxury artwork.",
+        "item4_title": "Full Supercar TPU Paint Protection Package",
+        "item4_desc": "Wholesale delivery and certified installation of high-gloss self-healing TPU PPF for an authorized detailing facility."
+      },
+      "contact": {
+        "tag": "Direct Communication Hub",
+        "title": "Connect Directly with Our Engineering Advisory",
+        "subtitle": "Our specialized engineering team is available to provide instant technical guidance, project surveys, and quotations.",
+        "call_badge": "Available Now for Direct Calling",
+        "call_title": "Direct Telephone Hotline",
+        "call_desc": "Immediate connection with our engineering and sales executives",
+        "call_btn": "Call Us Directly",
+        "wa_badge": "Fast Response Within Minutes",
+        "wa_title": "Instant WhatsApp Advisory",
+        "wa_desc": "Send photos of your architectural facade or inquiries via WhatsApp",
+        "wa_btn": "Start WhatsApp Chat",
+        "email_badge": "For Blueprints & Tenders",
+        "email_title": "Direct Corporate Email",
+        "email_desc": "Send project CAD drawings, specifications, and wholesale tenders",
+        "email_btn": "Send Corporate Email",
+        "hours_badge": "Official Working Hours",
+        "hours_title": "Headquarters & Field Survey",
+        "hours_desc": "Authorized Representative & Distributor of Global Hi-Tech Films"
+      }
+    }
+  },
+  "imageBadges": {
+    "heroTop": {
+      "ar": "طاقم هندسي معتمد من Global Hi-Tech",
+      "en": "Global Hi-Tech Certified Crew"
+    },
+    "heroCornerTag": {
+      "ar": "الموزع المعتمد الحصري",
+      "en": "Official Certified Distributor"
+    },
+    "heroCornerName": {
+      "ar": "Global Hi-Tech Films",
+      "en": "Global Hi-Tech Films"
+    },
+    "pillar1": {
+      "ar": "IRR: 88% | UV: 99.9%",
+      "en": "IRR: 88% | UV: 99.9%"
+    },
+    "pillar2": {
+      "ar": "8.5 ميل | TPU معالجة ذاتية",
+      "en": "8.5 Mil | Self-Healing TPU"
+    },
+    "pillar3": {
+      "ar": "توريد تجاري مباشر بالجملة",
+      "en": "Direct Wholesale Supply"
+    },
+    "gallery1_badge": {
+      "ar": "مشروع رئيسي مميز",
+      "en": "Featured Landmark Installation"
+    },
+    "gallery1_footer": {
+      "ar": "الواجهة المعمارية التجارية | مطعم Le Bistro",
+      "en": "Commercial Plaza | Le Bistro"
+    },
+    "gallery2_badge": {
+      "ar": "حماية أسطح TPU فائقة",
+      "en": "Surface Shield TPU"
+    },
+    "gallery2_footer": {
+      "ar": "مقاوم للأحماض والخدوش | 8.5 ميل TPU",
+      "en": "Acid-Proof | 8.5 Mil TPU"
+    },
+    "gallery3_badge": {
+      "ar": "عزل معماري نانو سيراميك للفلل",
+      "en": "Nano-Ceramic Architectural Glazing"
+    },
+    "gallery3_footer": {
+      "ar": "انخفاض 14°C | حجب 99% من الأشعة فوق البنفسجية",
+      "en": "-14°C Temp Drop | 99% UV Block"
+    },
+    "gallery4_badge": {
+      "ar": "أفلام حماية طلاء السيارات PPF",
+      "en": "Self-Healing Automotive PPF"
+    },
+    "gallery4_footer": {
+      "ar": "طارد فائق للمياه والأوساخ | 10 ميل TPU",
+      "en": "Super-Hydrophobic | 10 Mil TPU"
+    }
+  }
+}

@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة تحكم بروتيرم للحلول الهندسية | ProTherme Admin CMS</title>
+  
+  <link rel="icon" type="image/jpeg" href="assets/images/protherme-logo.jpg">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            deep: '#020617',
+            slateCard: '#0f172a',
+            cyanGlow: '#06b6d4',
+            emeraldBrand: '#10b981'
+          },
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif'],
+            sans: ['Cairo', 'Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Alpine.js -->
+  <script defer src="https://unpkg.com/alpinejs@3.13.5/dist/cdn.min.js"></script>
+</head>
+
+<body x-data="adminCMS()" x-init="init()" class="bg-[#020617] text-slate-100 min-h-screen font-sans selection:bg-cyan-500 selection:text-black">
+
+  <!-- ========================================== -->
+  <!-- PIN LOGIN OVERLAY                          -->
+  <!-- ========================================== -->
+  <div x-show="!authenticated" class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-xl p-4">
+    <div class="max-w-md w-full bg-slate-900 border border-cyan-500/30 rounded-3xl p-8 shadow-[0_0_50px_rgba(6,182,212,0.2)] text-center space-y-6">
+      <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-600 to-emerald-400 flex items-center justify-center text-slate-950 text-2xl mx-auto shadow-lg shadow-cyan-500/30">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <div>
+        <h2 class="text-2xl font-black text-white">لوحة تحكم المدير</h2>
+        <p class="text-xs text-slate-400 mt-1">يرجى إدخال رمز الأمان (PIN) للمتابعة والتحكم في الموقع</p>
+      </div>
+
+      <form @submit.prevent="verifyPin()" class="space-y-4">
+        <div>
+          <input 
+            type="password" 
+            x-model="pinInput" 
+            placeholder="أدخل رمز الدخول (افتراضي: admin2026)" 
+            class="w-full px-4 py-3.5 rounded-xl bg-slate-950 border border-slate-700 text-center text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 font-mono tracking-widest">
+        </div>
+        <div x-show="pinError" class="text-xs text-rose-400 font-bold" x-text="pinError"></div>
+
+        <button 
+          type="submit" 
+          class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 font-black text-sm shadow-lg shadow-cyan-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all">
+          <i class="fa-solid fa-key me-2"></i>
+          دخول لوحة التحكم
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MAIN ADMIN DASHBOARD                       -->
+  <!-- ========================================== -->
+  <div x-show="authenticated" class="min-h-screen flex flex-col">
+    
+    <!-- STICKY TOPBAR -->
+    <header class="sticky top-0 z-40 bg-slate-950/90 border-b border-slate-800 backdrop-blur-xl px-4 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Brand & Title -->
+      <div class="flex items-center gap-3">
+        <img src="assets/images/protherme-logo.jpg" alt="ProTherme Logo" class="h-9 w-auto rounded-lg bg-white p-0.5">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-base font-black text-white">ProTherme Admin CMS</span>
+            <span class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-mono font-bold">V2.0 LIVE</span>
+          </div>
+          <p class="text-[11px] text-slate-400">إدارة النصوص، الأزرار، الصور، وإظهار/إخفاء عناصر الموقع</p>
+        </div>
+      </div>
+
+      <!-- Center Language Switcher for Editor -->
+      <div class="flex items-center bg-slate-900 border border-slate-700 rounded-xl p-1 text-xs">
+        <span class="text-slate-400 text-[11px] px-2 font-medium">لغة التحرير:</span>
+        <button 
+          @click="editLang = 'ar'" 
+          :class="editLang === 'ar' ? 'bg-cyan-500 text-slate-950 font-bold' : 'text-slate-300 hover:text-white'" 
+          class="px-3 py-1 rounded-lg transition-colors">
+          العربية (AR)
+        </button>
+        <button 
+          @click="editLang = 'en'" 
+          :class="editLang === 'en' ? 'bg-cyan-500 text-slate-950 font-bold' : 'text-slate-300 hover:text-white'" 
+          class="px-3 py-1 rounded-lg transition-colors">
+          English (EN)
+        </button>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2.5">
+        
+        <!-- Live Site Preview -->
+        <a href="/" target="_blank" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 hover:text-white transition-all flex items-center gap-1.5">
+          <i class="fa-solid fa-arrow-up-right-from-square text-cyan-400 text-xs"></i>
+          <span>الموقع الحي</span>
+        </a>
+
+        <!-- Factory Reset -->
+        <button @click="resetToDefaults()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-rose-950/50 border border-rose-900/60 text-xs font-bold text-rose-300 transition-all flex items-center gap-1.5" title="استعادة المحتوى الافتراضي">
+          <i class="fa-solid fa-rotate-left"></i>
+          <span class="hidden sm:inline">استعادة الأصل</span>
+        </button>
+
+        <!-- Save Button -->
+        <button 
+          @click="saveContent()" 
+          :disabled="saving" 
+          class="px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-cyan-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2">
+          <template x-if="!saving">
+            <span class="flex items-center gap-1.5">
+              <i class="fa-solid fa-floppy-disk"></i>
+              <span>حفظ التعديلات</span>
+            </span>
+          </template>
+          <template x-if="saving">
+            <span class="flex items-center gap-1.5">
+              <i class="fa-solid fa-circle-notch fa-spin"></i>
+              <span>جاري الحفظ...</span>
+            </span>
+          </template>
+        </button>
+
+        <!-- Logout Button -->
+        <button 
+          @click="logout()" 
+          class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-bold text-slate-400 hover:text-rose-400 transition-all flex items-center gap-1.5" 
+          title="تسجيل الخروج وقفل لوحة التحكم">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span class="hidden sm:inline">خروج</span>
+        </button>
+
+      </div>
+    </header>
+
+    <!-- DASHBOARD BODY WITH SIDEBAR TABS -->
+    <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- NAVIGATION TABS SIDEBAR -->
+      <aside class="lg:col-span-3 space-y-2">
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-2 space-y-1">
+          
+          <button 
+            @click="activeTab = 'visibility'" 
+            :class="activeTab === 'visibility' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/40 font-bold' : 'text-slate-300 hover:bg-slate-800 border-transparent'" 
+            class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+            <span class="flex items-center gap-2.5">
+              <i class="fa-solid fa-eye text-cyan-400 w-4"></i>
+              <span>إظهار وإخفاء الأقسام</span>
+            </span>
+            <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 font-mono">12 عنصر</span>
+          </button>
+
+          <button 
+            @click="activeTab = 'contacts'" 
+            :class="activeTab === 'contacts' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/40 font-bold' : 'text-slate-300 hover:bg-slate-800 border-transparent'" 
+            class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+            <span class="flex items-center gap-2.5">
+              <i class="fa-solid fa-phone text-emerald-400 w-4"></i>
+              <span>أرقام وبيانات التواصل</span>
+            </span>
+            <i class="fa-solid fa-chevron-left text-xs opacity-60"></i>
+          </button>
+
+          <button 
+            @click="activeTab = 'hero'" 
+            :class="activeTab === 'hero' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/40 font-bold' : 'text-slate-300 hover:bg-slate-800 border-transparent'" 
+            class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+            <span class="flex items-center gap-2.5">
+              <i class="fa-solid fa-bullhorn text-cyan-400 w-4"></i>
+              <span>واجهة الهيرو والإحصائيات</span>
+            </span>
+            <i class="fa-solid fa-chevron-left text-xs opacity-60"></i>
+          </button>
+
+          <button 
+            @click="activeTab = 'pillars'" 
+            :class="activeTab === 'pillars' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/40 font-bold' : 'text-slate-300 hover:bg-slate-800 border-transparent'" 
+            class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+            <span class="flex items-center gap-2.5">
+              <i class="fa-solid fa-cubes text-emerald-400 w-4"></i>
+              <span>الركائز والخدمات الثلاث</span>
+            </span>
+            <i class="fa-solid fa-chevron-left text-xs opacity-60"></i>
+          </button>
+
+          <button 
+            @click="activeTab = 'tech'" 
+            :class="activeTab === 'tech' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/40 font-bold' : 'text-slate-300 hover:bg-slate-800 border-transparent'" 
+            class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+            <span class="flex items-center gap-2.5">
+              <i class="fa-solid fa-microchip text-cyan-400 w-4"></i>
+              <span>المعايير وجدول المقارنة</span>
+            </span>
+            <i class="fa-solid fa-chevron-left text-xs opacity-60"></i>
+          </button>
+
+          <button 
+            @click="activeTab = 'media'" 
+            :class="activeTab === 'media' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/40 font-bold' : 'text-slate-300 hover:bg-slate-800 border-transparent'" 
+            class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+            <span class="flex items-center gap-2.5">
+              <i class="fa-solid fa-images text-emerald-400 w-4"></i>
+              <span>معرض الصور والمشاريع</span>
+            </span>
+            <i class="fa-solid fa-chevron-left text-xs opacity-60"></i>
+          </button>
+
+          <button 
+            @click="activeTab = 'buttons'" 
+            :class="activeTab === 'buttons' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/40 font-bold' : 'text-slate-300 hover:bg-slate-800 border-transparent'" 
+            class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+            <span class="flex items-center gap-2.5">
+              <i class="fa-solid fa-hand-pointer text-cyan-400 w-4"></i>
+              <span>الأزرار والإجراءات (CTAs)</span>
+            </span>
+            <i class="fa-solid fa-chevron-left text-xs opacity-60"></i>
+          </button>
+
+        </div>
+
+        <!-- Quick Help Note -->
+        <div class="p-4 rounded-2xl bg-cyan-500/5 border border-cyan-500/20 text-xs text-slate-400 space-y-1.5">
+          <div class="font-bold text-cyan-300 flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>تحديث فوري للموقع</span>
+          </div>
+          <p class="text-[11px] leading-relaxed">أي تعديل تقوم بحفظه يتم تطبيقه فورياً على الموقع دون الحاجة لإعادة تشغيل الخادم.</p>
+        </div>
+      </aside>
+
+      <!-- TAB CONTENT PANELS -->
+      <main class="lg:col-span-9 bg-slate-900/60 border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-8">
+        
+        <!-- ============================================== -->
+        <!-- TAB 1: VISIBILITY TOGGLES (إظهار وإخفاء)       -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'visibility'" class="space-y-6">
+          <div class="border-b border-slate-800 pb-4">
+            <h3 class="text-xl font-black text-white">إظهار وإخفاء عناصر وأقسام الموقع</h3>
+            <p class="text-xs text-slate-400 mt-1">يمكنك بضغطة زر إخفاء أو إظهار أي قسم من الموقع بالكامل</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            <template x-for="(val, key) in cms.visibility" :key="key">
+              <div class="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 flex items-center justify-between gap-4 hover:border-cyan-500/30 transition-colors">
+                <div>
+                  <div class="text-sm font-bold text-white flex items-center gap-2">
+                    <span x-text="getVisibilityLabel(key)"></span>
+                    <span :class="cms.visibility[key] ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-rose-500/20 text-rose-400 border-rose-500/30'" class="text-[10px] px-2 py-0.5 rounded-full border font-bold">
+                      <span x-text="cms.visibility[key] ? 'ظاهر' : 'مخفي'"></span>
+                    </span>
+                  </div>
+                  <div class="text-[11px] text-slate-400 mt-0.5" x-text="getVisibilityDesc(key)"></div>
+                </div>
+                
+                <!-- Toggle Switch (LTR Container ensures bulletproof cross-browser sliding) -->
+                <button 
+                  type="button" 
+                  dir="ltr"
+                  @click="cms.visibility[key] = !cms.visibility[key]" 
+                  :class="cms.visibility[key] ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 border-cyan-400/50' : 'bg-slate-800 border-slate-700'" 
+                  class="relative inline-flex h-7 w-12 flex-shrink-0 cursor-pointer rounded-full border-2 transition-colors duration-200 ease-in-out focus:outline-none p-0.5 items-center">
+                  <span 
+                    :class="cms.visibility[key] ? 'translate-x-5' : 'translate-x-0'" 
+                    class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out"></span>
+                </button>
+              </div>
+            </template>
+
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB 2: CONTACT INFORMATION & ADVISORY HUB      -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'contacts'" class="space-y-6">
+          <div class="border-b border-slate-800 pb-4">
+            <h3 class="text-xl font-black text-white">بيانات التواصل والخط الساخن</h3>
+            <p class="text-xs text-slate-400 mt-1">تحديث الأرقام هنا يقوم بتعديل جميع أزرار الاتصال والواتساب وروابط الموقع فورياً</p>
+          </div>
+
+          <div class="space-y-6">
+            <!-- 3 Core Direct Channels Inputs -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Phone Number -->
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-2">رقم الهاتف للاتصال المباشر (Phone Number):</label>
+                <input 
+                  type="text" 
+                  x-model="cms.contacts.phone" 
+                  dir="ltr" 
+                  class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-sm focus:outline-none focus:border-cyan-400">
+                <div class="text-[11px] text-slate-400 mt-1">يتحول تلقائياً إلى رابط <code class="text-cyan-400 font-mono">tel:01010010030</code></div>
+              </div>
+
+              <!-- WhatsApp Number -->
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-2">رقم الواتساب للاستشارات السريعة (WhatsApp):</label>
+                <input 
+                  type="text" 
+                  x-model="cms.contacts.whatsapp" 
+                  dir="ltr" 
+                  class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-sm focus:outline-none focus:border-emerald-400">
+                <div class="text-[11px] text-slate-400 mt-1">يتحول إلى رابط محادثة واتساب مباشر</div>
+              </div>
+            </div>
+
+            <!-- Email Address -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-2">البريد الإلكتروني الرسمي (Official Corporate Email):</label>
+              <input 
+                type="email" 
+                x-model="cms.contacts.email" 
+                dir="ltr" 
+                class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-sm focus:outline-none focus:border-cyan-400">
+              <div class="text-[11px] text-slate-400 mt-1">يتحول تلقائياً إلى رابط <code class="text-cyan-400 font-mono">mailto:sales@protherme.com</code></div>
+            </div>
+
+            <!-- Working Hours AR & EN -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-800">
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-2">أوقات العمل (بالعربية):</label>
+                <input 
+                  type="text" 
+                  x-model="cms.contacts.hours.ar" 
+                  class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyan-400">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-2">Working Hours (English):</label>
+                <input 
+                  type="text" 
+                  x-model="cms.contacts.hours.en" 
+                  dir="ltr" 
+                  class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyan-400">
+              </div>
+            </div>
+
+            <!-- Contact Section Headlines & Card Details -->
+            <div class="pt-4 border-t border-slate-800 space-y-4">
+              <h4 class="text-sm font-bold text-cyan-400">نصوص بطاقات التواصل في الموقع (<span x-text="editLang.toUpperCase()"></span>):</h4>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-300 mb-1">عنوان قسم التواصل الرئيسي:</label>
+                  <input type="text" x-model="cms.texts[editLang].contact.title" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-300 mb-1">الوسم العلوي (Tag):</label>
+                  <input type="text" x-model="cms.texts[editLang].contact.tag" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-cyan-300">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold text-slate-300 mb-1">الوصف التوضيحي للقسم:</label>
+                <textarea rows="2" x-model="cms.texts[editLang].contact.subtitle" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white"></textarea>
+              </div>
+
+              <!-- 4 Contact Cards Texts -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+                <!-- Phone Card -->
+                <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+                  <div class="text-xs font-bold text-cyan-400">بطاقة الهاتف المباشر</div>
+                  <input type="text" x-model="cms.texts[editLang].contact.call_badge" placeholder="الشارة العلوية (Badge)" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-cyan-300">
+                  <input type="text" x-model="cms.texts[editLang].contact.call_title" placeholder="عنوان البطاقة" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-white">
+                  <textarea rows="2" x-model="cms.texts[editLang].contact.call_desc" placeholder="الوصف" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-slate-300"></textarea>
+                  <input type="text" x-model="cms.texts[editLang].contact.call_btn" placeholder="نص زر الاتصال" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-cyan-300 font-bold">
+                </div>
+
+                <!-- WhatsApp Card -->
+                <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+                  <div class="text-xs font-bold text-emerald-400">بطاقة الواتساب</div>
+                  <input type="text" x-model="cms.texts[editLang].contact.wa_badge" placeholder="الشارة العلوية (Badge)" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-emerald-300">
+                  <input type="text" x-model="cms.texts[editLang].contact.wa_title" placeholder="عنوان البطاقة" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-white">
+                  <textarea rows="2" x-model="cms.texts[editLang].contact.wa_desc" placeholder="الوصف" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-slate-300"></textarea>
+                  <input type="text" x-model="cms.texts[editLang].contact.wa_btn" placeholder="نص زر الواتساب" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-emerald-300 font-bold">
+                </div>
+
+                <!-- Email Card -->
+                <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+                  <div class="text-xs font-bold text-cyan-400">بطاقة البريد الإلكتروني</div>
+                  <input type="text" x-model="cms.texts[editLang].contact.email_badge" placeholder="الشارة العلوية (Badge)" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-cyan-300">
+                  <input type="text" x-model="cms.texts[editLang].contact.email_title" placeholder="عنوان البطاقة" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-white">
+                  <textarea rows="2" x-model="cms.texts[editLang].contact.email_desc" placeholder="الوصف" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-slate-300"></textarea>
+                  <input type="text" x-model="cms.texts[editLang].contact.email_btn" placeholder="نص زر الإيميل" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-cyan-300 font-bold">
+                </div>
+
+                <!-- Office / Hours Card -->
+                <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+                  <div class="text-xs font-bold text-amber-400">بطاقة المقر والاعتماد</div>
+                  <input type="text" x-model="cms.texts[editLang].contact.hours_badge" placeholder="الشارة العلوية (Badge)" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-amber-300">
+                  <input type="text" x-model="cms.texts[editLang].contact.hours_title" placeholder="عنوان البطاقة" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-white">
+                  <textarea rows="2" x-model="cms.texts[editLang].contact.hours_desc" placeholder="الوصف" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-slate-300"></textarea>
+                  <div class="text-[11px] text-slate-500 pt-1 font-mono">يتم عرض أوقات العمل المدخلة بأعلى التاب تلقائياً</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB 3: HERO SECTION & METRICS                  -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'hero'" class="space-y-6">
+          <div class="border-b border-slate-800 pb-4">
+            <h3 class="text-xl font-black text-white">القسم الرئيسي (Hero Section) وإحصائيات العزل</h3>
+            <p class="text-xs text-slate-400 mt-1" x-text="editLang === 'ar' ? 'تعديل النصوص العربية لقسم الهيرو' : 'Editing English texts for Hero Section'"></p>
+          </div>
+
+          <div class="space-y-5">
+            <!-- Badge -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-2">شارة الشراكة العائمة (Partner Badge):</label>
+              <input 
+                type="text" 
+                x-model="cms.texts[editLang].hero.badge" 
+                :dir="editLang === 'ar' ? 'rtl' : 'ltr'" 
+                class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyan-400">
+            </div>
+
+            <!-- Headlines -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-2">العنوان السطر الأول (Headline Line 1):</label>
+                <input 
+                  type="text" 
+                  x-model="cms.texts[editLang].hero.title_p1" 
+                  :dir="editLang === 'ar' ? 'rtl' : 'ltr'" 
+                  class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyan-400">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-300 mb-2">العنوان السطر الثاني الملون (Headline Line 2):</label>
+                <input 
+                  type="text" 
+                  x-model="cms.texts[editLang].hero.title_p2" 
+                  :dir="editLang === 'ar' ? 'rtl' : 'ltr'" 
+                  class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-cyan-300 text-sm focus:outline-none focus:border-cyan-400">
+              </div>
+            </div>
+
+            <!-- Subtitle -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 mb-2">النص التعريفي (Subtitle):</label>
+              <textarea 
+                rows="3" 
+                x-model="cms.texts[editLang].hero.subtitle" 
+                :dir="editLang === 'ar' ? 'rtl' : 'ltr'" 
+                class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white text-sm focus:outline-none focus:border-cyan-400"></textarea>
+            </div>
+
+            <!-- 4 Live Stats Numbers & Labels -->
+            <div class="pt-4 border-t border-slate-800 space-y-3">
+              <h4 class="text-sm font-bold text-cyan-400">الأرقام والإحصائيات الأربعة (Hero Stats):</h4>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <template x-for="(stat, sKey) in cms.heroStats" :key="sKey">
+                  <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs text-slate-400 font-mono" x-text="sKey"></span>
+                      <input 
+                        type="text" 
+                        x-model="stat.num" 
+                        dir="ltr" 
+                        class="w-24 px-2 py-1 rounded bg-slate-900 border border-slate-700 text-cyan-400 font-mono font-bold text-sm text-center">
+                    </div>
+                    <input 
+                      type="text" 
+                      x-model="stat['label_' + editLang]" 
+                      :dir="editLang === 'ar' ? 'rtl' : 'ltr'" 
+                      class="w-full px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-white">
+                  </div>
+                </template>
+              </div>
+            </div>
+
+            <!-- Brand Logo Management (شعار الشركة) -->
+            <div class="pt-4 border-t border-slate-800 space-y-3">
+              <label class="block text-xs font-bold text-slate-300">شعار بروتيرم الرسمي (Brand Logo):</label>
+              <div class="flex flex-wrap gap-4 items-center">
+                <div class="w-20 h-14 rounded-xl bg-white p-1 border border-slate-700 flex items-center justify-center shrink-0 shadow-md">
+                  <img :src="cms.images.logo || 'assets/images/protherme-logo.jpg'" alt="Brand Logo Preview" class="max-h-full max-w-full object-contain">
+                </div>
+                <div class="flex-1 min-w-[200px] flex gap-2 items-center">
+                  <input 
+                    type="text" 
+                    x-model="cms.images.logo" 
+                    dir="ltr" 
+                    placeholder="assets/images/protherme-logo.jpg"
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-xs sm:text-sm focus:outline-none focus:border-cyan-400">
+                  <label class="cursor-pointer px-3.5 py-2.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-bold inline-flex items-center gap-1.5 shrink-0 transition-colors" title="رفع شعار من جهازك">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span class="hidden sm:inline">رفع شعار</span>
+                    <input type="file" accept="image/*" class="hidden" @change="handleFileUpload($event, 'logo')">
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hero Visual Image Path with Direct Upload -->
+            <div class="pt-4 border-t border-slate-800 space-y-3">
+              <label class="block text-xs font-bold text-slate-300">مسار صورة الهيرو الرئيسية (Hero Visual Path):</label>
+              <div class="flex flex-wrap gap-4 items-center">
+                <div class="w-20 h-16 rounded-xl overflow-hidden bg-slate-900 border border-slate-700 shrink-0 shadow-md">
+                  <img :src="cms.images.heroVisual" alt="Hero Preview" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-[200px] flex gap-2 items-center">
+                  <input 
+                    type="text" 
+                    x-model="cms.images.heroVisual" 
+                    dir="ltr" 
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-white font-mono text-xs sm:text-sm focus:outline-none focus:border-cyan-400">
+                  <label class="cursor-pointer px-3.5 py-2.5 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-bold inline-flex items-center gap-1.5 shrink-0 transition-colors" title="رفع صورة من جهازك">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span class="hidden sm:inline">رفع صورة</span>
+                    <input type="file" accept="image/*" class="hidden" @change="handleFileUpload($event, 'heroVisual')">
+                  </label>
+                </div>
+              </div>
+              <div class="text-[11px] text-slate-400">يمكنك كتابة مسار محلي أو رفع صورة مباشرة من جهازك أو هاتفك.</div>
+            </div>
+
+            <!-- Hero Image Badges (الشارات الموضوعة فوق صورة الهيرو) -->
+            <div class="pt-4 border-t border-slate-800 space-y-3">
+              <div class="flex items-center gap-2 text-cyan-400 font-bold text-xs sm:text-sm">
+                <i class="fa-solid fa-tag"></i>
+                <span>الشارات المعروضة فوق صورة الهيرو (Hero Image Badges):</span>
+              </div>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-300 mb-1">الشارة العلوية المتحركة (Top Pill Badge):</label>
+                  <input type="text" x-model="cms.imageBadges.heroTop[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-300 mb-1">وسم بطاقة الزاوية (Corner Distributor Tag):</label>
+                  <input type="text" x-model="cms.imageBadges.heroCornerTag[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-cyan-300">
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-[11px] font-bold text-slate-300 mb-1">اسم الموزع في الزاوية (Corner Distributor Name):</label>
+                  <input type="text" x-model="cms.imageBadges.heroCornerName[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white">
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB 4: THE 3 CORE PILLARS                      -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'pillars'" class="space-y-8">
+          <div class="border-b border-slate-800 pb-4">
+            <h3 class="text-xl font-black text-white">الركائز والخدمات الثلاث (Core Pillars)</h3>
+            <p class="text-xs text-slate-400 mt-1" x-text="editLang === 'ar' ? 'تعديل محتوى وتفاصيل الركائز الثلاث بالعربية' : 'Editing details for the 3 pillars in English'"></p>
+          </div>
+
+          <!-- Repeat for Pillar 1, 2, 3 -->
+          <template x-for="(pillarKey, idx) in ['p1', 'p2', 'p3']" :key="pillarKey">
+            <div class="p-5 rounded-2xl bg-slate-950/90 border border-slate-800 space-y-4">
+              <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div class="flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs" x-text="'0' + (idx + 1)"></span>
+                  <h4 class="text-base font-bold text-white" x-text="cms.texts[editLang].pillars[pillarKey].name"></h4>
+                </div>
+                <div class="flex items-center gap-2">
+                  <label class="text-xs text-slate-400">إظهار الركيزة:</label>
+                  <input type="checkbox" x-model="cms.visibility['pillar' + (idx + 1)]" class="accent-cyan-500 w-4 h-4 cursor-pointer">
+                </div>
+              </div>
+
+              <!-- Name & Tag -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-300 mb-1">اسم الركيزة / الخدمة:</label>
+                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].name" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-300 mb-1">الوسم العلوي (Tag):</label>
+                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].tag" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-cyan-300">
+                </div>
+              </div>
+
+              <!-- Description -->
+              <div>
+                <label class="block text-[11px] font-bold text-slate-300 mb-1">الوصف التفصيلي:</label>
+                <textarea rows="2" x-model="cms.texts[editLang].pillars[pillarKey].desc" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white"></textarea>
+              </div>
+
+              <!-- 4 Feature Bullet Points -->
+              <div class="space-y-2">
+                <label class="block text-[11px] font-bold text-slate-300">المميزات الأربعة (Features):</label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].f1" placeholder="ميزة 1" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].f2" placeholder="ميزة 2" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].f3" placeholder="ميزة 3" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].f4" placeholder="ميزة 4" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+                </div>
+              </div>
+
+              <!-- Specs & CTA Button -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-300 mb-1">المواصفات الفنية (Specs Bar):</label>
+                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].specs" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-cyan-300 font-mono">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-300 mb-1">نص زر الإجراء (Pillar CTA Button):</label>
+                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].cta" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" placeholder="تواصل للاستشارة" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+                </div>
+              </div>
+
+              <!-- Image & Direct Upload -->
+              <div class="pt-2">
+                <label class="block text-[11px] font-bold text-slate-300 mb-1">صورة الركيزة (Pillar Image):</label>
+                <div class="flex gap-2 items-center">
+                  <img :src="cms.images['pillar' + (idx + 1)]" class="w-10 h-10 rounded-lg object-cover border border-slate-700 shrink-0">
+                  <input type="text" x-model="cms.images['pillar' + (idx + 1)]" dir="ltr" class="flex-1 px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white font-mono">
+                  <label class="cursor-pointer px-3 py-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-bold inline-flex items-center gap-1.5 shrink-0 transition-colors" title="رفع صورة من جهازك">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span class="hidden sm:inline">رفع صورة</span>
+                    <input type="file" accept="image/*" class="hidden" @change="handleFileUpload($event, 'pillar' + (idx + 1))">
+                  </label>
+                </div>
+              </div>
+
+              <!-- Pillar Image Badge (الشارة المعروضة فوق صورة الركيزة) -->
+              <div class="pt-2 border-t border-slate-800">
+                <label class="block text-[11px] font-bold text-cyan-400 mb-1">الشارة المعروضة أسفل صورة الركيزة (Image Badge):</label>
+                <input type="text" x-model="cms.imageBadges['pillar' + (idx + 1)][editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-cyan-300 font-mono">
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB 5: TECH STANDARDS & COMPARISON TABLE       -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'tech'" class="space-y-8">
+          <div class="border-b border-slate-800 pb-4">
+            <h3 class="text-xl font-black text-white">المعايير التقنية وجدول المقارنة الفنية</h3>
+            <p class="text-xs text-slate-400 mt-1" x-text="editLang === 'ar' ? 'تعديل أعمدة التميز التكنولوجي وجدول المقارنة بالعربية' : 'Editing Technical Standards & Comparison Table in English'"></p>
+          </div>
+
+          <!-- Section Headings -->
+          <div class="space-y-4">
+            <h4 class="text-sm font-bold text-cyan-400">عناوين قسم التكنولوجيا:</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-300 mb-1">عنوان القسم:</label>
+                <input type="text" x-model="cms.texts[editLang].tech_standards.title" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-300 mb-1">الوسم العلوي (Tag):</label>
+                <input type="text" x-model="cms.texts[editLang].tech_standards.tag" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-cyan-300">
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1">الوصف الفرعي:</label>
+              <textarea rows="2" x-model="cms.texts[editLang].tech_standards.subtitle" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white"></textarea>
+            </div>
+          </div>
+
+          <!-- 4 Tech Columns -->
+          <div class="pt-4 border-t border-slate-800 space-y-4">
+            <h4 class="text-sm font-bold text-emerald-400">الأعمدة الأربعة للريادة التكنولوجية (C1 - C4):</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <template x-for="cKey in ['c1', 'c2', 'c3', 'c4']" :key="cKey">
+                <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+                  <span class="text-xs font-bold text-cyan-400 font-mono" x-text="cKey.toUpperCase()"></span>
+                  <input type="text" x-model="cms.texts[editLang].tech_standards[cKey + '_title']" placeholder="عنوان المعيار" class="w-full px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-white">
+                  <textarea rows="2" x-model="cms.texts[editLang].tech_standards[cKey + '_desc']" placeholder="الشرح والتفاصيل" class="w-full px-2.5 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-slate-300"></textarea>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- Comparison Table Section Headers & Column Headers -->
+          <div class="pt-4 border-t border-slate-800 space-y-4">
+            <h4 class="text-sm font-bold text-cyan-400">عناوين ومعايير جدول المقارنة الفنية (بروتيرم مقابل السوق):</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-300 mb-1">عنوان قسم المقارنة:</label>
+                <input type="text" x-model="cms.texts[editLang].comparison.title" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-300 mb-1">الوسم العلوي (Tag):</label>
+                <input type="text" x-model="cms.texts[editLang].comparison.tag" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-cyan-300">
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1">الوصف الفرعي للمقارنة:</label>
+              <textarea rows="2" x-model="cms.texts[editLang].comparison.subtitle" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white"></textarea>
+            </div>
+
+            <!-- Table Headers -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+              <div>
+                <label class="block text-[10px] text-slate-400 mb-1">عنوان عمود المعيار:</label>
+                <input type="text" x-model="cms.texts[editLang].comparison.th_feature" class="w-full px-2.5 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[10px] text-cyan-400 mb-1">عنوان عمود بروتيرم:</label>
+                <input type="text" x-model="cms.texts[editLang].comparison.th_pro" class="w-full px-2.5 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-xs text-cyan-300">
+              </div>
+              <div>
+                <label class="block text-[10px] text-slate-400 mb-1">عنوان عمود الأفلام التجارية:</label>
+                <input type="text" x-model="cms.texts[editLang].comparison.th_market" class="w-full px-2.5 py-1.5 rounded-lg bg-slate-950 border border-slate-700 text-xs text-slate-400">
+              </div>
+            </div>
+          </div>
+
+          <!-- Comparison Table Rows -->
+          <div class="pt-4 border-t border-slate-800 space-y-4">
+            <h4 class="text-sm font-bold text-cyan-400">صفوف جدول المقارنة (بروتيرم مقابل السوق):</h4>
+            <div class="space-y-3">
+              <template x-for="rKey in ['r1', 'r2', 'r3', 'r4']" :key="rKey">
+                <div class="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+                  <div class="text-xs font-bold text-white font-mono" x-text="'صف ' + rKey.toUpperCase()"></div>
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <label class="block text-[10px] text-slate-400 mb-1">المعيار الهندسي:</label>
+                      <input type="text" x-model="cms.texts[editLang].comparison[rKey + '_title']" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-white">
+                    </div>
+                    <div>
+                      <label class="block text-[10px] text-cyan-400 mb-1">ميزة بروتيرم (Global Hi-Tech):</label>
+                      <input type="text" x-model="cms.texts[editLang].comparison[rKey + '_pro']" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-cyan-300">
+                    </div>
+                    <div>
+                      <label class="block text-[10px] text-slate-400 mb-1">الأفلام التجارية المجهولة:</label>
+                      <input type="text" x-model="cms.texts[editLang].comparison[rKey + '_std']" class="w-full px-2 py-1.5 rounded bg-slate-900 border border-slate-700 text-xs text-slate-400">
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB 6: MEDIA GALLERY & PROJECTS                -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'media'" class="space-y-6">
+          <div class="border-b border-slate-800 pb-4">
+            <h3 class="text-xl font-black text-white">معرض الصور والمشاريع الميدانية</h3>
+            <p class="text-xs text-slate-400 mt-1">تعديل مسارات الصور وعناوين ونصوص المشاريع في المعرض الحي ورفع صور جديدة</p>
+          </div>
+
+          <!-- Gallery Section Titles -->
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-300 mb-1">عنوان قسم المعرض:</label>
+                <input type="text" x-model="cms.texts[editLang].gallery.title" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-300 mb-1">الوسم العلوي (Tag):</label>
+                <input type="text" x-model="cms.texts[editLang].gallery.tag" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-cyan-300">
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-300 mb-1">الوصف الفرعي للمعرض:</label>
+              <textarea rows="2" x-model="cms.texts[editLang].gallery.subtitle" class="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white"></textarea>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+            
+            <!-- Gallery Items 1 - 4 -->
+            <template x-for="(gNum, gIdx) in ['1', '2', '3', '4']" :key="gNum">
+              <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-cyan-400" x-text="'مشروع ' + gNum"></span>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 font-mono" x-text="'gallery' + gNum"></span>
+                </div>
+                
+                <!-- Live Preview -->
+                <div class="h-36 rounded-xl overflow-hidden bg-slate-900 border border-slate-800 shadow-inner">
+                  <img :src="cms.images['gallery' + gNum]" :alt="'Project ' + gNum" class="w-full h-full object-cover">
+                </div>
+
+                <!-- Image Path & Direct Upload -->
+                <div>
+                  <label class="block text-[11px] text-slate-400 mb-1">مسار الصورة (Image Path):</label>
+                  <div class="flex gap-2 items-center">
+                    <input type="text" x-model="cms.images['gallery' + gNum]" dir="ltr" class="flex-1 px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white font-mono">
+                    <label class="cursor-pointer px-2.5 py-2 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-bold inline-flex items-center gap-1.5 shrink-0 transition-colors" title="رفع صورة من جهازك">
+                      <i class="fa-solid fa-cloud-arrow-up"></i>
+                      <span class="hidden sm:inline">رفع صورة</span>
+                      <input type="file" accept="image/*" class="hidden" @change="handleFileUpload($event, 'gallery' + gNum)">
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Title & Description in Current Edit Language -->
+                <div>
+                  <label class="block text-[11px] text-slate-400 mb-1">عنوان المشروع (<span x-text="editLang.toUpperCase()"></span>):</label>
+                  <input type="text" x-model="cms.texts[editLang].gallery['item' + gNum + '_title']" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white">
+                </div>
+                <div>
+                  <label class="block text-[11px] text-slate-400 mb-1">تفاصيل التنفيذ (<span x-text="editLang.toUpperCase()"></span>):</label>
+                  <textarea rows="2" x-model="cms.texts[editLang].gallery['item' + gNum + '_desc']" class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-xs text-slate-300"></textarea>
+                </div>
+
+                <!-- Badges on Gallery Image -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-slate-800">
+                  <div>
+                    <label class="block text-[10px] text-emerald-400 mb-1">الشارة العلوية على الصورة (Top Badge):</label>
+                    <input type="text" x-model="cms.imageBadges['gallery' + gNum + '_badge'][editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-white">
+                  </div>
+                  <div>
+                    <label class="block text-[10px] text-cyan-400 mb-1">الشريط السفلي للمواصفات/الموقع (Footer Tag):</label>
+                    <input type="text" x-model="cms.imageBadges['gallery' + gNum + '_footer'][editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-xs text-cyan-300 font-mono">
+                  </div>
+                </div>
+              </div>
+            </template>
+
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB 7: BUTTONS & CTAs                          -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'buttons'" class="space-y-6">
+          <div class="border-b border-slate-800 pb-4">
+            <h3 class="text-xl font-black text-white">الأزرار والروابط الإجرائية (Buttons & CTAs)</h3>
+            <p class="text-xs text-slate-400 mt-1">التحكم في نصوص الأزرار، وجهتها، وإمكانية إظهارها أو إخفائها</p>
+          </div>
+
+          <div class="space-y-4">
+            
+            <template x-for="(btn, bKey) in cms.buttons" :key="bKey">
+              <div class="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-white font-mono" x-text="bKey"></span>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs text-slate-400">إظهار الزر:</span>
+                    <input type="checkbox" x-model="btn.visible" class="accent-cyan-500 w-4 h-4 cursor-pointer">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">النص بالعربية:</label>
+                    <input type="text" x-model="btn.ar" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">Text in English:</label>
+                    <input type="text" x-model="btn.en" dir="ltr" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] text-slate-400 mb-1">الوجهة أو الرابط (Target):</label>
+                    <input type="text" x-model="btn.target" dir="ltr" class="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-cyan-300 font-mono">
+                  </div>
+                </div>
+              </div>
+            </template>
+
+          </div>
+        </div>
+
+      </main>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- TOAST NOTIFICATION                         -->
+  <!-- ========================================== -->
+  <div 
+    x-show="toastShow" 
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 transform translate-y-4"
+    x-transition:enter-end="opacity-100 transform translate-y-0"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 transform translate-y-0"
+    x-transition:leave-end="opacity-0 transform translate-y-4"
+    class="fixed bottom-6 end-6 z-50 bg-slate-900 border border-emerald-500/60 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 backdrop-blur-2xl"
+    style="display: none;">
+    <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm">
+      <i class="fa-solid fa-check"></i>
+    </div>
+    <div>
+      <div class="text-sm font-bold text-white" x-text="toastTitle"></div>
+      <div class="text-xs text-slate-300" x-text="toastMsg"></div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD SCRIPT -->
+  <script>
+    function adminCMS() {
+      return {
+        authenticated: false,
+        pinInput: '',
+        pinError: '',
+        editLang: 'ar',
+        activeTab: 'visibility',
+        saving: false,
+        
+        toastShow: false,
+        toastTitle: '',
+        toastMsg: '',
+
+        // CMS Content Store
+        cms: {
+          visibility: {},
+          contacts: { hours: {} },
+          images: {},
+          buttons: {},
+          heroStats: {},
+          texts: { 
+            ar: { hero: {}, pillars: { p1: {}, p2: {}, p3: {} }, tech_standards: {}, comparison: {}, gallery: {}, contact: {} }, 
+            en: { hero: {}, pillars: { p1: {}, p2: {}, p3: {} }, tech_standards: {}, comparison: {}, gallery: {}, contact: {} } 
+          },
+          imageBadges: {
+            heroTop: { ar: '', en: '' },
+            heroCornerTag: { ar: '', en: '' },
+            heroCornerName: { ar: '', en: '' },
+            pillar1: { ar: '', en: '' },
+            pillar2: { ar: '', en: '' },
+            pillar3: { ar: '', en: '' },
+            gallery1_badge: { ar: '', en: '' },
+            gallery1_footer: { ar: '', en: '' },
+            gallery2_badge: { ar: '', en: '' },
+            gallery2_footer: { ar: '', en: '' },
+            gallery3_badge: { ar: '', en: '' },
+            gallery3_footer: { ar: '', en: '' },
+            gallery4_badge: { ar: '', en: '' },
+            gallery4_footer: { ar: '', en: '' }
+          }
+        },
+
+        init() {
+          // Check session login
+          if (sessionStorage.getItem('protherme_admin_auth') === 'true') {
+            this.authenticated = true;
+          }
+          this.fetchContent();
+        },
+
+        verifyPin() {
+          const pin = this.pinInput.trim();
+          if (pin === 'admin2026' || pin === '1234') {
+            this.authenticated = true;
+            sessionStorage.setItem('protherme_admin_auth', 'true');
+            this.pinError = '';
+          } else {
+            this.pinError = 'رمز المرور غير صحيح، يرجى المحاولة مرة أخرى.';
+          }
+        },
+
+        logout() {
+          sessionStorage.removeItem('protherme_admin_auth');
+          this.authenticated = false;
+          this.pinInput = '';
+          this.pinError = '';
+        },
+
+        async fetchContent() {
+          try {
+            const res = await fetch('/api/content');
+            if (res.ok) {
+              const data = await res.json();
+              if (!data.imageBadges) data.imageBadges = {};
+              const bKeys = [
+                'heroTop', 'heroCornerTag', 'heroCornerName',
+                'pillar1', 'pillar2', 'pillar3',
+                'gallery1_badge', 'gallery1_footer',
+                'gallery2_badge', 'gallery2_footer',
+                'gallery3_badge', 'gallery3_footer',
+                'gallery4_badge', 'gallery4_footer'
+              ];
+              bKeys.forEach(k => {
+                if (!data.imageBadges[k]) data.imageBadges[k] = { ar: '', en: '' };
+              });
+
+              // Ensure nested dictionaries exist to prevent any Alpine binding errors
+              if (!data.texts) data.texts = { ar: {}, en: {} };
+              ['ar', 'en'].forEach(l => {
+                if (!data.texts[l]) data.texts[l] = {};
+                if (!data.texts[l].hero) data.texts[l].hero = {};
+                if (!data.texts[l].pillars) data.texts[l].pillars = { p1: {}, p2: {}, p3: {} };
+                ['p1', 'p2', 'p3'].forEach(p => {
+                  if (!data.texts[l].pillars[p]) data.texts[l].pillars[p] = {};
+                });
+                if (!data.texts[l].tech_standards) data.texts[l].tech_standards = {};
+                if (!data.texts[l].comparison) data.texts[l].comparison = {};
+                if (!data.texts[l].gallery) data.texts[l].gallery = {};
+                if (!data.texts[l].contact) data.texts[l].contact = {};
+              });
+              if (!data.images) data.images = {};
+              if (!data.buttons) data.buttons = {};
+              if (!data.heroStats) data.heroStats = {};
+              if (!data.contacts) data.contacts = { hours: {} };
+              if (!data.contacts.hours) data.contacts.hours = {};
+
+              this.cms = data;
+            }
+          } catch (e) {
+            console.error('Failed to load content from API:', e);
+          }
+        },
+
+        async handleFileUpload(event, imageKey) {
+          const file = event.target.files && event.target.files[0];
+          if (!file) return;
+
+          if (file.size > 15 * 1024 * 1024) {
+            this.showToast('خطأ في حجم الصورة', 'الحد الأقصى المسموح به لحجم الصورة هو 15 ميجابايت.');
+            event.target.value = '';
+            return;
+          }
+
+          this.showToast('جاري رفع الصورة...', 'يتم الآن رفع الصورة وحفظها على السيرفر...');
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            try {
+              const base64Data = e.target.result;
+              const res = await fetch('/api/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  filename: file.name,
+                  data: base64Data
+                })
+              });
+              const result = await res.json();
+              if (res.ok && result.success) {
+                this.cms.images[imageKey] = result.url;
+                this.showToast('تم رفع الصورة بنجاح!', `تم حفظ الصورة وتعيين مسارها: ${result.url}`);
+              } else {
+                this.showToast('فشل الرفع', result.error || 'تعذر حفظ الصورة على الخادم.');
+              }
+            } catch (err) {
+              console.error('Upload failed:', err);
+              this.showToast('خطأ في الاتصال', 'تعذر إرسال الصورة إلى الخادم.');
+            } finally {
+              event.target.value = '';
+            }
+          };
+          reader.readAsDataURL(file);
+        },
+
+        async saveContent() {
+          this.saving = true;
+          try {
+            const res = await fetch('/api/content', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(this.cms)
+            });
+
+            if (res.ok) {
+              this.showToast('تم الحفظ بنجاح!', 'تم تحديث كافة محتويات الموقع وتطبيقها فورياً.');
+              // Also sync to localStorage for instant client reflection
+              localStorage.setItem('protherme_cms_content', JSON.stringify(this.cms));
+            } else {
+              this.showToast('خطأ في الحفظ', 'حدث خطأ أثناء الاتصال بالخادم.');
+            }
+          } catch (e) {
+            console.error('Save failed:', e);
+            this.showToast('خطأ في الشبكة', 'تعذر حفظ البيانات على الخادم.');
+          } finally {
+            this.saving = false;
+          }
+        },
+
+        async resetToDefaults() {
+          if (!confirm('هل أنت متأكد من استعادة المحتوى والإعدادات الافتراضية للموقع؟')) return;
+          try {
+            const res = await fetch('/api/reset', { method: 'POST' });
+            if (res.ok) {
+              const result = await res.json();
+              this.cms = result.content;
+              localStorage.setItem('protherme_cms_content', JSON.stringify(this.cms));
+              this.showToast('تم استعادة الأصل!', 'تمت استعادة إعدادات المصنع الافتراضية بنجاح.');
+            }
+          } catch (e) {
+            alert('تعذر استعادة الأصل.');
+          }
+        },
+
+        showToast(title, msg) {
+          this.toastTitle = title;
+          this.toastMsg = msg;
+          this.toastShow = true;
+          setTimeout(() => { this.toastShow = false; }, 4000);
+        },
+
+        getVisibilityLabel(key) {
+          const map = {
+            topbar: 'الشريط العلوي (Topbar)',
+            heroBadge: 'شارة الشراكة العائمة (Partner Badge)',
+            heroStats: 'شريط إحصائيات الهيرو (Live Stats Grid)',
+            trustBar: 'شريط معايير الجودة والاعتماد (Trust Bar)',
+            pillar1: 'الركيزة 01: أفلام زجاج المباني والعزل المعماري',
+            pillar2: 'الركيزة 02: حماية الأسطح الفاخرة (رخام وخشب)',
+            pillar3: 'الركيزة 03: توزيع أفلام حماية السيارات PPF',
+            simulator: 'حاسبة الأداء والعزل التفاعلية (Simulator)',
+            technology: 'قسم معايير وتكنولوجيا Global Hi-Tech',
+            comparisonTable: 'جدول المقارنة الفنية (Comparison Table)',
+            gallery: 'معرض المشاريع والصور الميدانية (Gallery)',
+            speedDial: 'زر الاتصال والواتساب العائم (Speed Dial)'
+          };
+          return map[key] || key;
+        },
+
+        getVisibilityDesc(key) {
+          const map = {
+            topbar: 'بيانات الاعتماد والاتصال السريع أعلى الصفحة',
+            heroBadge: 'الشارة المتحركة أعلى العنوان الرئيسي',
+            heroStats: 'إحصائيات 88% عزل، 99.9% UV، والضمان الدولي',
+            trustBar: 'شريط الاعتمادات تحت قسم الهيرو مباشرة',
+            pillar1: 'كرت الخدمة المعمارية للواجهات والفلل',
+            pillar2: 'كرت حماية طاولات الرخام الطبيعي والأخشاب',
+            pillar3: 'كرت التوريد التجاري لمراكز العناية بالسيارات',
+            simulator: 'أداة حساب درجات العزل والتوفير التفاعلية',
+            technology: 'الأعمدة الأربعة للريادة التكنولوجية العالمية',
+            comparisonTable: 'مقارنة بروتيرم مقابل المنتجات التجارية',
+            gallery: 'الصور الواقعية لمشاريع التنفيذ',
+            speedDial: 'أزرار الاتصال الهاتفي والواتساب الثابتة بالزاوية'
+          };
+          return map[key] || '';
+        }
+      };
+    }
+  </script>
+</body>
+</html>

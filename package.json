@@ -1,0 +1,16 @@
+{
+  "name": "protherme",
+  "version": "1.0.0",
+  "description": "ProTherme Engineering Solutions - Official Representative of Global Hi-Tech Films",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "protherme",
+    "global-hi-tech-films",
+    "landing-page"
+  ],
+  "author": "ProTherme Engineering Solutions",
+  "license": "ISC"
+}
