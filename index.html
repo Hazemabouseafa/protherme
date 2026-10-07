@@ -924,6 +924,13 @@ function prothermeApp() {
           en: 'Saturday - Thursday: 9:00 AM - 7:00 PM'
         }
       },
+      social: {
+        facebook: '',
+        instagram: '',
+        linkedin: '',
+        tiktok: '',
+        youtube: ''
+      },
       images: {
         logo: 'assets/images/protherme-logo.jpg',
         heroVisual: 'assets/images/installation-site-real.jpg',
@@ -991,8 +998,11 @@ function prothermeApp() {
         const res = await fetch('/api/content');
         if (res.ok) {
           const remoteData = await res.json();
-          this.cms = remoteData;
-          localStorage.setItem('protherme_cms_content', JSON.stringify(remoteData));
+          this.cms = Object.assign({}, this.cms, remoteData);
+          if (!this.cms.social) {
+            this.cms.social = { facebook: '', instagram: '', linkedin: '', tiktok: '', youtube: '' };
+          }
+          localStorage.setItem('protherme_cms_content', JSON.stringify(this.cms));
         }
       } catch (err) {
         console.warn('API sync unavailable, using default/cached CMS data:', err);
@@ -2096,6 +2106,35 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             <i class="fa-solid fa-shield-halved"></i>
             <span x-text="t('footer.partner_text')"></span>
           </div>
+
+          <!-- Dynamic Social Media Links -->
+          <div x-show="cms.social && (cms.social.facebook || cms.social.instagram || cms.social.linkedin || cms.social.tiktok || cms.social.youtube)" class="flex items-center gap-2.5 pt-2 flex-wrap">
+            <template x-if="cms.social && cms.social.facebook">
+              <a :href="cms.social.facebook" target="_blank" rel="noopener noreferrer" title="Facebook" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-blue-600/20 text-slate-400 hover:text-blue-400 border border-slate-800 hover:border-blue-500/40 flex items-center justify-center transition-all">
+                <i class="fa-brands fa-facebook-f text-sm"></i>
+              </a>
+            </template>
+            <template x-if="cms.social && cms.social.instagram">
+              <a :href="cms.social.instagram" target="_blank" rel="noopener noreferrer" title="Instagram" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-pink-600/20 text-slate-400 hover:text-pink-400 border border-slate-800 hover:border-pink-500/40 flex items-center justify-center transition-all">
+                <i class="fa-brands fa-instagram text-sm"></i>
+              </a>
+            </template>
+            <template x-if="cms.social && cms.social.linkedin">
+              <a :href="cms.social.linkedin" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-cyan-600/20 text-slate-400 hover:text-cyan-400 border border-slate-800 hover:border-cyan-500/40 flex items-center justify-center transition-all">
+                <i class="fa-brands fa-linkedin-in text-sm"></i>
+              </a>
+            </template>
+            <template x-if="cms.social && cms.social.tiktok">
+              <a :href="cms.social.tiktok" target="_blank" rel="noopener noreferrer" title="TikTok" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-slate-700 text-slate-400 hover:text-white border border-slate-800 hover:border-slate-600 flex items-center justify-center transition-all">
+                <i class="fa-brands fa-tiktok text-sm"></i>
+              </a>
+            </template>
+            <template x-if="cms.social && cms.social.youtube">
+              <a :href="cms.social.youtube" target="_blank" rel="noopener noreferrer" title="YouTube" class="w-9 h-9 rounded-xl bg-slate-900 hover:bg-red-600/20 text-slate-400 hover:text-red-400 border border-slate-800 hover:border-red-500/40 flex items-center justify-center transition-all">
+                <i class="fa-brands fa-youtube text-sm"></i>
+              </a>
+            </template>
+          </div>
         </div>
 
         <!-- Core Services Links -->
@@ -2134,13 +2173,6 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             </li>
           </ul>
 
-          <!-- DISCRETE MANAGER ADMIN LINK -->
-          <div class="pt-3">
-            <a href="/admin" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-[11px] text-slate-400 hover:text-cyan-400 transition-colors">
-              <i class="fa-solid fa-lock text-cyan-400"></i>
-              <span>لوحة تحكم المدير (Admin CMS)</span>
-            </a>
-          </div>
         </div>
 
       </div>
