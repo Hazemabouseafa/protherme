@@ -352,6 +352,106 @@ input[type=range]::-webkit-slider-thumb:hover {
       opacity: 1 !important;
       transform: none !important;
     }
+
+    /* Shimmer light sweep for CTA buttons on hover */
+    .btn-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-shimmer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+      transition: left 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .btn-shimmer:hover::before {
+      left: 120%;
+    }
+
+    /* Ambient slow floating effect */
+    @keyframes gentleFloat {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-8px);
+      }
+    }
+    .animate-gentle-float {
+      animation: gentleFloat 6s ease-in-out infinite;
+    }
+
+    /* Gradient Text Shimmer Animation */
+    @keyframes gradientShift {
+      0% {
+        filter: hue-rotate(0deg);
+      }
+      50% {
+        filter: hue-rotate(20deg);
+      }
+      100% {
+        filter: hue-rotate(0deg);
+      }
+    }
+    .animate-gradient-text {
+      animation: gradientShift 8s ease-in-out infinite;
+    }
+
+    /* Navigation link hover underline */
+    .nav-hover-line {
+      position: relative;
+    }
+    .nav-hover-line::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(90deg, #06b6d4, #10b981);
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      border-radius: 9999px;
+    }
+    .nav-hover-line:hover::after {
+      width: 100%;
+    }
+
+    /* Ripple pulse for speed dial buttons */
+    .ripple-wa, .ripple-call {
+      position: relative;
+    }
+    .ripple-wa::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 9999px;
+      border: 2px solid rgba(16, 185, 129, 0.5);
+      animation: rippleEffect 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+      pointer-events: none;
+    }
+    .ripple-call::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 9999px;
+      border: 2px solid rgba(6, 182, 212, 0.5);
+      animation: rippleEffect 3s cubic-bezier(0, 0, 0.2, 1) 1.5s infinite;
+      pointer-events: none;
+    }
+    @keyframes rippleEffect {
+      0% {
+        transform: scale(0.95);
+        opacity: 0.8;
+      }
+      100% {
+        transform: scale(1.4);
+        opacity: 0;
+      }
+    }
   </style>
 
   <!-- Translations Dictionary (Embedded) -->
@@ -1105,10 +1205,10 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
         <!-- DESKTOP NAVIGATION LINKS -->
         <nav class="hidden lg:flex items-center gap-1 xl:gap-2">
-          <button @click="scrollTo('services')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all" x-text="t('nav.services')"></button>
-          <button x-show="cms.visibility.technology" @click="scrollTo('technology')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all" x-text="t('nav.tech')"></button>
-          <button x-show="cms.visibility.gallery" @click="scrollTo('gallery')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all" x-text="t('nav.gallery')"></button>
-          <button @click="scrollTo('contact')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all" x-text="t('nav.contact')"></button>
+          <button @click="scrollTo('services')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all nav-hover-line" x-text="t('nav.services')"></button>
+          <button x-show="cms.visibility.technology" @click="scrollTo('technology')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all nav-hover-line" x-text="t('nav.tech')"></button>
+          <button x-show="cms.visibility.gallery" @click="scrollTo('gallery')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all nav-hover-line" x-text="t('nav.gallery')"></button>
+          <button @click="scrollTo('contact')" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-cyan-400 hover:bg-slate-800/50 transition-all nav-hover-line" x-text="t('nav.contact')"></button>
         </nav>
 
         <!-- RIGHT ACTIONS: LANGUAGE SWITCHER & CTAS -->
@@ -1140,7 +1240,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <button 
             x-show="cms.buttons.navCta.visible"
             @click="scrollTo('contact')" 
-            class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-xs font-bold rounded-xl group bg-gradient-to-br from-cyan-500 via-emerald-500 to-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.35)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] transition-all duration-300">
+            class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-xs font-bold rounded-xl group bg-gradient-to-br from-cyan-500 via-emerald-500 to-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.35)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] transition-all duration-300 btn-shimmer">
             <span class="relative px-4 py-2.5 transition-all ease-in duration-200 bg-slate-950 rounded-[10px] group-hover:bg-opacity-0 text-white">
               <i class="fa-solid fa-headset me-1.5 text-cyan-400 group-hover:text-white"></i>
               <span x-text="cms.buttons.navCta[lang] || t('nav.cta')"></span>
@@ -1177,7 +1277,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <i class="fa-solid fa-phone text-cyan-400"></i>
           <span dir="ltr" x-text="cms.contacts.phone"></span>
         </a>
-        <button @click="scrollTo('contact')" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 font-black text-sm shadow-lg shadow-cyan-500/20" x-text="cms.buttons.navCta[lang] || t('nav.cta')"></button>
+        <button @click="scrollTo('contact')" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 font-black text-sm shadow-lg shadow-cyan-500/20 btn-shimmer" x-text="cms.buttons.navCta[lang] || t('nav.cta')"></button>
       </div>
     </div>
   </header>
@@ -1201,7 +1301,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <!-- HEADLINE WITH VIBRANT GRADIENT -->
           <h1 data-aos="fade-up" data-aos-duration="700" class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.15]">
             <span class="block" x-text="t('hero.title_p1')"></span>
-            <span class="block bg-gradient-to-r from-cyan-400 via-emerald-300 to-cyan-200 bg-clip-text text-transparent text-glow-cyan" x-text="t('hero.title_p2')"></span>
+            <span class="block bg-gradient-to-r from-cyan-400 via-emerald-300 to-cyan-200 bg-clip-text text-transparent text-glow-cyan animate-gradient-text" x-text="t('hero.title_p2')"></span>
           </h1>
 
           <!-- SUBTITLE -->
@@ -1213,7 +1313,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               x-show="cms.buttons.heroPrimary.visible"
               @click.prevent="scrollTo('contact')" 
               :href="cms.buttons.heroPrimary.target" 
-              class="px-7 py-4 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 text-slate-950 font-black text-sm sm:text-base shadow-[0_0_25px_rgba(6,182,212,0.4)] hover:shadow-[0_0_35px_rgba(6,182,212,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2 cursor-pointer glow-pulse-subtle">
+              class="px-7 py-4 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 text-slate-950 font-black text-sm sm:text-base shadow-[0_0_25px_rgba(6,182,212,0.4)] hover:shadow-[0_0_35px_rgba(6,182,212,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2 cursor-pointer glow-pulse-subtle btn-shimmer">
               <i class="fa-solid fa-headset text-slate-900"></i>
               <span x-text="cms.buttons.heroPrimary[lang] || t('hero.cta_primary')"></span>
             </a>
@@ -1255,7 +1355,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         <div class="lg:col-span-5 relative" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
           
           <!-- Neon Glow Border Around Container -->
-          <div class="relative rounded-3xl p-2 bg-gradient-to-b from-cyan-500/30 via-slate-800/60 to-emerald-500/20 shadow-[0_0_40px_rgba(6,182,212,0.2)]">
+          <div class="relative rounded-3xl p-2 bg-gradient-to-b from-cyan-500/30 via-slate-800/60 to-emerald-500/20 shadow-[0_0_40px_rgba(6,182,212,0.2)] animate-gentle-float">
             
             <div class="relative rounded-2xl overflow-hidden bg-slate-950 aspect-[4/5] sm:aspect-[3/4] border border-cyan-500/30 group">
               <!-- Real Project Image Provided by User -->
@@ -1872,7 +1972,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
           <a 
             :href="'tel:' + cms.contacts.phone" 
-            class="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 font-black text-sm shadow-lg shadow-cyan-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+            class="w-full py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 text-slate-950 font-black text-sm shadow-lg shadow-cyan-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 btn-shimmer">
             <i class="fa-solid fa-phone-volume"></i>
             <span x-text="t('contact.call_btn')"></span>
           </a>
@@ -1905,7 +2005,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '')" 
             target="_blank" 
             rel="noopener noreferrer" 
-            class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 text-slate-950 font-black text-sm shadow-lg shadow-emerald-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+            class="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 text-slate-950 font-black text-sm shadow-lg shadow-emerald-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 btn-shimmer">
             <i class="fa-brands fa-whatsapp text-lg"></i>
             <span x-text="t('contact.wa_btn')"></span>
           </a>
@@ -2059,7 +2159,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
       target="_blank" 
       rel="noopener noreferrer" 
       title="WhatsApp" 
-      class="w-13 h-13 p-3.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 flex items-center justify-center text-xl shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:scale-110 active:scale-95 transition-all glow-pulse-subtle">
+      class="w-13 h-13 p-3.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 flex items-center justify-center text-xl shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:scale-110 active:scale-95 transition-all glow-pulse-subtle ripple-wa">
       <i class="fa-brands fa-whatsapp"></i>
     </a>
 
@@ -2067,7 +2167,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
     <a 
       :href="'tel:' + cms.contacts.phone" 
       :title="'Call ' + cms.contacts.phone" 
-      class="w-13 h-13 p-3.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 flex items-center justify-center text-xl shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:scale-110 active:scale-95 transition-all glow-pulse-subtle">
+      class="w-13 h-13 p-3.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 flex items-center justify-center text-xl shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:scale-110 active:scale-95 transition-all glow-pulse-subtle ripple-call">
       <i class="fa-solid fa-phone"></i>
     </a>
   </div>
