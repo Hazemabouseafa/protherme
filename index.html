@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8fafc">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>بروتيرم للحلول الهندسية | الممثل المعتمد لـ Global Hi-Tech Films</title>
   <meta name="description" content="شركة بروتيرم للحلول الهندسية - الممثل والموزع المعتمد لشركة Global Hi-Tech Films العالمية المتخصصة في أفلام العزل الحراري، حماية الأسطح الفاخرة، وأفلام PPF للسيارات.">
   
@@ -1281,13 +1284,25 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
     <!-- MOBILE MENU DRAWER -->
     <div x-show="mobileMenuOpen" x-transition.opacity.duration.200ms class="lg:hidden bg-white/98 border-b border-slate-200 px-4 pt-3 pb-6 space-y-2 backdrop-blur-2xl shadow-xl">
-      <button @click="scrollTo('services')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-cyan-700 active:bg-slate-200 transition-colors flex items-center justify-between" x-text="t('nav.services')"></button>
-      <button x-show="cms.visibility.technology" @click="scrollTo('technology')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-cyan-700 active:bg-slate-200 transition-colors flex items-center justify-between" x-text="t('nav.tech')"></button>
-      <button x-show="cms.visibility.gallery" @click="scrollTo('gallery')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-cyan-700 active:bg-slate-200 transition-colors flex items-center justify-between" x-text="t('nav.gallery')"></button>
-      <button @click="scrollTo('contact')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-semibold text-slate-800 hover:bg-slate-100 hover:text-cyan-700 active:bg-slate-200 transition-colors flex items-center justify-between" x-text="t('nav.contact')"></button>
+      <button @click="scrollTo('services')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-cyan-50/70 hover:text-cyan-800 active:bg-slate-100 transition-colors flex items-center justify-between">
+        <span x-text="t('nav.services')"></span>
+        <i class="fa-solid fa-angle-left rtl:rotate-0 ltr:rotate-180 text-xs text-slate-400"></i>
+      </button>
+      <button x-show="cms.visibility.technology" @click="scrollTo('technology')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-cyan-50/70 hover:text-cyan-800 active:bg-slate-100 transition-colors flex items-center justify-between">
+        <span x-text="t('nav.tech')"></span>
+        <i class="fa-solid fa-angle-left rtl:rotate-0 ltr:rotate-180 text-xs text-slate-400"></i>
+      </button>
+      <button x-show="cms.visibility.gallery" @click="scrollTo('gallery')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-cyan-50/70 hover:text-cyan-800 active:bg-slate-100 transition-colors flex items-center justify-between">
+        <span x-text="t('nav.gallery')"></span>
+        <i class="fa-solid fa-angle-left rtl:rotate-0 ltr:rotate-180 text-xs text-slate-400"></i>
+      </button>
+      <button @click="scrollTo('contact')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-cyan-50/70 hover:text-cyan-800 active:bg-slate-100 transition-colors flex items-center justify-between">
+        <span x-text="t('nav.contact')"></span>
+        <i class="fa-solid fa-angle-left rtl:rotate-0 ltr:rotate-180 text-xs text-slate-400"></i>
+      </button>
       
       <div class="pt-3 border-t border-slate-200 space-y-2.5">
-        <a :href="'tel:' + cms.contacts.phone" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-800 font-bold text-sm active:scale-[0.99] transition-all">
+        <a :href="'tel:' + cms.contacts.phone" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 font-bold text-sm active:scale-[0.99] transition-all">
           <i class="fa-solid fa-phone text-cyan-600"></i>
           <span dir="ltr" x-text="cms.contacts.phone"></span>
         </a>
