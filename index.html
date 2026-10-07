@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" class="scroll-smooth">
+<html lang="ar" dir="rtl" class="scroll-smooth overflow-x-hidden">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1147,11 +1147,13 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
 <body x-data="prothermeApp()" class="bg-[#020617] text-slate-100 min-h-screen selection:bg-cyan-500 selection:text-black overflow-x-hidden relative">
 
-  <!-- Ambient Floating Neon Gradient Blobs -->
-  <div class="gradient-blob w-[500px] h-[500px] bg-cyan-600/20 top-[-100px] right-[-100px]"></div>
-  <div class="gradient-blob w-[600px] h-[600px] bg-emerald-600/15 top-[600px] left-[-200px]" style="animation-delay: -3s;"></div>
-  <div class="gradient-blob w-[500px] h-[500px] bg-blue-600/15 top-[1800px] right-[-100px]" style="animation-delay: -6s;"></div>
-  <div class="gradient-blob w-[600px] h-[600px] bg-cyan-600/15 top-[3200px] left-[-150px]" style="animation-delay: -9s;"></div>
+  <!-- Ambient Floating Neon Gradient Blobs (Contained to prevent any horizontal scroll) -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div class="gradient-blob w-[500px] h-[500px] bg-cyan-600/20 top-[-100px] right-[-100px]"></div>
+    <div class="gradient-blob w-[600px] h-[600px] bg-emerald-600/15 top-[600px] left-[-200px]" style="animation-delay: -3s;"></div>
+    <div class="gradient-blob w-[500px] h-[500px] bg-blue-600/15 top-[1800px] right-[-100px]" style="animation-delay: -6s;"></div>
+    <div class="gradient-blob w-[600px] h-[600px] bg-cyan-600/15 top-[3200px] left-[-150px]" style="animation-delay: -9s;"></div>
+  </div>
 
   <!-- Background Grid Pattern -->
   <div class="fixed inset-0 bg-grid-pattern opacity-40 pointer-events-none z-0"></div>
@@ -1252,13 +1254,15 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         <div class="flex items-center gap-2 lg:hidden">
           <button 
             @click="toggleLanguage()" 
-            class="px-2.5 py-1 text-xs font-bold rounded-lg bg-slate-800 border border-slate-700 text-cyan-400">
+            class="h-10 px-3 text-xs font-bold rounded-xl bg-slate-800 border border-slate-700 text-cyan-400 hover:text-white flex items-center justify-center transition-all active:scale-95">
             <span x-text="lang === 'ar' ? 'English' : 'عربي'"></span>
           </button>
           <button 
             @click="mobileMenuOpen = !mobileMenuOpen" 
-            class="p-2 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-300 hover:text-white focus:outline-none">
-            <i class="fa-solid" :class="mobileMenuOpen ? 'fa-xmark' : 'fa-bars'"></i>
+            aria-label="قائمة التصفح"
+            :aria-expanded="mobileMenuOpen"
+            class="w-10 h-10 rounded-xl bg-slate-800/80 border border-slate-700 text-slate-300 hover:text-white focus:outline-none flex items-center justify-center transition-all active:scale-95">
+            <i class="fa-solid text-base" :class="mobileMenuOpen ? 'fa-xmark' : 'fa-bars'"></i>
           </button>
         </div>
 
@@ -1266,18 +1270,18 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
     </div>
 
     <!-- MOBILE MENU DRAWER -->
-    <div x-show="mobileMenuOpen" x-transition.opacity.duration.200ms class="lg:hidden bg-slate-950/95 border-b border-slate-800 px-4 pt-3 pb-6 space-y-2 backdrop-blur-2xl">
-      <button @click="scrollTo('services')" class="w-full text-start px-3 py-2.5 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-900 hover:text-cyan-400" x-text="t('nav.services')"></button>
-      <button x-show="cms.visibility.technology" @click="scrollTo('technology')" class="w-full text-start px-3 py-2.5 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-900 hover:text-cyan-400" x-text="t('nav.tech')"></button>
-      <button x-show="cms.visibility.gallery" @click="scrollTo('gallery')" class="w-full text-start px-3 py-2.5 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-900 hover:text-cyan-400" x-text="t('nav.gallery')"></button>
-      <button @click="scrollTo('contact')" class="w-full text-start px-3 py-2.5 rounded-lg text-sm font-medium text-slate-200 hover:bg-slate-900 hover:text-cyan-400" x-text="t('nav.contact')"></button>
+    <div x-show="mobileMenuOpen" x-transition.opacity.duration.200ms class="lg:hidden bg-slate-950/98 border-b border-slate-800 px-4 pt-3 pb-6 space-y-2 backdrop-blur-2xl">
+      <button @click="scrollTo('services')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-medium text-slate-200 hover:bg-slate-900 hover:text-cyan-400 active:bg-slate-800 transition-colors flex items-center justify-between" x-text="t('nav.services')"></button>
+      <button x-show="cms.visibility.technology" @click="scrollTo('technology')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-medium text-slate-200 hover:bg-slate-900 hover:text-cyan-400 active:bg-slate-800 transition-colors flex items-center justify-between" x-text="t('nav.tech')"></button>
+      <button x-show="cms.visibility.gallery" @click="scrollTo('gallery')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-medium text-slate-200 hover:bg-slate-900 hover:text-cyan-400 active:bg-slate-800 transition-colors flex items-center justify-between" x-text="t('nav.gallery')"></button>
+      <button @click="scrollTo('contact')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-medium text-slate-200 hover:bg-slate-900 hover:text-cyan-400 active:bg-slate-800 transition-colors flex items-center justify-between" x-text="t('nav.contact')"></button>
       
-      <div class="pt-3 border-t border-slate-800 space-y-2">
-        <a :href="'tel:' + cms.contacts.phone" class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 font-bold text-sm">
+      <div class="pt-3 border-t border-slate-800 space-y-2.5">
+        <a :href="'tel:' + cms.contacts.phone" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-slate-900 border border-slate-700 text-slate-100 font-bold text-sm active:scale-[0.99] transition-all">
           <i class="fa-solid fa-phone text-cyan-400"></i>
           <span dir="ltr" x-text="cms.contacts.phone"></span>
         </a>
-        <button @click="scrollTo('contact')" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 font-black text-sm shadow-lg shadow-cyan-500/20 btn-shimmer" x-text="cms.buttons.navCta[lang] || t('nav.cta')"></button>
+        <button @click="scrollTo('contact')" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 text-slate-950 font-black text-sm shadow-lg shadow-cyan-500/20 active:scale-[0.99] transition-all btn-shimmer" x-text="cms.buttons.navCta[lang] || t('nav.cta')"></button>
       </div>
     </div>
   </header>
@@ -1308,12 +1312,12 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <p data-aos="fade-up" data-aos-duration="700" data-aos-delay="100" class="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl font-normal" x-text="t('hero.subtitle')"></p>
 
           <!-- DUAL CTA BUTTONS -->
-          <div data-aos="fade-up" data-aos-duration="700" data-aos-delay="150" class="flex flex-wrap items-center gap-4 pt-2">
+          <div data-aos="fade-up" data-aos-duration="700" data-aos-delay="150" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-2">
             <a 
               x-show="cms.buttons.heroPrimary.visible"
               @click.prevent="scrollTo('contact')" 
               :href="cms.buttons.heroPrimary.target" 
-              class="px-7 py-4 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 text-slate-950 font-black text-sm sm:text-base shadow-[0_0_25px_rgba(6,182,212,0.4)] hover:shadow-[0_0_35px_rgba(6,182,212,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2 cursor-pointer glow-pulse-subtle btn-shimmer">
+              class="w-full sm:w-auto justify-center px-6 sm:px-7 py-3.5 sm:py-4 rounded-xl bg-gradient-to-r from-cyan-500 via-teal-500 to-emerald-500 text-slate-950 font-black text-sm sm:text-base shadow-[0_0_25px_rgba(6,182,212,0.4)] hover:shadow-[0_0_35px_rgba(6,182,212,0.7)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2 cursor-pointer glow-pulse-subtle btn-shimmer">
               <i class="fa-solid fa-headset text-slate-900"></i>
               <span x-text="cms.buttons.heroPrimary[lang] || t('hero.cta_primary')"></span>
             </a>
@@ -1321,7 +1325,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             <a 
               x-show="cms.buttons.heroCall.visible"
               :href="'tel:' + cms.contacts.phone" 
-              class="px-6 py-4 rounded-xl glass-panel text-slate-200 hover:text-white hover:border-cyan-500/60 font-bold text-sm sm:text-base hover:bg-slate-800/80 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2.5">
+              class="w-full sm:w-auto justify-center px-5 sm:px-6 py-3.5 sm:py-4 rounded-xl glass-panel text-slate-200 hover:text-white hover:border-cyan-500/60 font-bold text-sm sm:text-base hover:bg-slate-800/80 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2.5">
               <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center">
                 <i class="fa-solid fa-phone"></i>
               </div>
@@ -1717,18 +1721,22 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
       </div>
 
       <!-- TECHNICAL COMPARISON TABLE -->
-      <div x-show="cms.visibility.comparisonTable" data-aos="fade-up" data-aos-delay="150" class="glass-panel rounded-3xl p-6 sm:p-8 border border-slate-800 overflow-x-auto">
-        <div class="mb-6">
+      <div x-show="cms.visibility.comparisonTable" data-aos="fade-up" data-aos-delay="150" class="glass-panel rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-slate-800 overflow-x-auto">
+        <div class="mb-4 sm:mb-6">
           <h3 class="text-xl sm:text-2xl font-bold text-white" x-text="t('comparison.title')"></h3>
           <p class="text-xs sm:text-sm text-slate-400 mt-1" x-text="t('comparison.subtitle')"></p>
+          <div class="text-[11px] text-cyan-400/80 sm:hidden flex items-center gap-1.5 mt-2 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-800 w-fit">
+            <i class="fa-solid fa-arrows-left-right"></i>
+            <span>مرر الجدول أفقياً للاطلاع على كامل المقارنة</span>
+          </div>
         </div>
 
-        <table class="w-full text-start text-xs sm:text-sm">
+        <table class="w-full min-w-[500px] sm:min-w-0 text-start text-xs sm:text-sm">
           <thead>
             <tr class="border-b border-slate-800 text-slate-400">
-              <th class="py-4 px-4 text-start font-semibold" x-text="t('comparison.th_feature')"></th>
-              <th class="py-4 px-4 text-start font-bold text-cyan-400 bg-cyan-500/5 rounded-t-xl" x-text="t('comparison.th_pro')"></th>
-              <th class="py-4 px-4 text-start font-semibold text-slate-500" x-text="t('comparison.th_market')"></th>
+              <th class="py-3 sm:py-4 px-3 sm:px-4 text-start font-semibold" x-text="t('comparison.th_feature')"></th>
+              <th class="py-3 sm:py-4 px-3 sm:px-4 text-start font-bold text-cyan-400 bg-cyan-500/5 rounded-t-xl" x-text="t('comparison.th_pro')"></th>
+              <th class="py-3 sm:py-4 px-3 sm:px-4 text-start font-semibold text-slate-500" x-text="t('comparison.th_market')"></th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-800/80">
@@ -2152,14 +2160,14 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- FLOATING QUICK SPEED DIAL (CALL & WHATSAPP)-->
   <!-- ========================================== -->
-  <div x-show="cms.visibility.speedDial" class="fixed bottom-6 start-6 z-40 flex flex-col gap-3">
+  <div x-show="cms.visibility.speedDial" class="fixed bottom-4 start-4 sm:bottom-6 sm:start-6 z-40 flex flex-col gap-2.5 sm:gap-3">
     <!-- WhatsApp Floating Action -->
     <a 
       :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '')" 
       target="_blank" 
       rel="noopener noreferrer" 
       title="WhatsApp" 
-      class="w-13 h-13 p-3.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 flex items-center justify-center text-xl shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:scale-110 active:scale-95 transition-all glow-pulse-subtle ripple-wa">
+      class="w-12 h-12 sm:w-13 sm:h-13 p-3 sm:p-3.5 rounded-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 flex items-center justify-center text-lg sm:text-xl shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:scale-110 active:scale-95 transition-all glow-pulse-subtle ripple-wa">
       <i class="fa-brands fa-whatsapp"></i>
     </a>
 
@@ -2167,7 +2175,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
     <a 
       :href="'tel:' + cms.contacts.phone" 
       :title="'Call ' + cms.contacts.phone" 
-      class="w-13 h-13 p-3.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 flex items-center justify-center text-xl shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:scale-110 active:scale-95 transition-all glow-pulse-subtle ripple-call">
+      class="w-12 h-12 sm:w-13 sm:h-13 p-3 sm:p-3.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-slate-950 flex items-center justify-center text-lg sm:text-xl shadow-[0_0_20px_rgba(6,182,212,0.5)] hover:scale-110 active:scale-95 transition-all glow-pulse-subtle ripple-call">
       <i class="fa-solid fa-phone"></i>
     </a>
   </div>
