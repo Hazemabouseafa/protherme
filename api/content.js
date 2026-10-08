@@ -12,6 +12,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'GET') {
     try {
       const data = await getContent();
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
       return res.status(200).json(data);
     } catch (err) {

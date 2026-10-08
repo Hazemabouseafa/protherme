@@ -52,25 +52,25 @@ document.addEventListener('alpine:init', () => {
       },
       images: {
         logo: 'assets/images/protherme-logo.jpg',
-        heroVisual: 'assets/images/installation-site-real.jpg',
-        pillar1: 'assets/images/arch-glass-villa.jpg',
-        pillar2: 'assets/images/marble-surface.jpg',
-        pillar3: 'assets/images/supercar-ppf.jpg',
-        gallery1: 'assets/images/installation-site-real.jpg',
-        gallery2: 'assets/images/marble-surface.jpg',
-        gallery3: 'assets/images/arch-glass-villa.jpg',
-        gallery4: 'assets/images/supercar-ppf.jpg'
+        heroVisual: 'assets/images/hero-beforeafter.jpg',
+        pillar1: 'assets/images/compound-villa-new.jpg',
+        pillar2: 'assets/images/marble-surface-new.jpg',
+        pillar3: 'assets/images/supercar-ppf-new.jpg',
+        gallery1: 'assets/images/hotel-enterprise-new.jpg',
+        gallery2: 'assets/images/marble-surface-new.jpg',
+        gallery3: 'assets/images/compound-villa-new.jpg',
+        gallery4: 'assets/images/supercar-ppf-new.jpg'
       },
       buttons: {
-        heroPrimary: { ar: 'طلب استشارة هندسية فورية', en: 'Request Instant Consultation', target: '#contact', visible: true },
-        heroCall: { ar: 'اتصال مباشر', en: 'Direct Call', target: 'tel:01010010030', visible: true },
-        navCta: { ar: 'تواصل معنا الآن', en: 'Contact Now', target: '#contact', visible: true }
+        heroPrimary: { ar: 'احجز معاينة مجانية بالعينات الآن', en: 'Book Free On-Site Survey & Samples', target: '#contact', visible: true },
+        heroCall: { ar: 'اتصال بمهندس استشاري: 01010010030', en: 'Direct Advisory Hotline: 01010010030', target: 'tel:01010010030', visible: true },
+        navCta: { ar: 'طلب معاينة', en: 'Request Survey', target: '#contact', visible: true }
       },
       heroStats: {
-        stat1: { num: '88%', label_ar: 'عزل الأشعة تحت الحمراء (IR)', label_en: 'Infrared Heat Rejection (IRR)' },
-        stat2: { num: '99.9%', label_ar: 'حجب الأشعة فوق البنفسجية (UV)', label_en: 'UV Radiation Block Protection' },
-        stat3: { num: '10-25', label_ar: 'سنوات ضمان دولي معتمد', label_en: 'Years Certified Global Warranty' },
-        stat4: { num: '0%', label_ar: 'تشويش إشارات الاتصال و 5G', label_en: 'Zero 5G & Signal Interference' }
+        stat1: { num: '30%', label_ar: 'توفير فاتورة الكهرباء', label_en: 'AC & Electricity Savings' },
+        stat2: { num: '88%', label_ar: 'عزل حرارة الشمس (IR)', label_en: 'Sun Heat Rejection (IR)' },
+        stat3: { num: '99%', label_ar: 'حماية من الأشعة الضارة (UV)', label_en: 'Harmful UV Shielding' },
+        stat4: { num: '100%', label_ar: 'رؤية نقية دون تعتيم', label_en: 'Crystal Optical Clarity' }
       },
       texts: {},
       imageBadges: {}
@@ -85,7 +85,7 @@ document.addEventListener('alpine:init', () => {
 
       // Listen for CMS updates across tabs
       window.addEventListener('storage', (e) => {
-        if (e.key === 'protherme_cms_content' && e.newValue) {
+        if (e.key === 'protherme_cms_v20261008' && e.newValue) {
           try {
             this.cms = JSON.parse(e.newValue);
           } catch (err) {}
@@ -103,10 +103,14 @@ document.addEventListener('alpine:init', () => {
       }
     },
 
-    // Fetch CMS Content from Server API
+    // Fetch CMS Content from Server API (with cache invalidation)
     async loadCMSContent() {
-      // Check localStorage cache first for instant render
-      const cached = localStorage.getItem('protherme_cms_content');
+      const CACHE_KEY = 'protherme_cms_v20261008';
+      try {
+        localStorage.removeItem('protherme_cms_content');
+      } catch (e) {}
+
+      const cached = localStorage.getItem(CACHE_KEY);
       if (cached) {
         try {
           this.cms = Object.assign({}, this.cms, JSON.parse(cached));
@@ -114,11 +118,11 @@ document.addEventListener('alpine:init', () => {
       }
 
       try {
-        const res = await fetch('/api/content');
+        const res = await fetch('/api/content?v=' + Date.now(), { cache: 'no-store' });
         if (res.ok) {
           const remoteData = await res.json();
-          this.cms = remoteData;
-          localStorage.setItem('protherme_cms_content', JSON.stringify(remoteData));
+          this.cms = Object.assign({}, this.cms, remoteData);
+          localStorage.setItem(CACHE_KEY, JSON.stringify(this.cms));
         }
       } catch (err) {
         console.warn('API sync unavailable, using default/cached CMS data:', err);

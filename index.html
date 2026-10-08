@@ -479,15 +479,26 @@ input[type=range]::-webkit-slider-thumb:hover {
       overflow: clip;
       width: 100%;
       max-width: 100vw;
+      direction: ltr !important;
     }
     .marquee-track {
       display: flex;
       width: max-content;
       gap: 1.5rem;
-      animation: marqueeScroll 45s linear infinite;
+      animation: marqueeScroll 50s linear infinite;
+      direction: ltr !important;
+      will-change: transform;
     }
     .marquee-container:hover .marquee-track {
       animation-play-state: paused;
+    }
+    .marquee-track > div {
+      direction: rtl;
+      text-align: right;
+    }
+    [dir="ltr"] .marquee-track > div {
+      direction: ltr;
+      text-align: left;
     }
   </style>
 
@@ -522,8 +533,8 @@ var translations = {
       "title_p1": "قلل فاتورة الكهرباء .. واحمِ بيتك ومشروعك",
       "title_p2": "من حرارة الصيف بأفلام النانو سيراميك",
       "subtitle": "أفلام عزل حراري أمريكية فائقة الوضوح توفر حتى 30% من استهلاك التكييف وتعزل 88% من الحرارة دون أي تعتيم أو تغيير للإضاءة الطبيعية.",
-      "cta_primary": "طلب معاينة واختبار حراري مجاني",
-      "cta_call": "تحدث مع مهندس: 01010010030",
+      "cta_primary": "احجز معاينة مجانية بالعينات الآن",
+      "cta_call": "اتصال بمهندس: 01010010030",
       "stat1_num": "30%",
       "stat1_label": "توفير فاتورة الكهرباء",
       "stat2_num": "88%",
@@ -1045,7 +1056,7 @@ function prothermeApp() {
       },
       images: {
         logo: 'assets/images/protherme-logo.jpg',
-        heroVisual: 'assets/images/hero-fullwidth.jpg',
+        heroVisual: 'assets/images/hero-beforeafter.jpg',
         pillar1: 'assets/images/compound-villa-new.jpg',
         pillar2: 'assets/images/marble-surface-new.jpg',
         pillar3: 'assets/images/supercar-ppf-new.jpg',
@@ -1055,15 +1066,15 @@ function prothermeApp() {
         gallery4: 'assets/images/supercar-ppf-new.jpg'
       },
       buttons: {
-        heroPrimary: { ar: 'طلب استشارة هندسية فورية', en: 'Request Instant Consultation', target: '#contact', visible: true },
-        heroCall: { ar: 'اتصال مباشر', en: 'Direct Call', target: 'tel:01010010030', visible: true },
-        navCta: { ar: 'تواصل معنا الآن', en: 'Contact Now', target: '#contact', visible: true }
+        heroPrimary: { ar: 'احجز معاينة مجانية بالعينات الآن', en: 'Book Free On-Site Survey & Samples', target: '#contact', visible: true },
+        heroCall: { ar: 'اتصال بمهندس استشاري: 01010010030', en: 'Direct Advisory Hotline: 01010010030', target: 'tel:01010010030', visible: true },
+        navCta: { ar: 'طلب معاينة', en: 'Request Survey', target: '#contact', visible: true }
       },
       heroStats: {
-        stat1: { num: '88%', label_ar: 'عزل الأشعة تحت الحمراء (IR)', label_en: 'Infrared Heat Rejection (IRR)' },
-        stat2: { num: '99.9%', label_ar: 'حجب الأشعة فوق البنفسجية (UV)', label_en: 'UV Radiation Block Protection' },
-        stat3: { num: '10-25', label_ar: 'سنوات ضمان دولي معتمد', label_en: 'Years Certified Global Warranty' },
-        stat4: { num: '0%', label_ar: 'تشويش إشارات الاتصال و 5G', label_en: 'Zero 5G & Signal Interference' }
+        stat1: { num: '30%', label_ar: 'توفير فاتورة الكهرباء', label_en: 'AC & Electricity Savings' },
+        stat2: { num: '88%', label_ar: 'عزل حرارة الشمس (IR)', label_en: 'Sun Heat Rejection (IR)' },
+        stat3: { num: '99%', label_ar: 'حماية من الأشعة الضارة (UV)', label_en: 'Harmful UV Shielding' },
+        stat4: { num: '100%', label_ar: 'رؤية نقية دون تعتيم', label_en: 'Crystal Optical Clarity' }
       },
       texts: {},
       imageBadges: {}
@@ -1078,7 +1089,7 @@ function prothermeApp() {
 
       // Listen for CMS updates across tabs
       window.addEventListener('storage', (e) => {
-        if (e.key === 'protherme_cms_content' && e.newValue) {
+        if (e.key === 'protherme_cms_v20261008' && e.newValue) {
           try {
             this.cms = JSON.parse(e.newValue);
           } catch (err) {}
@@ -1096,10 +1107,15 @@ function prothermeApp() {
       }
     },
 
-    // Fetch CMS Content from Server API
+    // Fetch CMS Content from Server API (with cache invalidation)
     async loadCMSContent() {
-      // Check localStorage cache first for instant render
-      const cached = localStorage.getItem('protherme_cms_content');
+      const CACHE_KEY = 'protherme_cms_v20261008';
+      // Invalidate obsolete prior caches
+      try {
+        localStorage.removeItem('protherme_cms_content');
+      } catch (e) {}
+
+      const cached = localStorage.getItem(CACHE_KEY);
       if (cached) {
         try {
           this.cms = Object.assign({}, this.cms, JSON.parse(cached));
@@ -1107,14 +1123,14 @@ function prothermeApp() {
       }
 
       try {
-        const res = await fetch('/api/content');
+        const res = await fetch('/api/content?v=' + Date.now(), { cache: 'no-store' });
         if (res.ok) {
           const remoteData = await res.json();
           this.cms = Object.assign({}, this.cms, remoteData);
           if (!this.cms.social) {
             this.cms.social = { facebook: '', instagram: '', linkedin: '', tiktok: '', youtube: '' };
           }
-          localStorage.setItem('protherme_cms_content', JSON.stringify(this.cms));
+          localStorage.setItem(CACHE_KEY, JSON.stringify(this.cms));
         }
       } catch (err) {
         console.warn('API sync unavailable, using default/cached CMS data:', err);
@@ -1343,7 +1359,11 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         <!-- BRAND LOGO (ENLARGED & CRYSTAL CLEAR) -->
         <a href="#" class="flex items-center gap-2.5 sm:gap-4 group py-2">
           <div class="relative p-1.5 sm:p-2 bg-white rounded-2xl border border-slate-200/90 shadow-md transition-transform duration-300 group-hover:scale-105 shrink-0">
-            <img :src="cms.images.logo || 'assets/images/protherme-logo.jpg'" alt="ProTherme Engineering Solutions" class="h-11 sm:h-16 md:h-18 w-auto object-contain rounded-xl">
+            <img 
+              src="assets/images/protherme-logo.jpg" 
+              :src="cms.images.logo || 'assets/images/protherme-logo.jpg'" 
+              alt="ProTherme Engineering Solutions" 
+              class="h-12 sm:h-16 md:h-18 w-auto object-contain rounded-xl">
           </div>
           <div class="flex flex-col">
             <span class="text-xl sm:text-3xl font-black tracking-tight text-slate-950 group-hover:text-cyan-700 transition-colors leading-none">ProTherme</span>
@@ -1501,7 +1521,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               rel="noopener noreferrer"
               class="w-full sm:w-auto justify-center px-7 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-black text-sm sm:text-base shadow-lg shadow-emerald-600/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2.5 cursor-pointer btn-shimmer">
               <i class="fa-brands fa-whatsapp text-lg"></i>
-              <span x-text="cms.buttons.heroPrimary[lang] || t('hero.cta_primary')"></span>
+              <span x-text="cms.buttons.heroPrimary[lang] || t('hero.cta_primary')">احجز معاينة مجانية بالعينات الآن</span>
             </a>
 
             <a 
@@ -1511,7 +1531,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               <div class="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center">
                 <i class="fa-solid fa-phone text-xs"></i>
               </div>
-              <span x-text="cms.buttons.heroCall[lang] || ('تحدث مع مهندس: ' + cms.contacts.phone)"></span>
+              <span x-text="cms.buttons.heroCall[lang] || ('اتصال بمهندس: ' + cms.contacts.phone)">اتصال بمهندس استشاري: 01010010030</span>
             </a>
 
             <button 
@@ -1525,20 +1545,20 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <!-- 4 Core Trust & Performance Stats (Light Cards) -->
           <div x-show="cms.visibility.heroStats" data-aos="fade-up" data-aos-duration="700" data-aos-delay="200" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-6 border-t border-slate-200">
             <div class="p-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:border-cyan-400 transition-colors">
-              <div class="text-2xl sm:text-3xl font-black font-mono text-cyan-700" x-text="cms.heroStats.stat1.num"></div>
-              <div class="text-xs text-slate-600 font-semibold mt-1" x-text="cms.heroStats.stat1['label_' + lang]"></div>
+              <div class="text-2xl sm:text-3xl font-black font-mono text-cyan-700" x-text="cms.heroStats.stat1.num">30%</div>
+              <div class="text-xs text-slate-600 font-semibold mt-1" x-text="cms.heroStats.stat1['label_' + lang]">توفير فاتورة الكهرباء</div>
             </div>
             <div class="p-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:border-emerald-400 transition-colors">
-              <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-700" x-text="cms.heroStats.stat2.num"></div>
-              <div class="text-xs text-slate-600 font-semibold mt-1" x-text="cms.heroStats.stat2['label_' + lang]"></div>
+              <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-700" x-text="cms.heroStats.stat2.num">88%</div>
+              <div class="text-xs text-slate-600 font-semibold mt-1" x-text="cms.heroStats.stat2['label_' + lang]">عزل حرارة الشمس (IR)</div>
             </div>
             <div class="p-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:border-cyan-400 transition-colors">
-              <div class="text-2xl sm:text-3xl font-black font-mono text-cyan-700" x-text="cms.heroStats.stat3.num"></div>
-              <div class="text-xs text-slate-600 font-semibold mt-1" x-text="cms.heroStats.stat3['label_' + lang]"></div>
+              <div class="text-2xl sm:text-3xl font-black font-mono text-cyan-700" x-text="cms.heroStats.stat3.num">99%</div>
+              <div class="text-xs text-slate-600 font-semibold mt-1" x-text="cms.heroStats.stat3['label_' + lang]">حماية من الأشعة الضارة (UV)</div>
             </div>
             <div class="p-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-xs hover:border-emerald-400 transition-colors">
-              <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-700" x-text="cms.heroStats.stat4.num"></div>
-              <div class="text-xs text-slate-600 font-semibold mt-1" x-text="cms.heroStats.stat4['label_' + lang]"></div>
+              <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-700" x-text="cms.heroStats.stat4.num">100%</div>
+              <div class="text-xs text-slate-600 font-semibold mt-1" x-text="cms.heroStats.stat4['label_' + lang]">رؤية نقية دون تعتيم</div>
             </div>
           </div>
 
@@ -1579,32 +1599,32 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             </div>
 
             <!-- TAB 1: PHOTOREALISTIC BEFORE & AFTER BUILDING IMAGE -->
-            <div x-show="heroVisualTab === 'image'" class="relative rounded-2xl overflow-hidden aspect-[16/10] sm:aspect-[4/3] border border-slate-200 bg-slate-900 group shadow-inner">
+            <div x-show="heroVisualTab === 'image'" class="relative rounded-2xl overflow-hidden aspect-[16/10] sm:aspect-[4/3] border border-slate-200 bg-slate-100 group shadow-inner">
               <img 
                 id="hero-fallback-img"
+                src="assets/images/hero-beforeafter.jpg"
                 :src="cms.images.heroVisual || 'assets/images/hero-beforeafter.jpg'" 
                 alt="ProTherme Real Building Before and After Thermal Comparison" 
-                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700">
+                class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                loading="eager"
+                fetchpriority="high">
               
-              <!-- Subtle Split Divider Glow -->
-              <div class="absolute inset-y-0 start-1/2 w-[2px] bg-gradient-to-b from-white/80 via-cyan-400 to-white/80 pointer-events-none shadow-[0_0_8px_rgba(6,182,212,0.8)]"></div>
-
-              <!-- Top Left: Before Badge -->
-              <div class="absolute top-3 start-3 px-2.5 py-1 rounded-lg bg-slate-950/80 backdrop-blur-md border border-orange-500/40 text-[11px] font-bold text-orange-200 flex items-center gap-1.5 shadow-md">
+              <!-- Left Side: Before Badge (Hot side of photo) -->
+              <div class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-orange-400 text-[11px] font-bold text-orange-800 flex items-center gap-1.5 shadow-md">
                 <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
                 <span>قبل: لهيب ووهج 105°F</span>
               </div>
 
-              <!-- Top Right: After Badge -->
-              <div class="absolute top-3 end-3 px-2.5 py-1 rounded-lg bg-slate-950/80 backdrop-blur-md border border-cyan-400/50 text-[11px] font-bold text-cyan-200 flex items-center gap-1.5 shadow-md">
-                <span class="w-2 h-2 rounded-full bg-cyan-400 beacon-dot"></span>
+              <!-- Right Side: After Badge (Cool side of photo) -->
+              <div class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-cyan-400 text-[11px] font-bold text-cyan-800 flex items-center gap-1.5 shadow-md">
+                <span class="w-2 h-2 rounded-full bg-cyan-500 beacon-dot"></span>
                 <span>بعد: راحة وبرودة 78°F</span>
               </div>
 
-              <!-- Bottom Bar: Value Statement -->
-              <div class="absolute bottom-3 inset-x-3 p-2.5 rounded-xl bg-slate-950/85 backdrop-blur-md border border-white/20 text-center shadow-lg">
-                <p class="text-[11px] sm:text-xs font-semibold text-slate-100 flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-circle-check text-emerald-400 text-xs"></i>
+              <!-- Bottom Bar: Value Statement (Light Architectural Aesthetic) -->
+              <div class="absolute bottom-3 inset-x-3 p-2.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 text-center shadow-md">
+                <p class="text-[11px] sm:text-xs font-bold text-slate-800 flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-circle-check text-emerald-600 text-xs"></i>
                   <span>عزل حراري حقيقي يصل إلى 88% مع الحفاظ الكامل على الرؤية النقية 100%</span>
                 </p>
               </div>
@@ -1662,17 +1682,6 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
             </div>
 
-          </div>
-
-          <!-- Decorative Floating Corner Badge -->
-          <div class="hidden sm:flex absolute -bottom-5 -start-5 p-3.5 rounded-2xl bg-white border border-slate-200 shadow-xl z-30 items-center gap-3 animate-float-delayed">
-            <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-cyan-600 to-teal-500 flex items-center justify-center text-white text-lg font-bold shadow-xs">
-              <i class="fa-solid fa-shield-halved"></i>
-            </div>
-            <div>
-              <div class="text-[11px] text-slate-500" x-text="cms.imageBadges?.heroCornerTag?.[lang] || 'الممثل والموزع المعتمد'"></div>
-              <div class="text-xs font-black text-slate-900" x-text="cms.imageBadges?.heroCornerName?.[lang] || 'Global Hi-Tech Films'"></div>
-            </div>
           </div>
 
         </div>
@@ -1735,7 +1744,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- THERMAL TEST VIDEO (PROOF & DEMO)          -->
   <!-- ========================================== -->
-  <section id="thermal-proof" class="py-20 bg-slate-50 border-b border-slate-200/90 relative z-10">
+  <section id="thermal-proof" class="py-20 bg-slate-50 border-b border-slate-200/90 relative z-10 scroll-mt-28">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Section Header -->
@@ -1775,8 +1784,12 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               <video 
                 id="thermal-demo-video"
                 controls 
-                preload="metadata" 
+                autoplay
+                muted
+                loop
                 playsinline 
+                preload="auto" 
+                src="assets/videos/beforeafter.mp4"
                 poster="assets/images/hero-beforeafter.jpg"
                 class="w-full h-full object-cover">
                 <source src="assets/videos/beforeafter.mp4" type="video/mp4">
@@ -2766,7 +2779,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- CLIENT REVIEWS SCROLLING MARQUEE           -->
   <!-- ========================================== -->
-  <section id="reviews" class="py-20 bg-white border-b border-slate-200/90 relative z-10 overflow-hidden">
+  <section id="reviews" class="py-20 bg-white border-b border-slate-200/90 relative z-10 overflow-hidden scroll-mt-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
       <!-- Section Header -->
       <div data-aos="fade-up" class="text-center max-w-3xl mx-auto space-y-3">
@@ -3441,7 +3454,11 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         <div class="lg:col-span-5 space-y-4">
           <div class="flex items-center gap-3.5">
             <div class="relative p-2 bg-white rounded-2xl border border-slate-200 shadow-md shrink-0">
-              <img :src="cms.images.logo || 'assets/images/protherme-logo.jpg'" alt="ProTherme Logo" class="h-14 sm:h-16 w-auto object-contain rounded-xl">
+              <img 
+                src="assets/images/protherme-logo.jpg" 
+                :src="cms.images.logo || 'assets/images/protherme-logo.jpg'" 
+                alt="ProTherme Logo" 
+                class="h-14 sm:h-16 w-auto object-contain rounded-xl">
             </div>
             <div class="flex flex-col">
               <span class="text-2xl font-black text-slate-950 leading-tight">ProTherme</span>
