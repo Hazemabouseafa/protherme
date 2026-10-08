@@ -23,7 +23,7 @@ var translations = {
     hero: {
       badge: 'الممثل والموزع المعتمد لشركة Global Hi-Tech Films العالمية',
       title_p1: 'قلل فاتورة الكهرباء .. واحمِ بيتك ومشروعك',
-      title_p2: 'من حرارة الصيف بأفلام النانو سيراميك',
+      title_p2: 'من الحرارة بأفلام النانو سيراميك',
       subtitle: 'أفلام عزل حراري أمريكية فائقة الوضوح توفر حتى 30% من استهلاك التكييف وتعزل 88% من الحرارة دون أي تعتيم أو تغيير للإضاءة الطبيعية.',
       cta_primary: 'احجز معاينة مجانية بالعينات الآن',
       cta_call: 'اتصال بمهندس: 01010010030',
@@ -55,13 +55,13 @@ var translations = {
     services: {
       tag: 'خدمات العزل والحماية الهندسية',
       title: '3 حلول هندسية تضمن لك الراحة والبرودة وحماية استثماراتك',
-      subtitle: 'حلول نانو تكنولوجي أمريكية مصممة خصيصاً لمقاومة مناخ الصيف القاسي وحماية أصولك وممتلكاتك بأعلى معايير الدقة الهندسية وضمان معتمد حتى 25 سنة.',
+      subtitle: 'حلول نانو تكنولوجي أمريكية مصممة خصيصاً لمقاومة الحرارة وحماية أصولك وممتلكاتك بأعلى معايير الدقة الهندسية وضمان معتمد حتى 25 سنة.',
       p1: {
         tag: 'الركيزة 01 - معمارية وهندسية',
         name: 'أفلام زجاج المباني والعزل الحراري',
         desc: 'حلول العزل المعماري بتقنية النانو سيراميك المتطورة للمباني الإدارية، الفلل الفاخرة، والواجهات الزجاجية الكبيرة لحجب الحرارة وحماية الديكور الداخلي.',
         f1: 'حجب 99% من الأشعة فوق البنفسجية لحماية الأثاث والأرضيات من البهتان',
-        f2: 'تخفيض درجات الحرارة الداخلية حتى 12-15 درجة مئوية في ذروة الصيف',
+        f2: 'تخفيض درجات الحرارة الداخلية حتى 12-15 درجة مئوية في أوقات ذروة الحرارة',
         f3: 'توفير فوري يصل إلى 30% من استهلاك أجهزة التكييف والكهرباء',
         f4: 'رؤية بانورامية فائقة النقاء تمنع الوهج المزعج دون إعتام الإضاءة الطبيعية',
         specs: 'IRR: حتى 88% | UVR: 99.9% | TSER: حتى 72%',
@@ -225,7 +225,7 @@ var translations = {
     hero: {
       badge: 'Authorized Representative & Distributor of Global Hi-Tech Films',
       title_p1: 'Lower Your Electric Bill & Protect Your Property',
-      title_p2: 'From Scorching Summer Heat with Nano-Ceramic',
+      title_p2: 'From Extreme Heat with Nano-Ceramic',
       subtitle: 'Genuine American optical solar films that cut AC bills by up to 30% and reject up to 88% solar heat while maintaining 100% crystal-clear daylight.',
       cta_primary: 'Book Free On-Site Survey & Samples',
       cta_call: 'Call Engineer: 01010010030',
@@ -263,7 +263,7 @@ var translations = {
         name: 'Architectural Window Films & Solar Control',
         desc: 'Advanced nano-ceramic solar control films for corporate headquarters, luxury villas, and floor-to-ceiling glass facades to block heat, eliminate glare, and protect interiors.',
         f1: '99% UV radiation rejection preventing costly bleaching of fabrics and floors',
-        f2: '12-15°C indoor temperature drop during peak summer heat waves',
+        f2: '12-15°C indoor temperature drop during peak heat waves',
         f3: 'Up to 30% reduction in commercial HVAC and electricity consumption',
         f4: 'Crystal-clear optical transparency maintaining panoramic views and natural light',
         specs: 'IRR: Up to 88% | UVR: 99.9% | TSER: Up to 72%',
