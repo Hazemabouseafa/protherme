@@ -1,7 +1,13 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "functions": {
+    "api/video.js": {
+      "includeFiles": "assets/videos/**"
+    }
+  },
   "rewrites": [
+    { "source": "/assets/videos/beforeafter.mp4", "destination": "/api/video" },
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/protherme/admin", "destination": "/admin.html" },
     { "source": "/protherme", "destination": "/index.html" },

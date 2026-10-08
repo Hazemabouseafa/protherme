@@ -150,6 +150,12 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+  // --- API: /api/video (Video Stream) ---
+  if (subPath === '/api/video' || urlPath === '/api/video') {
+    require('./api/video')(req, res);
+    return;
+  }
+
   // --- Admin Route ---
   if (subPath === '/admin' || subPath === '/admin/' || urlPath === '/admin' || urlPath === '/admin/') {
     const adminPath = path.join(BASE_DIR, 'admin.html');
