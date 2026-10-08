@@ -3044,7 +3044,15 @@
             gallery3_footer: { ar: '', en: '' },
             gallery4_badge: { ar: '', en: '' },
             gallery4_footer: { ar: '', en: '' }
-          }
+          },
+          reviews: {
+            tag: { ar: '', en: '' },
+            title: { ar: '', en: '' },
+            subtitle: { ar: '', en: '' },
+            items: []
+          },
+          blocks: [],
+          sectionOrder: []
         },
 
         init() {
@@ -3947,6 +3955,12 @@
               });
               if (!data.video) data.video = { tag: {}, title: {}, subtitle: {}, badge_top: {}, badge_quality: {}, caption: {}, metrics_title: {}, metrics_desc: {}, h1_title: {}, h1_desc: {}, h2_title: {}, h2_desc: {}, h3_title: {}, h3_desc: {}, btn_cta: {} };
               if (!data.reviews) data.reviews = { tag: {}, title: {}, subtitle: {}, items: [] };
+              if (!data.reviews.tag) data.reviews.tag = { ar: '', en: '' };
+              if (!data.reviews.title) data.reviews.title = { ar: '', en: '' };
+              if (!data.reviews.subtitle) data.reviews.subtitle = { ar: '', en: '' };
+              if (!Array.isArray(data.reviews.items)) data.reviews.items = [];
+              if (!Array.isArray(data.blocks)) data.blocks = [];
+              if (!Array.isArray(data.sectionOrder)) data.sectionOrder = [];
               if (!data.images) data.images = {};
               if (!data.buttons) data.buttons = {};
               if (!data.heroStats) data.heroStats = {};
