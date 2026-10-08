@@ -371,6 +371,143 @@ document.addEventListener('alpine:init', () => {
         contact: 10
       };
       return defaults[secId] !== undefined ? defaults[secId] : 10;
+    },
+
+    // Dynamic Lists Getters
+    getFaqs() {
+      if (this.cms && Array.isArray(this.cms.faqList) && this.cms.faqList.length > 0) {
+        return this.cms.faqList;
+      }
+      return [1, 2, 3, 4].map(n => ({
+        q: { ar: this.t('faq.q' + n), en: this.t('faq.q' + n) },
+        a: { ar: this.t('faq.a' + n), en: this.t('faq.a' + n) }
+      }));
+    },
+
+    getSteps() {
+      if (this.cms && Array.isArray(this.cms.stepsList) && this.cms.stepsList.length > 0) {
+        return this.cms.stepsList;
+      }
+      return [1, 2, 3].map(n => ({
+        num: this.t('steps.s' + n + '_num'),
+        title: { ar: this.t('steps.s' + n + '_title'), en: this.t('steps.s' + n + '_title') },
+        desc: { ar: this.t('steps.s' + n + '_desc'), en: this.t('steps.s' + n + '_desc') }
+      }));
+    },
+
+    getPillars() {
+      if (this.cms && Array.isArray(this.cms.pillarsList) && this.cms.pillarsList.length > 0) {
+        return this.cms.pillarsList;
+      }
+      return ['p1', 'p2', 'p3'].map((pKey, i) => ({
+        key: pKey,
+        enabled: this.cms.visibility ? this.cms.visibility['pillar' + (i + 1)] !== false : true,
+        name: { ar: this.t('pillars.' + pKey + '.name'), en: this.t('pillars.' + pKey + '.name') },
+        tag: { ar: this.t('pillars.' + pKey + '.tag'), en: this.t('pillars.' + pKey + '.tag') },
+        desc: { ar: this.t('pillars.' + pKey + '.desc'), en: this.t('pillars.' + pKey + '.desc') },
+        f1: { ar: this.t('pillars.' + pKey + '.f1'), en: this.t('pillars.' + pKey + '.f1') },
+        f2: { ar: this.t('pillars.' + pKey + '.f2'), en: this.t('pillars.' + pKey + '.f2') },
+        f3: { ar: this.t('pillars.' + pKey + '.f3'), en: this.t('pillars.' + pKey + '.f3') },
+        f4: { ar: this.t('pillars.' + pKey + '.f4'), en: this.t('pillars.' + pKey + '.f4') },
+        specs: { ar: this.t('pillars.' + pKey + '.specs'), en: this.t('pillars.' + pKey + '.specs') },
+        cta: { ar: this.t('pillars.' + pKey + '.cta'), en: this.t('pillars.' + pKey + '.cta') },
+        image: this.cms.images ? this.cms.images['pillar' + (i + 1)] : '',
+        badge: { ar: this.cms.imageBadges?.['pillar' + (i + 1)]?.ar || '', en: this.cms.imageBadges?.['pillar' + (i + 1)]?.en || '' }
+      }));
+    },
+
+    getGalleryItems() {
+      if (this.cms && Array.isArray(this.cms.galleryList) && this.cms.galleryList.length > 0) {
+        return this.cms.galleryList;
+      }
+      return ['1', '2', '3', '4'].map(gNum => ({
+        id: 'gallery' + gNum,
+        category: gNum === '1' || gNum === '3' ? 'arch' : gNum === '2' ? 'surface' : 'auto',
+        image: this.cms.images ? this.cms.images['gallery' + gNum] : '',
+        title: { ar: this.t('gallery.item' + gNum + '_title'), en: this.t('gallery.item' + gNum + '_title') },
+        desc: { ar: this.t('gallery.item' + gNum + '_desc'), en: this.t('gallery.item' + gNum + '_desc') },
+        badge: { ar: this.cms.imageBadges?.['gallery' + gNum + '_badge']?.ar || '', en: this.cms.imageBadges?.['gallery' + gNum + '_badge']?.en || '' },
+        footer: { ar: this.cms.imageBadges?.['gallery' + gNum + '_footer']?.ar || '', en: this.cms.imageBadges?.['gallery' + gNum + '_footer']?.en || '' }
+      }));
+    },
+
+    getTechStandards() {
+      if (this.cms && Array.isArray(this.cms.techList) && this.cms.techList.length > 0) {
+        return this.cms.techList;
+      }
+      return ['c1', 'c2', 'c3', 'c4'].map(cKey => ({
+        key: cKey,
+        title: { ar: this.t('tech_standards.' + cKey + '_title'), en: this.t('tech_standards.' + cKey + '_title') },
+        desc: { ar: this.t('tech_standards.' + cKey + '_desc'), en: this.t('tech_standards.' + cKey + '_desc') }
+      }));
+    },
+
+    getComparisonRows() {
+      if (this.cms && Array.isArray(this.cms.comparisonList) && this.cms.comparisonList.length > 0) {
+        return this.cms.comparisonList;
+      }
+      return ['r1', 'r2', 'r3', 'r4'].map(rKey => ({
+        key: rKey,
+        title: { ar: this.t('comparison.' + rKey + '_title'), en: this.t('comparison.' + rKey + '_title') },
+        pro: { ar: this.t('comparison.' + rKey + '_pro'), en: this.t('comparison.' + rKey + '_pro') },
+        std: { ar: this.t('comparison.' + rKey + '_std'), en: this.t('comparison.' + rKey + '_std') }
+      }));
+    },
+
+    getHeroStats() {
+      if (this.cms && Array.isArray(this.cms.heroStatsList) && this.cms.heroStatsList.length > 0) {
+        return this.cms.heroStatsList;
+      }
+      if (this.cms && this.cms.heroStats) {
+        return ['stat1', 'stat2', 'stat3', 'stat4'].map(k => ({
+          key: k,
+          num: this.cms.heroStats[k]?.num || '',
+          label: { ar: this.cms.heroStats[k]?.label_ar || '', en: this.cms.heroStats[k]?.label_en || '' }
+        }));
+      }
+      return [];
+    },
+
+    getTrustItems() {
+      if (this.cms && Array.isArray(this.cms.trustList) && this.cms.trustList.length > 0) {
+        return this.cms.trustList;
+      }
+      return ['t1', 't2', 't3', 't4'].map(tKey => ({
+        key: tKey,
+        title: { ar: this.t('trust.' + tKey), en: this.t('trust.' + tKey) },
+        sub: { ar: this.t('trust.' + tKey + '_sub'), en: this.t('trust.' + tKey + '_sub') }
+      }));
+    },
+
+    getVideoBullets() {
+      if (this.cms && Array.isArray(this.cms.videoBulletsList) && this.cms.videoBulletsList.length > 0) {
+        return this.cms.videoBulletsList;
+      }
+      return ['h1', 'h2', 'h3'].map(hKey => ({
+        key: hKey,
+        title: { ar: this.cms.video?.[hKey + '_title']?.ar || '', en: this.cms.video?.[hKey + '_title']?.en || '' },
+        desc: { ar: this.cms.video?.[hKey + '_desc']?.ar || '', en: this.cms.video?.[hKey + '_desc']?.en || '' }
+      }));
+    },
+
+    getVillaFeatures() {
+      if (this.cms && Array.isArray(this.cms.villaFeaturesList) && this.cms.villaFeaturesList.length > 0) {
+        return this.cms.villaFeaturesList;
+      }
+      return [1, 2, 3].map(n => ({
+        title: { ar: this.t('sectors.villa_f' + n + '_title'), en: this.t('sectors.villa_f' + n + '_title') },
+        desc: { ar: this.t('sectors.villa_f' + n + '_desc'), en: this.t('sectors.villa_f' + n + '_desc') }
+      }));
+    },
+
+    getEnterpriseFeatures() {
+      if (this.cms && Array.isArray(this.cms.enterpriseFeaturesList) && this.cms.enterpriseFeaturesList.length > 0) {
+        return this.cms.enterpriseFeaturesList;
+      }
+      return [1, 2, 3].map(n => ({
+        title: { ar: this.t('sectors.ent_f' + n + '_title'), en: this.t('sectors.ent_f' + n + '_title') },
+        desc: { ar: this.t('sectors.ent_f' + n + '_desc'), en: this.t('sectors.ent_f' + n + '_desc') }
+      }));
     }
   }));
 });

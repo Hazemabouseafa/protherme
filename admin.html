@@ -143,6 +143,27 @@
       <!-- Action Buttons -->
       <div class="flex items-center gap-1.5 sm:gap-2.5">
         
+        <!-- Quick Inbox Shortcuts -->
+        <button 
+          @click="activeTab = 'clients_inbox'; fetchLeads();" 
+          class="px-2.5 sm:px-3 py-2 rounded-xl border text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs"
+          :class="activeTab === 'clients_inbox' ? 'bg-cyan-600 text-white border-cyan-600' : 'bg-blue-50 hover:bg-blue-100 text-blue-900 border-blue-200'"
+          title="صندوق رسائل واستفسارات العملاء">
+          <i class="fa-solid fa-inbox text-xs"></i>
+          <span class="hidden sm:inline">العملاء</span>
+          <span class="px-1.5 py-0.2 rounded-full font-mono text-[10px]" :class="activeTab === 'clients_inbox' ? 'bg-white/20 text-white' : 'bg-blue-200 text-blue-900'" x-text="leads.length"></span>
+        </button>
+
+        <button 
+          @click="activeTab = 'career_inbox'; fetchCareers();" 
+          class="px-2.5 sm:px-3 py-2 rounded-xl border text-xs font-bold transition-all flex items-center gap-1.5 shadow-xs"
+          :class="activeTab === 'career_inbox' ? 'bg-teal-600 text-white border-teal-600' : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border-emerald-200'"
+          title="صندوق طلبات التوظيف">
+          <i class="fa-solid fa-briefcase text-xs"></i>
+          <span class="hidden sm:inline">التوظيف</span>
+          <span class="px-1.5 py-0.2 rounded-full font-mono text-[10px]" :class="activeTab === 'career_inbox' ? 'bg-white/20 text-white' : 'bg-emerald-200 text-emerald-900'" x-text="careers.length"></span>
+        </button>
+
         <!-- Live Site Preview -->
         <a href="/" target="_blank" class="px-2.5 sm:px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-xs font-bold text-slate-700 hover:text-slate-950 transition-all flex items-center gap-1.5" title="معاينة الموقع الحي">
           <i class="fa-solid fa-arrow-up-right-from-square text-cyan-600 text-xs"></i>
@@ -836,25 +857,45 @@
                 class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-cyan-600 shadow-xs"></textarea>
             </div>
 
-            <!-- 4 Live Stats Numbers & Labels -->
+            <!-- Live Stats Numbers & Labels with Dynamic Add / Delete -->
             <div class="pt-4 border-t border-slate-200 space-y-3">
-              <h4 class="text-sm font-bold text-cyan-800">الأرقام والإحصائيات الأربعة (Hero Stats):</h4>
+              <div class="flex items-center justify-between">
+                <h4 class="text-sm font-bold text-cyan-800">الأرقام والإحصائيات الرئيسية (Hero Stats):</h4>
+                <button 
+                  type="button" 
+                  @click="addHeroStat()" 
+                  class="px-3 py-1.5 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs">
+                  <i class="fa-solid fa-plus"></i>
+                  <span>إضافة إحصائية جديدة</span>
+                </button>
+              </div>
               
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <template x-for="(stat, sKey) in cms.heroStats" :key="sKey">
+                <template x-for="(stat, sIdx) in cms.heroStatsList" :key="sIdx">
                   <div class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200 space-y-2 shadow-xs">
                     <div class="flex items-center justify-between">
-                      <span class="text-xs text-slate-500 font-mono" x-text="sKey"></span>
-                      <input 
-                        type="text" 
-                        x-model="stat.num" 
-                        dir="ltr" 
-                        class="w-24 px-2 py-1 rounded bg-white border border-slate-300 text-cyan-800 font-mono font-bold text-sm text-center">
+                      <span class="text-xs text-slate-500 font-mono" x-text="'إحصائية #' + (sIdx + 1)"></span>
+                      <div class="flex items-center gap-2">
+                        <input 
+                          type="text" 
+                          x-model="stat.num" 
+                          dir="ltr" 
+                          placeholder="مثال: 95%"
+                          class="w-24 px-2 py-1 rounded bg-white border border-slate-300 text-cyan-800 font-mono font-bold text-sm text-center">
+                        <button 
+                          type="button" 
+                          @click="deleteHeroStat(sIdx)" 
+                          class="text-rose-500 hover:text-rose-700 p-1 text-xs" 
+                          title="حذف هذه الإحصائية">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
                     </div>
                     <input 
                       type="text" 
-                      x-model="stat['label_' + editLang]" 
+                      x-model="stat.label[editLang]" 
                       :dir="editLang === 'ar' ? 'rtl' : 'ltr'" 
+                      placeholder="عنوان ووصف الإحصائية..."
                       class="w-full px-2.5 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-900">
                   </div>
                 </template>
@@ -932,9 +973,18 @@
 
             <!-- Trust Bar Editor (شريط معايير الجودة والاعتمادات) -->
             <div class="pt-4 border-t border-slate-200 space-y-4">
-              <div class="flex items-center gap-2 text-cyan-800 font-bold text-xs sm:text-sm">
-                <i class="fa-solid fa-shield-halved text-cyan-600"></i>
-                <span>شريط الثقة والاعتمادات الأربعة (Trust Bar):</span>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 text-cyan-800 font-bold text-xs sm:text-sm">
+                  <i class="fa-solid fa-shield-halved text-cyan-600"></i>
+                  <span>شريط الثقة والاعتمادات (Trust Bar):</span>
+                </div>
+                <button 
+                  type="button" 
+                  @click="addTrustItem()" 
+                  class="px-3 py-1.5 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs">
+                  <i class="fa-solid fa-plus"></i>
+                  <span>إضافة اعتماد جديد</span>
+                </button>
               </div>
 
               <div>
@@ -943,29 +993,22 @@
               </div>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 shadow-xs">
-                  <span class="text-[11px] font-bold text-cyan-700">الاعتماد 1: المعاينة والعينات</span>
-                  <input type="text" x-model="cms.texts[editLang].trust.t1" placeholder="العنوان الرئيسي" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold text-slate-900">
-                  <input type="text" x-model="cms.texts[editLang].trust.t1_sub" placeholder="النص الفرعي" class="w-full px-2 py-1 rounded bg-white border border-slate-300 text-xs text-slate-500">
-                </div>
-
-                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 shadow-xs">
-                  <span class="text-[11px] font-bold text-emerald-700">الاعتماد 2: سابقة الأعمال (+500 مشروع)</span>
-                  <input type="text" x-model="cms.texts[editLang].trust.t2" placeholder="العنوان الرئيسي" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold text-slate-900">
-                  <input type="text" x-model="cms.texts[editLang].trust.t2_sub" placeholder="النص الفرعي" class="w-full px-2 py-1 rounded bg-white border border-slate-300 text-xs text-slate-500">
-                </div>
-
-                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 shadow-xs">
-                  <span class="text-[11px] font-bold text-cyan-700">الاعتماد 3: التركيب الهندسي النظيف</span>
-                  <input type="text" x-model="cms.texts[editLang].trust.t3" placeholder="العنوان الرئيسي" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold text-slate-900">
-                  <input type="text" x-model="cms.texts[editLang].trust.t3_sub" placeholder="النص الفرعي" class="w-full px-2 py-1 rounded bg-white border border-slate-300 text-xs text-slate-500">
-                </div>
-
-                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 shadow-xs">
-                  <span class="text-[11px] font-bold text-emerald-700">الاعتماد 4: الضمان الرسمي 5-10 سنوات</span>
-                  <input type="text" x-model="cms.texts[editLang].trust.t4" placeholder="العنوان الرئيسي" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold text-slate-900">
-                  <input type="text" x-model="cms.texts[editLang].trust.t4_sub" placeholder="النص الفرعي" class="w-full px-2 py-1 rounded bg-white border border-slate-300 text-xs text-slate-500">
-                </div>
+                <template x-for="(trust, tIdx) in cms.trustList" :key="tIdx">
+                  <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 shadow-xs">
+                    <div class="flex items-center justify-between">
+                      <span class="text-[11px] font-bold text-cyan-700" x-text="'اعتماد #' + (tIdx + 1)"></span>
+                      <button 
+                        type="button" 
+                        @click="deleteTrustItem(tIdx)" 
+                        class="text-rose-500 hover:text-rose-700 text-xs p-1" 
+                        title="حذف هذا الاعتماد">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                    <input type="text" x-model="trust.title[editLang]" placeholder="العنوان الرئيسي" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                    <input type="text" x-model="trust.sub[editLang]" placeholder="النص الفرعي" class="w-full px-2 py-1 rounded bg-white border border-slate-300 text-xs text-slate-500">
+                  </div>
+                </template>
               </div>
             </div>
 
@@ -1003,17 +1046,39 @@
             </div>
           </div>
 
-          <!-- Repeat for Pillar 1, 2, 3 -->
-          <template x-for="(pillarKey, idx) in ['p1', 'p2', 'p3']" :key="pillarKey">
+          <!-- Header with Add Button -->
+          <div class="flex items-center justify-between pt-2">
+            <h4 class="text-sm font-bold text-cyan-900">الخدمات والركائز المعتمدة (<span x-text="(cms.pillarsList || []).length"></span>):</h4>
+            <button 
+              type="button" 
+              @click="addPillar()" 
+              class="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs shadow-xs transition flex items-center gap-1.5">
+              <i class="fa-solid fa-plus"></i>
+              <span>إضافة خدمة / ركيزة جديدة</span>
+            </button>
+          </div>
+
+          <!-- Repeat for Dynamic Pillars List -->
+          <template x-for="(pillar, idx) in cms.pillarsList" :key="idx">
             <div class="p-5 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-4 shadow-xs">
               <div class="flex items-center justify-between border-b border-slate-200 pb-3">
                 <div class="flex items-center gap-2">
                   <span class="w-6 h-6 rounded-lg bg-cyan-100 text-cyan-800 flex items-center justify-center font-bold text-xs" x-text="'0' + (idx + 1)"></span>
-                  <h4 class="text-base font-bold text-slate-950" x-text="cms.texts[editLang].pillars[pillarKey].name"></h4>
+                  <h4 class="text-base font-bold text-slate-950" x-text="pillar.name[editLang] || 'خدمة جديدة'"></h4>
                 </div>
-                <div class="flex items-center gap-2">
-                  <label class="text-xs text-slate-600 font-medium">إظهار الركيزة:</label>
-                  <input type="checkbox" x-model="cms.visibility['pillar' + (idx + 1)]" class="accent-cyan-600 w-4 h-4 cursor-pointer">
+                <div class="flex items-center gap-3">
+                  <label class="flex items-center gap-1.5 text-xs text-slate-600 font-medium cursor-pointer">
+                    <span>إظهار:</span>
+                    <input type="checkbox" x-model="pillar.enabled" class="accent-cyan-600 w-4 h-4 cursor-pointer">
+                  </label>
+                  <button 
+                    type="button" 
+                    @click="deletePillar(idx)" 
+                    class="text-rose-500 hover:text-rose-700 px-2 py-1 rounded bg-rose-50 text-xs font-bold flex items-center gap-1" 
+                    title="حذف هذه الركيزة">
+                    <i class="fa-solid fa-trash-can"></i>
+                    <span class="hidden sm:inline">حذف</span>
+                  </button>
                 </div>
               </div>
 
@@ -1021,28 +1086,28 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label class="block text-[11px] font-bold text-slate-700 mb-1">اسم الركيزة / الخدمة:</label>
-                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].name" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold">
+                  <input type="text" x-model="pillar.name[editLang]" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold">
                 </div>
                 <div>
                   <label class="block text-[11px] font-bold text-slate-700 mb-1">الوسم العلوي (Tag):</label>
-                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].tag" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-bold">
+                  <input type="text" x-model="pillar.tag[editLang]" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-bold">
                 </div>
               </div>
 
               <!-- Description -->
               <div>
                 <label class="block text-[11px] font-bold text-slate-700 mb-1">الوصف التفصيلي:</label>
-                <textarea rows="2" x-model="cms.texts[editLang].pillars[pillarKey].desc" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900"></textarea>
+                <textarea rows="2" x-model="pillar.desc[editLang]" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900"></textarea>
               </div>
 
               <!-- 4 Feature Bullet Points -->
               <div class="space-y-2">
                 <label class="block text-[11px] font-bold text-slate-700">المميزات الأربعة (Features):</label>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].f1" placeholder="ميزة 1" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900">
-                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].f2" placeholder="ميزة 2" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900">
-                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].f3" placeholder="ميزة 3" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900">
-                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].f4" placeholder="ميزة 4" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900">
+                  <input type="text" x-model="pillar.f1[editLang]" placeholder="ميزة 1" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900">
+                  <input type="text" x-model="pillar.f2[editLang]" placeholder="ميزة 2" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900">
+                  <input type="text" x-model="pillar.f3[editLang]" placeholder="ميزة 3" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900">
+                  <input type="text" x-model="pillar.f4[editLang]" placeholder="ميزة 4" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900">
                 </div>
               </div>
 
@@ -1050,11 +1115,11 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 <div>
                   <label class="block text-[11px] font-bold text-slate-700 mb-1">المواصفات الفنية (Specs Bar):</label>
-                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].specs" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-mono font-bold">
+                  <input type="text" x-model="pillar.specs[editLang]" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-mono font-bold">
                 </div>
                 <div>
                   <label class="block text-[11px] font-bold text-slate-700 mb-1">نص زر الإجراء (Pillar CTA Button):</label>
-                  <input type="text" x-model="cms.texts[editLang].pillars[pillarKey].cta" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" placeholder="تواصل للاستشارة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold">
+                  <input type="text" x-model="pillar.cta[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" placeholder="تواصل للاستشارة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold">
                 </div>
               </div>
 
@@ -1062,12 +1127,12 @@
               <div class="pt-2">
                 <label class="block text-[11px] font-bold text-slate-700 mb-1">صورة الركيزة (Pillar Image):</label>
                 <div class="flex gap-2 items-center">
-                  <img :src="cms.images['pillar' + (idx + 1)]" class="w-10 h-10 rounded-lg object-cover border border-slate-200 shrink-0 shadow-xs">
-                  <input type="text" x-model="cms.images['pillar' + (idx + 1)]" dir="ltr" class="flex-1 px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-mono">
+                  <img :src="pillar.image" class="w-10 h-10 rounded-lg object-cover border border-slate-200 shrink-0 shadow-xs">
+                  <input type="text" x-model="pillar.image" dir="ltr" class="flex-1 px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-mono">
                   <label class="cursor-pointer px-3 py-2 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold inline-flex items-center gap-1.5 shrink-0 transition-colors shadow-xs" title="رفع صورة من جهازك">
                     <i class="fa-solid fa-cloud-arrow-up text-cyan-600"></i>
                     <span class="hidden sm:inline">رفع صورة</span>
-                    <input type="file" accept="image/*" class="hidden" @change="handleFileUpload($event, 'pillar' + (idx + 1))">
+                    <input type="file" accept="image/*" class="hidden" @change="handlePillarUpload($event, pillar)">
                   </label>
                 </div>
               </div>
@@ -1075,7 +1140,7 @@
               <!-- Pillar Image Badge (الشارة المعروضة فوق صورة الركيزة) -->
               <div class="pt-2 border-t border-slate-200">
                 <label class="block text-[11px] font-bold text-cyan-800 mb-1">الشارة المعروضة أسفل صورة الركيزة (Image Badge):</label>
-                <input type="text" x-model="cms.imageBadges['pillar' + (idx + 1)][editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-mono font-bold">
+                <input type="text" x-model="pillar.badge[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-mono font-bold">
               </div>
             </div>
           </template>
@@ -1109,15 +1174,33 @@
             </div>
           </div>
 
-          <!-- 4 Tech Columns -->
+          <!-- Tech Standards Columns with Dynamic Add / Delete -->
           <div class="pt-4 border-t border-slate-200 space-y-4">
-            <h4 class="text-sm font-bold text-emerald-800">الأعمدة الأربعة للريادة التكنولوجية (C1 - C4):</h4>
+            <div class="flex items-center justify-between">
+              <h4 class="text-sm font-bold text-emerald-800">أعمدة الريادة التكنولوجية والمعايير (<span x-text="(cms.techList || []).length"></span>):</h4>
+              <button 
+                type="button" 
+                @click="addTechStandard()" 
+                class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs">
+                <i class="fa-solid fa-plus"></i>
+                <span>إضافة معيار تقني جديد</span>
+              </button>
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <template x-for="cKey in ['c1', 'c2', 'c3', 'c4']" :key="cKey">
+              <template x-for="(tech, tIdx) in cms.techList" :key="tIdx">
                 <div class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200 space-y-2 shadow-xs">
-                  <span class="text-xs font-bold text-cyan-800 font-mono" x-text="cKey.toUpperCase()"></span>
-                  <input type="text" x-model="cms.texts[editLang].tech_standards[cKey + '_title']" placeholder="عنوان المعيار" class="w-full px-2.5 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-900 font-bold">
-                  <textarea rows="2" x-model="cms.texts[editLang].tech_standards[cKey + '_desc']" placeholder="الشرح والتفاصيل" class="w-full px-2.5 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-600"></textarea>
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold text-cyan-800 font-mono" x-text="'معيار #' + (tIdx + 1)"></span>
+                    <button 
+                      type="button" 
+                      @click="deleteTechStandard(tIdx)" 
+                      class="text-rose-500 hover:text-rose-700 text-xs p-1" 
+                      title="حذف هذا المعيار">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                  <input type="text" x-model="tech.title[editLang]" placeholder="عنوان المعيار" class="w-full px-2.5 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-900 font-bold">
+                  <textarea rows="2" x-model="tech.desc[editLang]" placeholder="الشرح والتفاصيل" class="w-full px-2.5 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-600"></textarea>
                 </div>
               </template>
             </div>
@@ -1158,25 +1241,43 @@
             </div>
           </div>
 
-          <!-- Comparison Table Rows -->
+          <!-- Comparison Table Rows with Dynamic Add / Delete -->
           <div class="pt-4 border-t border-slate-200 space-y-4">
-            <h4 class="text-sm font-bold text-cyan-800">صفوف جدول المقارنة (بروتيرم مقابل السوق):</h4>
+            <div class="flex items-center justify-between">
+              <h4 class="text-sm font-bold text-cyan-800">صفوف جدول المقارنة (بروتيرم مقابل السوق) (<span x-text="(cms.comparisonList || []).length"></span>):</h4>
+              <button 
+                type="button" 
+                @click="addComparisonRow()" 
+                class="px-3 py-1.5 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs">
+                <i class="fa-solid fa-plus"></i>
+                <span>إضافة وجه مقارنة جديد</span>
+              </button>
+            </div>
             <div class="space-y-3">
-              <template x-for="rKey in ['r1', 'r2', 'r3', 'r4']" :key="rKey">
+              <template x-for="(row, rIdx) in cms.comparisonList" :key="rIdx">
                 <div class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200 space-y-2 shadow-xs">
-                  <div class="text-xs font-bold text-slate-950 font-mono" x-text="'صف ' + rKey.toUpperCase()"></div>
+                  <div class="flex items-center justify-between">
+                    <div class="text-xs font-bold text-slate-950 font-mono" x-text="'وجه مقارنة #' + (rIdx + 1)"></div>
+                    <button 
+                      type="button" 
+                      @click="deleteComparisonRow(rIdx)" 
+                      class="text-rose-500 hover:text-rose-700 text-xs p-1" 
+                      title="حذف هذا الصف">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
                   <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
                       <label class="block text-[10px] text-slate-600 mb-1 font-bold">المعيار الهندسي:</label>
-                      <input type="text" x-model="cms.texts[editLang].comparison[rKey + '_title']" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-900 font-medium">
+                      <input type="text" x-model="row.title[editLang]" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-900 font-medium">
                     </div>
                     <div>
                       <label class="block text-[10px] text-cyan-800 mb-1 font-bold">ميزة بروتيرم (Global Hi-Tech):</label>
-                      <input type="text" x-model="cms.texts[editLang].comparison[rKey + '_pro']" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs text-cyan-800 font-bold">
+                      <input type="text" x-model="row.pro[editLang]" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs text-cyan-800 font-bold">
                     </div>
                     <div>
                       <label class="block text-[10px] text-slate-600 mb-1 font-bold">الأفلام التجارية المجهولة:</label>
-                      <input type="text" x-model="cms.texts[editLang].comparison[rKey + '_std']" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-600">
+                      <input type="text" x-model="row.std[editLang]" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-600">
                     </div>
                   </div>
                 </div>
@@ -1212,30 +1313,55 @@
             </div>
           </div>
 
+          <!-- Header with Add Button -->
+          <div class="flex items-center justify-between pt-2">
+            <h4 class="text-sm font-bold text-cyan-900">مشاريع المعرض الميداني (<span x-text="(cms.galleryList || []).length"></span>):</h4>
+            <button 
+              type="button" 
+              @click="addGalleryItem()" 
+              class="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs shadow-xs transition flex items-center gap-1.5">
+              <i class="fa-solid fa-plus"></i>
+              <span>إضافة مشروع جديد للمعرض</span>
+            </button>
+          </div>
+
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
             
-            <!-- Gallery Items 1 - 4 -->
-            <template x-for="(gNum, gIdx) in ['1', '2', '3', '4']" :key="gNum">
+            <!-- Dynamic Gallery Items -->
+            <template x-for="(item, gIdx) in cms.galleryList" :key="gIdx">
               <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-3 shadow-xs">
                 <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-cyan-800" x-text="'مشروع ' + gNum"></span>
-                  <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-mono" x-text="'gallery' + gNum"></span>
+                  <span class="text-xs font-bold text-cyan-800" x-text="'مشروع #' + (gIdx + 1)"></span>
+                  <div class="flex items-center gap-2">
+                    <select x-model="item.category" class="text-[10px] px-2 py-0.5 rounded bg-white border border-slate-300 text-slate-700 font-bold">
+                      <option value="arch">🏢 واجهات وزجاج</option>
+                      <option value="surface">🏛️ أسطح ورخام</option>
+                      <option value="auto">🚗 حماية سيارات</option>
+                    </select>
+                    <button 
+                      type="button" 
+                      @click="deleteGalleryItem(gIdx)" 
+                      class="text-rose-500 hover:text-rose-700 text-xs p-1" 
+                      title="حذف هذا المشروع">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
                 </div>
                 
                 <!-- Live Preview -->
                 <div class="h-36 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shadow-inner">
-                  <img :src="cms.images['gallery' + gNum]" :alt="'Project ' + gNum" class="w-full h-full object-cover">
+                  <img :src="item.image" :alt="'Project ' + (gIdx + 1)" class="w-full h-full object-cover">
                 </div>
 
                 <!-- Image Path & Direct Upload -->
                 <div>
                   <label class="block text-[11px] text-slate-600 mb-1 font-bold">مسار الصورة (Image Path):</label>
                   <div class="flex gap-2 items-center">
-                    <input type="text" x-model="cms.images['gallery' + gNum]" dir="ltr" class="flex-1 px-3 py-2 rounded-lg bg-white border border-slate-300 text-xs text-slate-900 font-mono">
+                    <input type="text" x-model="item.image" dir="ltr" class="flex-1 px-3 py-2 rounded-lg bg-white border border-slate-300 text-xs text-slate-900 font-mono">
                     <label class="cursor-pointer px-2.5 py-2 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold inline-flex items-center gap-1.5 shrink-0 transition-colors shadow-xs" title="رفع صورة من جهازك">
                       <i class="fa-solid fa-cloud-arrow-up text-cyan-600"></i>
                       <span class="hidden sm:inline">رفع صورة</span>
-                      <input type="file" accept="image/*" class="hidden" @change="handleFileUpload($event, 'gallery' + gNum)">
+                      <input type="file" accept="image/*" class="hidden" @change="handleGalleryUpload($event, item)">
                     </label>
                   </div>
                 </div>
@@ -1243,22 +1369,22 @@
                 <!-- Title & Description in Current Edit Language -->
                 <div>
                   <label class="block text-[11px] text-slate-600 mb-1 font-bold">عنوان المشروع (<span x-text="editLang.toUpperCase()"></span>):</label>
-                  <input type="text" x-model="cms.texts[editLang].gallery['item' + gNum + '_title']" class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-xs text-slate-900 font-bold">
+                  <input type="text" x-model="item.title[editLang]" class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-xs text-slate-900 font-bold">
                 </div>
                 <div>
                   <label class="block text-[11px] text-slate-600 mb-1 font-bold">تفاصيل التنفيذ (<span x-text="editLang.toUpperCase()"></span>):</label>
-                  <textarea rows="2" x-model="cms.texts[editLang].gallery['item' + gNum + '_desc']" class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-xs text-slate-700"></textarea>
+                  <textarea rows="2" x-model="item.desc[editLang]" class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-xs text-slate-700"></textarea>
                 </div>
 
                 <!-- Badges on Gallery Image -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2 border-t border-slate-200">
                   <div>
                     <label class="block text-[10px] text-emerald-800 mb-1 font-bold">الشارة العلوية على الصورة (Top Badge):</label>
-                    <input type="text" x-model="cms.imageBadges['gallery' + gNum + '_badge'][editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs text-emerald-800 font-medium">
+                    <input type="text" x-model="item.badge[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs text-emerald-800 font-medium">
                   </div>
                   <div>
                     <label class="block text-[10px] text-cyan-800 mb-1 font-bold">الشريط السفلي للمواصفات/الموقع (Footer Tag):</label>
-                    <input type="text" x-model="cms.imageBadges['gallery' + gNum + '_footer'][editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs text-cyan-800 font-mono font-bold">
+                    <input type="text" x-model="item.footer[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs text-cyan-800 font-mono font-bold">
                   </div>
                 </div>
               </div>
@@ -1276,34 +1402,92 @@
             <p class="text-xs text-slate-500 mt-1">التحكم في نصوص الأزرار، وجهتها، وإمكانية إظهارها أو إخفائها</p>
           </div>
 
-          <div class="space-y-4">
+          <div class="space-y-6">
             
-            <template x-for="(btn, bKey) in cms.buttons" :key="bKey">
-              <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-3 shadow-xs">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-slate-950 font-mono" x-text="bKey"></span>
-                  <div class="flex items-center gap-2">
-                    <span class="text-xs text-slate-600 font-medium">إظهار الزر:</span>
-                    <input type="checkbox" x-model="btn.visible" class="accent-cyan-600 w-4 h-4 cursor-pointer">
-                  </div>
-                </div>
+            <!-- Core Buttons -->
+            <div class="space-y-3">
+              <h4 class="text-sm font-bold text-slate-800">الأزرار الأساسية في واجهة الموقع:</h4>
+              <div class="space-y-3">
+                <template x-for="(btn, bKey) in cms.buttons" :key="bKey">
+                  <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-3 shadow-xs">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-slate-950 font-mono" x-text="bKey"></span>
+                      <div class="flex items-center gap-2">
+                        <span class="text-xs text-slate-600 font-medium">إظهار الزر:</span>
+                        <input type="checkbox" x-model="btn.visible" class="accent-cyan-600 w-4 h-4 cursor-pointer">
+                      </div>
+                    </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div>
-                    <label class="block text-[11px] text-slate-600 mb-1 font-bold">النص بالعربية:</label>
-                    <input type="text" x-model="btn.ar" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label class="block text-[11px] text-slate-600 mb-1 font-bold">النص بالعربية:</label>
+                        <input type="text" x-model="btn.ar" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold">
+                      </div>
+                      <div>
+                        <label class="block text-[11px] text-slate-600 mb-1 font-bold">Text in English:</label>
+                        <input type="text" x-model="btn.en" dir="ltr" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold">
+                      </div>
+                      <div>
+                        <label class="block text-[11px] text-slate-600 mb-1 font-bold">الوجهة أو الرابط (Target):</label>
+                        <input type="text" x-model="btn.target" dir="ltr" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-mono font-bold">
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label class="block text-[11px] text-slate-600 mb-1 font-bold">Text in English:</label>
-                    <input type="text" x-model="btn.en" dir="ltr" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold">
-                  </div>
-                  <div>
-                    <label class="block text-[11px] text-slate-600 mb-1 font-bold">الوجهة أو الرابط (Target):</label>
-                    <input type="text" x-model="btn.target" dir="ltr" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-mono font-bold">
-                  </div>
-                </div>
+                </template>
               </div>
-            </template>
+            </div>
+
+            <!-- Custom Additional Buttons with Add / Delete -->
+            <div class="pt-4 border-t border-slate-200 space-y-4">
+              <div class="flex items-center justify-between">
+                <h4 class="text-sm font-bold text-cyan-900">الأزرار الإجرائية الإضافية المخصصة (<span x-text="(cms.customButtonsList || []).length"></span>):</h4>
+                <button 
+                  type="button" 
+                  @click="addButton()" 
+                  class="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs shadow-xs transition flex items-center gap-1.5">
+                  <i class="fa-solid fa-plus"></i>
+                  <span>إضافة زر إجرائي جديد</span>
+                </button>
+              </div>
+
+              <div class="space-y-3">
+                <template x-for="(btn, bIdx) in cms.customButtonsList" :key="bIdx">
+                  <div class="p-4 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-3 shadow-xs">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-cyan-800" x-text="'زر إجرائي مخصص #' + (bIdx + 1)"></span>
+                      <div class="flex items-center gap-3">
+                        <label class="flex items-center gap-1.5 text-xs text-slate-600 font-medium cursor-pointer">
+                          <span>إظهار:</span>
+                          <input type="checkbox" x-model="btn.visible" class="accent-cyan-600 w-4 h-4 cursor-pointer">
+                        </label>
+                        <button 
+                          type="button" 
+                          @click="deleteButton(bIdx)" 
+                          class="text-rose-500 hover:text-rose-700 text-xs p-1" 
+                          title="حذف هذا الزر">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label class="block text-[11px] text-slate-600 mb-1 font-bold">النص بالعربية:</label>
+                        <input type="text" x-model="btn.title.ar" placeholder="مثال: احجز استشارة خاصة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold">
+                      </div>
+                      <div>
+                        <label class="block text-[11px] text-slate-600 mb-1 font-bold">Text in English:</label>
+                        <input type="text" x-model="btn.title.en" dir="ltr" placeholder="e.g. Book Survey" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold">
+                      </div>
+                      <div>
+                        <label class="block text-[11px] text-slate-600 mb-1 font-bold">الرابط أو الوجهة (Target):</label>
+                        <input type="text" x-model="btn.target" dir="ltr" placeholder="#contact أو https://..." class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-mono font-bold">
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
 
           </div>
         </div>
@@ -1394,22 +1578,36 @@
                 <textarea rows="2" x-model="cms.video.metrics_desc[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600 shadow-xs"></textarea>
               </div>
 
-              <!-- 3 Highlights Cards -->
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2 shadow-xs">
-                  <div class="text-xs font-bold text-orange-700">الميزة 1: هبوط الحرارة</div>
-                  <input type="text" x-model="cms.video.h1_title[editLang]" placeholder="العنوان" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold">
-                  <textarea rows="2" x-model="cms.video.h1_desc[editLang]" placeholder="الوصف" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-600"></textarea>
+              <!-- Highlights Cards with Dynamic Add / Delete -->
+              <div class="pt-3 border-t border-slate-200 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h5 class="text-xs font-bold text-slate-800">نقاط التميز ونتائج الفحص الموثقة (<span x-text="(cms.videoBulletsList || []).length"></span>):</h5>
+                  <button 
+                    type="button" 
+                    @click="addVideoBullet()" 
+                    class="px-3 py-1.5 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>إضافة نقطة تميز جديدة</span>
+                  </button>
                 </div>
-                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2 shadow-xs">
-                  <div class="text-xs font-bold text-emerald-700">الميزة 2: توفير التكييف</div>
-                  <input type="text" x-model="cms.video.h2_title[editLang]" placeholder="العنوان" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold">
-                  <textarea rows="2" x-model="cms.video.h2_desc[editLang]" placeholder="الوصف" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-600"></textarea>
-                </div>
-                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2 shadow-xs">
-                  <div class="text-xs font-bold text-cyan-700">الميزة 3: الرؤية النقية</div>
-                  <input type="text" x-model="cms.video.h3_title[editLang]" placeholder="العنوان" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold">
-                  <textarea rows="2" x-model="cms.video.h3_desc[editLang]" placeholder="الوصف" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-600"></textarea>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <template x-for="(bullet, bIdx) in cms.videoBulletsList" :key="bIdx">
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2 shadow-xs">
+                      <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-cyan-800" x-text="'ميزة #' + (bIdx + 1)"></span>
+                        <button 
+                          type="button" 
+                          @click="deleteVideoBullet(bIdx)" 
+                          class="text-rose-500 hover:text-rose-700 text-xs p-1" 
+                          title="حذف هذه النقطة">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
+                      <input type="text" x-model="bullet.title[editLang]" placeholder="العنوان" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold">
+                      <textarea rows="2" x-model="bullet.desc[editLang]" placeholder="الوصف والنتيجة الميدانية..." class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-600"></textarea>
+                    </div>
+                  </template>
                 </div>
               </div>
             </div>
@@ -1441,36 +1639,39 @@
               <input type="text" x-model="cms.texts[editLang].steps.subtitle" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600 shadow-xs">
             </div>
 
-            <!-- 3 Steps Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-3">
-              <!-- Step 1 -->
-              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5 shadow-xs">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-cyan-800">الخطوة الأولى</span>
-                  <input type="text" x-model="cms.texts[editLang].steps.s1_num" dir="ltr" class="w-12 px-2 py-1 text-center font-mono font-bold text-xs rounded bg-white border border-slate-300">
-                </div>
-                <input type="text" x-model="cms.texts[editLang].steps.s1_title" placeholder="عنوان الخطوة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-900">
-                <textarea rows="3" x-model="cms.texts[editLang].steps.s1_desc" placeholder="شرح الخطوة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600"></textarea>
+            <!-- Customer Journey Steps with Dynamic Add / Delete -->
+            <div class="pt-3 border-t border-slate-200 space-y-4">
+              <div class="flex items-center justify-between">
+                <h4 class="text-sm font-bold text-cyan-900">خطوات رحلة العميل (<span x-text="(cms.stepsList || []).length"></span>):</h4>
+                <button 
+                  type="button" 
+                  @click="addStep()" 
+                  class="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs shadow-xs transition flex items-center gap-1.5">
+                  <i class="fa-solid fa-plus"></i>
+                  <span>إضافة خطوة جديدة</span>
+                </button>
               </div>
 
-              <!-- Step 2 -->
-              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5 shadow-xs">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-emerald-800">الخطوة الثانية</span>
-                  <input type="text" x-model="cms.texts[editLang].steps.s2_num" dir="ltr" class="w-12 px-2 py-1 text-center font-mono font-bold text-xs rounded bg-white border border-slate-300">
-                </div>
-                <input type="text" x-model="cms.texts[editLang].steps.s2_title" placeholder="عنوان الخطوة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-900">
-                <textarea rows="3" x-model="cms.texts[editLang].steps.s2_desc" placeholder="شرح الخطوة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600"></textarea>
-              </div>
-
-              <!-- Step 3 -->
-              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5 shadow-xs">
-                <div class="flex items-center justify-between">
-                  <span class="text-xs font-bold text-cyan-800">الخطوة الثالثة</span>
-                  <input type="text" x-model="cms.texts[editLang].steps.s3_num" dir="ltr" class="w-12 px-2 py-1 text-center font-mono font-bold text-xs rounded bg-white border border-slate-300">
-                </div>
-                <input type="text" x-model="cms.texts[editLang].steps.s3_title" placeholder="عنوان الخطوة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-900">
-                <textarea rows="3" x-model="cms.texts[editLang].steps.s3_desc" placeholder="شرح الخطوة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600"></textarea>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <template x-for="(step, sIdx) in cms.stepsList" :key="sIdx">
+                  <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5 shadow-xs">
+                    <div class="flex items-center justify-between">
+                      <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-cyan-800" x-text="'خطوة #' + (sIdx + 1)"></span>
+                        <input type="text" x-model="step.num" dir="ltr" class="w-12 px-2 py-0.5 text-center font-mono font-bold text-xs rounded bg-white border border-slate-300">
+                      </div>
+                      <button 
+                        type="button" 
+                        @click="deleteStep(sIdx)" 
+                        class="text-rose-500 hover:text-rose-700 text-xs p-1" 
+                        title="حذف هذه الخطوة">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                    <input type="text" x-model="step.title[editLang]" placeholder="عنوان الخطوة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                    <textarea rows="3" x-model="step.desc[editLang]" placeholder="شرح الخطوة وتفاصيل الإجراء..." class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600 leading-relaxed"></textarea>
+                  </div>
+                </template>
               </div>
             </div>
           </div>
@@ -1522,21 +1723,36 @@
                 <textarea rows="2" x-model="cms.texts[editLang].sectors.villa_desc" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600"></textarea>
               </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-xs">
-                  <span class="text-[11px] font-bold text-cyan-700">الميزة 1 (الزجاج والمسابح)</span>
-                  <input type="text" x-model="cms.texts[editLang].sectors.villa_f1_title" placeholder="العنوان" class="w-full px-2 py-1 rounded border border-slate-300 text-xs font-bold">
-                  <textarea rows="2" x-model="cms.texts[editLang].sectors.villa_f1_desc" placeholder="الوصف" class="w-full px-2 py-1 rounded border border-slate-300 text-xs text-slate-600"></textarea>
+              <!-- Villa Features with Dynamic Add / Delete -->
+              <div class="pt-3 border-t border-slate-200 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h5 class="text-xs font-bold text-slate-800">مميزات قطاع الفلل والمنازل الفاخرة (<span x-text="(cms.villaFeaturesList || []).length"></span>):</h5>
+                  <button 
+                    type="button" 
+                    @click="addVillaFeature()" 
+                    class="px-3 py-1.5 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>إضافة ميزة للفلل</span>
+                  </button>
                 </div>
-                <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-xs">
-                  <span class="text-[11px] font-bold text-cyan-700">الميزة 2 (الرخام والطاولات)</span>
-                  <input type="text" x-model="cms.texts[editLang].sectors.villa_f2_title" placeholder="العنوان" class="w-full px-2 py-1 rounded border border-slate-300 text-xs font-bold">
-                  <textarea rows="2" x-model="cms.texts[editLang].sectors.villa_f2_desc" placeholder="الوصف" class="w-full px-2 py-1 rounded border border-slate-300 text-xs text-slate-600"></textarea>
-                </div>
-                <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-xs">
-                  <span class="text-[11px] font-bold text-cyan-700">الميزة 3 (سيارات PPF)</span>
-                  <input type="text" x-model="cms.texts[editLang].sectors.villa_f3_title" placeholder="العنوان" class="w-full px-2 py-1 rounded border border-slate-300 text-xs font-bold">
-                  <textarea rows="2" x-model="cms.texts[editLang].sectors.villa_f3_desc" placeholder="الوصف" class="w-full px-2 py-1 rounded border border-slate-300 text-xs text-slate-600"></textarea>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <template x-for="(f, fIdx) in cms.villaFeaturesList" :key="fIdx">
+                    <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-xs">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-cyan-700" x-text="'ميزة #' + (fIdx + 1)"></span>
+                        <button 
+                          type="button" 
+                          @click="deleteVillaFeature(fIdx)" 
+                          class="text-rose-500 hover:text-rose-700 text-xs p-1" 
+                          title="حذف هذه الميزة">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
+                      <input type="text" x-model="f.title[editLang]" placeholder="العنوان" class="w-full px-2 py-1 rounded border border-slate-300 text-xs font-bold">
+                      <textarea rows="2" x-model="f.desc[editLang]" placeholder="الوصف" class="w-full px-2 py-1 rounded border border-slate-300 text-xs text-slate-600"></textarea>
+                    </div>
+                  </template>
                 </div>
               </div>
               <div>
@@ -1566,21 +1782,36 @@
                 <textarea rows="2" x-model="cms.texts[editLang].sectors.ent_desc" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600"></textarea>
               </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-                <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-xs">
-                  <span class="text-[11px] font-bold text-cyan-700">الميزة 1 (توفير 30% تكييف)</span>
-                  <input type="text" x-model="cms.texts[editLang].sectors.ent_f1_title" placeholder="العنوان" class="w-full px-2 py-1 rounded border border-slate-300 text-xs font-bold">
-                  <textarea rows="2" x-model="cms.texts[editLang].sectors.ent_f1_desc" placeholder="الوصف" class="w-full px-2 py-1 rounded border border-slate-300 text-xs text-slate-600"></textarea>
+              <!-- Enterprise Features with Dynamic Add / Delete -->
+              <div class="pt-3 border-t border-slate-200 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h5 class="text-xs font-bold text-slate-800">مميزات قطاع الفنادق والمشاريع الكبرى (<span x-text="(cms.enterpriseFeaturesList || []).length"></span>):</h5>
+                  <button 
+                    type="button" 
+                    @click="addEnterpriseFeature()" 
+                    class="px-3 py-1.5 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>إضافة ميزة للمشاريع</span>
+                  </button>
                 </div>
-                <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-xs">
-                  <span class="text-[11px] font-bold text-cyan-700">الميزة 2 (رخام البهو والاستقبال)</span>
-                  <input type="text" x-model="cms.texts[editLang].sectors.ent_f2_title" placeholder="العنوان" class="w-full px-2 py-1 rounded border border-slate-300 text-xs font-bold">
-                  <textarea rows="2" x-model="cms.texts[editLang].sectors.ent_f2_desc" placeholder="الوصف" class="w-full px-2 py-1 rounded border border-slate-300 text-xs text-slate-600"></textarea>
-                </div>
-                <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-xs">
-                  <span class="text-[11px] font-bold text-cyan-700">الميزة 3 (مواصفات هندسية ISO)</span>
-                  <input type="text" x-model="cms.texts[editLang].sectors.ent_f3_title" placeholder="العنوان" class="w-full px-2 py-1 rounded border border-slate-300 text-xs font-bold">
-                  <textarea rows="2" x-model="cms.texts[editLang].sectors.ent_f3_desc" placeholder="الوصف" class="w-full px-2 py-1 rounded border border-slate-300 text-xs text-slate-600"></textarea>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <template x-for="(f, fIdx) in cms.enterpriseFeaturesList" :key="fIdx">
+                    <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-xs">
+                      <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-bold text-cyan-700" x-text="'ميزة #' + (fIdx + 1)"></span>
+                        <button 
+                          type="button" 
+                          @click="deleteEnterpriseFeature(fIdx)" 
+                          class="text-rose-500 hover:text-rose-700 text-xs p-1" 
+                          title="حذف هذه الميزة">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
+                      <input type="text" x-model="f.title[editLang]" placeholder="العنوان" class="w-full px-2 py-1 rounded border border-slate-300 text-xs font-bold">
+                      <textarea rows="2" x-model="f.desc[editLang]" placeholder="الوصف" class="w-full px-2 py-1 rounded border border-slate-300 text-xs text-slate-600"></textarea>
+                    </div>
+                  </template>
                 </div>
               </div>
               <div>
@@ -1690,18 +1921,40 @@
               <input type="text" x-model="cms.texts[editLang].faq.subtitle" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600 shadow-xs">
             </div>
 
-            <!-- 4 FAQs Accordion Items -->
+            <!-- FAQs Accordion Items with Dynamic Add / Delete -->
             <div class="pt-3 border-t border-slate-200 space-y-4">
-              <template x-for="qNum in [1, 2, 3, 4]" :key="qNum">
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 shadow-xs">
-                  <div class="text-xs font-bold text-cyan-800 flex items-center gap-1.5">
-                    <i class="fa-solid fa-circle-question"></i>
-                    <span x-text="'السؤال رقم ' + qNum"></span>
+              <div class="flex items-center justify-between">
+                <h4 class="text-sm font-bold text-cyan-900">قائمة الأسئلة الشائعة (<span x-text="(cms.faqList || []).length"></span>):</h4>
+                <button 
+                  type="button" 
+                  @click="addFaq()" 
+                  class="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs shadow-xs transition flex items-center gap-1.5">
+                  <i class="fa-solid fa-plus"></i>
+                  <span>إضافة سؤال وجواب جديد</span>
+                </button>
+              </div>
+
+              <div class="space-y-4">
+                <template x-for="(faq, fIdx) in cms.faqList" :key="fIdx">
+                  <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 shadow-xs">
+                    <div class="flex items-center justify-between">
+                      <div class="text-xs font-bold text-cyan-800 flex items-center gap-1.5">
+                        <i class="fa-solid fa-circle-question"></i>
+                        <span x-text="'السؤال رقم ' + (fIdx + 1)"></span>
+                      </div>
+                      <button 
+                        type="button" 
+                        @click="deleteFaq(fIdx)" 
+                        class="text-rose-500 hover:text-rose-700 text-xs p-1" 
+                        title="حذف هذا السؤال">
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </div>
+                    <input type="text" x-model="faq.q[editLang]" placeholder="نص السؤال..." class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                    <textarea rows="3" x-model="faq.a[editLang]" placeholder="نص الإجابة التفصيلية..." class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600 leading-relaxed"></textarea>
                   </div>
-                  <input type="text" x-model="cms.texts[editLang].faq['q' + qNum]" placeholder="نص السؤال..." class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-900">
-                  <textarea rows="3" x-model="cms.texts[editLang].faq['a' + qNum]" placeholder="نص الإجابة التفصيلية..." class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600 leading-relaxed"></textarea>
-                </div>
-              </template>
+                </template>
+              </div>
             </div>
           </div>
         </div>
@@ -1872,24 +2125,48 @@
               </div>
               <p class="text-xs text-slate-500 mt-1">جميع الاستفسارات وطلبات المعاينة المرسلة عبر الموقع مع إمكانية المتابعة والاتصال المباشر</p>
             </div>
-            <button @click="fetchLeads()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center gap-2 shadow-xs">
-              <i class="fa-solid fa-arrows-rotate" :class="loadingLeads ? 'fa-spin' : ''"></i>
-              <span>تحديث القائمة</span>
-            </button>
+            <div class="flex items-center gap-2">
+              <button type="button" @click="addLeadManual()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-cyan-600/20">
+                <i class="fa-solid fa-plus"></i>
+                <span>إضافة طلب عميل يدوياً</span>
+              </button>
+              <button type="button" @click="fetchLeads()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center gap-2 shadow-xs">
+                <i class="fa-solid fa-arrows-rotate" :class="loadingLeads ? 'fa-spin' : ''"></i>
+                <span>تحديث</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Search & Status Filter Bar -->
+          <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
+            <div class="relative flex-1 w-full">
+              <i class="fa-solid fa-magnifying-glass absolute start-3.5 top-3.5 text-slate-400 text-xs"></i>
+              <input 
+                type="text" 
+                x-model="leadSearch" 
+                placeholder="بحث بالاسم، رقم الهاتف، الإيميل، أو الخدمة..." 
+                class="w-full ps-9 pe-4 py-2.5 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-cyan-600 shadow-xs">
+            </div>
+            <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto">
+              <button type="button" @click="leadFilter = 'all'" :class="leadFilter === 'all' ? 'bg-cyan-600 text-white font-bold' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-3 py-2 rounded-xl text-xs transition-colors shadow-xs shrink-0">الكل (<span x-text="leads.length"></span>)</button>
+              <button type="button" @click="leadFilter = 'new'" :class="leadFilter === 'new' ? 'bg-cyan-600 text-white font-bold' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-3 py-2 rounded-xl text-xs transition-colors shadow-xs shrink-0">🟢 جديد</button>
+              <button type="button" @click="leadFilter = 'contacted'" :class="leadFilter === 'contacted' ? 'bg-cyan-600 text-white font-bold' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-3 py-2 rounded-xl text-xs transition-colors shadow-xs shrink-0">🔵 تم التواصل</button>
+              <button type="button" @click="leadFilter = 'archived'" :class="leadFilter === 'archived' ? 'bg-cyan-600 text-white font-bold' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-3 py-2 rounded-xl text-xs transition-colors shadow-xs shrink-0">⚪ مؤرشف</button>
+            </div>
           </div>
 
           <!-- Empty State -->
-          <div x-show="leads.length === 0" class="p-12 text-center bg-white rounded-2xl border border-slate-200 space-y-3">
+          <div x-show="getFilteredLeads().length === 0" class="p-12 text-center bg-white rounded-2xl border border-slate-200 space-y-3">
             <div class="w-16 h-16 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-2xl mx-auto">
               <i class="fa-solid fa-inbox"></i>
             </div>
-            <h4 class="font-bold text-slate-900 text-base">لا توجد طلبات عملاء مسجلة حالياً</h4>
+            <h4 class="font-bold text-slate-900 text-base">لا توجد طلبات عملاء مطابقة للبحث أو التصفية</h4>
             <p class="text-xs text-slate-500">عندما يقوم أي عميل بتعبئة نموذج التواصل في الموقع ستظهر بياناته هنا فورياً.</p>
           </div>
 
           <!-- Leads List -->
-          <div x-show="leads.length > 0" class="space-y-3">
-            <template x-for="lead in leads" :key="lead.id">
+          <div x-show="getFilteredLeads().length > 0" class="space-y-3">
+            <template x-for="lead in getFilteredLeads()" :key="lead.id">
               <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-cyan-300 transition-all space-y-3">
                 <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                   <div class="flex items-center gap-3">
@@ -1956,24 +2233,49 @@
               </div>
               <p class="text-xs text-slate-500 mt-1">جميع طلبات التوظيف والسير الذاتية المقدمة من خلال صفحة الوظائف careers.html</p>
             </div>
-            <button @click="fetchCareers()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center gap-2 shadow-xs">
-              <i class="fa-solid fa-arrows-rotate" :class="loadingCareers ? 'fa-spin' : ''"></i>
-              <span>تحديث القائمة</span>
-            </button>
+            <div class="flex items-center gap-2">
+              <button type="button" @click="addCareerManual()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-teal-600/20">
+                <i class="fa-solid fa-plus"></i>
+                <span>إضافة طلب توظيف يدوياً</span>
+              </button>
+              <button type="button" @click="fetchCareers()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center gap-2 shadow-xs">
+                <i class="fa-solid fa-arrows-rotate" :class="loadingCareers ? 'fa-spin' : ''"></i>
+                <span>تحديث</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Search & Status Filter Bar -->
+          <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
+            <div class="relative flex-1 w-full">
+              <i class="fa-solid fa-magnifying-glass absolute start-3.5 top-3.5 text-slate-400 text-xs"></i>
+              <input 
+                type="text" 
+                x-model="careerSearch" 
+                placeholder="بحث باسم المتقدم، الهاتف، الإيميل، الوظيفة، أو الملاحظات..." 
+                class="w-full ps-9 pe-4 py-2.5 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-xs">
+            </div>
+            <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto">
+              <button type="button" @click="careerFilter = 'all'" :class="careerFilter === 'all' ? 'bg-teal-600 text-white font-bold' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-3 py-2 rounded-xl text-xs transition-colors shadow-xs shrink-0">الكل (<span x-text="careers.length"></span>)</button>
+              <button type="button" @click="careerFilter = 'new'" :class="careerFilter === 'new' ? 'bg-teal-600 text-white font-bold' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-3 py-2 rounded-xl text-xs transition-colors shadow-xs shrink-0">🟢 جديد</button>
+              <button type="button" @click="careerFilter = 'reviewed'" :class="careerFilter === 'reviewed' ? 'bg-teal-600 text-white font-bold' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-3 py-2 rounded-xl text-xs transition-colors shadow-xs shrink-0">🔵 تمت المراجعة</button>
+              <button type="button" @click="careerFilter = 'interviewed'" :class="careerFilter === 'interviewed' ? 'bg-teal-600 text-white font-bold' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-3 py-2 rounded-xl text-xs transition-colors shadow-xs shrink-0">🟣 مقابلة</button>
+              <button type="button" @click="careerFilter = 'archived'" :class="careerFilter === 'archived' ? 'bg-teal-600 text-white font-bold' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'" class="px-3 py-2 rounded-xl text-xs transition-colors shadow-xs shrink-0">⚪ مؤرشف</button>
+            </div>
           </div>
 
           <!-- Empty State -->
-          <div x-show="careers.length === 0" class="p-12 text-center bg-white rounded-2xl border border-slate-200 space-y-3">
+          <div x-show="getFilteredCareers().length === 0" class="p-12 text-center bg-white rounded-2xl border border-slate-200 space-y-3">
             <div class="w-16 h-16 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl mx-auto">
               <i class="fa-solid fa-briefcase"></i>
             </div>
-            <h4 class="font-bold text-slate-900 text-base">لا توجد طلبات توظيف حتى الآن</h4>
+            <h4 class="font-bold text-slate-900 text-base">لا توجد طلبات توظيف مطابقة للبحث أو التصفية</h4>
             <p class="text-xs text-slate-500">ستظهر هنا أي استمارة توظيف يتم إرسالها من خلال صفحة /careers.html</p>
           </div>
 
           <!-- Applications List -->
-          <div x-show="careers.length > 0" class="space-y-3">
-            <template x-for="app in careers" :key="app.id">
+          <div x-show="getFilteredCareers().length > 0" class="space-y-3">
+            <template x-for="app in getFilteredCareers()" :key="app.id">
               <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-teal-300 transition-all space-y-3">
                 <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                   <div class="flex items-center gap-3">
@@ -2689,8 +2991,13 @@
         // Leads & Careers & Blocks State
         leads: [],
         loadingLeads: false,
+        leadSearch: '',
+        leadFilter: 'all', // all, new, contacted, archived
+
         careers: [],
         loadingCareers: false,
+        careerSearch: '',
+        careerFilter: 'all', // all, new, reviewed, interviewed, archived
 
         // New Complete Block Builder Form State
         newBlockForm: {
@@ -2748,6 +3055,14 @@
           this.fetchContent();
           this.fetchLeads();
           this.fetchCareers();
+
+          // Auto-polling every 15 seconds to sync clients inquiries & career applications
+          setInterval(() => {
+            if (this.authenticated) {
+              this.fetchLeads();
+              this.fetchCareers();
+            }
+          }, 15000);
         },
 
         
@@ -2857,6 +3172,350 @@
           } catch(e) {
             console.error('Failed to delete career:', e);
           }
+        },
+
+        getFilteredLeads() {
+          const list = this.leads || [];
+          return list.filter(l => {
+            if (this.leadFilter !== 'all' && (l.status || 'new') !== this.leadFilter) return false;
+            if (this.leadSearch) {
+              const q = this.leadSearch.toLowerCase();
+              return (l.name || '').toLowerCase().includes(q) ||
+                     (l.phone || '').toLowerCase().includes(q) ||
+                     (l.email || '').toLowerCase().includes(q) ||
+                     (l.service || '').toLowerCase().includes(q) ||
+                     (l.message || '').toLowerCase().includes(q);
+            }
+            return true;
+          });
+        },
+
+        getFilteredCareers() {
+          const list = this.careers || [];
+          return list.filter(c => {
+            if (this.careerFilter !== 'all' && (c.status || 'new') !== this.careerFilter) return false;
+            if (this.careerSearch) {
+              const q = this.careerSearch.toLowerCase();
+              return (c.name || '').toLowerCase().includes(q) ||
+                     (c.phone || '').toLowerCase().includes(q) ||
+                     (c.email || '').toLowerCase().includes(q) ||
+                     (c.role || '').toLowerCase().includes(q) ||
+                     (c.notes || '').toLowerCase().includes(q);
+            }
+            return true;
+          });
+        },
+
+        async addLeadManual() {
+          const name = prompt('أدخل اسم العميل:');
+          if (!name) return;
+          const phone = prompt('أدخل رقم الهاتف / واتساب:');
+          if (!phone) return;
+          const service = prompt('الخدمة المطلوبة (مثال: عزل زجاج المباني والفلل):', 'عزل زجاج المباني والفلل') || 'عام';
+          const message = prompt('تفاصيل الرسالة أو ملاحظات المعاينة:') || '';
+
+          try {
+            const res = await fetch('/api/leads', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name, phone, service, message, email: '' })
+            });
+            if (res.ok) {
+              await this.fetchLeads();
+              this.showToast('تمت الإضافة', 'تم تسجيل طلب العميل يدوياً بنجاح.');
+            }
+          } catch(e) {
+            this.showToast('خطأ', 'تعذر إضافة الطلب.');
+          }
+        },
+
+        async addCareerManual() {
+          const name = prompt('أدخل اسم المتقدم للوظيفة:');
+          if (!name) return;
+          const phone = prompt('أدخل رقم الهاتف:');
+          if (!phone) return;
+          const role = prompt('الوظيفة (مثال: مهندس مبيعات مشاريع معمارية):', 'مهندس مبيعات مشاريع معمارية') || 'وظيفة أخرى';
+          const email = prompt('البريد الإلكتروني:') || '';
+          const notes = prompt('نبذة عن الخبرات أو ملاحظات المقابلة:') || '';
+
+          try {
+            const res = await fetch('/api/careers', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name, phone, role, email, experience: '1-3 سنوات', notes, portfolio: '' })
+            });
+            if (res.ok) {
+              await this.fetchCareers();
+              this.showToast('تمت الإضافة', 'تم تسجيل طلب التوظيف يدوياً بنجاح.');
+            }
+          } catch(e) {
+            this.showToast('خطأ', 'تعذر إضافة طلب التوظيف.');
+          }
+        },
+
+        // Dynamic Add / Delete handlers
+        addFaq() {
+          if (!this.cms.faqList) this.cms.faqList = [];
+          this.cms.faqList.push({
+            q: { ar: 'سؤال شائع جديد؟', en: 'New Frequently Asked Question?' },
+            a: { ar: 'الإجابة التوضيحية التفصيلية هنا...', en: 'Detailed answer goes here...' }
+          });
+          this.showToast('تمت إضافة سؤال جديد', 'تمت إضافة سؤال جديد للقائمة. اضغط حفظ لتطبيقه.');
+        },
+        deleteFaq(idx) {
+          if (!confirm('هل تريد حذف هذا السؤال؟')) return;
+          this.cms.faqList.splice(idx, 1);
+          this.showToast('تم الحذف', 'تم حذف السؤال.');
+        },
+
+        addStep() {
+          if (!this.cms.stepsList) this.cms.stepsList = [];
+          const nextNum = (this.cms.stepsList.length + 1).toString().padStart(2, '0');
+          this.cms.stepsList.push({
+            num: nextNum,
+            title: { ar: 'خطوة جديدة', en: 'New Step' },
+            desc: { ar: 'شرح الخطوة وتفاصيل الإجراء الهندسي...', en: 'Details of this step...' }
+          });
+          this.showToast('تمت إضافة خطوة جديدة', 'تمت إضافة خطوة جديدة لرحلة العميل.');
+        },
+        deleteStep(idx) {
+          if (!confirm('هل تريد حذف هذه الخطوة؟')) return;
+          this.cms.stepsList.splice(idx, 1);
+          this.showToast('تم الحذف', 'تمت إزالة الخطوة.');
+        },
+
+        addPillar() {
+          if (!this.cms.pillarsList) this.cms.pillarsList = [];
+          const nextNum = this.cms.pillarsList.length + 1;
+          this.cms.pillarsList.push({
+            key: 'p' + nextNum,
+            enabled: true,
+            name: { ar: 'خدمة / ركيزة هندسية جديدة', en: 'New Engineering Service Pillar' },
+            tag: { ar: 'حلول نانو سيراميك', en: 'Nano-Ceramic Solutions' },
+            desc: { ar: 'وصف الخدمة الجديدة والمواصفات الفنية المعتمدة...', en: 'Description of the new service...' },
+            f1: { ar: 'ميزة تقنية 1', en: 'Feature 1' },
+            f2: { ar: 'ميزة تقنية 2', en: 'Feature 2' },
+            f3: { ar: 'ميزة تقنية 3', en: 'Feature 3' },
+            f4: { ar: 'ميزة تقنية 4', en: 'Feature 4' },
+            specs: { ar: 'Nano-Ceramic | 100% Quality', en: 'Nano-Ceramic | 100% Quality' },
+            cta: { ar: 'احجز معاينة مجانية', en: 'Book Free Survey' },
+            image: 'assets/images/compound-villa-new.jpg',
+            badge: { ar: 'ضمان 5-10 سنوات', en: '5-10 Years Warranty' }
+          });
+          this.showToast('تمت إضافة خدمة جديدة', 'تمت إضافة الركيزة. يمكنك رفع صورة وتعديل مميزاتها.');
+        },
+        deletePillar(idx) {
+          if (!confirm('هل تريد حذف هذه الخدمة / الركيزة؟')) return;
+          this.cms.pillarsList.splice(idx, 1);
+          this.showToast('تم الحذف', 'تم حذف الركيزة.');
+        },
+
+        async handlePillarUpload(event, pillar) {
+          const file = event.target.files && event.target.files[0];
+          if (!file) return;
+          if (file.size > 15 * 1024 * 1024) {
+            this.showToast('حجم كبير', 'الحد الأقصى هو 15 ميجابايت.');
+            event.target.value = '';
+            return;
+          }
+          this.showToast('جاري الرفع...', 'يتم الآن رفع الصورة...');
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            try {
+              const res = await fetch('/api/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: file.name, data: e.target.result })
+              });
+              const r = await res.json();
+              if (res.ok && r.success) {
+                pillar.image = r.url;
+                this.showToast('تم الرفع!', 'تم تعيين صورة الركيزة بنجاح.');
+              } else {
+                this.showToast('فشل الرفع', r.error || 'تعذر حفظ الصورة.');
+              }
+            } catch(err) {
+              this.showToast('خطأ في الاتصال', 'تعذر رفع الصورة.');
+            } finally {
+              event.target.value = '';
+            }
+          };
+          reader.readAsDataURL(file);
+        },
+
+        addGalleryItem() {
+          if (!this.cms.galleryList) this.cms.galleryList = [];
+          const nextNum = this.cms.galleryList.length + 1;
+          this.cms.galleryList.push({
+            id: 'gallery' + nextNum,
+            category: 'arch',
+            image: 'assets/images/compound-villa-new.jpg',
+            title: { ar: 'مشروع هندسي ميداني جديد', en: 'New Field Engineering Project' },
+            desc: { ar: 'تفاصيل تنفيذ المشروع والأفلام المعمارية المستخدمة...', en: 'Details of the installation and films...' },
+            badge: { ar: 'تنفيذ بروتيرم المعتمد', en: 'ProTherme Certified Installation' },
+            footer: { ar: 'ضمان 5-10 سنوات', en: '5-10 Years Warranty' }
+          });
+          this.showToast('تمت إضافة مشروع جديد للمعرض', 'يمكنك رفع صورة المشروع وتعديل التصنيف.');
+        },
+        deleteGalleryItem(idx) {
+          if (!confirm('هل تريد حذف هذا المشروع من المعرض؟')) return;
+          this.cms.galleryList.splice(idx, 1);
+          this.showToast('تم الحذف', 'تم حذف المشروع من المعرض.');
+        },
+
+        async handleGalleryUpload(event, item) {
+          const file = event.target.files && event.target.files[0];
+          if (!file) return;
+          if (file.size > 15 * 1024 * 1024) {
+            this.showToast('حجم كبير', 'الحد الأقصى هو 15 ميجابايت.');
+            event.target.value = '';
+            return;
+          }
+          this.showToast('جاري الرفع...', 'يتم الآن رفع الصورة...');
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            try {
+              const res = await fetch('/api/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: file.name, data: e.target.result })
+              });
+              const r = await res.json();
+              if (res.ok && r.success) {
+                item.image = r.url;
+                this.showToast('تم الرفع!', 'تم تعيين صورة المشروع بنجاح.');
+              } else {
+                this.showToast('فشل الرفع', r.error || 'تعذر حفظ الصورة.');
+              }
+            } catch(err) {
+              this.showToast('خطأ في الاتصال', 'تعذر رفع الصورة.');
+            } finally {
+              event.target.value = '';
+            }
+          };
+          reader.readAsDataURL(file);
+        },
+
+        addTechStandard() {
+          if (!this.cms.techList) this.cms.techList = [];
+          const nextNum = this.cms.techList.length + 1;
+          this.cms.techList.push({
+            key: 'c' + nextNum,
+            title: { ar: 'معيار تقني عالمي جديد', en: 'New Global Tech Standard' },
+            desc: { ar: 'شرح المواصفات التقنية ومعايير الأداء المعتمدة...', en: 'Technical specifications and performance standards...' }
+          });
+          this.showToast('تمت إضافة معيار تقني', 'تمت إضافة بطاقة معيار تقني جديد.');
+        },
+        deleteTechStandard(idx) {
+          if (!confirm('هل تريد حذف هذا المعيار التقني؟')) return;
+          this.cms.techList.splice(idx, 1);
+          this.showToast('تم الحذف', 'تم حذف المعيار التقني.');
+        },
+
+        addComparisonRow() {
+          if (!this.cms.comparisonList) this.cms.comparisonList = [];
+          const nextNum = this.cms.comparisonList.length + 1;
+          this.cms.comparisonList.push({
+            key: 'r' + nextNum,
+            title: { ar: 'وجه مقارنة هندسي جديد', en: 'New Comparison Feature' },
+            pro: { ar: 'ميزة بروتيرم المتفوقة', en: 'ProTherme Superior Feature' },
+            std: { ar: 'الأفلام التجارية المعتادة', en: 'Standard Commercial Products' }
+          });
+          this.showToast('تمت إضافة صف مقارنة', 'تمت إضافة صف جديد لجدول المقارنة.');
+        },
+        deleteComparisonRow(idx) {
+          if (!confirm('هل تريد حذف هذا الصف من جدول المقارنة؟')) return;
+          this.cms.comparisonList.splice(idx, 1);
+          this.showToast('تم الحذف', 'تم حذف صف المقارنة.');
+        },
+
+        addHeroStat() {
+          if (!this.cms.heroStatsList) this.cms.heroStatsList = [];
+          this.cms.heroStatsList.push({
+            key: 'stat' + (this.cms.heroStatsList.length + 1),
+            num: '95%',
+            label: { ar: 'إحصائية جديدة', en: 'New Performance Stat' }
+          });
+          this.showToast('تمت إضافة إحصائية', 'تمت إضافة إحصائية جديدة للهيرو.');
+        },
+        deleteHeroStat(idx) {
+          if (!confirm('هل تريد حذف هذه الإحصائية؟')) return;
+          this.cms.heroStatsList.splice(idx, 1);
+          this.showToast('تم الحذف', 'تم حذف الإحصائية.');
+        },
+
+        addTrustItem() {
+          if (!this.cms.trustList) this.cms.trustList = [];
+          this.cms.trustList.push({
+            key: 't' + (this.cms.trustList.length + 1),
+            title: { ar: 'اعتماد / شارة ثقة جديدة', en: 'New Trust Certification' },
+            sub: { ar: 'تفاصيل الاعتماد والضمان المعتمد', en: 'Certification and warranty details' }
+          });
+          this.showToast('تمت إضافة اعتماد جديد', 'تمت إضافة شارة اعتماد جديدة لشريط الثقة.');
+        },
+        deleteTrustItem(idx) {
+          if (!confirm('هل تريد حذف هذا الاعتماد؟')) return;
+          this.cms.trustList.splice(idx, 1);
+          this.showToast('تم الحذف', 'تم حذف شارة الاعتماد.');
+        },
+
+        addVideoBullet() {
+          if (!this.cms.videoBulletsList) this.cms.videoBulletsList = [];
+          this.cms.videoBulletsList.push({
+            key: 'h' + (this.cms.videoBulletsList.length + 1),
+            title: { ar: 'نقطة تمييز ونتيجة فحص جديدة', en: 'New Thermal Proof Highlight' },
+            desc: { ar: 'شرح النتيجة الميدانية بالأرقام والقياسات الحقيقية...', en: 'Details of measured results...' }
+          });
+          this.showToast('تمت إضافة نقطة تمييز', 'تمت إضافة نقطة جديدة لعمود الفيديو.');
+        },
+        deleteVideoBullet(idx) {
+          if (!confirm('هل تريد حذف هذه النقطة؟')) return;
+          this.cms.videoBulletsList.splice(idx, 1);
+          this.showToast('تم الحذف', 'تم حذف نقطة التمييز.');
+        },
+
+        addVillaFeature() {
+          if (!this.cms.villaFeaturesList) this.cms.villaFeaturesList = [];
+          this.cms.villaFeaturesList.push({
+            title: { ar: 'ميزة جديدة لقطاع الفلل', en: 'New Villa Feature' },
+            desc: { ar: 'شرح الميزة الهندسية لحماية الفلل والواجهات...', en: 'Feature details...' }
+          });
+          this.showToast('تمت إضافة ميزة للفلل', 'تمت إضافة ميزة جديدة لقطاع الفلل.');
+        },
+        deleteVillaFeature(idx) {
+          if (!confirm('هل تريد حذف هذه الميزة؟')) return;
+          this.cms.villaFeaturesList.splice(idx, 1);
+          this.showToast('تم الحذف', 'تم حذف ميزة الفلل.');
+        },
+
+        addEnterpriseFeature() {
+          if (!this.cms.enterpriseFeaturesList) this.cms.enterpriseFeaturesList = [];
+          this.cms.enterpriseFeaturesList.push({
+            title: { ar: 'ميزة جديدة للمشاريع والفنادق', en: 'New Enterprise Feature' },
+            desc: { ar: 'شرح الميزة الهندسية للمشاريع الكبرى...', en: 'Feature details...' }
+          });
+          this.showToast('تمت إضافة ميزة للمشاريع', 'تمت إضافة ميزة جديدة لقطاع المشاريع.');
+        },
+        deleteEnterpriseFeature(idx) {
+          if (!confirm('هل تريد حذف هذه الميزة؟')) return;
+          this.cms.enterpriseFeaturesList.splice(idx, 1);
+          this.showToast('تم الحذف', 'تم حذف ميزة المشاريع.');
+        },
+
+        addButton() {
+          if (!this.cms.customButtonsList) this.cms.customButtonsList = [];
+          this.cms.customButtonsList.push({
+            key: 'btn_' + Date.now(),
+            visible: true,
+            title: { ar: 'زر إجراء جديد', en: 'New CTA Button' },
+            target: '#contact'
+          });
+          this.showToast('تمت إضافة زر جديد', 'تمت إضافة زر إجراء جديد.');
+        },
+        deleteButton(idx) {
+          if (!confirm('هل تريد حذف هذا الزر؟')) return;
+          this.cms.customButtonsList.splice(idx, 1);
+          this.showToast('تم الحذف', 'تم حذف الزر.');
         },
 
         notify(title, msg) {
@@ -3175,12 +3834,16 @@
               this.authenticated = true;
               sessionStorage.setItem('protherme_admin_auth', 'true');
               this.pinError = '';
+              this.fetchLeads();
+              this.fetchCareers();
               return;
             }
           } else if (pin === 'admin2026' || pin === '1234') {
             this.authenticated = true;
             sessionStorage.setItem('protherme_admin_auth', 'true');
             this.pinError = '';
+            this.fetchLeads();
+            this.fetchCareers();
             return;
           }
           this.pinError = 'رمز المرور غير صحيح، يرجى المحاولة مرة أخرى.';
@@ -3292,9 +3955,307 @@
               if (!data.social) data.social = { facebook: '', instagram: '', linkedin: '', tiktok: '', youtube: '' };
 
               this.cms = data;
+              this.ensureDynamicLists();
             }
           } catch (e) {
             console.error('Failed to load content from API:', e);
+          }
+        },
+
+        ensureDynamicLists() {
+          if (!this.cms) this.cms = {};
+
+          // FAQ List
+          if (!this.cms.faqList || !Array.isArray(this.cms.faqList) || this.cms.faqList.length === 0) {
+            this.cms.faqList = [1, 2, 3, 4].map(n => ({
+              q: { ar: this.cms.texts?.ar?.faq?.['q' + n] || '', en: this.cms.texts?.en?.faq?.['q' + n] || '' },
+              a: { ar: this.cms.texts?.ar?.faq?.['a' + n] || '', en: this.cms.texts?.en?.faq?.['a' + n] || '' }
+            }));
+          }
+
+          // Steps List
+          if (!this.cms.stepsList || !Array.isArray(this.cms.stepsList) || this.cms.stepsList.length === 0) {
+            this.cms.stepsList = [1, 2, 3].map(n => ({
+              num: this.cms.texts?.ar?.steps?.['s' + n + '_num'] || ('0' + n),
+              title: { ar: this.cms.texts?.ar?.steps?.['s' + n + '_title'] || '', en: this.cms.texts?.en?.steps?.['s' + n + '_title'] || '' },
+              desc: { ar: this.cms.texts?.ar?.steps?.['s' + n + '_desc'] || '', en: this.cms.texts?.en?.steps?.['s' + n + '_desc'] || '' }
+            }));
+          }
+
+          // Pillars / Services List
+          if (!this.cms.pillarsList || !Array.isArray(this.cms.pillarsList) || this.cms.pillarsList.length === 0) {
+            this.cms.pillarsList = ['p1', 'p2', 'p3'].map((pKey, i) => ({
+              key: pKey,
+              enabled: this.cms.visibility?.['pillar' + (i + 1)] !== false,
+              name: { ar: this.cms.texts?.ar?.pillars?.[pKey]?.name || '', en: this.cms.texts?.en?.pillars?.[pKey]?.name || '' },
+              tag: { ar: this.cms.texts?.ar?.pillars?.[pKey]?.tag || '', en: this.cms.texts?.en?.pillars?.[pKey]?.tag || '' },
+              desc: { ar: this.cms.texts?.ar?.pillars?.[pKey]?.desc || '', en: this.cms.texts?.en?.pillars?.[pKey]?.desc || '' },
+              f1: { ar: this.cms.texts?.ar?.pillars?.[pKey]?.f1 || '', en: this.cms.texts?.en?.pillars?.[pKey]?.f1 || '' },
+              f2: { ar: this.cms.texts?.ar?.pillars?.[pKey]?.f2 || '', en: this.cms.texts?.en?.pillars?.[pKey]?.f2 || '' },
+              f3: { ar: this.cms.texts?.ar?.pillars?.[pKey]?.f3 || '', en: this.cms.texts?.en?.pillars?.[pKey]?.f3 || '' },
+              f4: { ar: this.cms.texts?.ar?.pillars?.[pKey]?.f4 || '', en: this.cms.texts?.en?.pillars?.[pKey]?.f4 || '' },
+              specs: { ar: this.cms.texts?.ar?.pillars?.[pKey]?.specs || '', en: this.cms.texts?.en?.pillars?.[pKey]?.specs || '' },
+              cta: { ar: this.cms.texts?.ar?.pillars?.[pKey]?.cta || '', en: this.cms.texts?.en?.pillars?.[pKey]?.cta || '' },
+              image: this.cms.images?.['pillar' + (i + 1)] || '',
+              badge: { ar: this.cms.imageBadges?.['pillar' + (i + 1)]?.ar || '', en: this.cms.imageBadges?.['pillar' + (i + 1)]?.en || '' }
+            }));
+          }
+
+          // Gallery Projects List
+          if (!this.cms.galleryList || !Array.isArray(this.cms.galleryList) || this.cms.galleryList.length === 0) {
+            this.cms.galleryList = ['1', '2', '3', '4'].map(gNum => ({
+              id: 'gallery' + gNum,
+              category: gNum === '1' || gNum === '3' ? 'arch' : gNum === '2' ? 'surface' : 'auto',
+              image: this.cms.images?.['gallery' + gNum] || '',
+              title: { ar: this.cms.texts?.ar?.gallery?.['item' + gNum + '_title'] || '', en: this.cms.texts?.en?.gallery?.['item' + gNum + '_title'] || '' },
+              desc: { ar: this.cms.texts?.ar?.gallery?.['item' + gNum + '_desc'] || '', en: this.cms.texts?.en?.gallery?.['item' + gNum + '_desc'] || '' },
+              badge: { ar: this.cms.imageBadges?.['gallery' + gNum + '_badge']?.ar || '', en: this.cms.imageBadges?.['gallery' + gNum + '_badge']?.en || '' },
+              footer: { ar: this.cms.imageBadges?.['gallery' + gNum + '_footer']?.ar || '', en: this.cms.imageBadges?.['gallery' + gNum + '_footer']?.en || '' }
+            }));
+          }
+
+          // Tech Standards
+          if (!this.cms.techList || !Array.isArray(this.cms.techList) || this.cms.techList.length === 0) {
+            this.cms.techList = ['c1', 'c2', 'c3', 'c4'].map((cKey, i) => ({
+              key: cKey,
+              title: { ar: this.cms.texts?.ar?.tech_standards?.[cKey + '_title'] || '', en: this.cms.texts?.en?.tech_standards?.[cKey + '_title'] || '' },
+              desc: { ar: this.cms.texts?.ar?.tech_standards?.[cKey + '_desc'] || '', en: this.cms.texts?.en?.tech_standards?.[cKey + '_desc'] || '' }
+            }));
+          }
+
+          // Comparison List
+          if (!this.cms.comparisonList || !Array.isArray(this.cms.comparisonList) || this.cms.comparisonList.length === 0) {
+            this.cms.comparisonList = ['r1', 'r2', 'r3', 'r4'].map(rKey => ({
+              key: rKey,
+              title: { ar: this.cms.texts?.ar?.comparison?.[rKey + '_title'] || '', en: this.cms.texts?.en?.comparison?.[rKey + '_title'] || '' },
+              pro: { ar: this.cms.texts?.ar?.comparison?.[rKey + '_pro'] || '', en: this.cms.texts?.en?.comparison?.[rKey + '_pro'] || '' },
+              std: { ar: this.cms.texts?.ar?.comparison?.[rKey + '_std'] || '', en: this.cms.texts?.en?.comparison?.[rKey + '_std'] || '' }
+            }));
+          }
+
+          // Hero Stats List
+          if (!this.cms.heroStatsList || !Array.isArray(this.cms.heroStatsList) || this.cms.heroStatsList.length === 0) {
+            this.cms.heroStatsList = ['stat1', 'stat2', 'stat3', 'stat4'].map(k => ({
+              key: k,
+              num: this.cms.heroStats?.[k]?.num || '',
+              label: { ar: this.cms.heroStats?.[k]?.label_ar || '', en: this.cms.heroStats?.[k]?.label_en || '' }
+            }));
+          }
+
+          // Trust Bar List
+          if (!this.cms.trustList || !Array.isArray(this.cms.trustList) || this.cms.trustList.length === 0) {
+            this.cms.trustList = ['t1', 't2', 't3', 't4'].map((tKey, i) => ({
+              key: tKey,
+              title: { ar: this.cms.texts?.ar?.trust?.[tKey] || '', en: this.cms.texts?.en?.trust?.[tKey] || '' },
+              sub: { ar: this.cms.texts?.ar?.trust?.[tKey + '_sub'] || '', en: this.cms.texts?.en?.trust?.[tKey + '_sub'] || '' }
+            }));
+          }
+
+          // Video Bullets List
+          if (!this.cms.videoBulletsList || !Array.isArray(this.cms.videoBulletsList) || this.cms.videoBulletsList.length === 0) {
+            this.cms.videoBulletsList = ['h1', 'h2', 'h3'].map((hKey, i) => ({
+              key: hKey,
+              title: { ar: this.cms.video?.[hKey + '_title']?.ar || '', en: this.cms.video?.[hKey + '_title']?.en || '' },
+              desc: { ar: this.cms.video?.[hKey + '_desc']?.ar || '', en: this.cms.video?.[hKey + '_desc']?.en || '' }
+            }));
+          }
+
+          // Sector Features List
+          if (!this.cms.villaFeaturesList || !Array.isArray(this.cms.villaFeaturesList) || this.cms.villaFeaturesList.length === 0) {
+            this.cms.villaFeaturesList = [1, 2, 3].map(n => ({
+              title: { ar: this.cms.texts?.ar?.sectors?.['villa_f' + n + '_title'] || '', en: this.cms.texts?.en?.sectors?.['villa_f' + n + '_title'] || '' },
+              desc: { ar: this.cms.texts?.ar?.sectors?.['villa_f' + n + '_desc'] || '', en: this.cms.texts?.en?.sectors?.['villa_f' + n + '_desc'] || '' }
+            }));
+          }
+
+          if (!this.cms.enterpriseFeaturesList || !Array.isArray(this.cms.enterpriseFeaturesList) || this.cms.enterpriseFeaturesList.length === 0) {
+            this.cms.enterpriseFeaturesList = [1, 2, 3].map(n => ({
+              title: { ar: this.cms.texts?.ar?.sectors?.['ent_f' + n + '_title'] || '', en: this.cms.texts?.en?.sectors?.['ent_f' + n + '_title'] || '' },
+              desc: { ar: this.cms.texts?.ar?.sectors?.['ent_f' + n + '_desc'] || '', en: this.cms.texts?.en?.sectors?.['ent_f' + n + '_desc'] || '' }
+            }));
+          }
+
+          // Custom Buttons
+          if (!this.cms.customButtonsList || !Array.isArray(this.cms.customButtonsList)) {
+            this.cms.customButtonsList = [];
+          }
+        },
+
+        syncLegacyKeys() {
+          if (!this.cms) return;
+
+          // Sync FAQ
+          if (Array.isArray(this.cms.faqList)) {
+            this.cms.faqList.forEach((item, idx) => {
+              const k = idx + 1;
+              if (this.cms.texts?.ar?.faq) {
+                this.cms.texts.ar.faq['q' + k] = item.q?.ar || '';
+                this.cms.texts.ar.faq['a' + k] = item.a?.ar || '';
+              }
+              if (this.cms.texts?.en?.faq) {
+                this.cms.texts.en.faq['q' + k] = item.q?.en || '';
+                this.cms.texts.en.faq['a' + k] = item.a?.en || '';
+              }
+            });
+          }
+
+          // Sync Steps
+          if (Array.isArray(this.cms.stepsList)) {
+            this.cms.stepsList.forEach((step, idx) => {
+              const k = idx + 1;
+              if (this.cms.texts?.ar?.steps) {
+                this.cms.texts.ar.steps['s' + k + '_num'] = step.num || ('0' + k);
+                this.cms.texts.ar.steps['s' + k + '_title'] = step.title?.ar || '';
+                this.cms.texts.ar.steps['s' + k + '_desc'] = step.desc?.ar || '';
+              }
+              if (this.cms.texts?.en?.steps) {
+                this.cms.texts.en.steps['s' + k + '_num'] = step.num || ('0' + k);
+                this.cms.texts.en.steps['s' + k + '_title'] = step.title?.en || '';
+                this.cms.texts.en.steps['s' + k + '_desc'] = step.desc?.en || '';
+              }
+            });
+          }
+
+          // Sync Pillars
+          if (Array.isArray(this.cms.pillarsList)) {
+            this.cms.pillarsList.forEach((p, idx) => {
+              const k = 'p' + (idx + 1);
+              if (this.cms.visibility) this.cms.visibility['pillar' + (idx + 1)] = p.enabled !== false;
+              if (this.cms.images) this.cms.images['pillar' + (idx + 1)] = p.image || '';
+              if (this.cms.imageBadges) {
+                if (!this.cms.imageBadges['pillar' + (idx + 1)]) this.cms.imageBadges['pillar' + (idx + 1)] = { ar: '', en: '' };
+                this.cms.imageBadges['pillar' + (idx + 1)].ar = p.badge?.ar || '';
+                this.cms.imageBadges['pillar' + (idx + 1)].en = p.badge?.en || '';
+              }
+              ['ar', 'en'].forEach(l => {
+                if (this.cms.texts && this.cms.texts[l] && this.cms.texts[l].pillars) {
+                  if (!this.cms.texts[l].pillars[k]) this.cms.texts[l].pillars[k] = {};
+                  this.cms.texts[l].pillars[k].name = p.name?.[l] || '';
+                  this.cms.texts[l].pillars[k].tag = p.tag?.[l] || '';
+                  this.cms.texts[l].pillars[k].desc = p.desc?.[l] || '';
+                  this.cms.texts[l].pillars[k].f1 = p.f1?.[l] || '';
+                  this.cms.texts[l].pillars[k].f2 = p.f2?.[l] || '';
+                  this.cms.texts[l].pillars[k].f3 = p.f3?.[l] || '';
+                  this.cms.texts[l].pillars[k].f4 = p.f4?.[l] || '';
+                  this.cms.texts[l].pillars[k].specs = p.specs?.[l] || '';
+                  this.cms.texts[l].pillars[k].cta = p.cta?.[l] || '';
+                }
+              });
+            });
+          }
+
+          // Sync Gallery
+          if (Array.isArray(this.cms.galleryList)) {
+            this.cms.galleryList.forEach((item, idx) => {
+              const gNum = (idx + 1).toString();
+              if (this.cms.images) this.cms.images['gallery' + gNum] = item.image || '';
+              if (this.cms.imageBadges) {
+                if (!this.cms.imageBadges['gallery' + gNum + '_badge']) this.cms.imageBadges['gallery' + gNum + '_badge'] = { ar: '', en: '' };
+                if (!this.cms.imageBadges['gallery' + gNum + '_footer']) this.cms.imageBadges['gallery' + gNum + '_footer'] = { ar: '', en: '' };
+                this.cms.imageBadges['gallery' + gNum + '_badge'].ar = item.badge?.ar || '';
+                this.cms.imageBadges['gallery' + gNum + '_badge'].en = item.badge?.en || '';
+                this.cms.imageBadges['gallery' + gNum + '_footer'].ar = item.footer?.ar || '';
+                this.cms.imageBadges['gallery' + gNum + '_footer'].en = item.footer?.en || '';
+              }
+              ['ar', 'en'].forEach(l => {
+                if (this.cms.texts && this.cms.texts[l] && this.cms.texts[l].gallery) {
+                  this.cms.texts[l].gallery['item' + gNum + '_title'] = item.title?.[l] || '';
+                  this.cms.texts[l].gallery['item' + gNum + '_desc'] = item.desc?.[l] || '';
+                }
+              });
+            });
+          }
+
+          // Sync Tech
+          if (Array.isArray(this.cms.techList)) {
+            this.cms.techList.forEach((c, idx) => {
+              const k = 'c' + (idx + 1);
+              ['ar', 'en'].forEach(l => {
+                if (this.cms.texts && this.cms.texts[l] && this.cms.texts[l].tech_standards) {
+                  this.cms.texts[l].tech_standards[k + '_title'] = c.title?.[l] || '';
+                  this.cms.texts[l].tech_standards[k + '_desc'] = c.desc?.[l] || '';
+                }
+              });
+            });
+          }
+
+          // Sync Comparison
+          if (Array.isArray(this.cms.comparisonList)) {
+            this.cms.comparisonList.forEach((r, idx) => {
+              const k = 'r' + (idx + 1);
+              ['ar', 'en'].forEach(l => {
+                if (this.cms.texts && this.cms.texts[l] && this.cms.texts[l].comparison) {
+                  this.cms.texts[l].comparison[k + '_title'] = r.title?.[l] || '';
+                  this.cms.texts[l].comparison[k + '_pro'] = r.pro?.[l] || '';
+                  this.cms.texts[l].comparison[k + '_std'] = r.std?.[l] || '';
+                }
+              });
+            });
+          }
+
+          // Sync Hero Stats
+          if (Array.isArray(this.cms.heroStatsList)) {
+            this.cms.heroStatsList.forEach((s, idx) => {
+              const k = 'stat' + (idx + 1);
+              if (!this.cms.heroStats) this.cms.heroStats = {};
+              if (!this.cms.heroStats[k]) this.cms.heroStats[k] = {};
+              this.cms.heroStats[k].num = s.num || '';
+              this.cms.heroStats[k].label_ar = s.label?.ar || '';
+              this.cms.heroStats[k].label_en = s.label?.en || '';
+            });
+          }
+
+          // Sync Trust
+          if (Array.isArray(this.cms.trustList)) {
+            this.cms.trustList.forEach((t, idx) => {
+              const k = 't' + (idx + 1);
+              ['ar', 'en'].forEach(l => {
+                if (this.cms.texts && this.cms.texts[l] && this.cms.texts[l].trust) {
+                  this.cms.texts[l].trust[k] = t.title?.[l] || '';
+                  this.cms.texts[l].trust[k + '_sub'] = t.sub?.[l] || '';
+                }
+              });
+            });
+          }
+
+          // Sync Video
+          if (Array.isArray(this.cms.videoBulletsList)) {
+            this.cms.videoBulletsList.forEach((b, idx) => {
+              const k = 'h' + (idx + 1);
+              if (!this.cms.video) this.cms.video = {};
+              if (!this.cms.video[k + '_title']) this.cms.video[k + '_title'] = {};
+              if (!this.cms.video[k + '_desc']) this.cms.video[k + '_desc'] = {};
+              this.cms.video[k + '_title'].ar = b.title?.ar || '';
+              this.cms.video[k + '_title'].en = b.title?.en || '';
+              this.cms.video[k + '_desc'].ar = b.desc?.ar || '';
+              this.cms.video[k + '_desc'].en = b.desc?.en || '';
+            });
+          }
+
+          // Sync Villa Features
+          if (Array.isArray(this.cms.villaFeaturesList)) {
+            this.cms.villaFeaturesList.forEach((f, idx) => {
+              const k = idx + 1;
+              ['ar', 'en'].forEach(l => {
+                if (this.cms.texts && this.cms.texts[l] && this.cms.texts[l].sectors) {
+                  this.cms.texts[l].sectors['villa_f' + k + '_title'] = f.title?.[l] || '';
+                  this.cms.texts[l].sectors['villa_f' + k + '_desc'] = f.desc?.[l] || '';
+                }
+              });
+            });
+          }
+
+          // Sync Enterprise Features
+          if (Array.isArray(this.cms.enterpriseFeaturesList)) {
+            this.cms.enterpriseFeaturesList.forEach((f, idx) => {
+              const k = idx + 1;
+              ['ar', 'en'].forEach(l => {
+                if (this.cms.texts && this.cms.texts[l] && this.cms.texts[l].sectors) {
+                  this.cms.texts[l].sectors['ent_f' + k + '_title'] = f.title?.[l] || '';
+                  this.cms.texts[l].sectors['ent_f' + k + '_desc'] = f.desc?.[l] || '';
+                }
+              });
+            });
           }
         },
 
@@ -3339,6 +4300,7 @@
         },
 
         async saveContent() {
+          this.syncLegacyKeys();
           this.saving = true;
           try {
             const res = await fetch('/api/content', {
@@ -3369,6 +4331,7 @@
             if (res.ok) {
               const result = await res.json();
               this.cms = result.content;
+              this.ensureDynamicLists();
               localStorage.setItem('protherme_cms_content', JSON.stringify(this.cms));
               this.showToast('تم استعادة الأصل!', 'تمت استعادة إعدادات المصنع الافتراضية بنجاح.');
             }
