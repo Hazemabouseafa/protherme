@@ -53,9 +53,9 @@ var translations = {
       t4_sub: 'دقة فائقة بدون فقاعات أو شوائب'
     },
     services: {
-      tag: 'مجالات التميز الهندسي',
-      title: '3 ركائز متكاملة لحماية أصولك واستثماراتك',
-      subtitle: 'نقدم حلولاً متقدمة مصممة خصيصاً للقطاعات المعمارية والفاخرة والتجارية، مدعومة بابتكارات Global Hi-Tech Films.',
+      tag: 'حلول متكاملة لبيتك ومشروعك',
+      title: '3 خدمات تضمن لك راحة تامة وبرودة دائمة وحماية لأغلى ما تملك',
+      subtitle: 'سواء فيلتك في كمبوند بتعاني من حرارة الصيف أو بتدير مشروع فندقي ضخم — ابعت المقاسات أو صورة المكان، وفريقنا الهندسي هيتكفل بالمعاينة والتركيب والضمان.',
       p1: {
         tag: 'الركيزة 01 - معمارية وهندسية',
         name: 'أفلام زجاج المباني والعزل الحراري',
@@ -255,9 +255,9 @@ var translations = {
       t4_sub: 'Dust-free flawless edge-to-edge finish'
     },
     services: {
-      tag: 'Engineering Excellence',
-      title: '3 Core Pillars Safeguarding Your High-End Assets',
-      subtitle: 'Pioneering protective solutions engineered specifically for architectural facades, luxury interior surfaces, and automotive detailing centers.',
+      tag: 'ENGINEERING PROTECTION SOLUTIONS',
+      title: '3 Specialized Services for Complete Comfort, Cooling & Asset Protection',
+      subtitle: 'Whether it\'s your luxury compound villa or an enterprise hotel project — just send us the glass dimensions or a quick photo, and our certified team handles everything with a 25-year warranty.',
       p1: {
         tag: 'Pillar 01 - Architectural & Commercial',
         name: 'Architectural Window Films & Solar Control',
@@ -408,6 +408,17 @@ var translations = {
     }
   }
 };
+
+translations.ar.pillars = Object.assign({}, translations.ar.services, {
+  p1: Object.assign({}, translations.ar.services.p1, { title: translations.ar.services.p1.name }),
+  p2: Object.assign({}, translations.ar.services.p2, { title: translations.ar.services.p2.name }),
+  p3: Object.assign({}, translations.ar.services.p3, { title: translations.ar.services.p3.name })
+});
+translations.en.pillars = Object.assign({}, translations.en.services, {
+  p1: Object.assign({}, translations.en.services.p1, { title: translations.en.services.p1.name }),
+  p2: Object.assign({}, translations.en.services.p2, { title: translations.en.services.p2.name }),
+  p3: Object.assign({}, translations.en.services.p3, { title: translations.en.services.p3.name })
+});
 
 if (typeof window !== 'undefined') window.translations = translations;
 if (typeof globalThis !== 'undefined') globalThis.translations = translations;

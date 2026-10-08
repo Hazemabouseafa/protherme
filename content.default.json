@@ -31,7 +31,7 @@
   },
   "images": {
     "logo": "assets/images/protherme-logo.jpg",
-    "heroVisual": "assets/images/hotel-enterprise.jpg",
+    "heroVisual": "assets/images/hero-luxury-facade.jpg",
     "pillar1": "assets/images/compound-villa.jpg",
     "pillar2": "assets/images/marble-surface.jpg",
     "pillar3": "assets/images/supercar-ppf.jpg",
@@ -233,10 +233,15 @@
         "ent_f3_desc": "منتجات معتمدة بموجب شهادات ISO 9001 وضمانات مصنعية موثقة من Global Hi-Tech Films.",
         "ent_cta": "طلب دراسة فنية وعينات للمشروع"
       },
+      "services": {
+        "tag": "حلول متكاملة لبيتك ومشروعك",
+        "title": "3 خدمات تضمن لك راحة تامة وبرودة دائمة وحماية لأغلى ما تملك",
+        "subtitle": "سواء فيلتك في كمبوند بتعاني من حرارة الصيف أو بتدير مشروع فندقي ضخم — ابعت المقاسات أو صورة المكان، وفريقنا الهندسي هيتكفل بالمعاينة والتركيب والضمان."
+      },
       "pillars": {
-        "tag": "خدماتنا الأساسية",
-        "title": "3 خدمات متخصصة صُممت لحماية استثماراتك",
-        "subtitle": "كل اللي عليك تبعت المقاسات أو الصور، وفريقنا الهندسي هيتكفل بالتنفيذ المتكامل مع الضمان.",
+        "tag": "حلول متكاملة لبيتك ومشروعك",
+        "title": "3 خدمات تضمن لك راحة تامة وبرودة دائمة وحماية لأغلى ما تملك",
+        "subtitle": "سواء فيلتك في كمبوند بتعاني من حرارة الصيف أو بتدير مشروع فندقي ضخم — ابعت المقاسات أو صورة المكان، وفريقنا الهندسي هيتكفل بالمعاينة والتركيب والضمان.",
         "p1": {
           "tag": "الأفلام المعمارية",
           "title": "عزل زجاج المباني والفلل",
@@ -245,7 +250,9 @@
           "f2": "حجب 99.9% من الأشعة فوق البنفسجية (UV)",
           "f3": "توفير حتى 30% من فواتير التكييف السنوية",
           "f4": "متوافق 100% مع إشارات الاتصال والواي فاي و5G",
-          "cta": "ابعت مقاسات النوافذ"
+          "cta": "ابعت مقاسات النوافذ",
+          "name": "عزل زجاج المباني والفلل",
+          "specs": "IRR: حتى 88% | UVR: 99.9% | TSER: حتى 72%"
         },
         "p2": {
           "tag": "حماية الأسطح",
@@ -255,7 +262,9 @@
           "f2": "خاصية المعالجة الذاتية للخدوش السطحية بالحرارة",
           "f3": "مظهر زجاجي شفاف يحافظ على عروق وجمال الرخام الطبيعي",
           "f4": "تحمل درجات حرارة الأواني والمشروبات الساخنة",
-          "cta": "ابعت أبعاد الرخام"
+          "cta": "ابعت أبعاد الرخام",
+          "name": "حماية الرخام والأسطح الفاخرة",
+          "specs": "سماكة 8.5 ميل TPU | مقاومة كيميائية كاملة | معالجة ذاتية"
         },
         "p3": {
           "tag": "أفلام السيارات",
@@ -265,7 +274,9 @@
           "f2": "مقاومة قوية للحصى وخدوش المفاتيح واحتكاكات الركن",
           "f3": "طرد فائق للمياه والأتربة (Super-Hydrophobic)",
           "f4": "ضمان دولي ضد تغير اللون والاصفرار أو التشقق",
-          "cta": "تواصل لطلب التوريد"
+          "cta": "تواصل لطلب التوريد",
+          "name": "أفلام حماية السيارات (PPF)",
+          "specs": "Top-Coat TPU | سماكة 8.5 ميل | لمعان نقي | معالجة ذاتية"
         }
       },
       "tech_standards": {
@@ -460,10 +471,15 @@
         "ent_f3_desc": "ISO 9001 certified products with manufacturer warranty certificates from Global Hi-Tech Films.",
         "ent_cta": "Request Project Engineering Proposal & Samples"
       },
+      "services": {
+        "tag": "ENGINEERING PROTECTION SOLUTIONS",
+        "title": "3 Specialized Services for Complete Comfort, Cooling & Asset Protection",
+        "subtitle": "Whether it's your luxury compound villa or an enterprise hotel project — just send us the glass dimensions or a quick photo, and our certified team handles everything with a 25-year warranty."
+      },
       "pillars": {
-        "tag": "Core Solutions",
-        "title": "3 Specialized Pillars to Protect Your Investments",
-        "subtitle": "Just send your dimensions or photos, and our engineering team handles full execution with warranty.",
+        "tag": "ENGINEERING PROTECTION SOLUTIONS",
+        "title": "3 Specialized Services for Complete Comfort, Cooling & Asset Protection",
+        "subtitle": "Whether it's your luxury compound villa or an enterprise hotel project — just send us the glass dimensions or a quick photo, and our certified team handles everything with a 25-year warranty.",
         "p1": {
           "tag": "Architectural Films",
           "title": "Architectural Glass Insulation",
@@ -472,7 +488,9 @@
           "f2": "99.9% Harmful UV Radiation Shielding",
           "f3": "Up to 30% Annual HVAC Energy Savings",
           "f4": "100% Signal Friendly: 5G, Wi-Fi & GPS Safe",
-          "cta": "Send Window Sizes"
+          "cta": "Send Window Sizes",
+          "name": "Architectural Glass Insulation",
+          "specs": "IRR: Up to 88% | UVR: 99.9% | TSER: Up to 72%"
         },
         "p2": {
           "tag": "Surface Protection",
@@ -482,7 +500,9 @@
           "f2": "Heat-activated self-healing for surface micro-scratches",
           "f3": "Ultra-clear gloss finish accentuating natural marble veins",
           "f4": "Withstands high temperatures from hot cookware",
-          "cta": "Send Marble Dimensions"
+          "cta": "Send Marble Dimensions",
+          "name": "Luxury Marble & Surface Shield",
+          "specs": "8.5 Mil TPU | Chemical Acid Resistant | Instant Self-Healing"
         },
         "p3": {
           "tag": "Automotive PPF",
@@ -492,7 +512,9 @@
           "f2": "Tough defense against rock chips, scratches, and abrasions",
           "f3": "Super-hydrophobic water and dirt repelling technology",
           "f4": "International warranty against yellowing and peeling",
-          "cta": "Inquire for Supply"
+          "cta": "Inquire for Supply",
+          "name": "Automotive Paint Protection (PPF)",
+          "specs": "Top-Coat TPU | 8.5 Mil Thickness | Mirror Gloss | Self-Healing"
         }
       },
       "tech_standards": {

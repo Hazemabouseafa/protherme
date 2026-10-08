@@ -774,8 +774,30 @@
         <!-- ============================================== -->
         <div x-show="activeTab === 'pillars'" class="space-y-8">
           <div class="border-b border-slate-200 pb-4">
-            <h3 class="text-xl font-black text-slate-950">الركائز والخدمات الثلاث (Core Pillars)</h3>
-            <p class="text-xs text-slate-500 mt-1" x-text="editLang === 'ar' ? 'تعديل محتوى وتفاصيل الركائز الثلاث بالعربية' : 'Editing details for the 3 pillars in English'"></p>
+            <h3 class="text-xl font-black text-slate-950">الركائز والخدمات الثلاث (Core Pillars & Services)</h3>
+            <p class="text-xs text-slate-500 mt-1" x-text="editLang === 'ar' ? 'تعديل محتوى وتفاصيل الخدمات والركائز بالعربية' : 'Editing details for the 3 pillars & services in English'"></p>
+          </div>
+
+          <!-- Services Section Header (services.tag, services.title, services.subtitle) -->
+          <div class="p-5 rounded-2xl bg-cyan-50/60 border border-cyan-200/80 space-y-4 shadow-xs">
+            <div class="flex items-center gap-2 text-cyan-900 font-bold text-sm">
+              <i class="fa-solid fa-layer-group text-cyan-600"></i>
+              <span>ترويسة قسم الخدمات والحلول (Services Header):</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">الوسم العلوي (services.tag):</label>
+                <input type="text" x-model="cms.texts[editLang].services.tag" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-bold focus:border-cyan-600 focus:outline-none">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">العنوان الرئيسي (services.title):</label>
+                <input type="text" x-model="cms.texts[editLang].services.title" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold focus:border-cyan-600 focus:outline-none">
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">الوصف الفرعي (services.subtitle):</label>
+              <textarea rows="2" x-model="cms.texts[editLang].services.subtitle" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 focus:border-cyan-600 focus:outline-none"></textarea>
+            </div>
           </div>
 
           <!-- Repeat for Pillar 1, 2, 3 -->
@@ -1371,6 +1393,7 @@
               ['ar', 'en'].forEach(l => {
                 if (!data.texts[l]) data.texts[l] = {};
                 if (!data.texts[l].hero) data.texts[l].hero = {};
+                if (!data.texts[l].services) data.texts[l].services = { tag: '', title: '', subtitle: '' };
                 if (!data.texts[l].pillars) data.texts[l].pillars = { p1: {}, p2: {}, p3: {} };
                 ['p1', 'p2', 'p3'].forEach(p => {
                   if (!data.texts[l].pillars[p]) data.texts[l].pillars[p] = {};
