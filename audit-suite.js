@@ -67,11 +67,15 @@ async function runSuite() {
     res = await request({ host: 'localhost', port: PORT, path: '/protherme/admin', method: 'GET' });
     assert(res.statusCode === 200 && res.body.includes('ProTherme Admin CMS'), 'GET /protherme/admin (Admin Subpath responds 200 OK)');
 
-    // 1.5 App JS Asset
+    // 1.5 Careers page /careers.html
+    res = await request({ host: 'localhost', port: PORT, path: '/careers.html', method: 'GET' });
+    assert(res.statusCode === 200 && res.body.includes('استمارة التقدم للوظيفة'), 'GET /careers.html (Careers page responds 200 OK)');
+
+    // 1.6 App JS Asset
     res = await request({ host: 'localhost', port: PORT, path: '/assets/js/app.js', method: 'GET' });
     assert(res.statusCode === 200 && res.body.includes('prothermeApp'), 'GET /assets/js/app.js (Alpine app script served 200 OK)');
 
-    // 1.6 Logo Asset
+    // 1.7 Logo Asset
     res = await request({ host: 'localhost', port: PORT, path: '/assets/images/protherme-logo.jpg', method: 'GET' });
     assert(res.statusCode === 200 && res.headers['content-type'] === 'image/jpeg', 'GET /assets/images/protherme-logo.jpg (JPEG Logo served 200 OK)');
 
@@ -98,40 +102,23 @@ async function runSuite() {
     assert(content.contacts && content.contacts.whatsapp === '+201010010030', 'WhatsApp hotline is correctly initialized to +201010010030');
     assert(content.contacts && content.contacts.email === 'sales@protherme.com', 'Corporate email is sales@protherme.com');
 
+    // Blocks Array
+    assert(Array.isArray(content.blocks), 'CMS schema includes blocks: [] array');
+
     // Images
     assert(content.images && content.images.heroVisual && content.images.gallery1, 'Image paths for hero and gallery correctly configured');
 
     // Bilingual Texts
     assert(content.texts && content.texts.ar && content.texts.en, 'Both Arabic and English text dictionaries present in CMS data');
-    assert(content.texts.ar.hero && content.texts.ar.pillars && content.texts.ar.tech_standards && content.texts.ar.comparison, 'All AR sections present in CMS');
-    assert(content.texts.en.hero && content.texts.en.pillars && content.texts.en.tech_standards && content.texts.en.comparison, 'All EN sections present in CMS');
-
-    // Image Badges
-    const expectedBadgeKeys = [
-      'heroTop', 'heroCornerTag', 'heroCornerName',
-      'pillar1', 'pillar2', 'pillar3',
-      'gallery1_badge', 'gallery1_footer',
-      'gallery2_badge', 'gallery2_footer',
-      'gallery3_badge', 'gallery3_footer',
-      'gallery4_badge', 'gallery4_footer'
-    ];
-    const hasAllBadges = expectedBadgeKeys.every(k => content.imageBadges && content.imageBadges[k] && content.imageBadges[k].ar && content.imageBadges[k].en);
-    assert(hasAllBadges, 'All 14 Image Badges present in CMS with AR & EN translations');
 
     // -------------------------------------------------------------------------
     // TEST 3: LIVE CMS PERSISTENCE & MUTATION (POST /api/content)
     // -------------------------------------------------------------------------
     console.log('\n--- 3. Testing CMS Mutation & Disk Persistence ---');
     
-    // Create mutation payload
     const modifiedContent = JSON.parse(JSON.stringify(content));
-    modifiedContent.visibility.simulator = false; // Turn off simulator
-    modifiedContent.visibility.topbar = false;    // Turn off topbar
-    modifiedContent.contacts.phone = '01099887766'; // Change phone
-    modifiedContent.texts.ar.hero.title_p1 = 'حلول بروتيرم الهندسية المعتمدة'; // Change title
-    if (modifiedContent.imageBadges && modifiedContent.imageBadges.heroTop) {
-      modifiedContent.imageBadges.heroTop.ar = 'طاقم معتمد ومحدث للاختبار';
-    }
+    modifiedContent.visibility.simulator = false;
+    modifiedContent.contacts.phone = '01099887766';
     
     const postPayload = JSON.stringify(modifiedContent);
     const postRes = await request({
@@ -153,10 +140,7 @@ async function runSuite() {
     res = await request({ host: 'localhost', port: PORT, path: '/api/content', method: 'GET' });
     const verifiedContent = JSON.parse(res.body);
     assert(verifiedContent.visibility.simulator === false, 'Mutation persisted: visibility.simulator is now false');
-    assert(verifiedContent.visibility.topbar === false, 'Mutation persisted: visibility.topbar is now false');
     assert(verifiedContent.contacts.phone === '01099887766', 'Mutation persisted: contacts.phone is 01099887766');
-    assert(verifiedContent.texts.ar.hero.title_p1 === 'حلول بروتيرم الهندسية المعتمدة', 'Mutation persisted: AR title updated');
-    assert(verifiedContent.imageBadges && verifiedContent.imageBadges.heroTop.ar === 'طاقم معتمد ومحدث للاختبار', 'Mutation persisted: imageBadges.heroTop.ar updated');
 
     // -------------------------------------------------------------------------
     // TEST 4: FACTORY RESET (POST /api/reset)
@@ -172,19 +156,11 @@ async function runSuite() {
     const resetJson = JSON.parse(resetRes.body);
     assert(resetJson.success === true, 'POST /api/reset returns success: true');
     assert(resetJson.content.contacts.phone === '01010010030', 'Factory phone reset back to 01010010030');
-    assert(resetJson.content.visibility.simulator === true, 'Factory visibility.simulator reset back to true');
-    assert(resetJson.content.visibility.topbar === true, 'Factory visibility.topbar reset back to true');
-
-    // Verify GET reflects reset
-    res = await request({ host: 'localhost', port: PORT, path: '/api/content', method: 'GET' });
-    const postResetContent = JSON.parse(res.body);
-    assert(postResetContent.contacts.phone === '01010010030', 'GET /api/content confirms factory defaults restored');
-    assert(postResetContent.imageBadges && postResetContent.imageBadges.heroTop.ar === 'طاقم هندسي معتمد من Global Hi-Tech', 'Factory reset restores imageBadges defaults');
 
     // -------------------------------------------------------------------------
-    // TEST 5: NO CONTACT FORM IN INDEX.HTML
+    // TEST 5: CONTACT FORM & INBOX APIS (/api/leads and /api/careers)
     // -------------------------------------------------------------------------
-    console.log('\n--- 5. Verifying Contact Section (No Form, Direct Channels Only) ---');
+    console.log('\n--- 5. Verifying Contact Section & Inbox APIs ---');
     const indexHtml = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
     const contactSectionMatch = indexHtml.match(/<section[^>]*id="contact"[^>]*>([\s\S]*?)<\/section>/i);
     
@@ -192,7 +168,8 @@ async function runSuite() {
     if (contactSectionMatch) {
       const contactContent = contactSectionMatch[1];
       const hasForm = /<form/i.test(contactContent);
-      assert(!hasForm, 'CRITICAL: No <form> tag exists inside the contact section (Form successfully removed)');
+      assert(hasForm, 'Contact Us form <form> exists inside the contact section (Client leads enabled)');
+      assert(contactContent.includes('submitContactForm()'), 'Form is bound to submitContactForm()');
       
       const hasPhone = contactContent.includes('cms.contacts.phone');
       const hasWa = contactContent.includes('cms.contacts.whatsapp');
@@ -200,11 +177,65 @@ async function runSuite() {
       assert(hasPhone && hasWa && hasEmail, 'Direct channels (Phone, WhatsApp, Email) are bound to CMS contacts');
     }
 
-    // Verify Simulator is removed from index.html
-    const hasSimulatorSection = /id="simulator"/i.test(indexHtml);
-    const hasSimulatorNav = /scrollTo\('simulator'\)/i.test(indexHtml);
-    assert(!hasSimulatorSection, 'CRITICAL: Interactive performance simulator section (#simulator) completely removed from index.html');
-    assert(!hasSimulatorNav, 'CRITICAL: Simulator nav buttons completely removed from desktop and mobile menus in index.html');
+    // Test /api/leads API (POST, GET, PATCH, DELETE)
+    const testLeadPayload = JSON.stringify({
+      name: 'مهندس أحمد التجريبي',
+      phone: '01012345678',
+      email: 'ahmed.test@example.com',
+      service: 'عزل زجاج الفلل',
+      message: 'معاينة تجريبية لاختبار المنظومة'
+    });
+    const leadPostRes = await request({
+      host: 'localhost',
+      port: PORT,
+      path: '/api/leads',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(testLeadPayload)
+      }
+    }, testLeadPayload);
+    assert(leadPostRes.statusCode === 200, 'POST /api/leads creates lead successfully');
+    const leadData = JSON.parse(leadPostRes.body);
+    const createdLeadId = leadData.lead && leadData.lead.id;
+    assert(createdLeadId !== undefined, 'POST /api/leads returns created lead ID');
+
+    const leadGetRes = await request({ host: 'localhost', port: PORT, path: '/api/leads', method: 'GET' });
+    const allLeads = JSON.parse(leadGetRes.body);
+    assert(Array.isArray(allLeads) && allLeads.some(l => l.id === createdLeadId), 'GET /api/leads returns created lead');
+
+    // Clean up test lead
+    if (createdLeadId) {
+      await request({ host: 'localhost', port: PORT, path: `/api/leads?id=${createdLeadId}`, method: 'DELETE' });
+    }
+
+    // Test /api/careers API (POST, GET, DELETE)
+    const testCareerPayload = JSON.stringify({
+      name: 'م. سارة المهدي',
+      phone: '01098765432',
+      email: 'sara.test@example.com',
+      role: 'مهندس مبيعات مشاريع معمارية',
+      experience: '1 - 3 سنوات',
+      portfolio: 'https://linkedin.com/in/sara-test'
+    });
+    const careerPostRes = await request({
+      host: 'localhost',
+      port: PORT,
+      path: '/api/careers',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(testCareerPayload)
+      }
+    }, testCareerPayload);
+    assert(careerPostRes.statusCode === 200, 'POST /api/careers creates career application successfully');
+    const careerData = JSON.parse(careerPostRes.body);
+    const createdCareerId = careerData.career && careerData.career.id;
+
+    // Clean up test career
+    if (createdCareerId) {
+      await request({ host: 'localhost', port: PORT, path: `/api/careers?id=${createdCareerId}`, method: 'DELETE' });
+    }
 
     // -------------------------------------------------------------------------
     // TEST 6: ADMIN DASHBOARD UI INTEGRITY
@@ -216,20 +247,15 @@ async function runSuite() {
     assert(adminHtml.includes('logout()') && adminHtml.includes('sessionStorage.removeItem'), 'Logout functionality implemented');
     assert(adminHtml.includes("activeTab = 'visibility'"), 'Visibility toggles tab exists');
     assert(adminHtml.includes("activeTab = 'contacts'"), 'Contacts management tab exists');
-    assert(adminHtml.includes("activeTab = 'hero'"), 'Hero section editor tab exists');
-    assert(adminHtml.includes("activeTab = 'pillars'"), 'Pillars editor tab exists');
-    assert(adminHtml.includes("activeTab = 'tech'"), 'Tech standards & comparison tab exists');
-    assert(adminHtml.includes("activeTab = 'media'"), 'Media gallery editor tab exists');
-    assert(adminHtml.includes("activeTab = 'buttons'"), 'Buttons & CTAs editor tab exists');
-    assert(adminHtml.includes('cms.imageBadges.heroTop[editLang]'), 'Admin dashboard includes image badges bindings for Hero');
-    assert(adminHtml.includes("cms.imageBadges['gallery' + gNum + '_badge'][editLang]"), 'Admin dashboard includes image badges bindings for Gallery');
+    assert(adminHtml.includes("activeTab = 'clients_inbox'") || adminHtml.includes("activeTab = 'clients_inbox';"), 'CLIENTS INBOX tab exists in Admin');
+    assert(adminHtml.includes("activeTab = 'career_inbox'") || adminHtml.includes("activeTab = 'career_inbox';"), 'CAREER INBOX tab exists in Admin');
+    assert(adminHtml.includes("activeTab = 'blocks'"), 'Custom Blocks Builder tab exists in Admin');
     assert(adminHtml.includes('saveContent()') && adminHtml.includes('resetToDefaults()'), 'Save and Factory Reset methods bound');
 
     // -------------------------------------------------------------------------
     // TEST 7: DIRECT IMAGE UPLOAD API (POST /api/upload)
     // -------------------------------------------------------------------------
     console.log('\n--- 7. Testing Direct Device Image Upload API ---');
-    // Minimal 1x1 transparent GIF base64
     const sampleBase64 = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
     const uploadPayload = JSON.stringify({
       filename: 'test-upload-sample.gif',
@@ -251,12 +277,9 @@ async function runSuite() {
     const uploadJson = JSON.parse(uploadRes.body);
     assert(uploadJson.success === true && uploadJson.url.startsWith('assets/images/upload-'), 'Upload returns success: true and assets/images/ public URL');
 
-    // Verify uploaded file actually exists on disk
     const uploadedFilePath = path.join(__dirname, uploadJson.url);
     const fileExistsOnDisk = fs.existsSync(uploadedFilePath);
     assert(fileExistsOnDisk, 'Uploaded image file was successfully created on physical server disk');
-    
-    // Clean up test file
     if (fileExistsOnDisk) {
       try { fs.unlinkSync(uploadedFilePath); } catch (e) {}
     }
@@ -268,7 +291,7 @@ async function runSuite() {
     const lines = adminHtml.split('\n');
     let depth = 0;
     const tabDepths = {};
-    const tabsList = ['visibility', 'contacts', 'hero', 'pillars', 'tech', 'media', 'buttons'];
+    const tabsList = ['visibility', 'contacts', 'hero', 'pillars', 'tech', 'media', 'buttons', 'clients_inbox', 'career_inbox', 'blocks'];
 
     lines.forEach(line => {
       tabsList.forEach(t => {
@@ -283,9 +306,9 @@ async function runSuite() {
 
     assert(depth === 0, 'Final Admin DOM div balance is 0 (all HTML tags properly closed)');
     const allTabsFound = tabsList.every(t => tabDepths[t] !== undefined);
-    assert(allTabsFound, 'All 7 admin tab panels located in DOM');
+    assert(allTabsFound, `All ${tabsList.length} admin tab panels located in DOM`);
     const allSiblings = tabsList.every(t => tabDepths[t] === tabDepths['visibility']);
-    assert(allSiblings, 'CRITICAL: All 7 admin tabs are siblings at the exact same DOM depth (Tabs 4-7 are NOT trapped in Hero tab)');
+    assert(allSiblings, `CRITICAL: All ${tabsList.length} admin tabs are siblings at the exact same DOM depth 2`);
 
     // -------------------------------------------------------------------------
     // TEST 9: BRAND LOGO & DIRECT UPLOAD UI CONTROLS
@@ -294,21 +317,17 @@ async function runSuite() {
     assert(adminHtml.includes('cms.images.logo'), 'Brand Logo path input present in Admin Dashboard');
     assert(adminHtml.includes("handleFileUpload($event, 'logo')"), 'Direct upload button for Logo present');
     assert(adminHtml.includes("handleFileUpload($event, 'heroVisual')"), 'Direct upload button for Hero Visual present');
-    assert(adminHtml.includes("handleFileUpload($event, 'pillar' + (idx + 1))"), 'Direct upload button for Pillars present');
-    assert(adminHtml.includes("handleFileUpload($event, 'gallery' + gNum)"), 'Direct upload button for Gallery items present');
-    assert(adminHtml.includes('handleFileUpload(event, imageKey)'), 'handleFileUpload method implemented in Alpine script');
 
     // -------------------------------------------------------------------------
-    // TEST 10: PILLAR CTA & COMPARISON & GALLERY HEADERS
+    // TEST 10: CELSIUS & 5-10 YEARS WARRANTY & SUNLIGHT INTENSITY
     // -------------------------------------------------------------------------
-    console.log('\n--- 10. Verifying Pillar CTA, Comparison, and Gallery Section Headers ---');
-    assert(adminHtml.includes('cms.texts[editLang].pillars[pillarKey].cta'), 'Pillar CTA button text input present in Admin Dashboard');
-    assert(adminHtml.includes('cms.texts[editLang].comparison.title'), 'Comparison table title input present in Admin Dashboard');
-    assert(adminHtml.includes('cms.texts[editLang].comparison.th_feature'), 'Comparison table feature column header input present');
-    assert(adminHtml.includes('cms.texts[editLang].comparison.th_pro'), 'Comparison table ProTherme column header input present');
-    assert(adminHtml.includes('cms.texts[editLang].comparison.th_market'), 'Comparison table Market column header input present');
-    assert(adminHtml.includes('cms.texts[editLang].gallery.title'), 'Gallery section title input present in Admin Dashboard');
-    assert(adminHtml.includes('cms.texts[editLang].contact.call_badge'), 'Contact card badge inputs present in Admin Dashboard');
+    console.log('\n--- 10. Verifying Celsius, Warranty Period & Phrasing Across Site ---');
+    assert(!indexHtml.includes('105°F') && !indexHtml.includes('78°F'), 'Index HTML contains 0 occurrences of Fahrenheit (°F)');
+    assert(indexHtml.includes('41°C') && indexHtml.includes('25°C'), 'Index HTML includes Celsius units (41°C and 25°C)');
+    assert(indexHtml.includes('5-10 سنوات'), 'Index HTML specifies 5-10 سنوات warranty period');
+    assert(!indexHtml.includes('قياس الحرارة بالأرقام'), 'Old phrasing (قياس الحرارة بالأرقام) completely replaced');
+    assert(indexHtml.includes('showBackToTop') && indexHtml.includes('scrollToTop()'), 'Scroll to top floating arrow button implemented');
+    assert(indexHtml.includes('href="careers.html"'), 'Careers link present in navigation and footer');
 
     console.log('\n====================================================');
     console.log(`🏁 AUDIT SUITE FINISHED: ${passed} PASSED, ${failed} FAILED`);

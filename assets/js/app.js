@@ -25,6 +25,21 @@ document.addEventListener('alpine:init', () => {
     toastOpen: false,
     toastMessage: '',
 
+    // Scroll To Top Button
+    showBackToTop: false,
+
+    // Contact Us Lead Form
+    contactForm: {
+      name: '',
+      phone: '',
+      email: '',
+      service: 'عزل زجاج المباني والفلل',
+      message: ''
+    },
+    contactSubmitting: false,
+    contactSuccess: false,
+    contactError: '',
+
     // Dynamic CMS Data Store
     cms: {
       visibility: {
@@ -80,7 +95,8 @@ document.addEventListener('alpine:init', () => {
         stat4: { num: '100%', label_ar: 'رؤية نقية دون تعتيم', label_en: 'Crystal Optical Clarity' }
       },
       texts: {},
-      imageBadges: {}
+      imageBadges: {},
+      blocks: []
     },
 
     async init() {
@@ -89,6 +105,11 @@ document.addEventListener('alpine:init', () => {
 
       // Load cached or API CMS Content
       await this.loadCMSContent();
+
+      // Scroll listener for back-to-top button
+      window.addEventListener('scroll', () => {
+        this.showBackToTop = window.scrollY > 300;
+      }, { passive: true });
 
       // Listen for CMS updates across tabs
       window.addEventListener('storage', (e) => {
@@ -271,6 +292,56 @@ document.addEventListener('alpine:init', () => {
           behavior: 'smooth'
         });
       }
+    },
+
+    // Scroll to Top
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    },
+
+    // Submit Lead Inquiry to /api/leads
+    async submitContactForm() {
+      if (!this.contactForm.name || !this.contactForm.phone) {
+        this.contactError = this.lang === 'ar' ? 'يرجى كتابة الاسم ورقم الهاتف' : 'Please provide name and phone number';
+        return;
+      }
+      this.contactSubmitting = true;
+      this.contactError = '';
+      try {
+        const res = await fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(this.contactForm)
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          this.contactSuccess = true;
+          this.contactForm = {
+            name: '',
+            phone: '',
+            email: '',
+            service: 'عزل زجاج المباني والفلل',
+            message: ''
+          };
+          this.showToast(this.lang === 'ar' ? 'تم استلام طلبكم بنجاح وسيتواصل معكم فريقنا قريباً' : 'Inquiry received successfully! Our team will contact you shortly.');
+        } else {
+          this.contactError = data.error || (this.lang === 'ar' ? 'حدث خطأ أثناء الإرسال' : 'Error submitting form');
+        }
+      } catch (err) {
+        console.error('Submit lead error:', err);
+        this.contactError = this.lang === 'ar' ? 'تعذر الاتصال بالخادم' : 'Server connection failed';
+      } finally {
+        this.contactSubmitting = false;
+      }
+    },
+
+    // Custom Dynamic Blocks Filter
+    getBlocksByPosition(position) {
+      if (!this.cms || !Array.isArray(this.cms.blocks)) return [];
+      return this.cms.blocks.filter(b => b && b.enabled !== false && b.position === position);
     }
   }));
 });

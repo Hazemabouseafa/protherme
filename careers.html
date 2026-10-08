@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>فرص العمل والتوظيف | بروتيرم للحلول الهندسية</title>
+  <meta name="description" content="انضم إلى فريق بروتيرم للحلول الهندسية الممثل المعتمد لشركة Global Hi-Tech Films العالمية. فرص عمل واعدة للمهندسين والفنيين.">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfeff',
+              100: '#cffafe',
+              200: '#a5f3fc',
+              300: '#67e8f9',
+              400: '#22d3ee',
+              500: '#06b6d4',
+              600: '#0891b2',
+              700: '#0e7490',
+              800: '#155e75',
+              900: '#164e63',
+              950: '#083344',
+            }
+          },
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif'],
+            inter: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Cairo & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Alpine.js -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Cairo', 'Inter', sans-serif;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased selection:bg-cyan-500 selection:text-white"
+      x-data="{
+        lang: localStorage.getItem('protherme_lang') || 'ar',
+        form: {
+          name: '',
+          phone: '',
+          email: '',
+          role: 'مهندس مبيعات مشاريع معمارية',
+          experience: '1-3 سنوات',
+          portfolio: '',
+          notes: ''
+        },
+        submitting: false,
+        submitted: false,
+        errorMessage: '',
+        switchLang(l) {
+          this.lang = l;
+          localStorage.setItem('protherme_lang', l);
+          document.documentElement.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
+          document.documentElement.setAttribute('lang', l);
+        },
+        async submitApplication() {
+          if (!this.form.name || !this.form.phone || !this.form.email) {
+            this.errorMessage = this.lang === 'ar' ? 'يرجى استيفاء كافة الحقول الأساسية المطلوبة.' : 'Please fill all required fields.';
+            return;
+          }
+          this.submitting = true;
+          this.errorMessage = '';
+          try {
+            const res = await fetch('/api/careers', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(this.form)
+            });
+            const data = await res.json();
+            if (res.ok && data.success) {
+              this.submitted = true;
+            } else {
+              this.errorMessage = data.error || (this.lang === 'ar' ? 'حدث خطأ أثناء إرسال الطلب.' : 'Error submitting application.');
+            }
+          } catch (err) {
+            this.errorMessage = this.lang === 'ar' ? 'تعذر الاتصال بالخادم. يرجى المحاولة لاحقاً.' : 'Network error. Please try again.';
+          } finally {
+            this.submitting = false;
+          }
+        }
+      }"
+      x-init="document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr'); document.documentElement.setAttribute('lang', lang);">
+
+  <!-- Navbar -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3">
+        <img src="assets/images/protherme-logo.jpg" alt="ProTherme Logo" class="h-14 sm:h-16 md:h-18 w-auto object-contain rounded-lg">
+        <div class="hidden sm:block">
+          <span class="block text-lg font-black text-slate-900 leading-tight">ProTherme</span>
+          <span class="block text-xs font-semibold text-cyan-600" x-text="lang === 'ar' ? 'الممثل المعتمد لـ Global Hi-Tech' : 'Official Partner of Global Hi-Tech'">الممثل المعتمد لـ Global Hi-Tech</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="flex items-center gap-4 sm:gap-6">
+        <a href="/" class="text-sm font-bold text-slate-600 hover:text-cyan-600 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-house text-xs"></i>
+          <span x-text="lang === 'ar' ? 'الرئيسية' : 'Home'">الرئيسية</span>
+        </a>
+        <a href="/#contact" class="text-sm font-bold text-slate-600 hover:text-cyan-600 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-headset text-xs"></i>
+          <span x-text="lang === 'ar' ? 'اتصل بنا' : 'Contact'">اتصل بنا</span>
+        </a>
+
+        <!-- Language Switcher -->
+        <button @click="switchLang(lang === 'ar' ? 'en' : 'ar')" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-100 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-globe text-cyan-600"></i>
+          <span x-text="lang === 'ar' ? 'English' : 'العربية'">English</span>
+        </button>
+
+        <!-- CTA Hotline -->
+        <a href="tel:01010010030" class="hidden md:inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold text-xs rounded-xl shadow-md shadow-cyan-600/20 hover:from-cyan-500 hover:to-teal-500 transition">
+          <i class="fa-solid fa-phone"></i>
+          <span>01010010030</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 text-white py-16 sm:py-24 overflow-hidden">
+    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#22d3ee_1px,transparent_1px)] [background-size:16px_16px]"></div>
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-400/30 text-cyan-300 text-xs font-bold tracking-wide mb-6">
+        <i class="fa-solid fa-briefcase"></i>
+        <span x-text="lang === 'ar' ? 'بوابة التوظيف الرسمية' : 'Official Careers Portal'">بوابة التوظيف الرسمية</span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-black tracking-tight leading-tight mb-6">
+        <span class="block" x-text="lang === 'ar' ? 'انضم إلى فريق النخبة في بروتيرم' : 'Join The Elite Team at ProTherme'">انضم إلى فريق النخبة في بروتيرم</span>
+        <span class="block bg-gradient-to-r from-cyan-400 to-teal-300 bg-clip-text text-transparent" x-text="lang === 'ar' ? 'وابنِ مستقبلك المهني مع رواد الحلول الهندسية' : 'Build Your Future with Pioneers of Engineering Solutions'">وابنِ مستقبلك المهني مع رواد الحلول الهندسية</span>
+      </h1>
+      <p class="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto" x-text="lang === 'ar' ? 'نبحث دائماً عن الكفاءات الهندسية والفنية الطموحة لمشاركتنا رحلة التميز والريادة في مشاريع العزل المعماري وحماية الأصول الفاخرة المعتمدة.' : 'We are always looking for ambitious engineering and technical talent to join our mission of excellence in certified architectural solar films and surface protection.'">
+        نبحث دائماً عن الكفاءات الهندسية والفنية الطموحة لمشاركتنا رحلة التميز والريادة في مشاريع العزل المعماري وحماية الأصول الفاخرة المعتمدة.
+      </p>
+    </div>
+  </section>
+
+  <!-- Advantages Cards -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-10">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white rounded-2xl p-5 shadow-lg shadow-slate-200/50 border border-slate-100 text-center">
+        <div class="w-12 h-12 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-xl mx-auto mb-3">
+          <i class="fa-solid fa-certificate"></i>
+        </div>
+        <h3 class="font-black text-slate-900 text-sm mb-1" x-text="lang === 'ar' ? 'اعتماد دولي وتدريب' : 'Certified Training'">اعتماد دولي وتدريب</h3>
+        <p class="text-xs text-slate-500" x-text="lang === 'ar' ? 'برامج تدريبية متقدمة على أحدث تقنيات النانو العالمية' : 'Advanced training on cutting-edge nano-tech standards'">برامج تدريبية متقدمة على أحدث تقنيات النانو العالمية</p>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 shadow-lg shadow-slate-200/50 border border-slate-100 text-center">
+        <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl mx-auto mb-3">
+          <i class="fa-solid fa-chart-line"></i>
+        </div>
+        <h3 class="font-black text-slate-900 text-sm mb-1" x-text="lang === 'ar' ? 'مسار نمو وتطوير' : 'Career Growth'">مسار نمو وتطوير</h3>
+        <p class="text-xs text-slate-500" x-text="lang === 'ar' ? 'ترقيات وظيفية سريعة مبنية على الكفاءة والإنجاز' : 'Rapid merit-based promotions and career advancement'">ترقيات وظيفية سريعة مبنية على الكفاءة والإنجاز</p>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 shadow-lg shadow-slate-200/50 border border-slate-100 text-center">
+        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl mx-auto mb-3">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <h3 class="font-black text-slate-900 text-sm mb-1" x-text="lang === 'ar' ? 'حوافز وعمولات مجزية' : 'Competitive Rewards'">حوافز وعمولات مجزية</h3>
+        <p class="text-xs text-slate-500" x-text="lang === 'ar' ? 'رواتب تنافسية وباقات مكافآت وعمولات شهرية وسنوية' : 'Competitive packages with monthly and quarterly bonuses'">رواتب تنافسية وباقات مكافآت وعمولات شهرية وسنوية</p>
+      </div>
+
+      <div class="bg-white rounded-2xl p-5 shadow-lg shadow-slate-200/50 border border-slate-100 text-center">
+        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl mx-auto mb-3">
+          <i class="fa-solid fa-building-user"></i>
+        </div>
+        <h3 class="font-black text-slate-900 text-sm mb-1" x-text="lang === 'ar' ? 'بيئة هندسية احترافية' : 'Elite Work Culture'">بيئة هندسية احترافية</h3>
+        <p class="text-xs text-slate-500" x-text="lang === 'ar' ? 'العمل على أكبر المشاريع والكمبوندات والمنشآت الفندقية' : 'Working on tier-one luxury developments & enterprise projects'">العمل على أكبر المشاريع والكمبوندات والمنشآت الفندقية</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Application Form Section -->
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-1 w-full">
+    <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-xl shadow-slate-200/60 border border-slate-200">
+      
+      <!-- Form Header -->
+      <div class="border-b border-slate-100 pb-6 mb-8 text-center sm:text-start">
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 mb-2" x-text="lang === 'ar' ? 'استمارة التقدم للوظيفة' : 'Job Application Form'">استمارة التقدم للوظيفة</h2>
+        <p class="text-sm text-slate-500" x-text="lang === 'ar' ? 'يرجى كتابة بياناتك بدقة وسيتم مراجعة طلبك والتواصل معك من قبل إدارة الموارد البشرية.' : 'Please fill in your details accurately. Our HR team will review your application and reach out.'">
+          يرجى كتابة بياناتك بدقة وسيتم مراجعة طلبك والتواصل معك من قبل إدارة الموارد البشرية.
+        </p>
+      </div>
+
+      <!-- Success State -->
+      <template x-if="submitted">
+        <div class="text-center py-12 px-4 space-y-4">
+          <div class="w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-4xl mx-auto">
+            <i class="fa-solid fa-check"></i>
+          </div>
+          <h3 class="text-2xl font-black text-slate-900" x-text="lang === 'ar' ? 'تم استلام طلب التوظيف بنجاح!' : 'Application Submitted Successfully!'">تم استلام طلب التوظيف بنجاح!</h3>
+          <p class="text-sm text-slate-600 max-w-md mx-auto leading-relaxed" x-text="lang === 'ar' ? 'شكراً لاهتمامك بالانضمام إلى بروتيرم. تمت إضافة بياناتك إلى لوحة Career INBOX وسيتواصل معك مسؤولو التوظيف لمناقشة الخطوات القادمة.' : 'Thank you for your interest in joining ProTherme. Your application has been logged into our Career INBOX and our team will contact you shortly.'">
+            شكراً لاهتمامك بالانضمام إلى بروتيرم. تمت إضافة بياناتك إلى لوحة Career INBOX وسيتواصل معك مسؤولو التوظيف لمناقشة الخطوات القادمة.
+          </p>
+          <div class="pt-6 flex justify-center gap-4">
+            <a href="/" class="px-6 py-2.5 bg-slate-900 text-white text-xs font-bold rounded-xl hover:bg-slate-800 transition">
+              <span x-text="lang === 'ar' ? 'العودة للصفحة الرئيسية' : 'Return to Home'">العودة للصفحة الرئيسية</span>
+            </a>
+            <button @click="submitted = false; form = { name: '', phone: '', email: '', role: 'مهندس مبيعات مشاريع معمارية', experience: '1-3 سنوات', portfolio: '', notes: '' }" class="px-6 py-2.5 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl hover:bg-slate-50 transition">
+              <span x-text="lang === 'ar' ? 'تقديم طلب آخر' : 'Submit Another Application'">تقديم طلب آخر</span>
+            </button>
+          </div>
+        </div>
+      </template>
+
+      <!-- Active Form -->
+      <template x-if="!submitted">
+        <form @submit.prevent="submitApplication()" class="space-y-6">
+          
+          <!-- Error alert -->
+          <template x-if="errorMessage">
+            <div class="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold flex items-center gap-3">
+              <i class="fa-solid fa-triangle-exclamation text-base"></i>
+              <span x-text="errorMessage"></span>
+            </div>
+          </template>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Full Name -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-2">
+                <span x-text="lang === 'ar' ? 'الاسم بالكامل' : 'Full Name'">الاسم بالكامل</span>
+                <span class="text-rose-500">*</span>
+              </label>
+              <input type="text" x-model="form.name" required
+                     :placeholder="lang === 'ar' ? 'مثال: م. أحمد مصطفى' : 'e.g. Eng. Ahmed Mostafa'"
+                     class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition">
+            </div>
+
+            <!-- Phone -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-2">
+                <span x-text="lang === 'ar' ? 'رقم الهاتف / واتساب' : 'Phone / WhatsApp'">رقم الهاتف / واتساب</span>
+                <span class="text-rose-500">*</span>
+              </label>
+              <input type="tel" x-model="form.phone" required
+                     :placeholder="lang === 'ar' ? 'مثال: 01012345678' : 'e.g. 01012345678'"
+                     class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Email -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-2">
+                <span x-text="lang === 'ar' ? 'البريد الإلكتروني' : 'Email Address'">البريد الإلكتروني</span>
+                <span class="text-rose-500">*</span>
+              </label>
+              <input type="email" x-model="form.email" required
+                     placeholder="name@example.com"
+                     class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition">
+            </div>
+
+            <!-- Position Applied For -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-2">
+                <span x-text="lang === 'ar' ? 'الوظيفة المطلوبة' : 'Position Applied For'">الوظيفة المطلوبة</span>
+                <span class="text-rose-500">*</span>
+              </label>
+              <select x-model="form.role" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition bg-white">
+                <option value="مهندس مبيعات مشاريع معمارية">مهندس مبيعات مشاريع معمارية (Projects Sales Engineer)</option>
+                <option value="فني معتمد لتركيب أفلام النانو سيراميك">فني معتمد لتركيب أفلام النانو سيراميك (Certified Installer)</option>
+                <option value="مهندس استشاري معاينة وحساب كميات">مهندس استشاري معاينة وحساب كميات (Site Survey Engineer)</option>
+                <option value="أخصائي حماية أسطح ورخام">أخصائي حماية أسطح ورخام (Surface Protection Specialist)</option>
+                <option value="أخصائي تسويق رقمي وإدارة علاقات عملاء">أخصائي تسويق رقمي وإدارة علاقات عملاء (Digital Marketing / CRM)</option>
+                <option value="وظيفة أخرى">وظيفة أخرى (Other)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <!-- Years of Experience -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-2">
+                <span x-text="lang === 'ar' ? 'سنوات الخبرة' : 'Years of Experience'">سنوات الخبرة</span>
+              </label>
+              <select x-model="form.experience" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition bg-white">
+                <option value="حديث تخرج / مبتدئ">حديث تخرج / مبتدئ (Fresh Graduate)</option>
+                <option value="1 - 3 سنوات">1 - 3 سنوات (1-3 Years)</option>
+                <option value="3 - 5 سنوات">3 - 5 سنوات (3-5 Years)</option>
+                <option value="أكثر من 5 سنوات">أكثر من 5 سنوات (5+ Years)</option>
+              </select>
+            </div>
+
+            <!-- Portfolio / CV Link -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-2">
+                <span x-text="lang === 'ar' ? 'رابط السيرة الذاتية أو معرض الأعمال (Google Drive / LinkedIn)' : 'CV / Portfolio Link (Google Drive / LinkedIn)'">رابط السيرة الذاتية أو LinkedIn</span>
+              </label>
+              <input type="url" x-model="form.portfolio"
+                     placeholder="https://linkedin.com/in/... or drive link"
+                     class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition">
+            </div>
+          </div>
+
+          <!-- Notes / Message -->
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-2">
+              <span x-text="lang === 'ar' ? 'نبذة عن خبراتك ومهاراتك السابقة' : 'Brief Summary of Experience & Skills'">نبذة عن خبراتك ومهاراتك السابقة</span>
+            </label>
+            <textarea x-model="form.notes" rows="4"
+                      :placeholder="lang === 'ar' ? 'تحدث باختصار عن أبرز إنجازاتك والمشاريع التي شاركت بها...' : 'Tell us briefly about your achievements and key projects...'"
+                      class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition"></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-4">
+            <button type="submit" :disabled="submitting"
+                    class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-black text-base shadow-lg shadow-cyan-600/30 hover:from-cyan-500 hover:to-teal-500 transition transform active:scale-[0.99] disabled:opacity-50 flex items-center justify-center gap-3">
+              <template x-if="submitting">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+              </template>
+              <template x-if="!submitting">
+                <i class="fa-solid fa-paper-plane"></i>
+              </template>
+              <span x-text="submitting ? (lang === 'ar' ? 'جاري إرسال طلب التوظيف...' : 'Submitting Application...') : (lang === 'ar' ? 'إرسال طلب التوظيف الآن' : 'Submit Application Now')">إرسال طلب التوظيف الآن</span>
+            </button>
+          </div>
+
+        </form>
+      </template>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-950 text-slate-300 py-12 border-t border-slate-800 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-800">
+        <!-- Logo -->
+        <div class="flex items-center gap-4">
+          <img src="assets/images/protherme-logo.jpg" alt="ProTherme Logo" class="h-14 sm:h-16 w-auto object-contain rounded-xl bg-white p-1">
+          <div>
+            <h4 class="text-white font-black text-lg">ProTherme Engineering Solutions</h4>
+            <p class="text-xs text-slate-400" x-text="lang === 'ar' ? 'الممثل والموزع المعتمد لـ Global Hi-Tech Films العالمية' : 'Authorized Representative & Distributor of Global Hi-Tech Films'">الممثل والموزع المعتمد لـ Global Hi-Tech Films العالمية</p>
+          </div>
+        </div>
+
+        <!-- Quick Contacts -->
+        <div class="flex flex-wrap items-center gap-4 text-xs font-bold">
+          <a href="tel:01010010030" class="hover:text-cyan-400 transition flex items-center gap-2">
+            <i class="fa-solid fa-phone text-cyan-400"></i>
+            <span>01010010030</span>
+          </a>
+          <a href="mailto:sales@protherme.com" class="hover:text-cyan-400 transition flex items-center gap-2">
+            <i class="fa-solid fa-envelope text-cyan-400"></i>
+            <span>sales@protherme.com</span>
+          </a>
+          <a href="https://wa.me/201010010030" target="_blank" class="hover:text-emerald-400 transition flex items-center gap-2">
+            <i class="fa-brands fa-whatsapp text-emerald-400"></i>
+            <span>+201010010030</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <p x-text="lang === 'ar' ? '© 2026 بروتيرم للحلول الهندسية. جميع الحقوق محفوظة.' : '© 2026 ProTherme Engineering Solutions. All Rights Reserved.'">© 2026 بروتيرم للحلول الهندسية. جميع الحقوق محفوظة.</p>
+        <div class="flex gap-4">
+          <a href="/" class="hover:text-slate-300 transition" x-text="lang === 'ar' ? 'الرئيسية' : 'Home'">الرئيسية</a>
+          <a href="/#contact" class="hover:text-slate-300 transition" x-text="lang === 'ar' ? 'اتصل بنا' : 'Contact'">اتصل بنا</a>
+          <a href="/careers.html" class="text-cyan-400" x-text="lang === 'ar' ? 'الوظائف' : 'Careers'">الوظائف</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

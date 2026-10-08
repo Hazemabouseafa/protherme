@@ -16,6 +16,7 @@ var translations = {
       simulator: 'حاسبة الأداء',
       gallery: 'معرض المشاريع',
       about: 'عن بروتيرم',
+      careers: 'الوظائف',
       contact: 'اتصل بنا',
       call_now: '01010010030',
       cta: 'طلب معاينة'
@@ -36,7 +37,7 @@ var translations = {
       stat4_num: '100%',
       stat4_label: 'رؤية نقية دون تعتيم',
       visual_badge: 'مبنى فعلي: مقارنة الحرارة قبل وبعد التركيب',
-      visual_badge_sub: '105°F بدون عزل مقابل 78°F مع فيلم النانو سيراميك',
+      visual_badge_sub: '41°C بدون عزل مقابل 25°C مع فيلم النانو سيراميك',
       hotspot1: 'حجب حراري بنسبة 88%',
       hotspot2: 'وضوح بصري نقي 100%',
       hotspot3: 'معايير تركيب هندسية معتمدة'
@@ -55,7 +56,7 @@ var translations = {
     services: {
       tag: 'خدمات العزل والحماية الهندسية',
       title: '3 حلول هندسية تضمن لك الراحة والبرودة وحماية استثماراتك',
-      subtitle: 'حلول نانو تكنولوجي أمريكية مصممة خصيصاً لمقاومة الحرارة وحماية أصولك وممتلكاتك بأعلى معايير الدقة الهندسية وضمان معتمد حتى 25 سنة.',
+      subtitle: 'حلول نانو تكنولوجي أمريكية مصممة خصيصاً لمقاومة الحرارة وحماية أصولك وممتلكاتك بأعلى معايير الدقة الهندسية وضمان معتمد من 5-10 سنوات.',
       p1: {
         tag: 'الركيزة 01 - معمارية وهندسية',
         name: 'أفلام زجاج المباني والعزل الحراري',
@@ -218,6 +219,7 @@ var translations = {
       simulator: 'Simulator',
       gallery: 'Projects',
       about: 'About',
+      careers: 'Careers',
       contact: 'Contact',
       call_now: '01010010030',
       cta: 'Request Consultation'
@@ -238,7 +240,7 @@ var translations = {
       stat4_num: '100%',
       stat4_label: 'Crystal Optical Clarity',
       visual_badge: 'Real Building: Before & After Thermal Comparison',
-      visual_badge_sub: '105°F Unprotected vs 78°F with Nano-Ceramic Shield',
+      visual_badge_sub: '41°C Unprotected vs 25°C with Nano-Ceramic Shield',
       hotspot1: '88% Thermal Solar Block',
       hotspot2: '100% Optical Clarity',
       hotspot3: 'Certified Precision Fit'
@@ -257,7 +259,7 @@ var translations = {
     services: {
       tag: 'ENGINEERING PROTECTION SOLUTIONS',
       title: '3 Specialized Services for Complete Comfort, Cooling & Asset Protection',
-      subtitle: 'Whether it\'s your luxury compound villa or an enterprise hotel project — just send us the glass dimensions or a quick photo, and our certified team handles everything with a 25-year warranty.',
+      subtitle: 'Whether it\'s your luxury compound villa or an enterprise hotel project — just send us the glass dimensions or a quick photo, and our certified team handles everything with a 5-10 years warranty.',
       p1: {
         tag: 'Pillar 01 - Architectural & Commercial',
         name: 'Architectural Window Films & Solar Control',

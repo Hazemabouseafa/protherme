@@ -203,6 +203,29 @@
               <span>الأقسام</span>
             </button>
             <button 
+              @click="activeTab = 'clients_inbox'; fetchLeads();" 
+              :class="activeTab === 'clients_inbox' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold shadow-xs' : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200'" 
+              class="whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 shrink-0 transition-all active:scale-95">
+              <i class="fa-solid fa-inbox text-xs"></i>
+              <span>العملاء</span>
+              <span x-show="leads.length > 0" class="px-1.5 py-0.2 rounded-full bg-white/20 text-[10px]" x-text="leads.length"></span>
+            </button>
+            <button 
+              @click="activeTab = 'career_inbox'; fetchCareers();" 
+              :class="activeTab === 'career_inbox' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold shadow-xs' : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200'" 
+              class="whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 shrink-0 transition-all active:scale-95">
+              <i class="fa-solid fa-briefcase text-xs"></i>
+              <span>التوظيف</span>
+              <span x-show="careers.length > 0" class="px-1.5 py-0.2 rounded-full bg-white/20 text-[10px]" x-text="careers.length"></span>
+            </button>
+            <button 
+              @click="activeTab = 'blocks'" 
+              :class="activeTab === 'blocks' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold shadow-xs' : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200'" 
+              class="whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 shrink-0 transition-all active:scale-95">
+              <i class="fa-solid fa-cubes text-xs"></i>
+              <span>البلوكات</span>
+            </button>
+            <button 
               @click="activeTab = 'contacts'" 
               :class="activeTab === 'contacts' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold shadow-xs' : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200'" 
               class="whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 shrink-0 transition-all active:scale-95">
@@ -530,7 +553,7 @@
                   x-model="cms.contacts.phone" 
                   dir="ltr" 
                   class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-slate-900 font-mono text-sm focus:outline-none focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 shadow-xs">
-                <div class="text-[11px] text-slate-500 mt-1">يتحول تلقائياً إلى رابط <code class="text-cyan-700 font-mono font-bold">tel:01010010030</code></div>
+                <div class="text-[11px] text-slate-500 mt-1">يتحول تلقائياً إلى رابط <code class="text-cyan-700 font-mono font-bold" x-text="'tel:' + (cms.contacts.phone || '01010010030')">tel:01010010030</code></div>
               </div>
 
               <!-- WhatsApp Number -->
@@ -553,7 +576,7 @@
                 x-model="cms.contacts.email" 
                 dir="ltr" 
                 class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-slate-900 font-mono text-sm focus:outline-none focus:border-cyan-600 focus:ring-1 focus:ring-cyan-600 shadow-xs">
-              <div class="text-[11px] text-slate-500 mt-1">يتحول تلقائياً إلى رابط <code class="text-cyan-700 font-mono font-bold">mailto:sales@protherme.com</code></div>
+              <div class="text-[11px] text-slate-500 mt-1">يتحول تلقائياً إلى رابط <code class="text-cyan-700 font-mono font-bold" x-text="'mailto:' + (cms.contacts.email || 'sales@protherme.com')">mailto:sales@protherme.com</code></div>
             </div>
 
             <!-- Working Hours Section -->
@@ -906,7 +929,7 @@
                 </div>
 
                 <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 shadow-xs">
-                  <span class="text-[11px] font-bold text-emerald-700">الاعتماد 4: الضمان الرسمي 25 سنة</span>
+                  <span class="text-[11px] font-bold text-emerald-700">الاعتماد 4: الضمان الرسمي 5-10 سنوات</span>
                   <input type="text" x-model="cms.texts[editLang].trust.t4" placeholder="العنوان الرئيسي" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold text-slate-900">
                   <input type="text" x-model="cms.texts[editLang].trust.t4_sub" placeholder="النص الفرعي" class="w-full px-2 py-1 rounded bg-white border border-slate-300 text-xs text-slate-500">
                 </div>
@@ -1804,6 +1827,301 @@
           </div>
         </div>
 
+        <!-- ============================================== -->
+        <!-- TAB 15: CLIENTS INBOX (LEADS)                  -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'clients_inbox'" class="space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-xl font-black text-slate-950">صندوق استفسارات العملاء (CLIENTS INBOX)</h3>
+                <span class="px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-800 text-xs font-bold font-mono" x-text="leads.length + ' طلب'"></span>
+              </div>
+              <p class="text-xs text-slate-500 mt-1">جميع الاستفسارات وطلبات المعاينة المرسلة عبر الموقع مع إمكانية المتابعة والاتصال المباشر</p>
+            </div>
+            <button @click="fetchLeads()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center gap-2 shadow-xs">
+              <i class="fa-solid fa-arrows-rotate" :class="loadingLeads ? 'fa-spin' : ''"></i>
+              <span>تحديث القائمة</span>
+            </button>
+          </div>
+
+          <!-- Empty State -->
+          <div x-show="leads.length === 0" class="p-12 text-center bg-white rounded-2xl border border-slate-200 space-y-3">
+            <div class="w-16 h-16 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-2xl mx-auto">
+              <i class="fa-solid fa-inbox"></i>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">لا توجد طلبات عملاء مسجلة حالياً</h4>
+            <p class="text-xs text-slate-500">عندما يقوم أي عميل بتعبئة نموذج التواصل في الموقع ستظهر بياناته هنا فورياً.</p>
+          </div>
+
+          <!-- Leads List -->
+          <div x-show="leads.length > 0" class="space-y-3">
+            <template x-for="lead in leads" :key="lead.id">
+              <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-cyan-300 transition-all space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                  <div class="flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-teal-500 text-white flex items-center justify-center font-bold text-sm">
+                      <i class="fa-solid fa-user"></i>
+                    </span>
+                    <div>
+                      <h4 class="font-bold text-slate-950 text-sm" x-text="lead.name"></h4>
+                      <span class="text-[11px] text-slate-400 font-mono" x-text="formatDate(lead.created_at)"></span>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <select :value="lead.status || 'new'" @change="updateLeadStatus(lead.id, $event.target.value)" class="text-xs font-bold px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 focus:outline-none">
+                      <option value="new">🟢 جديد (New)</option>
+                      <option value="contacted">🔵 تم التواصل (Contacted)</option>
+                      <option value="archived">⚪ مؤرشف (Archived)</option>
+                    </select>
+                    <button @click="deleteLead(lead.id)" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 flex items-center justify-center text-xs transition" title="حذف">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                  <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <span class="text-slate-400 block text-[10px]">الهاتف / واتساب:</span>
+                    <div class="flex items-center gap-2 mt-1">
+                      <a :href="'tel:' + lead.phone" class="font-bold font-mono text-cyan-700 hover:underline" dir="ltr" x-text="lead.phone"></a>
+                      <a :href="'https://wa.me/' + (lead.phone || '').replace(/[^0-9]/g, '')" target="_blank" class="text-emerald-600 hover:text-emerald-700 text-sm" title="محادثة واتساب">
+                        <i class="fa-brands fa-whatsapp"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <span class="text-slate-400 block text-[10px]">البريد الإلكتروني:</span>
+                    <span class="font-medium text-slate-700 truncate block mt-1" x-text="lead.email || 'غير محدد'"></span>
+                  </div>
+
+                  <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <span class="text-slate-400 block text-[10px]">الخدمة المطلوبة:</span>
+                    <span class="font-bold text-slate-800 block mt-1" x-text="lead.service || 'عام'"></span>
+                  </div>
+                </div>
+
+                <div x-show="lead.message" class="p-3 rounded-xl bg-cyan-50/50 border border-cyan-100 text-xs text-slate-700">
+                  <span class="font-bold text-cyan-900 block mb-1">تفاصيل الرسالة:</span>
+                  <p class="leading-relaxed whitespace-pre-line" x-text="lead.message"></p>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB 16: CAREER INBOX (APPLICATIONS)            -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'career_inbox'" class="space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-xl font-black text-slate-950">صندوق طلبات التوظيف (CAREER INBOX)</h3>
+                <span class="px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-800 text-xs font-bold font-mono" x-text="careers.length + ' متقدم'"></span>
+              </div>
+              <p class="text-xs text-slate-500 mt-1">جميع طلبات التوظيف والسير الذاتية المقدمة من خلال صفحة الوظائف careers.html</p>
+            </div>
+            <button @click="fetchCareers()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition flex items-center gap-2 shadow-xs">
+              <i class="fa-solid fa-arrows-rotate" :class="loadingCareers ? 'fa-spin' : ''"></i>
+              <span>تحديث القائمة</span>
+            </button>
+          </div>
+
+          <!-- Empty State -->
+          <div x-show="careers.length === 0" class="p-12 text-center bg-white rounded-2xl border border-slate-200 space-y-3">
+            <div class="w-16 h-16 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl mx-auto">
+              <i class="fa-solid fa-briefcase"></i>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">لا توجد طلبات توظيف حتى الآن</h4>
+            <p class="text-xs text-slate-500">ستظهر هنا أي استمارة توظيف يتم إرسالها من خلال صفحة /careers.html</p>
+          </div>
+
+          <!-- Applications List -->
+          <div x-show="careers.length > 0" class="space-y-3">
+            <template x-for="app in careers" :key="app.id">
+              <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-teal-300 transition-all space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                  <div class="flex items-center gap-3">
+                    <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-500 text-white flex items-center justify-center font-bold text-sm">
+                      <i class="fa-solid fa-user-tie"></i>
+                    </span>
+                    <div>
+                      <h4 class="font-bold text-slate-950 text-sm" x-text="app.name"></h4>
+                      <div class="flex items-center gap-2 mt-0.5">
+                        <span class="px-2 py-0.5 rounded-md bg-teal-50 border border-teal-200 text-teal-800 text-[10px] font-bold" x-text="app.role"></span>
+                        <span class="text-[11px] text-slate-400 font-mono" x-text="formatDate(app.created_at)"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <select :value="app.status || 'new'" @change="updateCareerStatus(app.id, $event.target.value)" class="text-xs font-bold px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 focus:outline-none">
+                      <option value="new">🟢 جديد (New)</option>
+                      <option value="reviewed">🔵 تمت المراجعة (Reviewed)</option>
+                      <option value="interviewed">🟣 تم تحديد مقابلة (Interview)</option>
+                      <option value="archived">⚪ مؤرشف (Archived)</option>
+                    </select>
+                    <button @click="deleteCareer(app.id)" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 flex items-center justify-center text-xs transition" title="حذف">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                  <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <span class="text-slate-400 block text-[10px]">الهاتف / واتساب:</span>
+                    <div class="flex items-center gap-2 mt-1">
+                      <a :href="'tel:' + app.phone" class="font-bold font-mono text-cyan-700 hover:underline" dir="ltr" x-text="app.phone"></a>
+                      <a :href="'https://wa.me/' + (app.phone || '').replace(/[^0-9]/g, '')" target="_blank" class="text-emerald-600 hover:text-emerald-700 text-sm" title="محادثة واتساب">
+                        <i class="fa-brands fa-whatsapp"></i>
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <span class="text-slate-400 block text-[10px]">البريد الإلكتروني:</span>
+                    <a :href="'mailto:' + app.email" class="font-medium text-slate-700 hover:text-cyan-700 truncate block mt-1" x-text="app.email"></a>
+                  </div>
+
+                  <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+                    <span class="text-slate-400 block text-[10px]">سنوات الخبرة:</span>
+                    <span class="font-bold text-slate-800 block mt-1" x-text="app.experience || 'غير محدد'"></span>
+                  </div>
+                </div>
+
+                <div x-show="app.portfolio" class="p-2.5 rounded-xl bg-slate-50 border border-slate-100 text-xs flex items-center justify-between">
+                  <span class="text-slate-500 font-bold">رابط السيرة الذاتية / معرض الأعمال:</span>
+                  <a :href="app.portfolio" target="_blank" rel="noopener noreferrer" class="font-bold text-cyan-700 hover:underline flex items-center gap-1.5">
+                    <span>فتح الرابط</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                  </a>
+                </div>
+
+                <div x-show="app.notes" class="p-3 rounded-xl bg-teal-50/50 border border-teal-100 text-xs text-slate-700">
+                  <span class="font-bold text-teal-900 block mb-1">نبذة عن المهارات والخبرات:</span>
+                  <p class="leading-relaxed whitespace-pre-line" x-text="app.notes"></p>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB 17: CUSTOM BLOCKS BUILDER                  -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'blocks'" class="space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="text-xl font-black text-slate-950">إدارة البلوكات المخصصة (Blocks Builder)</h3>
+                <span class="px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-800 text-xs font-bold font-mono" x-text="(cms.blocks || []).length + ' بلوك'"></span>
+              </div>
+              <p class="text-xs text-slate-500 mt-1">إنشاء وإضافة بلوكات محتوى، بانرات إعلانية، أو نصوص مخصصة تظهر في أقسام الموقع المختلفة</p>
+            </div>
+            <button @click="addNewBlock()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white text-xs font-bold transition flex items-center gap-2 shadow-sm">
+              <i class="fa-solid fa-plus"></i>
+              <span>إضافة بلوك جديد</span>
+            </button>
+          </div>
+
+          <!-- Empty State -->
+          <div x-show="!cms.blocks || cms.blocks.length === 0" class="p-12 text-center bg-white rounded-2xl border border-slate-200 space-y-3">
+            <div class="w-16 h-16 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-2xl mx-auto">
+              <i class="fa-solid fa-cubes"></i>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base">لا توجد بلوكات مخصصة مضافة حالياً</h4>
+            <p class="text-xs text-slate-500">اضغط على زر "إضافة بلوك جديد" لإنشاء قسم مخصص في أي موضع تريده داخل الموقع.</p>
+          </div>
+
+          <!-- Blocks List -->
+          <div x-show="cms.blocks && cms.blocks.length > 0" class="space-y-4">
+            <template x-for="(block, bIdx) in cms.blocks" :key="block.id || bIdx">
+              <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <div class="flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-800 flex items-center justify-center font-bold text-xs font-mono" x-text="bIdx + 1"></span>
+                    <span class="font-black text-slate-900 text-sm" x-text="block.title ? (block.title.ar || block.title.en || 'بلوك بدون عنوان') : 'بلوك جديد'"></span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <label class="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
+                      <input type="checkbox" x-model="block.enabled" class="rounded text-cyan-600 focus:ring-cyan-500">
+                      <span>تفعيل الظهور</span>
+                    </label>
+                    <button @click="removeBlock(bIdx)" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 flex items-center justify-center text-xs transition" title="حذف البلوك">
+                      <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">موضع الظهور في الموقع:</label>
+                    <select x-model="block.position" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-bold">
+                      <option value="after_hero">بعد قسم الهيرو الرئيسي (After Hero)</option>
+                      <option value="after_video">بعد قسم الفيديو والتجربة العملية (After Video)</option>
+                      <option value="after_services">بعد قسم الخدمات والحلول (After Services)</option>
+                      <option value="after_reviews">بعد قسم آراء وتجارب العملاء (After Reviews)</option>
+                      <option value="before_contact">قبل قسم الاتصال والتواصل (Before Contact)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">نوع وشكل البلوك:</label>
+                    <select x-model="block.type" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-bold">
+                      <option value="banner">بانر تعريفي كامل (Promo Banner)</option>
+                      <option value="card">بطاقة ميزة وتفاصيل (Feature Card)</option>
+                      <option value="text">نص وإحصائية (Text & Stats)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">العنوان بالعربية (AR):</label>
+                    <input type="text" x-model="block.title.ar" placeholder="مثال: خصم خاص على مشاريع الفلل هذا الشهر" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Title in English (EN):</label>
+                    <input type="text" x-model="block.title.en" dir="ltr" placeholder="e.g. Special Discount for Compound Villas" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">الوصف الفرعي (AR):</label>
+                    <textarea x-model="block.subtitle.ar" rows="2" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs"></textarea>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Subtitle (EN):</label>
+                    <textarea x-model="block.subtitle.en" dir="ltr" rows="2" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs"></textarea>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">نص زر الإجراء (AR):</label>
+                    <input type="text" x-model="block.ctaText.ar" placeholder="مثال: احجز الآن" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Button Text (EN):</label>
+                    <input type="text" x-model="block.ctaText.en" dir="ltr" placeholder="e.g. Book Now" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">رابط الزر (Link):</label>
+                    <input type="text" x-model="block.ctaLink" dir="ltr" placeholder="#contact or /careers.html" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">صورة البلوك (اختياري):</label>
+                  <input type="text" x-model="block.image" dir="ltr" placeholder="assets/images/... or uploaded URL" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+
       </main>
 
     </div>
@@ -1852,6 +2170,12 @@
         confirmPinInput: '',
         changePinError: '',
         changePinSuccess: '',
+        // Leads & Careers & Blocks State
+        leads: [],
+        loadingLeads: false,
+        careers: [],
+        loadingCareers: false,
+
 
         // CMS Content Store
         cms: {
@@ -1889,6 +2213,140 @@
             this.authenticated = true;
           }
           this.fetchContent();
+          this.fetchLeads();
+          this.fetchCareers();
+        },
+
+        
+        formatDate(dateStr) {
+          if (!dateStr) return '';
+          try {
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('ar-EG', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+          } catch(e) {
+            return dateStr;
+          }
+        },
+
+        async fetchLeads() {
+          this.loadingLeads = true;
+          try {
+            const res = await fetch('/api/leads?v=' + Date.now());
+            if (res.ok) {
+              const data = await res.json();
+              this.leads = Array.isArray(data) ? data : [];
+            }
+          } catch(e) {
+            console.error('Failed to fetch leads:', e);
+          } finally {
+            this.loadingLeads = false;
+          }
+        },
+
+        async updateLeadStatus(id, status) {
+          try {
+            const res = await fetch('/api/leads', {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id, status })
+            });
+            if (res.ok) {
+              const item = this.leads.find(l => l.id === id);
+              if (item) item.status = status;
+              this.notify('تم التحديث', 'تم تغيير حالة طلب العميل بنجاح');
+            }
+          } catch(e) {
+            console.error('Failed to update lead:', e);
+          }
+        },
+
+        async deleteLead(id) {
+          if (!confirm('هل أنت متأكد من حذف هذا الطلب نهائياً؟')) return;
+          try {
+            const res = await fetch('/api/leads', {
+              method: 'DELETE',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id })
+            });
+            if (res.ok) {
+              this.leads = this.leads.filter(l => l.id !== id);
+              this.notify('تم الحذف', 'تم حذف طلب العميل');
+            }
+          } catch(e) {
+            console.error('Failed to delete lead:', e);
+          }
+        },
+
+        async fetchCareers() {
+          this.loadingCareers = true;
+          try {
+            const res = await fetch('/api/careers?v=' + Date.now());
+            if (res.ok) {
+              const data = await res.json();
+              this.careers = Array.isArray(data) ? data : [];
+            }
+          } catch(e) {
+            console.error('Failed to fetch careers:', e);
+          } finally {
+            this.loadingCareers = false;
+          }
+        },
+
+        async updateCareerStatus(id, status) {
+          try {
+            const res = await fetch('/api/careers', {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id, status })
+            });
+            if (res.ok) {
+              const item = this.careers.find(c => c.id === id);
+              if (item) item.status = status;
+              this.notify('تم التحديث', 'تم تغيير حالة طلب التوظيف');
+            }
+          } catch(e) {
+            console.error('Failed to update career:', e);
+          }
+        },
+
+        async deleteCareer(id) {
+          if (!confirm('هل أنت متأكد من حذف هذا المتقدم نهائياً؟')) return;
+          try {
+            const res = await fetch('/api/careers', {
+              method: 'DELETE',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ id })
+            });
+            if (res.ok) {
+              this.careers = this.careers.filter(c => c.id !== id);
+              this.notify('تم الحذف', 'تم حذف طلب التوظيف');
+            }
+          } catch(e) {
+            console.error('Failed to delete career:', e);
+          }
+        },
+
+        addNewBlock() {
+          if (!this.cms.blocks) this.cms.blocks = [];
+          this.cms.blocks.push({
+            id: 'block_' + Date.now(),
+            enabled: true,
+            position: 'after_hero',
+            type: 'banner',
+            title: { ar: 'عنوان البلوك الجديد', en: 'New Block Title' },
+            subtitle: { ar: 'وصف البلوك والمحتوى التفصيلي هنا...', en: 'Block subtitle and description here...' },
+            content: { ar: '', en: '' },
+            image: '',
+            ctaText: { ar: 'اعرف المزيد', en: 'Learn More' },
+            ctaLink: '#contact'
+          });
+          this.notify('بلوك جديد', 'تمت إضافة بلوك جديد، يمكنك تعديله والضغط على حفظ التغييرات');
+        },
+
+        removeBlock(idx) {
+          if (!confirm('هل أنت متأكد من حذف هذا البلوك؟')) return;
+          this.cms.blocks.splice(idx, 1);
+          this.notify('تم الحذف', 'تم حذف البلوك');
         },
 
         verifyPin() {

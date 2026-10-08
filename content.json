@@ -183,7 +183,7 @@
         "stat4_num": "100%",
         "stat4_label": "رؤية نقية دون تعتيم",
         "visual_badge": "مبنى فعلي: مقارنة الحرارة قبل وبعد التركيب",
-        "visual_badge_sub": "105°F بدون عزل مقابل 78°F مع فيلم النانو سيراميك",
+        "visual_badge_sub": "41°C بدون عزل مقابل 25°C مع فيلم النانو سيراميك",
         "hotspot1": "حجب حراري بنسبة 88%",
         "hotspot2": "وضوح بصري نقي 100%",
         "hotspot3": "معايير تركيب هندسية معتمدة"
@@ -196,7 +196,7 @@
         "t2_sub": "في أرقى كمبوندات مصر وفنادقها",
         "t3": "تركيب نظيف في ساعات معدودة",
         "t3_sub": "طاقم معتمد بدون أي غبار أو فوضى",
-        "t4": "ضمان رسمي معتمد 25 سنة",
+        "t4": "ضمان رسمي معتمد 5-10 سنوات",
         "t4_sub": "بطاقة ضمان معتمدة من المصنع الأم"
       },
       "steps": {
@@ -210,7 +210,7 @@
         "s2_title": "مهندسنا يزورك بالعينات مجاناً",
         "s2_desc": "نقوم بالمعاينة الدقيقة، ونجري اختبار حقيقي لكفاءة العزل الحراري أمام عينك.",
         "s3_num": "03",
-        "s3_title": "تركيب فوري وضمان معتمد 25 سنة",
+        "s3_title": "تركيب فوري وضمان معتمد 5-10 سنوات",
         "s3_desc": "تركيب هندسي نقي بدون أي شوائب، وتسليم بطاقة الضمان الرسمية المعتمدة."
       },
       "sectors": {
@@ -243,12 +243,12 @@
       "services": {
         "tag": "خدمات العزل والحماية الهندسية",
         "title": "3 حلول هندسية تضمن لك الراحة والبرودة وحماية استثماراتك",
-        "subtitle": "حلول نانو تكنولوجي أمريكية مصممة خصيصاً لمقاومة الحرارة وحماية أصولك وممتلكاتك بأعلى معايير الدقة الهندسية وضمان معتمد حتى 25 سنة."
+        "subtitle": "حلول نانو تكنولوجي أمريكية مصممة خصيصاً لمقاومة الحرارة وحماية أصولك وممتلكاتك بأعلى معايير الدقة الهندسية وضمان معتمد من 5-10 سنوات."
       },
       "pillars": {
         "tag": "خدمات العزل والحماية الهندسية",
         "title": "3 حلول هندسية تضمن لك الراحة والبرودة وحماية استثماراتك",
-        "subtitle": "حلول نانو تكنولوجي أمريكية مصممة خصيصاً لمقاومة الحرارة وحماية أصولك وممتلكاتك بأعلى معايير الدقة الهندسية وضمان معتمد حتى 25 سنة.",
+        "subtitle": "حلول نانو تكنولوجي أمريكية مصممة خصيصاً لمقاومة الحرارة وحماية أصولك وممتلكاتك بأعلى معايير الدقة الهندسية وضمان معتمد من 5-10 سنوات.",
         "p1": {
           "tag": "الأفلام المعمارية",
           "title": "عزل زجاج المباني والفلل",
@@ -296,7 +296,7 @@
         "c2_desc": "عزل حراري قوي بدون أي معادن تشوش على شبكات المحمول أو الواي فاي.",
         "c3_title": "رؤية فائقة النقاء (Zero-Haze)",
         "c3_desc": "وضوح بصري تام بالنهار وبالليل بدون أي غباشة أو تشويش.",
-        "c4_title": "ضمان معتمد حتى 25 سنة",
+        "c4_title": "ضمان معتمد من 5-10 سنوات",
         "c4_desc": "شهادة ضمان رسمية موثقة تحميك من أي عيوب تصنيع أو تغير في اللون."
       },
       "comparison": {
@@ -316,7 +316,7 @@
         "r3_pro": "نقاء بصري تام بدون أي غباشة",
         "r3_std": "رؤية باهتة وتشويش يجهد العين",
         "r4_title": "الضمان والمتابعة",
-        "r4_pro": "ضمان رسمي معتمد حتى 25 سنة ومتابعة مستمرة",
+        "r4_pro": "ضمان رسمي معتمد 5-10 سنوات ومتابعة مستمرة",
         "r4_std": "كلام شفهي بدون أي مسؤولية عند حدوث مشكلة"
       },
       "faq": {
@@ -326,7 +326,7 @@
         "q1": "هل الفيلم هيعتم البيت أو يلغي ضوء الشمس الطبيعي؟",
         "a1": "نهائياً! أفلامنا بتقنية النانو سيراميك شفافة بنسبة 100%، بتدخل ضوء الشمس النقي وتمنع فقط الحرارة الحارقة والأشعة فوق البنفسجية الضارة، مع الحفاظ على وضوح الرؤية للخارج ليلاً ونهاراً.",
         "q2": "إيه يضمنلي إن النتيجة حقيقية وإن المنتج أصلي؟",
-        "a2": "أثناء المعاينة المجانية، مهندسنا بيعملك اختبار عملي بجهاز كاشف الحرارة أمام عينك لترى الفرق بنفسك. بالإضافة لتسليمك شهادة ضمان رسمية معتمدة من الشركة المصنعة حتى 25 سنة.",
+        "a2": "أثناء المعاينة المجانية، مهندسنا بيعملك اختبار عملي بجهاز كاشف الحرارة أمام عينك لترى الفرق بنفسك. بالإضافة لتسليمك شهادة ضمان رسمية معتمدة من الشركة المصنعة من 5-10 سنوات.",
         "q3": "هل تركيب فيلم عزل الزجاج أو الرخام بيسبب أي فوضى أو تكسير؟",
         "a3": "إطلاقاً! التركيب هندسي نظيف وسريع في ساعات معدودة، بدون أي أتربة أو فوضى، مع تنظيف شامل للأسطح قبل وبعد التركيب.",
         "q4": "كيف أحجز معاينة وكام بتكلف المعاينة؟",
@@ -421,7 +421,7 @@
         "stat4_num": "100%",
         "stat4_label": "Crystal Optical Clarity",
         "visual_badge": "Real Building: Before & After Thermal Comparison",
-        "visual_badge_sub": "105°F Unprotected vs 78°F with Nano-Ceramic Shield",
+        "visual_badge_sub": "41°C Unprotected vs 25°C with Nano-Ceramic Shield",
         "hotspot1": "88% Thermal Solar Block",
         "hotspot2": "100% Optical Clarity",
         "hotspot3": "Certified Precision Fit"
@@ -434,7 +434,7 @@
         "t2_sub": "Across premier compounds & 5-star hotels",
         "t3": "Clean Dust-Free Installation",
         "t3_sub": "Certified crew executes within hours",
-        "t4": "25-Year Official Written Warranty",
+        "t4": "5-10 Years Official Written Warranty",
         "t4_sub": "Backed by Global Hi-Tech Films USA"
       },
       "steps": {
@@ -448,7 +448,7 @@
         "s2_title": "Our Engineer Visits with Live Samples",
         "s2_desc": "We perform an on-site survey and run live thermal insulation tests directly before your eyes.",
         "s3_num": "03",
-        "s3_title": "Clean Installation & 25-Year Warranty",
+        "s3_title": "Clean Installation & 5-10 Years Warranty",
         "s3_desc": "Flawless dust-free installation completed within hours, backed by official international certificates."
       },
       "sectors": {
@@ -534,7 +534,7 @@
         "c2_desc": "Substantial heat rejection without metallic interference with mobile signals.",
         "c3_title": "Zero-Haze Optical Clarity",
         "c3_desc": "Camera-grade optical purity with zero blur or distortion day and night.",
-        "c4_title": "Certified 25-Year Warranty",
+        "c4_title": "Certified 5-10 Years Warranty",
         "c4_desc": "Official manufacturer warranty protecting against fading, bubbling, or peeling."
       },
       "comparison": {
@@ -554,7 +554,7 @@
         "r3_pro": "Crystal clear with zero haze or distortion",
         "r3_std": "Milky blur that causes eye fatigue",
         "r4_title": "Warranty & Support",
-        "r4_pro": "Official written warranty up to 25 years with continuous support",
+        "r4_pro": "Official written warranty 5-10 years with continuous support",
         "r4_std": "Verbal promises with zero accountability"
       },
       "faq": {
@@ -564,7 +564,7 @@
         "q1": "Will the film darken my home or ruin the natural view?",
         "a1": "Absolutely not! Our Nano-Ceramic films are 100% optically pure. They let natural daylight through while blocking 88% of searing heat and 99.9% of UV radiation, preserving full crystal visibility day and night.",
         "q2": "How do I know the product is authentic and works?",
-        "a2": "During your free on-site survey, our engineer conducts a live heat-lamp demonstration in front of your eyes. You also receive an official written warranty card up to 25 years.",
+        "a2": "During your free on-site survey, our engineer conducts a live heat-lamp demonstration in front of your eyes. You also receive an official written warranty card 5-10 years.",
         "q3": "Does installation cause any mess or disruption?",
         "a3": "Zero mess! Our certified installation crews work cleanly within hours using specialized dust-free equipment, leaving your premises spotless.",
         "q4": "How much does the on-site survey cost?",
@@ -634,8 +634,8 @@
       "en": "Verified Live Video Demonstration"
     },
     "title": {
-      "ar": "شاهد الفرق الحقيقي: قياس الحرارة بالأرقام قبل وبعد التركيب",
-      "en": "See The Real Difference: Temperature Readings Before & After Installation"
+      "ar": "شاهد الفرق الحقيقي: شدة أشعة الشمس قبل وبعد التركيب",
+      "en": "See The Real Difference: Sunlight Intensity Before & After Installation"
     },
     "subtitle": {
       "ar": "فيديو ميداني مباشر بجهاز الليزر الحراري يثبت انخفاض درجة الحرارة فوراً بمجرد وضع عازل بروتيرم النانو سيراميك.",
@@ -771,8 +771,8 @@
           "en": "Stand-alone Villa - Mivida, New Cairo"
         },
         "text": {
-          "ar": "جهاز قياس الحرارة أثناء المعاينة ورانا الفرق بالأرقام، والتركيب الهندسي نظيف وسريع بدون أي فقاعات أو أتربة. تجربة ممتازة تستحق كل قرش.",
-          "en": "The heat detector meter during the survey showed us exact numbers. Flawless dust-free installation without bubbles. Worth every penny."
+          "ar": "جهاز قياس شدة أشعة الشمس أثناء المعاينة ورانا الفرق الحقيقي، والتركيب الهندسي نظيف وسريع بدون أي فقاعات أو أتربة. تجربة ممتازة تستحق كل قرش.",
+          "en": "The sunlight intensity detector meter during the survey showed us the real difference. Flawless dust-free installation without bubbles. Worth every penny."
         },
         "badge": {
           "ar": "تجربة مؤكدة",
@@ -790,8 +790,8 @@
           "en": "Engineering Consulting Office - Maadi Degla"
         },
         "text": {
-          "ar": "استجابة سريعة ومعاينة احترافية بالعينات في نفس اليوم. الفيلم عزل الحرارة تماماً وشهادة الضمان المعتمدة 25 سنة بتدي راحة بال تامة.",
-          "en": "Fast response and same-day sample visit. The film completely rejected the heat and the 25-year official warranty gives complete peace of mind."
+          "ar": "استجابة سريعة ومعاينة احترافية بالعينات في نفس اليوم. الفيلم عزل الحرارة تماماً وشهادة الضمان المعتمدة 5-10 سنوات بتدي راحة بال تامة.",
+          "en": "Fast response and same-day sample visit. The film completely rejected the heat and the 5-10 years official warranty gives complete peace of mind."
         },
         "badge": {
           "ar": "تجربة مؤكدة",
@@ -857,5 +857,6 @@
         "rating": 5
       }
     ]
-  }
+  },
+  "blocks": []
 }
