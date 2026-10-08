@@ -12,5 +12,16 @@
     { "source": "/protherme/admin", "destination": "/admin.html" },
     { "source": "/protherme", "destination": "/index.html" },
     { "source": "/protherme/", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
   ]
 }
