@@ -1102,7 +1102,8 @@ function prothermeApp() {
       },
       texts: {},
       imageBadges: {},
-      blocks: []
+      blocks: [],
+      sectionOrder: []
     },
 
     async init() {
@@ -1314,6 +1315,35 @@ function prothermeApp() {
     },
 
     // Smooth Scroll Helper
+    
+    // Dynamic Section Order Resolver
+    getSectionOrder(secId) {
+      if (this.cms && Array.isArray(this.cms.sectionOrder)) {
+        const idx = this.cms.sectionOrder.findIndex(s => {
+          if (!s) return false;
+          return (typeof s === 'string' ? s : s.id) === secId;
+        });
+        if (idx !== -1) {
+          const item = this.cms.sectionOrder[idx];
+          if (item && typeof item.order === 'number') return item.order;
+          return idx + 1;
+        }
+      }
+      const defaults = {
+        trustBar: 1,
+        video: 2,
+        steps: 3,
+        sectors: 4,
+        services: 5,
+        technology: 6,
+        gallery: 7,
+        reviews: 8,
+        faq: 9,
+        contact: 10
+      };
+      return defaults[secId] !== undefined ? defaults[secId] : 10;
+    },
+  
     scrollToTop() {
       window.scrollTo({
         top: 0,
@@ -1776,9 +1806,14 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   </section>
 
   <!-- ========================================== -->
+  <!-- POST-HERO DYNAMIC SECTION FLOW             -->
+  <!-- ========================================== -->
+  <div id="post-hero-flow" class="flex flex-col w-full relative">
+
+  <!-- ========================================== -->
   <!-- TRUST & CERTIFICATION BAR                  -->
   <!-- ========================================== -->
-  <section x-show="cms.visibility.trustBar" class="py-10 bg-white border-y border-slate-200 relative z-10">
+  <section x-show="cms.visibility.trustBar" :style="'order: ' + getSectionOrder('trustBar')" class="py-10 bg-white border-y border-slate-200 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
         
@@ -1829,7 +1864,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- THERMAL TEST VIDEO (PROOF & DEMO)          -->
   <!-- ========================================== -->
-  <section id="thermal-proof" x-show="cms.visibility.video !== false" class="py-20 bg-slate-50 border-b border-slate-200/90 relative z-10 scroll-mt-28">
+  <section id="thermal-proof" x-show="cms.visibility.video !== false" :style="'order: ' + getSectionOrder('video')" class="py-20 bg-slate-50 border-b border-slate-200/90 relative z-10 scroll-mt-28">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Section Header -->
@@ -1978,7 +2013,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- 3-STEP INSTANT JOURNEY (HOW IT WORKS)      -->
   <!-- ========================================== -->
-  <section id="how-it-works" x-show="cms.visibility.steps !== false" class="py-16 bg-white border-b border-slate-200/90 relative z-10">
+  <section id="how-it-works" x-show="cms.visibility.steps !== false" :style="'order: ' + getSectionOrder('steps')" class="py-16 bg-white border-b border-slate-200/90 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-12 space-y-3">
@@ -2068,7 +2103,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- SECTORS SHOWCASE: ENTERPRISE & COMPOUNDS   -->
   <!-- ========================================== -->
-  <section id="sectors" x-show="cms.visibility.sectors !== false" class="py-20 bg-slate-50/80 border-b border-slate-200/90 relative z-10">
+  <section id="sectors" x-show="cms.visibility.sectors !== false" :style="'order: ' + getSectionOrder('sectors')" class="py-20 bg-slate-50/80 border-b border-slate-200/90 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Section Header -->
@@ -2415,7 +2450,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- 3 CORE PILLARS / SERVICES GRID             -->
   <!-- ========================================== -->
-  <section id="services" class="py-24 relative z-10">
+  <section id="services" :style="'order: ' + getSectionOrder('services')" class="py-24 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Section Header -->
@@ -2595,7 +2630,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- GLOBAL PARTNERSHIP & STANDARDS SECTION     -->
   <!-- ========================================== -->
-  <section x-show="cms.visibility.technology" id="technology" class="py-24 relative z-10">
+  <section x-show="cms.visibility.technology" id="technology" :style="'order: ' + getSectionOrder('technology')" class="py-24 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Section Header -->
@@ -2709,7 +2744,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- PROJECT GALLERY & LIVE INSTALLATION        -->
   <!-- ========================================== -->
-  <section x-show="cms.visibility.gallery" id="gallery" class="py-24 bg-slate-100/60 border-t border-slate-200 relative z-10">
+  <section x-show="cms.visibility.gallery" id="gallery" :style="'order: ' + getSectionOrder('gallery')" class="py-24 bg-slate-100/60 border-t border-slate-200 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Section Header -->
@@ -2866,7 +2901,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- CLIENT REVIEWS SCROLLING MARQUEE           -->
   <!-- ========================================== -->
-  <section id="reviews" x-show="cms.visibility.reviews !== false" class="py-20 bg-white border-b border-slate-200/90 relative z-10 overflow-hidden scroll-mt-24">
+  <section id="reviews" x-show="cms.visibility.reviews !== false" :style="'order: ' + getSectionOrder('reviews')" class="py-20 bg-white border-b border-slate-200/90 relative z-10 overflow-hidden scroll-mt-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
       <!-- Section Header -->
       <div data-aos="fade-up" class="text-center max-w-3xl mx-auto space-y-3">
@@ -2921,7 +2956,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- CONVERSION FAQ & OVERCOMING OBJECTIONS     -->
   <!-- ========================================== -->
-  <section id="faq" x-show="cms.visibility.faq !== false" class="py-20 bg-slate-50/80 border-b border-slate-200/90 relative z-10">
+  <section id="faq" x-show="cms.visibility.faq !== false" :style="'order: ' + getSectionOrder('faq')" class="py-20 bg-slate-50/80 border-b border-slate-200/90 relative z-10">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div data-aos="fade-up" class="text-center mb-12 space-y-3">
@@ -3008,32 +3043,11 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
     </div>
   </section>
 
-  <!-- ========================================== -->
-  
-  <!-- DYNAMIC CUSTOM BLOCKS: before_contact -->
-  <template x-for="block in getBlocksByPosition('before_contact')" :key="block.id">
-    <div class="py-12 bg-white border-b border-slate-200/80 relative z-10">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-slate-50 to-cyan-50/40 border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-8">
-          <div class="space-y-3 max-w-2xl">
-            <h3 class="text-2xl sm:text-3xl font-black text-slate-950" x-text="block.title ? (block.title[lang] || block.title.ar || block.title) : ''"></h3>
-            <p class="text-sm sm:text-base text-slate-600 leading-relaxed" x-text="block.subtitle ? (block.subtitle[lang] || block.subtitle.ar || block.subtitle) : ''"></p>
-            <div x-show="block.content" class="text-xs sm:text-sm text-slate-500" x-text="block.content ? (block.content[lang] || block.content.ar || block.content) : ''"></div>
-          </div>
-          <template x-if="block.image">
-            <img :src="block.image" alt="Block Visual" class="max-h-48 w-auto rounded-2xl shadow-md object-cover">
-          </template>
-          <template x-if="block.ctaText && (block.ctaText[lang] || block.ctaText.ar || block.ctaText)">
-            <a :href="block.ctaLink || '#contact'" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold text-sm shadow-md shadow-cyan-600/25 hover:from-cyan-500 hover:to-teal-500 transition shrink-0" x-text="block.ctaText[lang] || block.ctaText.ar || block.ctaText"></a>
-          </template>
-        </div>
-      </div>
-    </div>
-  </template>
+
 
   <!-- DIRECT CONTACT & ADVISORY HUB (NO FORM)    -->
   <!-- ========================================== -->
-  <section id="contact" x-show="cms.visibility.contact !== false" class="py-24 relative z-10">
+  <section id="contact" x-show="cms.visibility.contact !== false" :style="'order: ' + getSectionOrder('contact')" class="py-24 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Section Header -->
@@ -3275,6 +3289,202 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
     </div>
   </section>
+
+  <!-- ========================================== -->
+  <!-- DYNAMIC CUSTOM BLOCKS (COMPLETE BUILDER)   -->
+  <!-- ========================================== -->
+  <template x-for="block in (cms.blocks || []).filter(b => b && b.enabled !== false)" :key="block.id">
+    <div 
+      :id="block.id"
+      :style="'order: ' + getSectionOrder(block.id)"
+      :class="{
+        'bg-white text-slate-900 border-b border-slate-200': block.theme === 'white',
+        'bg-gradient-to-br from-slate-950 via-cyan-950 to-slate-900 text-white border-b border-cyan-800/40': block.theme === 'cyan',
+        'bg-slate-950 text-white border-b border-slate-800': block.theme === 'dark',
+        'bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-900 text-white border-b border-emerald-800/40': block.theme === 'emerald'
+      }"
+      class="py-16 sm:py-20 relative z-10 overflow-hidden">
+      
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- LAYOUT 1: SPLIT (Side by Side) -->
+        <template x-if="!block.layout || block.layout === 'split'">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            
+            <!-- Content Column -->
+            <div 
+              :class="block.imageAlign === 'left' ? 'lg:col-span-7 lg:order-2' : 'lg:col-span-7 lg:order-1'" 
+              class="space-y-5 text-start">
+              
+              <!-- Tag / Eyebrow Badge -->
+              <div x-show="block.tag && (block.tag[lang] || block.tag.ar || block.tag.en)" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold shadow-xs"
+                   :class="block.theme === 'white' ? 'bg-cyan-50 border border-cyan-200 text-cyan-800' : 'bg-white/10 border border-white/20 text-cyan-300 backdrop-blur-md'">
+                <span x-text="block.tag ? (block.tag[lang] || block.tag.ar || block.tag.en || block.tag) : ''"></span>
+              </div>
+
+              <!-- Title -->
+              <h2 
+                class="text-2xl sm:text-3xl lg:text-4xl font-black leading-tight"
+                :class="block.theme === 'white' ? 'text-slate-950' : 'text-white'"
+                x-text="block.title ? (block.title[lang] || block.title.ar || block.title.en || block.title) : ''"></h2>
+
+              <!-- Subtitle -->
+              <p 
+                x-show="block.subtitle && (block.subtitle[lang] || block.subtitle.ar || block.subtitle.en)"
+                class="text-sm sm:text-base leading-relaxed"
+                :class="block.theme === 'white' ? 'text-slate-600' : 'text-slate-300'"
+                x-text="block.subtitle ? (block.subtitle[lang] || block.subtitle.ar || block.subtitle.en || block.subtitle) : ''"></p>
+
+              <!-- Rich Content -->
+              <div 
+                x-show="block.content && (block.content[lang] || block.content.ar || block.content.en)"
+                class="text-xs sm:text-sm leading-relaxed p-4 rounded-2xl"
+                :class="block.theme === 'white' ? 'bg-slate-50 text-slate-700 border border-slate-200' : 'bg-white/5 text-slate-300 border border-white/10'"
+                x-text="block.content ? (block.content[lang] || block.content.ar || block.content.en || block.content) : ''"></div>
+
+              <!-- CTAs -->
+              <div class="pt-2 flex flex-wrap items-center gap-3">
+                <template x-if="block.ctaText && (block.ctaText[lang] || block.ctaText.ar || block.ctaText.en || block.ctaText)">
+                  <a 
+                    :href="block.ctaLink || '#contact'" 
+                    class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-cyan-600/25 transition active:scale-95 flex items-center gap-2"
+                    x-text="block.ctaText[lang] || block.ctaText.ar || block.ctaText.en || block.ctaText"></a>
+                </template>
+
+                <template x-if="block.secondaryCtaText && (block.secondaryCtaText[lang] || block.secondaryCtaText.ar || block.secondaryCtaText.en || block.secondaryCtaText)">
+                  <a 
+                    :href="block.secondaryCtaLink || 'tel:01010010030'" 
+                    class="px-5 py-3.5 rounded-2xl border font-bold text-xs sm:text-sm transition flex items-center gap-2"
+                    :class="block.theme === 'white' ? 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300' : 'bg-white/10 hover:bg-white/20 text-white border-white/20'"
+                    x-text="block.secondaryCtaText[lang] || block.secondaryCtaText.ar || block.secondaryCtaText.en || block.secondaryCtaText"></a>
+                </template>
+              </div>
+            </div>
+
+            <!-- Image Column -->
+            <div 
+              :class="block.imageAlign === 'left' ? 'lg:col-span-5 lg:order-1' : 'lg:col-span-5 lg:order-2'" 
+              class="flex items-center justify-center">
+              <template x-if="block.image">
+                <div class="relative w-full rounded-3xl overflow-hidden shadow-2xl border"
+                     :class="block.theme === 'white' ? 'border-slate-200' : 'border-white/20'">
+                  <img :src="block.image" :alt="block.title ? (block.title.ar || block.title.en || 'Block Visual') : 'Visual'" class="w-full h-auto max-h-[380px] object-cover">
+                </div>
+              </template>
+            </div>
+
+          </div>
+        </template>
+
+        <!-- LAYOUT 2: BANNER (Panoramic Full Width) -->
+        <template x-if="block.layout === 'banner'">
+          <div class="text-center max-w-4xl mx-auto space-y-6">
+            <!-- Tag -->
+            <div x-show="block.tag && (block.tag[lang] || block.tag.ar || block.tag.en)" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold shadow-xs mx-auto"
+                 :class="block.theme === 'white' ? 'bg-cyan-50 border border-cyan-200 text-cyan-800' : 'bg-white/10 border border-white/20 text-cyan-300 backdrop-blur-md'">
+              <span x-text="block.tag ? (block.tag[lang] || block.tag.ar || block.tag.en || block.tag) : ''"></span>
+            </div>
+
+            <!-- Title -->
+            <h2 
+              class="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight"
+              :class="block.theme === 'white' ? 'text-slate-950' : 'text-white'"
+              x-text="block.title ? (block.title[lang] || block.title.ar || block.title.en || block.title) : ''"></h2>
+
+            <!-- Subtitle -->
+            <p 
+              x-show="block.subtitle && (block.subtitle[lang] || block.subtitle.ar || block.subtitle.en)"
+              class="text-base sm:text-lg leading-relaxed max-w-2xl mx-auto"
+              :class="block.theme === 'white' ? 'text-slate-600' : 'text-slate-300'"
+              x-text="block.subtitle ? (block.subtitle[lang] || block.subtitle.ar || block.subtitle.en || block.subtitle) : ''"></p>
+
+            <!-- Optional Image in Banner -->
+            <template x-if="block.image">
+              <div class="pt-4 max-w-2xl mx-auto">
+                <img :src="block.image" :alt="block.title ? (block.title.ar || block.title.en || 'Visual') : 'Visual'" class="w-full max-h-[340px] rounded-3xl object-cover shadow-2xl border"
+                     :class="block.theme === 'white' ? 'border-slate-200' : 'border-white/20'">
+              </div>
+            </template>
+
+            <!-- Rich Content -->
+            <div 
+              x-show="block.content && (block.content[lang] || block.content.ar || block.content.en)"
+              class="text-xs sm:text-sm leading-relaxed p-4 rounded-2xl max-w-2xl mx-auto text-start"
+              :class="block.theme === 'white' ? 'bg-slate-50 text-slate-700 border border-slate-200' : 'bg-white/5 text-slate-300 border border-white/10'"
+              x-text="block.content ? (block.content[lang] || block.content.ar || block.content.en || block.content) : ''"></div>
+
+            <!-- CTAs -->
+            <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
+              <template x-if="block.ctaText && (block.ctaText[lang] || block.ctaText.ar || block.ctaText.en || block.ctaText)">
+                <a 
+                  :href="block.ctaLink || '#contact'" 
+                  class="px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white font-black text-sm shadow-lg shadow-cyan-600/30 transition active:scale-95 flex items-center gap-2"
+                  x-text="block.ctaText[lang] || block.ctaText.ar || block.ctaText.en || block.ctaText"></a>
+              </template>
+
+              <template x-if="block.secondaryCtaText && (block.secondaryCtaText[lang] || block.secondaryCtaText.ar || block.secondaryCtaText.en || block.secondaryCtaText)">
+                <a 
+                  :href="block.secondaryCtaLink || 'tel:01010010030'" 
+                  class="px-6 py-4 rounded-2xl border font-bold text-sm transition flex items-center gap-2"
+                  :class="block.theme === 'white' ? 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300' : 'bg-white/10 hover:bg-white/20 text-white border-white/20'"
+                  x-text="block.secondaryCtaText[lang] || block.secondaryCtaText.ar || block.secondaryCtaText.en || block.secondaryCtaText"></a>
+              </template>
+            </div>
+          </div>
+        </template>
+
+        <!-- LAYOUT 3: CARD (Contained Boxed Card) -->
+        <template x-if="block.layout === 'card'">
+          <div 
+            class="p-8 sm:p-12 rounded-3xl border shadow-xl flex flex-col md:flex-row items-center justify-between gap-8"
+            :class="block.theme === 'white' ? 'bg-slate-50 border-slate-200' : 'bg-slate-900/90 border-white/15 backdrop-blur-xl'">
+            
+            <div class="space-y-4 max-w-2xl text-start">
+              <div x-show="block.tag && (block.tag[lang] || block.tag.ar || block.tag.en)" class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold"
+                   :class="block.theme === 'white' ? 'bg-cyan-100 text-cyan-800' : 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/30'">
+                <span x-text="block.tag ? (block.tag[lang] || block.tag.ar || block.tag.en || block.tag) : ''"></span>
+              </div>
+
+              <h3 
+                class="text-2xl sm:text-3xl font-black"
+                :class="block.theme === 'white' ? 'text-slate-950' : 'text-white'"
+                x-text="block.title ? (block.title[lang] || block.title.ar || block.title.en || block.title) : ''"></h3>
+
+              <p 
+                x-show="block.subtitle && (block.subtitle[lang] || block.subtitle.ar || block.subtitle.en)"
+                class="text-sm sm:text-base leading-relaxed"
+                :class="block.theme === 'white' ? 'text-slate-600' : 'text-slate-300'"
+                x-text="block.subtitle ? (block.subtitle[lang] || block.subtitle.ar || block.subtitle.en || block.subtitle) : ''"></p>
+
+              <div 
+                x-show="block.content && (block.content[lang] || block.content.ar || block.content.en)"
+                class="text-xs sm:text-sm text-slate-400 leading-relaxed"
+                x-text="block.content ? (block.content[lang] || block.content.ar || block.content.en || block.content) : ''"></div>
+            </div>
+
+            <!-- Right: Image & Action -->
+            <div class="flex flex-col sm:flex-row md:flex-col items-center gap-4 shrink-0">
+              <template x-if="block.image">
+                <img :src="block.image" :alt="block.title ? (block.title.ar || block.title.en || 'Card Visual') : 'Card Visual'" class="w-48 h-32 rounded-2xl object-cover shadow-md border"
+                     :class="block.theme === 'white' ? 'border-slate-200' : 'border-white/20'">
+              </template>
+
+              <template x-if="block.ctaText && (block.ctaText[lang] || block.ctaText.ar || block.ctaText.en || block.ctaText)">
+                <a 
+                  :href="block.ctaLink || '#contact'" 
+                  class="w-full text-center px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-cyan-600/25 transition"
+                  x-text="block.ctaText[lang] || block.ctaText.ar || block.ctaText.en || block.ctaText"></a>
+              </template>
+            </div>
+
+          </div>
+        </template>
+
+      </div>
+    </div>
+  </template>
+
+  </div><!-- /post-hero-flow -->
 
   <!-- ========================================== -->
   <!-- FOOTER                                     -->

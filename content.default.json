@@ -858,5 +858,77 @@
       }
     ]
   },
-  "blocks": []
+  "blocks": [],
+  "sectionOrder": [
+    {
+      "id": "trustBar",
+      "name_ar": "شريط الاعتمادات والجودة",
+      "name_en": "Trust & Standards Bar",
+      "order": 1,
+      "type": "builtin"
+    },
+    {
+      "id": "video",
+      "name_ar": "قسم الفيديو والتجربة الميدانية",
+      "name_en": "Thermal Video Proof",
+      "order": 2,
+      "type": "builtin"
+    },
+    {
+      "id": "steps",
+      "name_ar": "قسم خطوات العمل (3 خطوات)",
+      "name_en": "3 Simple Steps",
+      "order": 3,
+      "type": "builtin"
+    },
+    {
+      "id": "sectors",
+      "name_ar": "قسم القطاعات (فلل ومشاريع)",
+      "name_en": "Sectors Showcase",
+      "order": 4,
+      "type": "builtin"
+    },
+    {
+      "id": "services",
+      "name_ar": "قسم الركائز والخدمات الـ 3",
+      "name_en": "3 Core Pillars",
+      "order": 5,
+      "type": "builtin"
+    },
+    {
+      "id": "technology",
+      "name_ar": "قسم التقنية والمعايير",
+      "name_en": "Technology & Standards",
+      "order": 6,
+      "type": "builtin"
+    },
+    {
+      "id": "gallery",
+      "name_ar": "معرض صور المشاريع",
+      "name_en": "Projects Gallery",
+      "order": 7,
+      "type": "builtin"
+    },
+    {
+      "id": "reviews",
+      "name_ar": "قسم آراء وتجارب العملاء",
+      "name_en": "Customer Reviews",
+      "order": 8,
+      "type": "builtin"
+    },
+    {
+      "id": "faq",
+      "name_ar": "قسم الأسئلة الشائعة",
+      "name_en": "FAQ Section",
+      "order": 9,
+      "type": "builtin"
+    },
+    {
+      "id": "contact",
+      "name_ar": "قسم طلب المعاينة والاتصال",
+      "name_en": "Contact & Leads Hub",
+      "order": 10,
+      "type": "builtin"
+    }
+  ]
 }

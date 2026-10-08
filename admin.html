@@ -335,6 +335,39 @@
             </button>
 
             <button 
+              @click="activeTab = 'clients_inbox'; fetchLeads();" 
+              :class="activeTab === 'clients_inbox' ? 'bg-cyan-50/80 text-cyan-900 border-cyan-300 font-bold shadow-xs' : 'text-slate-700 hover:bg-slate-50 border-transparent'" 
+              class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+              <span class="flex items-center gap-2.5">
+                <i class="fa-solid fa-inbox text-blue-600 w-4"></i>
+                <span>رسائل واستفسارات العملاء</span>
+              </span>
+              <span x-show="leads.length > 0" class="text-[10px] px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold font-mono" x-text="leads.length"></span>
+            </button>
+
+            <button 
+              @click="activeTab = 'career_inbox'; fetchCareers();" 
+              :class="activeTab === 'career_inbox' ? 'bg-cyan-50/80 text-cyan-900 border-cyan-300 font-bold shadow-xs' : 'text-slate-700 hover:bg-slate-50 border-transparent'" 
+              class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+              <span class="flex items-center gap-2.5">
+                <i class="fa-solid fa-briefcase text-emerald-600 w-4"></i>
+                <span>طلبات التوظيف والمتقدمين</span>
+              </span>
+              <span x-show="careers.length > 0" class="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold font-mono" x-text="careers.length"></span>
+            </button>
+
+            <button 
+              @click="activeTab = 'blocks'" 
+              :class="activeTab === 'blocks' ? 'bg-cyan-50/80 text-cyan-900 border-cyan-300 font-bold shadow-xs' : 'text-slate-700 hover:bg-slate-50 border-transparent'" 
+              class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+              <span class="flex items-center gap-2.5">
+                <i class="fa-solid fa-cubes-stacked text-cyan-600 w-4"></i>
+                <span>إضافة وترتيب البلوكات والأقسام</span>
+              </span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded bg-cyan-100 text-cyan-800 font-bold" x-text="(cms.blocks || []).length + ' مخصص'"></span>
+            </button>
+
+            <button 
               @click="activeTab = 'contacts'" 
               :class="activeTab === 'contacts' ? 'bg-cyan-50/80 text-cyan-900 border-cyan-300 font-bold shadow-xs' : 'text-slate-700 hover:bg-slate-50 border-transparent'" 
               class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
@@ -2008,118 +2041,601 @@
         </div>
 
         <!-- ============================================== -->
-        <!-- TAB 17: CUSTOM BLOCKS BUILDER                  -->
+        <!-- TAB: CUSTOM BLOCKS BUILDER & SECTION SEQUENCER -->
         <!-- ============================================== -->
-        <div x-show="activeTab === 'blocks'" class="space-y-6">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+        <div x-show="activeTab === 'blocks'" class="space-y-8">
+          
+          <!-- Tab Top Header -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-5">
             <div>
-              <div class="flex items-center gap-2">
-                <h3 class="text-xl font-black text-slate-950">إدارة البلوكات المخصصة (Blocks Builder)</h3>
-                <span class="px-2.5 py-0.5 rounded-full bg-cyan-100 text-cyan-800 text-xs font-bold font-mono" x-text="(cms.blocks || []).length + ' بلوك'"></span>
-              </div>
-              <p class="text-xs text-slate-500 mt-1">إنشاء وإضافة بلوكات محتوى، بانرات إعلانية، أو نصوص مخصصة تظهر في أقسام الموقع المختلفة</p>
-            </div>
-            <button @click="addNewBlock()" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white text-xs font-bold transition flex items-center gap-2 shadow-sm">
-              <i class="fa-solid fa-plus"></i>
-              <span>إضافة بلوك جديد</span>
-            </button>
-          </div>
-
-          <!-- Empty State -->
-          <div x-show="!cms.blocks || cms.blocks.length === 0" class="p-12 text-center bg-white rounded-2xl border border-slate-200 space-y-3">
-            <div class="w-16 h-16 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-2xl mx-auto">
-              <i class="fa-solid fa-cubes"></i>
-            </div>
-            <h4 class="font-bold text-slate-900 text-base">لا توجد بلوكات مخصصة مضافة حالياً</h4>
-            <p class="text-xs text-slate-500">اضغط على زر "إضافة بلوك جديد" لإنشاء قسم مخصص في أي موضع تريده داخل الموقع.</p>
-          </div>
-
-          <!-- Blocks List -->
-          <div x-show="cms.blocks && cms.blocks.length > 0" class="space-y-4">
-            <template x-for="(block, bIdx) in cms.blocks" :key="block.id || bIdx">
-              <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-                  <div class="flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-800 flex items-center justify-center font-bold text-xs font-mono" x-text="bIdx + 1"></span>
-                    <span class="font-black text-slate-900 text-sm" x-text="block.title ? (block.title.ar || block.title.en || 'بلوك بدون عنوان') : 'بلوك جديد'"></span>
+              <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 to-teal-600 text-white flex items-center justify-center text-lg shadow-sm">
+                  <i class="fa-solid fa-cubes-stacked"></i>
+                </div>
+                <div>
+                  <h3 class="text-xl font-black text-slate-950">إدارة البلوكات وترتيب أقسام ما بعد الهيرو</h3>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <span class="text-xs text-slate-500">تحكم كامل في ترتيب الأقسام وإضافة بلوكات مخصصة متكاملة</span>
+                    <span class="px-2 py-0.5 rounded-full bg-cyan-100 text-cyan-800 text-[10px] font-bold font-mono" x-text="((cms.blocks || []).length) + ' بلوك مخصص'"></span>
                   </div>
-                  <div class="flex items-center gap-2">
-                    <label class="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
-                      <input type="checkbox" x-model="block.enabled" class="rounded text-cyan-600 focus:ring-cyan-500">
-                      <span>تفعيل الظهور</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <button 
+                type="button"
+                @click="saveContent()" 
+                :disabled="saving"
+                class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white font-bold text-xs shadow-md shadow-cyan-600/20 flex items-center gap-2 transition active:scale-95">
+                <i class="fa-solid" :class="saving ? 'fa-spinner fa-spin' : 'fa-floppy-disk'"></i>
+                <span x-text="saving ? 'جاري الحفظ...' : 'حفظ الترتيب والبلوكات'"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- ======================================================== -->
+          <!-- SECTION 1: SEQUENCER (أداة ترتيب أقسام وبلوكات ما بعد الهيرو) -->
+          <!-- ======================================================== -->
+          <div class="p-6 sm:p-7 rounded-3xl bg-slate-50/90 border border-slate-200/90 space-y-5 shadow-xs">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/80 pb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center text-base">
+                  <i class="fa-solid fa-arrow-down-short-wide"></i>
+                </div>
+                <div>
+                  <h4 class="font-black text-slate-900 text-base">ترتيب أقسام وبلوكات الصفحة (Flow Sequencer)</h4>
+                  <p class="text-xs text-slate-500">رتب الأقسام والبلوكات التي تلي قسم الهيرو الرئيسي باستخدام أزرار التقديم والتأخير</p>
+                </div>
+              </div>
+              <button 
+                type="button"
+                @click="resetSectionOrder()" 
+                class="px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 text-xs font-bold transition flex items-center gap-1.5 self-start sm:self-auto"
+                title="استعادة الترتيب الأصلي لأقسام الموقع">
+                <i class="fa-solid fa-rotate-left text-cyan-600 text-xs"></i>
+                <span>استعادة الترتيب الافتراضي</span>
+              </button>
+            </div>
+
+            <!-- Notice / Hint -->
+            <div class="p-3.5 rounded-2xl bg-cyan-50/70 border border-cyan-200/70 flex items-start gap-2.5 text-xs text-cyan-950">
+              <i class="fa-solid fa-lightbulb text-cyan-600 text-sm mt-0.5 shrink-0"></i>
+              <div class="leading-relaxed">
+                <strong>ملاحظة هامة:</strong> الترتيب الموضح أدناه هو الترتيب الفعلي الذي يظهر به كل قسم وبلوك لزوار الموقع بعد الهيرو. عند الضغط على <span class="font-mono bg-cyan-100 px-1 py-0.5 rounded text-[11px]">⬆️ تحريك لأعلى</span> أو <span class="font-mono bg-cyan-100 px-1 py-0.5 rounded text-[11px]">⬇️ تحريك لأسفل</span> يتم تغيير الترتيب فورياً، ولا تنسَ الضغط على <strong>"حفظ الترتيب والبلوكات"</strong> لتثبيته.
+              </div>
+            </div>
+
+            <!-- Sequencer List -->
+            <div class="space-y-2">
+              <template x-for="(item, idx) in getOrderedPostHeroList()" :key="item.id || idx">
+                <div 
+                  class="p-3.5 sm:p-4 rounded-2xl border transition-all flex items-center justify-between gap-3 shadow-xs"
+                  :class="item.isCustom ? 'bg-gradient-to-r from-cyan-50/60 to-white border-cyan-300' : 'bg-white border-slate-200 hover:border-slate-300'">
+                  
+                  <!-- Left / Start: Order Index + Icon + Titles -->
+                  <div class="flex items-center gap-3 sm:gap-4 min-w-0">
+                    <span 
+                      class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center font-bold text-xs font-mono shrink-0 shadow-xs"
+                      :class="item.isCustom ? 'bg-cyan-600 text-white' : 'bg-slate-900 text-white'"
+                      x-text="'#' + (idx + 1)"></span>
+
+                    <div 
+                      class="w-9 h-9 rounded-xl flex items-center justify-center text-sm shrink-0"
+                      :class="item.isCustom ? 'bg-cyan-100 text-cyan-700' : 'bg-slate-100 text-slate-700'">
+                      <i class="fa-solid" :class="item.icon || 'fa-cubes'"></i>
+                    </div>
+
+                    <div class="min-w-0">
+                      <div class="flex items-center gap-2 flex-wrap">
+                        <span class="font-black text-slate-900 text-xs sm:text-sm truncate" x-text="item.nameAr"></span>
+                        <span 
+                          class="px-2 py-0.5 rounded-full text-[10px] font-bold"
+                          :class="item.isCustom ? 'bg-cyan-100 text-cyan-800 border border-cyan-200' : 'bg-slate-100 text-slate-600 border border-slate-200'"
+                          x-text="item.isCustom ? 'بلوك مخصص' : 'قسم أساسي'"></span>
+                      </div>
+                      <div class="text-[11px] text-slate-500 font-mono truncate" x-text="item.nameEn"></div>
+                    </div>
+                  </div>
+
+                  <!-- Right / End: Reorder Actions -->
+                  <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                    <!-- Move Up Button -->
+                    <button 
+                      type="button"
+                      @click="movePostHeroItemUp(idx)"
+                      :disabled="idx === 0"
+                      :class="idx === 0 ? 'opacity-25 cursor-not-allowed bg-slate-100 text-slate-400' : 'bg-white hover:bg-cyan-50 hover:text-cyan-700 text-slate-700 border-slate-300 hover:border-cyan-400 active:scale-95 shadow-xs'"
+                      class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border flex items-center justify-center text-xs transition font-bold"
+                      title="تحريك لأعلى">
+                      <i class="fa-solid fa-arrow-up"></i>
+                    </button>
+
+                    <!-- Move Down Button -->
+                    <button 
+                      type="button"
+                      @click="movePostHeroItemDown(idx)"
+                      :disabled="idx === getOrderedPostHeroList().length - 1"
+                      :class="idx === getOrderedPostHeroList().length - 1 ? 'opacity-25 cursor-not-allowed bg-slate-100 text-slate-400' : 'bg-white hover:bg-cyan-50 hover:text-cyan-700 text-slate-700 border-slate-300 hover:border-cyan-400 active:scale-95 shadow-xs'"
+                      class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl border flex items-center justify-center text-xs transition font-bold"
+                      title="تحريك لأسفل">
+                      <i class="fa-solid fa-arrow-down"></i>
+                    </button>
+                  </div>
+
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- ======================================================== -->
+          <!-- SECTION 2: ADD COMPLETE NEW BLOCK (إضافة بلوك جديد كامل)   -->
+          <!-- ======================================================== -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border-2 border-cyan-400/60 shadow-lg space-y-6">
+            <div class="border-b border-slate-100 pb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-600 to-teal-600 text-white flex items-center justify-center text-lg shadow-md shadow-cyan-600/20">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <div>
+                  <h4 class="font-black text-slate-950 text-lg">إضافة بلوك جديد كامل (Create Complete Block)</h4>
+                  <p class="text-xs text-slate-500">أنشئ قسماً أو بلوكاً مخصصاً بالكامل مع تحديد نصوصه العربية والإنجليزية، والثيم اللوني، والتخطيط، ورفع صورته مباشرة.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Form Content -->
+            <form @submit.prevent="createCompleteBlock()" class="space-y-6">
+              
+              <!-- 1. Titles AR & EN -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-800 mb-1.5">
+                    <span>العنوان الرئيسي للبلوك (بالعربية)</span>
+                    <span class="text-rose-500">*</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    x-model="newBlockForm.title.ar" 
+                    required 
+                    placeholder="مثال: خصم حصري لفلل الشيخ زايد والتجمع الخامس هذا الصيف" 
+                    class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-600">
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-800 mb-1.5">
+                    <span>Block Main Title (English)</span>
+                  </label>
+                  <input 
+                    type="text" 
+                    x-model="newBlockForm.title.en" 
+                    dir="ltr" 
+                    placeholder="e.g. Exclusive Architectural Solar Heat Protection Offer" 
+                    class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-600">
+                </div>
+              </div>
+
+              <!-- 2. Badges / Eyebrow Tags AR & EN -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-800 mb-1.5">شارة التاج العلوية (Badge Tag - AR):</label>
+                  <input 
+                    type="text" 
+                    x-model="newBlockForm.tag.ar" 
+                    placeholder="مثال: 🌟 عرض خاص ومحدود | استشارة مجانية" 
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-600">
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-800 mb-1.5">Eyebrow Tag (Badge - EN):</label>
+                  <input 
+                    type="text" 
+                    x-model="newBlockForm.tag.en" 
+                    dir="ltr" 
+                    placeholder="e.g. 🌟 Exclusive Offer | Limited Time" 
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-600">
+                </div>
+              </div>
+
+              <!-- 3. Subtitles / Descriptions AR & EN -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-800 mb-1.5">الوصف والعنوان الفرعي (AR):</label>
+                  <textarea 
+                    x-model="newBlockForm.subtitle.ar" 
+                    rows="2" 
+                    placeholder="شرح موجز يوضح القيمة والفائدة المباشرة للعميل..." 
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-600"></textarea>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-800 mb-1.5">Subtitle & Short Description (EN):</label>
+                  <textarea 
+                    x-model="newBlockForm.subtitle.en" 
+                    dir="ltr" 
+                    rows="2" 
+                    placeholder="Brief description highlighting immediate customer value..." 
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-600"></textarea>
+                </div>
+              </div>
+
+              <!-- 4. Rich Content Details AR & EN -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-800 mb-1.5">تفاصيل ومحتوى إضافي (AR - اختياري):</label>
+                  <textarea 
+                    x-model="newBlockForm.content.ar" 
+                    rows="3" 
+                    placeholder="فقرة إضافية تسرد المميزات الهندسية أو شروط العرض أو تفاصيل الخدمة..." 
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-600"></textarea>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-800 mb-1.5">Additional Content & Details (EN - Optional):</label>
+                  <textarea 
+                    x-model="newBlockForm.content.en" 
+                    dir="ltr" 
+                    rows="3" 
+                    placeholder="Additional paragraph listing engineering specifications or details..." 
+                    class="w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-600"></textarea>
+                </div>
+              </div>
+
+              <!-- 5. Theme & Layout Selectors -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+                
+                <!-- Theme Selector -->
+                <div>
+                  <label class="block text-xs font-black text-slate-800 mb-2">الثيم والمظهر اللوني للبلوك:</label>
+                  <div class="grid grid-cols-2 gap-2 text-xs">
+                    <label 
+                      :class="newBlockForm.theme === 'white' ? 'border-cyan-600 bg-white shadow-xs text-slate-950 font-bold ring-2 ring-cyan-500/20' : 'border-slate-200 bg-white text-slate-600'" 
+                      class="p-2.5 rounded-xl border cursor-pointer flex items-center gap-2 transition">
+                      <input type="radio" value="white" x-model="newBlockForm.theme" class="text-cyan-600">
+                      <span class="w-3.5 h-3.5 rounded-full bg-slate-100 border border-slate-300"></span>
+                      <span>أبيض نقي فاخر</span>
                     </label>
-                    <button @click="removeBlock(bIdx)" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 flex items-center justify-center text-xs transition" title="حذف البلوك">
-                      <i class="fa-solid fa-trash-can"></i>
+
+                    <label 
+                      :class="newBlockForm.theme === 'cyan' ? 'border-cyan-600 bg-cyan-900 text-white font-bold ring-2 ring-cyan-500/20' : 'border-slate-200 bg-cyan-950 text-cyan-200'" 
+                      class="p-2.5 rounded-xl border cursor-pointer flex items-center gap-2 transition">
+                      <input type="radio" value="cyan" x-model="newBlockForm.theme" class="text-cyan-600">
+                      <span class="w-3.5 h-3.5 rounded-full bg-cyan-400"></span>
+                      <span>سيان تقني متوهج</span>
+                    </label>
+
+                    <label 
+                      :class="newBlockForm.theme === 'dark' ? 'border-cyan-600 bg-slate-900 text-white font-bold ring-2 ring-cyan-500/20' : 'border-slate-200 bg-slate-900 text-slate-300'" 
+                      class="p-2.5 rounded-xl border cursor-pointer flex items-center gap-2 transition">
+                      <input type="radio" value="dark" x-model="newBlockForm.theme" class="text-cyan-600">
+                      <span class="w-3.5 h-3.5 rounded-full bg-slate-950 border border-slate-700"></span>
+                      <span>أسود ليلي ملكي</span>
+                    </label>
+
+                    <label 
+                      :class="newBlockForm.theme === 'emerald' ? 'border-emerald-600 bg-emerald-900 text-white font-bold ring-2 ring-emerald-500/20' : 'border-slate-200 bg-emerald-950 text-emerald-200'" 
+                      class="p-2.5 rounded-xl border cursor-pointer flex items-center gap-2 transition">
+                      <input type="radio" value="emerald" x-model="newBlockForm.theme" class="text-emerald-600">
+                      <span class="w-3.5 h-3.5 rounded-full bg-emerald-500"></span>
+                      <span>زمردي بروتيرم</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Layout Selector -->
+                <div>
+                  <label class="block text-xs font-black text-slate-800 mb-2">طريقة التخطيط والعرض (Layout):</label>
+                  <div class="space-y-2 text-xs">
+                    <label 
+                      :class="newBlockForm.layout === 'split' ? 'border-cyan-600 bg-white shadow-xs font-bold ring-2 ring-cyan-500/20' : 'border-slate-200 bg-white text-slate-600'" 
+                      class="p-2.5 rounded-xl border cursor-pointer flex items-center justify-between transition">
+                      <div class="flex items-center gap-2">
+                        <input type="radio" value="split" x-model="newBlockForm.layout" class="text-cyan-600">
+                        <span>تخطيط متقابل (Split: نصوص وصورة متقابلين)</span>
+                      </div>
+                      <i class="fa-solid fa-table-columns text-cyan-600 text-sm"></i>
+                    </label>
+
+                    <label 
+                      :class="newBlockForm.layout === 'banner' ? 'border-cyan-600 bg-white shadow-xs font-bold ring-2 ring-cyan-500/20' : 'border-slate-200 bg-white text-slate-600'" 
+                      class="p-2.5 rounded-xl border cursor-pointer flex items-center justify-between transition">
+                      <div class="flex items-center gap-2">
+                        <input type="radio" value="banner" x-model="newBlockForm.layout" class="text-cyan-600">
+                        <span>بانر عريض متكامل (Full Panoramic Banner)</span>
+                      </div>
+                      <i class="fa-solid fa-rectangle-ad text-cyan-600 text-sm"></i>
+                    </label>
+
+                    <label 
+                      :class="newBlockForm.layout === 'card' ? 'border-cyan-600 bg-white shadow-xs font-bold ring-2 ring-cyan-500/20' : 'border-slate-200 bg-white text-slate-600'" 
+                      class="p-2.5 rounded-xl border cursor-pointer flex items-center justify-between transition">
+                      <div class="flex items-center gap-2">
+                        <input type="radio" value="card" x-model="newBlockForm.layout" class="text-cyan-600">
+                        <span>بطاقة بارزة بحدود فخمة (Elevated Card)</span>
+                      </div>
+                      <i class="fa-solid fa-id-card text-cyan-600 text-sm"></i>
+                    </label>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- 6. Visual Image & Direct Upload -->
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <label class="block text-xs font-black text-slate-800">صورة البلوك (Visual Image):</label>
+                  
+                  <div class="flex items-center gap-2">
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      id="new-block-file-uploader" 
+                      class="hidden" 
+                      @change="handleNewBlockFileUpload($event)">
+                    
+                    <button 
+                      type="button" 
+                      @click="document.getElementById('new-block-file-uploader').click()" 
+                      class="px-3.5 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs shadow-xs transition flex items-center gap-1.5">
+                      <i class="fa-solid fa-cloud-arrow-up"></i>
+                      <span>رفع صورة من جهازك مباشرة</span>
                     </button>
                   </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">موضع الظهور في الموقع:</label>
-                    <select x-model="block.position" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-bold">
-                      <option value="after_hero">بعد قسم الهيرو الرئيسي (After Hero)</option>
-                      <option value="after_video">بعد قسم الفيديو والتجربة العملية (After Video)</option>
-                      <option value="after_services">بعد قسم الخدمات والحلول (After Services)</option>
-                      <option value="after_reviews">بعد قسم آراء وتجارب العملاء (After Reviews)</option>
-                      <option value="before_contact">قبل قسم الاتصال والتواصل (Before Contact)</option>
-                    </select>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div class="sm:col-span-2">
+                    <input 
+                      type="text" 
+                      x-model="newBlockForm.image" 
+                      dir="ltr" 
+                      placeholder="assets/images/... أو رابط الصورة" 
+                      class="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-mono">
                   </div>
 
                   <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">نوع وشكل البلوك:</label>
-                    <select x-model="block.type" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-bold">
-                      <option value="banner">بانر تعريفي كامل (Promo Banner)</option>
-                      <option value="card">بطاقة ميزة وتفاصيل (Feature Card)</option>
-                      <option value="text">نص وإحصائية (Text & Stats)</option>
+                    <select x-model="newBlockForm.imageAlign" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-300 text-xs text-slate-800 font-bold">
+                      <option value="right">محاذاة الصورة: يمين</option>
+                      <option value="left">محاذاة الصورة: يسار</option>
                     </select>
                   </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">العنوان بالعربية (AR):</label>
-                    <input type="text" x-model="block.title.ar" placeholder="مثال: خصم خاص على مشاريع الفلل هذا الشهر" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+                <!-- Preview Thumbnail -->
+                <div x-show="newBlockForm.image" class="pt-2 flex items-center gap-3">
+                  <div class="relative w-fit">
+                    <img :src="newBlockForm.image" alt="Preview" class="h-20 w-auto rounded-xl border border-slate-300 object-cover shadow-xs">
+                    <button 
+                      type="button" 
+                      @click="newBlockForm.image = ''" 
+                      class="absolute -top-2 -end-2 w-6 h-6 rounded-full bg-rose-600 text-white text-xs flex items-center justify-center hover:bg-rose-700 transition" 
+                      title="إزالة الصورة">
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
                   </div>
-                  <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Title in English (EN):</label>
-                    <input type="text" x-model="block.title.en" dir="ltr" placeholder="e.g. Special Discount for Compound Villas" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">الوصف الفرعي (AR):</label>
-                    <textarea x-model="block.subtitle.ar" rows="2" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs"></textarea>
-                  </div>
-                  <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Subtitle (EN):</label>
-                    <textarea x-model="block.subtitle.en" dir="ltr" rows="2" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs"></textarea>
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">نص زر الإجراء (AR):</label>
-                    <input type="text" x-model="block.ctaText.ar" placeholder="مثال: احجز الآن" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
-                  </div>
-                  <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Button Text (EN):</label>
-                    <input type="text" x-model="block.ctaText.en" dir="ltr" placeholder="e.g. Book Now" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
-                  </div>
-                  <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">رابط الزر (Link):</label>
-                    <input type="text" x-model="block.ctaLink" dir="ltr" placeholder="#contact or /careers.html" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
-                  </div>
-                </div>
-
-                <div>
-                  <label class="block text-xs font-bold text-slate-700 mb-1">صورة البلوك (اختياري):</label>
-                  <input type="text" x-model="block.image" dir="ltr" placeholder="assets/images/... or uploaded URL" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+                  <span class="text-xs text-emerald-700 font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>جاهزة للعرض</span>
+                  </span>
                 </div>
               </div>
-            </template>
+
+              <!-- 7. Buttons: Primary and Secondary CTAs -->
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                <!-- Primary Button -->
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                  <span class="text-xs font-black text-slate-900 block border-b border-slate-200 pb-1.5">زر الإجراء الأساسي (Primary CTA):</span>
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-600 mb-1">نص الزر بالعربية:</label>
+                    <input type="text" x-model="newBlockForm.ctaText.ar" placeholder="مثال: احجز معاينة الآن" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-600 mb-1">Button Text (EN):</label>
+                    <input type="text" x-model="newBlockForm.ctaText.en" dir="ltr" placeholder="e.g. Book Survey Now" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-600 mb-1">رابط الزر (Target Link):</label>
+                    <input type="text" x-model="newBlockForm.ctaLink" dir="ltr" placeholder="#contact or /careers.html" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-mono">
+                  </div>
+                </div>
+
+                <!-- Secondary Button -->
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+                  <span class="text-xs font-black text-slate-900 block border-b border-slate-200 pb-1.5">زر ثانوي اختياري (Secondary CTA):</span>
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-600 mb-1">نص الزر بالعربية:</label>
+                    <input type="text" x-model="newBlockForm.secondaryCtaText.ar" placeholder="مثال: اتصال بمهندس: 01010010030" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-600 mb-1">Button Text (EN):</label>
+                    <input type="text" x-model="newBlockForm.secondaryCtaText.en" dir="ltr" placeholder="e.g. Call Advisory: 01010010030" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-600 mb-1">رابط الزر (Target Link):</label>
+                    <input type="text" x-model="newBlockForm.secondaryCtaLink" dir="ltr" placeholder="tel:01010010030 or #services" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-mono">
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- 8. Insertion Point & Submit -->
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-3 border-t border-slate-100">
+                <div class="w-full sm:w-auto flex items-center gap-2">
+                  <label class="text-xs font-bold text-slate-700 whitespace-nowrap">موضع الإدراج الأولي:</label>
+                  <select x-model="newBlockForm.insertAfter" class="px-3 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-xs font-bold">
+                    <option value="after_hero">مباشرة بعد الهيرو وشريط الثقة</option>
+                    <option value="after_video">بعد فيديو المعاينة العملية</option>
+                    <option value="after_steps">بعد رحلة العميل (3 خطوات)</option>
+                    <option value="after_sectors">بعد قسم القطاعات والفلل</option>
+                    <option value="after_services">بعد الركائز والخدمات الثلاث</option>
+                    <option value="at_end">في نهاية الصفحة قبل التواصل والفوتر</option>
+                  </select>
+                </div>
+
+                <button 
+                  type="submit" 
+                  class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white font-black text-sm shadow-lg shadow-cyan-600/30 flex items-center justify-center gap-2 transition hover:scale-[1.02] active:scale-[0.98]">
+                  <i class="fa-solid fa-plus-circle text-base"></i>
+                  <span>إضافة هذا البلوك للموقع فورياً</span>
+                </button>
+              </div>
+
+            </form>
           </div>
+
+          <!-- ======================================================== -->
+          <!-- SECTION 3: EXISTING CUSTOM BLOCKS LIST (قائمة البلوكات)    -->
+          <!-- ======================================================== -->
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <h4 class="font-black text-slate-950 text-base flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-cyan-600"></i>
+                <span>البلوكات المخصصة المضافة حالياً في الموقع</span>
+              </h4>
+              <span class="text-xs text-slate-500 font-mono" x-text="(cms.blocks || []).length + ' إجمالي'"></span>
+            </div>
+
+            <!-- Empty State -->
+            <div x-show="!cms.blocks || cms.blocks.length === 0" class="p-10 text-center bg-white rounded-3xl border border-slate-200 space-y-3 shadow-xs">
+              <div class="w-14 h-14 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-2xl mx-auto">
+                <i class="fa-solid fa-cubes"></i>
+              </div>
+              <h5 class="font-bold text-slate-900 text-sm">لم تتم إضافة أي بلوكات مخصصة حتى الآن</h5>
+              <p class="text-xs text-slate-500 max-w-md mx-auto">يمكنك ملء نموذج "إضافة بلوك جديد كامل" أعلاه لإدراج أي قسم ترويجي أو بانر إعلاني في أي موضع تريده بين أقسام الموقع.</p>
+            </div>
+
+            <!-- Blocks Cards -->
+            <div x-show="cms.blocks && cms.blocks.length > 0" class="space-y-4">
+              <template x-for="(block, bIdx) in cms.blocks" :key="block.id || bIdx">
+                <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-5">
+                  
+                  <!-- Card Header: Title + Visibility Switch + Delete -->
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+                    <div class="flex items-center gap-3">
+                      <span class="w-8 h-8 rounded-xl bg-cyan-100 text-cyan-800 flex items-center justify-center font-bold text-xs font-mono" x-text="bIdx + 1"></span>
+                      <div>
+                        <span class="font-black text-slate-900 text-sm block" x-text="block.title ? (block.title.ar || block.title.en || 'بلوك بدون عنوان') : 'بلوك جديد'"></span>
+                        <span class="text-[11px] text-slate-400 font-mono" x-text="block.id"></span>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                      <label class="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
+                        <input type="checkbox" x-model="block.enabled" class="rounded text-cyan-600 focus:ring-cyan-500">
+                        <span x-text="block.enabled !== false ? 'ظاهر بالموقع' : 'مخفي حالياً'"></span>
+                      </label>
+
+                      <button 
+                        type="button"
+                        @click="removeBlock(bIdx)" 
+                        class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold flex items-center gap-1.5 transition" 
+                        title="حذف هذا البلوك نهائياً">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span>حذف</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Editable Fields for Existing Block -->
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-xs font-bold text-slate-700 mb-1">العنوان (AR):</label>
+                      <input type="text" x-model="block.title.ar" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs">
+                    </div>
+                    <div>
+                      <label class="block text-xs font-bold text-slate-700 mb-1">Title (EN):</label>
+                      <input type="text" x-model="block.title.en" dir="ltr" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs">
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-xs font-bold text-slate-700 mb-1">شارة التاج (Tag - AR):</label>
+                      <input type="text" x-model="block.tag.ar" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs">
+                    </div>
+                    <div>
+                      <label class="block text-xs font-bold text-slate-700 mb-1">Tag (EN):</label>
+                      <input type="text" x-model="block.tag.en" dir="ltr" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs">
+                    </div>
+                  </div>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-xs font-bold text-slate-700 mb-1">الوصف الفرعي (AR):</label>
+                      <textarea x-model="block.subtitle.ar" rows="2" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs"></textarea>
+                    </div>
+                    <div>
+                      <label class="block text-xs font-bold text-slate-700 mb-1">Subtitle (EN):</label>
+                      <textarea x-model="block.subtitle.en" dir="ltr" rows="2" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs"></textarea>
+                    </div>
+                  </div>
+
+                  <!-- Theme & Layout for Existing Block -->
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-xs font-bold text-slate-700 mb-1">المظهر اللوني (Theme):</label>
+                      <select x-model="block.theme" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-bold">
+                        <option value="white">أبيض نقي (Pure Light)</option>
+                        <option value="cyan">سيان متوهج (Cyan Glow)</option>
+                        <option value="dark">أسود ليلي (Midnight Dark)</option>
+                        <option value="emerald">أخضر زمردي (Emerald Brand)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label class="block text-xs font-bold text-slate-700 mb-1">شكل التخطيط (Layout):</label>
+                      <select x-model="block.layout" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-bold">
+                        <option value="split">متقابل (Split: نص وصورة)</option>
+                        <option value="banner">بانر عريض (Full Banner)</option>
+                        <option value="card">بطاقة بارزة (Elevated Card)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Image for Existing Block -->
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">صورة البلوك المرفقة:</label>
+                    <div class="flex gap-2">
+                      <input type="text" x-model="block.image" dir="ltr" placeholder="assets/images/..." class="flex-1 px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-mono">
+                      
+                      <input 
+                        type="file" 
+                        accept="image/*" 
+                        :id="'block-uploader-' + bIdx" 
+                        class="hidden" 
+                        @change="handleExistingBlockUpload($event, block)">
+                      
+                      <button 
+                        type="button"
+                        @click="document.getElementById('block-uploader-' + bIdx).click()" 
+                        class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-xs font-bold text-slate-700 flex items-center gap-1.5 shrink-0">
+                        <i class="fa-solid fa-cloud-arrow-up text-cyan-600"></i>
+                        <span>رفع صورة</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- CTAs for Existing Block -->
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                      <label class="block text-[11px] font-bold text-slate-700 mb-1">نص الزر الأساسي (AR):</label>
+                      <input type="text" x-model="block.ctaText.ar" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-slate-700 mb-1">CTA Text (EN):</label>
+                      <input type="text" x-model="block.ctaText.en" dir="ltr" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs">
+                    </div>
+                    <div>
+                      <label class="block text-[11px] font-bold text-slate-700 mb-1">رابط الزر (Link):</label>
+                      <input type="text" x-model="block.ctaLink" dir="ltr" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-mono">
+                    </div>
+                  </div>
+
+                </div>
+              </template>
+            </div>
+          </div>
+
         </div>
 
       </main>
@@ -2175,6 +2691,23 @@
         loadingLeads: false,
         careers: [],
         loadingCareers: false,
+
+        // New Complete Block Builder Form State
+        newBlockForm: {
+          title: { ar: '', en: '' },
+          tag: { ar: '', en: '' },
+          subtitle: { ar: '', en: '' },
+          content: { ar: '', en: '' },
+          theme: 'cyan',
+          layout: 'split',
+          image: '',
+          imageAlign: 'right',
+          ctaText: { ar: 'احجز معاينة مجانية', en: 'Book Free Survey' },
+          ctaLink: '#contact',
+          secondaryCtaText: { ar: 'اتصال بمهندس: 01010010030', en: 'Call Advisory: 01010010030' },
+          secondaryCtaLink: 'tel:01010010030',
+          insertAfter: 'after_hero'
+        },
 
 
         // CMS Content Store
@@ -2326,27 +2859,312 @@
           }
         },
 
-        addNewBlock() {
-          if (!this.cms.blocks) this.cms.blocks = [];
-          this.cms.blocks.push({
-            id: 'block_' + Date.now(),
-            enabled: true,
-            position: 'after_hero',
-            type: 'banner',
-            title: { ar: 'عنوان البلوك الجديد', en: 'New Block Title' },
-            subtitle: { ar: 'وصف البلوك والمحتوى التفصيلي هنا...', en: 'Block subtitle and description here...' },
-            content: { ar: '', en: '' },
-            image: '',
-            ctaText: { ar: 'اعرف المزيد', en: 'Learn More' },
-            ctaLink: '#contact'
+        notify(title, msg) {
+          this.showToast(title, msg);
+        },
+
+        ensureSectionOrder() {
+          if (!this.cms.sectionOrder || !Array.isArray(this.cms.sectionOrder) || this.cms.sectionOrder.length === 0) {
+            this.cms.sectionOrder = [
+              { id: 'trustBar', name_ar: 'شريط الاعتمادات والجودة', name_en: 'Trust & Standards Bar', order: 1, type: 'builtin' },
+              { id: 'video', name_ar: 'قسم الفيديو والتجربة الميدانية', name_en: 'Thermal Video Proof', order: 2, type: 'builtin' },
+              { id: 'steps', name_ar: 'قسم خطوات العمل (3 خطوات)', name_en: '3 Simple Steps', order: 3, type: 'builtin' },
+              { id: 'sectors', name_ar: 'قسم القطاعات (فلل ومشاريع)', name_en: 'Sectors Showcase', order: 4, type: 'builtin' },
+              { id: 'services', name_ar: 'قسم الركائز والخدمات الـ 3', name_en: '3 Core Pillars', order: 5, type: 'builtin' },
+              { id: 'technology', name_ar: 'قسم التقنية والمعايير', name_en: 'Technology & Standards', order: 6, type: 'builtin' },
+              { id: 'gallery', name_ar: 'معرض صور المشاريع', name_en: 'Projects Gallery', order: 7, type: 'builtin' },
+              { id: 'reviews', name_ar: 'قسم آراء وتجارب العملاء', name_en: 'Customer Reviews', order: 8, type: 'builtin' },
+              { id: 'faq', name_ar: 'قسم الأسئلة الشائعة', name_en: 'FAQ Section', order: 9, type: 'builtin' },
+              { id: 'contact', name_ar: 'قسم طلب المعاينة والاتصال', name_en: 'Contact & Leads Hub', order: 10, type: 'builtin' }
+            ];
+          }
+
+          // Ensure any custom blocks in cms.blocks exist in sectionOrder
+          if (Array.isArray(this.cms.blocks)) {
+            this.cms.blocks.forEach(block => {
+              if (block && block.id) {
+                const exists = this.cms.sectionOrder.some(s => s && s.id === block.id);
+                if (!exists) {
+                  this.cms.sectionOrder.push({
+                    id: block.id,
+                    name_ar: (block.title && (block.title.ar || block.title.en)) || 'بلوك مخصص',
+                    name_en: (block.title && (block.title.en || block.title.ar)) || 'Custom Block',
+                    order: this.cms.sectionOrder.length + 1,
+                    type: 'custom'
+                  });
+                }
+              }
+            });
+          }
+        },
+
+        getOrderedPostHeroList() {
+          this.ensureSectionOrder();
+          const iconMap = {
+            trustBar: 'fa-award',
+            video: 'fa-video',
+            steps: 'fa-wand-magic-sparkles',
+            sectors: 'fa-city',
+            services: 'fa-cubes',
+            technology: 'fa-microchip',
+            gallery: 'fa-images',
+            reviews: 'fa-comments',
+            faq: 'fa-circle-question',
+            contact: 'fa-envelope-open-text'
+          };
+
+          return this.cms.sectionOrder.map((item, idx) => {
+            const isCustom = item.type === 'custom' || (item.id && item.id.startsWith('block_'));
+            let nameAr = item.name_ar || item.nameAr;
+            let nameEn = item.name_en || item.nameEn;
+            let icon = iconMap[item.id] || (isCustom ? 'fa-cubes' : 'fa-layer-group');
+
+            if (isCustom && Array.isArray(this.cms.blocks)) {
+              const blk = this.cms.blocks.find(b => b && b.id === item.id);
+              if (blk && blk.title) {
+                nameAr = blk.title.ar || blk.title.en || nameAr;
+                nameEn = blk.title.en || blk.title.ar || nameEn;
+              }
+            }
+
+            return {
+              id: item.id,
+              nameAr: nameAr || item.id,
+              nameEn: nameEn || item.id,
+              icon: icon,
+              isCustom: Boolean(isCustom),
+              order: idx + 1
+            };
           });
-          this.notify('بلوك جديد', 'تمت إضافة بلوك جديد، يمكنك تعديله والضغط على حفظ التغييرات');
+        },
+
+        movePostHeroItemUp(idx) {
+          if (idx <= 0) return;
+          this.ensureSectionOrder();
+          const item = this.cms.sectionOrder.splice(idx, 1)[0];
+          this.cms.sectionOrder.splice(idx - 1, 0, item);
+          this.cms.sectionOrder.forEach((s, i) => { if (s) s.order = i + 1; });
+          this.showToast('تم تغيير الترتيب', 'تم تحريك العنصر للأعلى. اضغط على حفظ الترتيب لتطبيقه.');
+        },
+
+        movePostHeroItemDown(idx) {
+          this.ensureSectionOrder();
+          if (idx >= this.cms.sectionOrder.length - 1) return;
+          const item = this.cms.sectionOrder.splice(idx, 1)[0];
+          this.cms.sectionOrder.splice(idx + 1, 0, item);
+          this.cms.sectionOrder.forEach((s, i) => { if (s) s.order = i + 1; });
+          this.showToast('تم تغيير الترتيب', 'تم تحريك العنصر للأسفل. اضغط على حفظ الترتيب لتطبيقه.');
+        },
+
+        resetSectionOrder() {
+          if (!confirm('هل تريد بالتأكيد استعادة الترتيب الافتراضي لأقسام الموقع؟')) return;
+          this.cms.sectionOrder = [
+            { id: 'trustBar', name_ar: 'شريط الاعتمادات والجودة', name_en: 'Trust & Standards Bar', order: 1, type: 'builtin' },
+            { id: 'video', name_ar: 'قسم الفيديو والتجربة الميدانية', name_en: 'Thermal Video Proof', order: 2, type: 'builtin' },
+            { id: 'steps', name_ar: 'قسم خطوات العمل (3 خطوات)', name_en: '3 Simple Steps', order: 3, type: 'builtin' },
+            { id: 'sectors', name_ar: 'قسم القطاعات (فلل ومشاريع)', name_en: 'Sectors Showcase', order: 4, type: 'builtin' },
+            { id: 'services', name_ar: 'قسم الركائز والخدمات الـ 3', name_en: '3 Core Pillars', order: 5, type: 'builtin' },
+            { id: 'technology', name_ar: 'قسم التقنية والمعايير', name_en: 'Technology & Standards', order: 6, type: 'builtin' },
+            { id: 'gallery', name_ar: 'معرض صور المشاريع', name_en: 'Projects Gallery', order: 7, type: 'builtin' },
+            { id: 'reviews', name_ar: 'قسم آراء وتجارب العملاء', name_en: 'Customer Reviews', order: 8, type: 'builtin' },
+            { id: 'faq', name_ar: 'قسم الأسئلة الشائعة', name_en: 'FAQ Section', order: 9, type: 'builtin' },
+            { id: 'contact', name_ar: 'قسم طلب المعاينة والاتصال', name_en: 'Contact & Leads Hub', order: 10, type: 'builtin' }
+          ];
+          if (Array.isArray(this.cms.blocks)) {
+            this.cms.blocks.forEach(block => {
+              if (block && block.id) {
+                this.cms.sectionOrder.push({
+                  id: block.id,
+                  name_ar: (block.title && (block.title.ar || block.title.en)) || 'بلوك مخصص',
+                  name_en: (block.title && (block.title.en || block.title.ar)) || 'Custom Block',
+                  order: this.cms.sectionOrder.length + 1,
+                  type: 'custom'
+                });
+              }
+            });
+          }
+          this.showToast('تمت استعادة الترتيب', 'تمت استعادة الترتيب الافتراضي بنجاح. لا تنسَ حفظ التغييرات.');
+        },
+
+        createCompleteBlock() {
+          const arTitle = (this.newBlockForm.title.ar || '').trim();
+          if (!arTitle) {
+            alert('يرجى كتابة عنوان البلوك بالعربية على الأقل.');
+            return;
+          }
+
+          if (!this.cms.blocks) this.cms.blocks = [];
+          const newId = 'block_' + Date.now();
+          const newBlock = {
+            id: newId,
+            enabled: true,
+            theme: this.newBlockForm.theme || 'cyan',
+            layout: this.newBlockForm.layout || 'split',
+            title: {
+              ar: arTitle,
+              en: (this.newBlockForm.title.en || '').trim() || arTitle
+            },
+            tag: {
+              ar: (this.newBlockForm.tag.ar || '').trim(),
+              en: (this.newBlockForm.tag.en || '').trim()
+            },
+            subtitle: {
+              ar: (this.newBlockForm.subtitle.ar || '').trim(),
+              en: (this.newBlockForm.subtitle.en || '').trim()
+            },
+            content: {
+              ar: (this.newBlockForm.content.ar || '').trim(),
+              en: (this.newBlockForm.content.en || '').trim()
+            },
+            image: (this.newBlockForm.image || '').trim(),
+            imageAlign: this.newBlockForm.imageAlign || 'right',
+            ctaText: {
+              ar: (this.newBlockForm.ctaText.ar || '').trim() || 'احجز معاينة مجانية',
+              en: (this.newBlockForm.ctaText.en || '').trim() || 'Book Free Survey'
+            },
+            ctaLink: (this.newBlockForm.ctaLink || '').trim() || '#contact',
+            secondaryCtaText: {
+              ar: (this.newBlockForm.secondaryCtaText.ar || '').trim(),
+              en: (this.newBlockForm.secondaryCtaText.en || '').trim()
+            },
+            secondaryCtaLink: (this.newBlockForm.secondaryCtaLink || '').trim()
+          };
+
+          this.cms.blocks.push(newBlock);
+          this.ensureSectionOrder();
+
+          // Determine where in sectionOrder to insert this block
+          const insertMap = {
+            after_hero: 'trustBar',
+            after_video: 'video',
+            after_steps: 'steps',
+            after_sectors: 'sectors',
+            after_services: 'services'
+          };
+          const targetSecId = insertMap[this.newBlockForm.insertAfter];
+          let insertIdx = -1;
+          if (targetSecId) {
+            insertIdx = this.cms.sectionOrder.findIndex(s => s && s.id === targetSecId);
+          }
+
+          const orderEntry = {
+            id: newId,
+            name_ar: newBlock.title.ar,
+            name_en: newBlock.title.en,
+            order: 0,
+            type: 'custom'
+          };
+
+          if (insertIdx !== -1) {
+            this.cms.sectionOrder.splice(insertIdx + 1, 0, orderEntry);
+          } else {
+            this.cms.sectionOrder.push(orderEntry);
+          }
+
+          this.cms.sectionOrder.forEach((s, i) => { if (s) s.order = i + 1; });
+
+          // Reset Form
+          this.newBlockForm = {
+            title: { ar: '', en: '' },
+            tag: { ar: '', en: '' },
+            subtitle: { ar: '', en: '' },
+            content: { ar: '', en: '' },
+            theme: 'cyan',
+            layout: 'split',
+            image: '',
+            imageAlign: 'right',
+            ctaText: { ar: 'احجز معاينة مجانية', en: 'Book Free Survey' },
+            ctaLink: '#contact',
+            secondaryCtaText: { ar: 'اتصال بمهندس: 01010010030', en: 'Call Advisory: 01010010030' },
+            secondaryCtaLink: 'tel:01010010030',
+            insertAfter: 'after_hero'
+          };
+
+          this.showToast('تمت إضافة البلوك بنجاح!', 'تم إدراج البلوك الجديد في تسلسل الصفحة. اضغط حفظ التغييرات لحفظه.');
+        },
+
+        addNewBlock() {
+          this.createCompleteBlock();
         },
 
         removeBlock(idx) {
-          if (!confirm('هل أنت متأكد من حذف هذا البلوك؟')) return;
-          this.cms.blocks.splice(idx, 1);
-          this.notify('تم الحذف', 'تم حذف البلوك');
+          if (!confirm('هل أنت متأكد من حذف هذا البلوك نهائياً؟')) return;
+          const removed = this.cms.blocks.splice(idx, 1)[0];
+          if (removed && removed.id && Array.isArray(this.cms.sectionOrder)) {
+            this.cms.sectionOrder = this.cms.sectionOrder.filter(s => s && s.id !== removed.id);
+            this.cms.sectionOrder.forEach((s, i) => { if (s) s.order = i + 1; });
+          }
+          this.showToast('تم الحذف', 'تم حذف البلوك من الصفحة.');
+        },
+
+        async handleNewBlockFileUpload(event) {
+          const file = event.target.files && event.target.files[0];
+          if (!file) return;
+
+          if (file.size > 15 * 1024 * 1024) {
+            this.showToast('حجم كبير', 'الحد الأقصى المسموح به هو 15 ميجابايت.');
+            event.target.value = '';
+            return;
+          }
+
+          this.showToast('جاري الرفع...', 'يتم الآن رفع وحفظ الصورة...');
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            try {
+              const res = await fetch('/api/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: file.name, data: e.target.result })
+              });
+              const result = await res.json();
+              if (res.ok && result.success) {
+                this.newBlockForm.image = result.url;
+                this.showToast('تم رفع الصورة!', 'تم تعيين صورة البلوك الجديد بنجاح.');
+              } else {
+                this.showToast('فشل الرفع', result.error || 'تعذر حفظ الصورة.');
+              }
+            } catch(err) {
+              this.showToast('خطأ في الاتصال', 'تعذر رفع الصورة.');
+            } finally {
+              event.target.value = '';
+            }
+          };
+          reader.readAsDataURL(file);
+        },
+
+        async handleExistingBlockUpload(event, block) {
+          const file = event.target.files && event.target.files[0];
+          if (!file) return;
+
+          if (file.size > 15 * 1024 * 1024) {
+            this.showToast('حجم كبير', 'الحد الأقصى المسموح به هو 15 ميجابايت.');
+            event.target.value = '';
+            return;
+          }
+
+          this.showToast('جاري الرفع...', 'يتم الآن رفع وحفظ الصورة...');
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            try {
+              const res = await fetch('/api/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: file.name, data: e.target.result })
+              });
+              const result = await res.json();
+              if (res.ok && result.success) {
+                block.image = result.url;
+                this.showToast('تم رفع الصورة!', 'تم تحديث صورة هذا البلوك بنجاح.');
+              } else {
+                this.showToast('فشل الرفع', result.error || 'تعذر حفظ الصورة.');
+              }
+            } catch(err) {
+              this.showToast('خطأ في الاتصال', 'تعذر رفع الصورة.');
+            } finally {
+              event.target.value = '';
+            }
+          };
+          reader.readAsDataURL(file);
         },
 
         verifyPin() {

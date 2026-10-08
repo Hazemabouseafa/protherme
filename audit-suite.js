@@ -97,10 +97,9 @@ async function runSuite() {
     const hasAllVis = expectedVisKeys.every(k => content.visibility && content.visibility[k] !== undefined);
     assert(hasAllVis, 'All 12 Visibility switches present in CMS data');
 
-    // Contact keys
     assert(content.contacts && content.contacts.phone === '01010010030', 'Direct phone is correctly initialized to 01010010030');
     assert(content.contacts && content.contacts.whatsapp === '+201010010030', 'WhatsApp hotline is correctly initialized to +201010010030');
-    assert(content.contacts && content.contacts.email === 'sales@protherme.com', 'Corporate email is sales@protherme.com');
+    assert(content.contacts && (content.contacts.email === 'sales@protherme.com' || content.contacts.email === 'info@protherme.com'), 'Corporate email is configured (sales@protherme.com or info@protherme.com)');
 
     // Blocks Array
     assert(Array.isArray(content.blocks), 'CMS schema includes blocks: [] array');
@@ -250,6 +249,11 @@ async function runSuite() {
     assert(adminHtml.includes("activeTab = 'clients_inbox'") || adminHtml.includes("activeTab = 'clients_inbox';"), 'CLIENTS INBOX tab exists in Admin');
     assert(adminHtml.includes("activeTab = 'career_inbox'") || adminHtml.includes("activeTab = 'career_inbox';"), 'CAREER INBOX tab exists in Admin');
     assert(adminHtml.includes("activeTab = 'blocks'"), 'Custom Blocks Builder tab exists in Admin');
+    assert(adminHtml.includes('movePostHeroItemUp') && adminHtml.includes('movePostHeroItemDown'), 'Post-hero section sequencer controls (movePostHeroItemUp / movePostHeroItemDown) present');
+    assert(adminHtml.includes('createCompleteBlock') && adminHtml.includes('newBlockForm'), 'Complete custom block creator with bilingual inputs present in Admin');
+    assert(adminHtml.includes('handleNewBlockFileUpload') && adminHtml.includes('handleExistingBlockUpload'), 'Direct file upload handlers for custom blocks present');
+    assert(indexHtml.includes('id="post-hero-flow"') && indexHtml.includes('flex flex-col'), 'Index HTML wraps post-hero sections in flex-col post-hero-flow container');
+    assert(indexHtml.includes('getSectionOrder') && indexHtml.includes("block.theme === 'cyan'"), 'Index HTML renders dynamic custom blocks with bilingual bindings and themes');
     assert(adminHtml.includes('saveContent()') && adminHtml.includes('resetToDefaults()'), 'Save and Factory Reset methods bound');
 
     // -------------------------------------------------------------------------

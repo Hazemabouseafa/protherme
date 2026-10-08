@@ -96,7 +96,8 @@ document.addEventListener('alpine:init', () => {
       },
       texts: {},
       imageBadges: {},
-      blocks: []
+      blocks: [],
+      sectionOrder: []
     },
 
     async init() {
@@ -342,6 +343,34 @@ document.addEventListener('alpine:init', () => {
     getBlocksByPosition(position) {
       if (!this.cms || !Array.isArray(this.cms.blocks)) return [];
       return this.cms.blocks.filter(b => b && b.enabled !== false && b.position === position);
+    },
+
+    // Dynamic Section Order Resolver
+    getSectionOrder(secId) {
+      if (this.cms && Array.isArray(this.cms.sectionOrder)) {
+        const idx = this.cms.sectionOrder.findIndex(s => {
+          if (!s) return false;
+          return (typeof s === 'string' ? s : s.id) === secId;
+        });
+        if (idx !== -1) {
+          const item = this.cms.sectionOrder[idx];
+          if (item && typeof item.order === 'number') return item.order;
+          return idx + 1;
+        }
+      }
+      const defaults = {
+        trustBar: 1,
+        video: 2,
+        steps: 3,
+        sectors: 4,
+        services: 5,
+        technology: 6,
+        gallery: 7,
+        reviews: 8,
+        faq: 9,
+        contact: 10
+      };
+      return defaults[secId] !== undefined ? defaults[secId] : 10;
     }
   }));
 });
