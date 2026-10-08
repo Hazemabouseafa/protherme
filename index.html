@@ -1029,6 +1029,9 @@ function prothermeApp() {
         heroBadge: true,
         heroStats: true,
         trustBar: true,
+        video: true,
+        steps: true,
+        sectors: true,
         pillar1: true,
         pillar2: true,
         pillar3: true,
@@ -1036,6 +1039,10 @@ function prothermeApp() {
         technology: true,
         comparisonTable: true,
         gallery: true,
+        reviews: true,
+        faq: true,
+        contact: true,
+        footer: true,
         speedDial: true
       },
       contacts: {
@@ -1745,19 +1752,19 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- THERMAL TEST VIDEO (PROOF & DEMO)          -->
   <!-- ========================================== -->
-  <section id="thermal-proof" class="py-20 bg-slate-50 border-b border-slate-200/90 relative z-10 scroll-mt-28">
+  <section id="thermal-proof" x-show="cms.visibility.video !== false" class="py-20 bg-slate-50 border-b border-slate-200/90 relative z-10 scroll-mt-28">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Section Header -->
       <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-14 space-y-3">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-100/80 border border-cyan-200 text-cyan-800 text-xs font-bold uppercase tracking-wider">
           <i class="fa-solid fa-temperature-arrow-down"></i>
-          <span>تجربة عملية موثقة بالفيديو</span>
+          <span x-text="cms.video && cms.video.tag ? (cms.video.tag[lang] || cms.video.tag.ar || '') : 'تجربة عملية موثقة بالفيديو'"></span>
         </div>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950" x-text="cms.video && cms.video.title ? (cms.video.title[lang] || cms.video.title.ar || '') : 'شاهد الفرق الحقيقي: قياس الحرارة بالأرقام قبل وبعد التركيب'">
           شاهد الفرق الحقيقي: قياس الحرارة بالأرقام قبل وبعد التركيب
         </h2>
-        <p class="text-base sm:text-lg text-slate-600">
+        <p class="text-base sm:text-lg text-slate-600" x-text="cms.video && cms.video.subtitle ? (cms.video.subtitle[lang] || cms.video.subtitle.ar || '') : 'فيديو ميداني مباشر بجهاز الليزر الحراري يثبت انخفاض درجة الحرارة فوراً بمجرد وضع عازل بروتيرم النانو سيراميك.'">
           فيديو ميداني مباشر بجهاز الليزر الحراري يثبت انخفاض درجة الحرارة فوراً بمجرد وضع عازل بروتيرم النانو سيراميك.
         </p>
       </div>
@@ -1773,9 +1780,9 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
               <div class="flex items-center gap-2 text-xs font-bold text-slate-800">
                 <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
-                <span>فحص ميداني حي بجهاز الليزر الحراري</span>
+                <span x-text="cms.video && cms.video.badge_top ? (cms.video.badge_top[lang] || cms.video.badge_top.ar || '') : 'فحص ميداني حي بجهاز الليزر الحراري'"></span>
               </div>
-              <span class="text-[11px] font-mono font-semibold px-2.5 py-1 rounded-md bg-cyan-50 text-cyan-800 border border-cyan-200">
+              <span class="text-[11px] font-mono font-semibold px-2.5 py-1 rounded-md bg-cyan-50 text-cyan-800 border border-cyan-200" x-text="cms.video && cms.video.badge_quality ? (cms.video.badge_quality[lang] || cms.video.badge_quality.ar || '') : 'HD 1080p | On-Site Test'">
                 HD 1080p | On-Site Test
               </span>
             </div>
@@ -1790,10 +1797,12 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 loop
                 playsinline 
                 preload="auto" 
+                :src="cms.video ? (cms.video.url || 'assets/videos/beforeafter.mp4') : 'assets/videos/beforeafter.mp4'"
+                :poster="cms.video ? (cms.video.poster || 'assets/images/hero-beforeafter.jpg?v=2') : 'assets/images/hero-beforeafter.jpg?v=2'"
                 src="assets/videos/beforeafter.mp4"
                 poster="assets/images/hero-beforeafter.jpg?v=2"
                 class="w-full h-full object-cover">
-                <source src="assets/videos/beforeafter.mp4" type="video/mp4">
+                <source :src="cms.video ? (cms.video.url || 'assets/videos/beforeafter.mp4') : 'assets/videos/beforeafter.mp4'" src="assets/videos/beforeafter.mp4" type="video/mp4">
                 متصفحك لا يدعم تشغيل الفيديو المباشر.
               </video>
             </div>
@@ -1802,7 +1811,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             <div class="pt-3 mt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-slate-500">
               <div class="flex items-center gap-1.5 text-cyan-800 font-semibold">
                 <i class="fa-solid fa-circle-info"></i>
-                <span>تم توثيق هذا الاختبار على زجاج حقيقي بنفس العينات المقدمة للعملاء.</span>
+                <span x-text="cms.video && cms.video.caption ? (cms.video.caption[lang] || cms.video.caption.ar || '') : 'تم توثيق هذا الاختبار على زجاج حقيقي بنفس العينات المقدمة للعملاء.'"></span>
               </div>
               <span class="font-mono text-[11px] text-slate-400">ProTherme Field Verification</span>
             </div>
@@ -1814,10 +1823,10 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         <div data-aos="fade-up" data-aos-delay="200" class="lg:col-span-5 space-y-6">
           
           <div class="space-y-4">
-            <h3 class="text-2xl font-black text-slate-950 leading-snug">
+            <h3 class="text-2xl font-black text-slate-950 leading-snug" x-text="cms.video && cms.video.metrics_title ? (cms.video.metrics_title[lang] || cms.video.metrics_title.ar || '') : 'أرقام موثقة تثبت لك النتيجة قبل أن تدفع قرشاً واحداً'">
               أرقام موثقة تثبت لك النتيجة قبل أن تدفع قرشاً واحداً
             </h3>
-            <p class="text-sm text-slate-600 leading-relaxed">
+            <p class="text-sm text-slate-600 leading-relaxed" x-text="cms.video && cms.video.metrics_desc ? (cms.video.metrics_desc[lang] || cms.video.metrics_desc.ar || '') : 'لا نعتمد على الوعود النظرية...'">
               لا نعتمد على الوعود النظرية. أثناء زيارة المعاينة، يحضر مهندسنا جهاز كاشف الحرارة ويجري نفس هذا الاختبار العملي على زجاج بيتك لتشعر بفارق البرودة بنفسك.
             </p>
           </div>
@@ -1830,8 +1839,8 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 <i class="fa-solid fa-temperature-arrow-down"></i>
               </div>
               <div>
-                <h4 class="text-sm font-bold text-slate-900">هبوط فوري يتجاوز 15°C إلى 20°C</h4>
-                <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">
+                <h4 class="text-sm font-bold text-slate-900" x-text="cms.video && cms.video.h1_title ? (cms.video.h1_title[lang] || cms.video.h1_title.ar || '') : 'هبوط فوري يتجاوز 15°C إلى 20°C'">هبوط فوري يتجاوز 15°C إلى 20°C</h4>
+                <p class="text-xs text-slate-500 mt-0.5 leading-relaxed" x-text="cms.video && cms.video.h1_desc ? (cms.video.h1_desc[lang] || cms.video.h1_desc.ar || '') : 'انخفاض مباشر وملحوظ في درجة حرارة سطح الزجاج بمجرد وضع فيلم النانو سيراميك.'">
                   انخفاض مباشر وملحوظ في درجة حرارة سطح الزجاج بمجرد وضع فيلم النانو سيراميك.
                 </p>
               </div>
@@ -1842,8 +1851,8 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 <i class="fa-solid fa-bolt-lightning"></i>
               </div>
               <div>
-                <h4 class="text-sm font-bold text-slate-900">توفير 30% من استهلاك التكييف</h4>
-                <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">
+                <h4 class="text-sm font-bold text-slate-900" x-text="cms.video && cms.video.h2_title ? (cms.video.h2_title[lang] || cms.video.h2_title.ar || '') : 'توفير 30% من استهلاك التكييف'">توفير 30% من استهلاك التكييف</h4>
+                <p class="text-xs text-slate-500 mt-0.5 leading-relaxed" x-text="cms.video && cms.video.h2_desc ? (cms.video.h2_desc[lang] || cms.video.h2_desc.ar || '') : 'التكييف يفصل في وقت أسرع ويحافظ على برودة المكان دون الحاجة للتشغيل المستمر بأقصى طاقة.'">
                   التكييف يفصل في وقت أسرع ويحافظ على برودة المكان دون الحاجة للتشغيل المستمر بأقصى طاقة.
                 </p>
               </div>
@@ -1854,8 +1863,8 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 <i class="fa-solid fa-eye"></i>
               </div>
               <div>
-                <h4 class="text-sm font-bold text-slate-900">رؤية طبيعية نقية 100%</h4>
-                <p class="text-xs text-slate-500 mt-0.5 leading-relaxed">
+                <h4 class="text-sm font-bold text-slate-900" x-text="cms.video && cms.video.h3_title ? (cms.video.h3_title[lang] || cms.video.h3_title.ar || '') : 'رؤية طبيعية نقية 100%'">رؤية طبيعية نقية 100%</h4>
+                <p class="text-xs text-slate-500 mt-0.5 leading-relaxed" x-text="cms.video && cms.video.h3_desc ? (cms.video.h3_desc[lang] || cms.video.h3_desc.ar || '') : 'لا تعتيم، لا سواد، ولا حجب للإضاءة الطبيعية أو المنظر الخارجي الخلاب.'">
                   لا تعتيم، لا سواد، ولا حجب للإضاءة الطبيعية أو المنظر الخارجي الخلاب.
                 </p>
               </div>
@@ -1871,14 +1880,14 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               rel="noopener noreferrer" 
               class="flex-1 justify-center py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 to-green-600 text-white font-black text-sm shadow-md shadow-emerald-600/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2 btn-shimmer">
               <i class="fa-brands fa-whatsapp text-lg"></i>
-              <span>اطلب نفس الاختبار بموقعك مجاناً</span>
+              <span x-text="cms.video && cms.video.btn_cta ? (cms.video.btn_cta[lang] || cms.video.btn_cta.ar || '') : 'اطلب نفس الاختبار بموقعك مجاناً'">اطلب نفس الاختبار بموقعك مجاناً</span>
             </a>
 
             <a 
               :href="'tel:' + cms.contacts.phone" 
               class="justify-center py-4 px-5 rounded-2xl bg-white hover:bg-slate-50 text-slate-800 font-bold text-sm border border-slate-300 shadow-xs transition-all flex items-center gap-2">
               <i class="fa-solid fa-phone text-cyan-600 text-xs"></i>
-              <span dir="ltr">01010010030</span>
+              <span dir="ltr" x-text="cms.contacts.phone">01010010030</span>
             </a>
           </div>
 
@@ -1892,7 +1901,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- 3-STEP INSTANT JOURNEY (HOW IT WORKS)      -->
   <!-- ========================================== -->
-  <section id="how-it-works" class="py-16 bg-white border-b border-slate-200/90 relative z-10">
+  <section id="how-it-works" x-show="cms.visibility.steps !== false" class="py-16 bg-white border-b border-slate-200/90 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-12 space-y-3">
@@ -1982,7 +1991,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- SECTORS SHOWCASE: ENTERPRISE & COMPOUNDS   -->
   <!-- ========================================== -->
-  <section id="sectors" class="py-20 bg-slate-50/80 border-b border-slate-200/90 relative z-10">
+  <section id="sectors" x-show="cms.visibility.sectors !== false" class="py-20 bg-slate-50/80 border-b border-slate-200/90 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Section Header -->
@@ -2780,18 +2789,18 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- CLIENT REVIEWS SCROLLING MARQUEE           -->
   <!-- ========================================== -->
-  <section id="reviews" class="py-20 bg-white border-b border-slate-200/90 relative z-10 overflow-hidden scroll-mt-24">
+  <section id="reviews" x-show="cms.visibility.reviews !== false" class="py-20 bg-white border-b border-slate-200/90 relative z-10 overflow-hidden scroll-mt-24">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
       <!-- Section Header -->
       <div data-aos="fade-up" class="text-center max-w-3xl mx-auto space-y-3">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold uppercase tracking-wider">
           <i class="fa-solid fa-comments"></i>
-          <span>آراء وتجارب واقعية</span>
+          <span x-text="cms.reviews && cms.reviews.tag ? (cms.reviews.tag[lang] || cms.reviews.tag.ar || '') : 'آراء وتجارب واقعية'">آراء وتجارب واقعية</span>
         </div>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950">
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950" x-text="cms.reviews && cms.reviews.title ? (cms.reviews.title[lang] || cms.reviews.title.ar || '') : 'ماذا يقول عملاؤنا بعد تجربة عوازل بروتيرم؟'">
           ماذا يقول عملاؤنا بعد تجربة عوازل بروتيرم؟
         </h2>
-        <p class="text-base sm:text-lg text-slate-600">
+        <p class="text-base sm:text-lg text-slate-600" x-text="cms.reviews && cms.reviews.subtitle ? (cms.reviews.subtitle[lang] || cms.reviews.subtitle.ar || '') : 'تجارب حقيقية لأصحاب الفلل والوحدات السكنية والمقرات الخاصة تؤكد فارق الحرارة وتوفير الكهرباء.'">
           تجارب حقيقية لأصحاب الفلل والوحدات السكنية والمقرات الخاصة تؤكد فارق الحرارة وتوفير الكهرباء.
         </p>
       </div>
@@ -2805,409 +2814,29 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
       <!-- Marquee Track (Repeated set for seamless infinite loop) -->
       <div class="marquee-track flex gap-6 px-4">
-        
-        <!-- CLIENT 1 -->
-        <div class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
+        <template x-for="(review, rIdx) in [...(cms.reviews && cms.reviews.items ? cms.reviews.items : []), ...(cms.reviews && cms.reviews.items ? cms.reviews.items : [])]" :key="rIdx">
+          <div :aria-hidden="rIdx >= (cms.reviews && cms.reviews.items ? cms.reviews.items.length : 0)" class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4" dir="rtl">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1 text-amber-400 text-xs">
+                  <template x-for="i in (review.rating || 5)" :key="i">
+                    <i class="fa-solid fa-star"></i>
+                  </template>
+                </div>
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
+                  <i class="fa-solid fa-check-circle me-1"></i>
+                  <span x-text="review.badge ? (review.badge[lang] || review.badge.ar || '') : 'تجربة مؤكدة'"></span>
+                </span>
               </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
+              <p class="text-sm text-slate-700 leading-relaxed font-medium" x-text="review.text ? ('"' + (review.text[lang] || review.text.ar || '') + '"') : ''">
+              </p>
             </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "فرق الحرارة بعد تركيب فيلم النانو سيراميك على واجهات الفيلا الزجاجية غير طبيعي، التكييفات بقت تفصل أسرع بكتير ووفرنا في فاتورة الكهرباء بشكل ملحوظ جداً."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">م. كريم الدسوقي</h4>
-            <p class="text-xs text-slate-500 mt-0.5">فيلا - كمبوند سوديك، الشيخ زايد</p>
-          </div>
-        </div>
-
-        <!-- CLIENT 2 -->
-        <div class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
+            <div class="pt-3 border-t border-slate-200/80">
+              <h4 class="font-bold text-slate-950 text-sm" x-text="review.name ? (review.name[lang] || review.name.ar || '') : ''"></h4>
+              <p class="text-xs text-slate-500 mt-0.5" x-text="review.location ? (review.location[lang] || review.location.ar || '') : ''"></p>
             </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "الرؤية واضحة ونقية تماماً، والإضاءة الطبيعية بتدخل كاملة بدون وهج يضايق المرضى وبدون حرارة خانقة. خدمة راقية وتركيب هندسي نظيف بدون أي فوضى."
-            </p>
           </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">د. سارة عبد الرحمن</h4>
-            <p class="text-xs text-slate-500 mt-0.5">عيادة ومقر خاص - التجمع الخامس</p>
-          </div>
-        </div>
-
-        <!-- CLIENT 3 -->
-        <div class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "كنت قلقان إن الفيلم يغمق شكل الواجهة أو يغير لون الزجاج، لكن النتيجة إبهار بصري حقيقي وحرارة الشمس نزلت أكتر من النصف من أول يوم."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">أ. شريف المنياوي</h4>
-            <p class="text-xs text-slate-500 mt-0.5">بنتهاوس - بالم هيلز، 6 أكتوبر</p>
-          </div>
-        </div>
-
-        <!-- CLIENT 4 -->
-        <div class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "جهاز قياس الحرارة أثناء المعاينة ورانا الفرق بالأرقام، والتركيب الهندسي نظيف وسريع بدون أي فقاعات أو أتربة. تجربة ممتازة تستحق كل قرش."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">م. تامر فؤاد</h4>
-            <p class="text-xs text-slate-500 mt-0.5">فيلا مستقلة - ميفيدا، القاهرة الجديدة</p>
-          </div>
-        </div>
-
-        <!-- CLIENT 5 -->
-        <div class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "استجابة سريعة ومعاينة احترافية بالعينات في نفس اليوم. الفيلم عزل الحرارة تماماً وشهادة الضمان المعتمدة 25 سنة بتدي راحة بال تامة."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">د. هشام القاضي</h4>
-            <p class="text-xs text-slate-500 mt-0.5">مكتب استشارات هندسية - المعادي دجلة</p>
-          </div>
-        </div>
-
-        <!-- CLIENT 6 -->
-        <div class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "حماية حقيقية للفرش والباركيه من التلف والبهتان بسبب أشعة الشمس المباشرة، والحرارة جوة البيت بقت لطيفة ومريحة طوال ساعات النهار."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">أ. ياسمين خيري</h4>
-            <p class="text-xs text-slate-500 mt-0.5">تاون هاوس - مدينتي</p>
-          </div>
-        </div>
-
-        <!-- CLIENT 7 -->
-        <div class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "جربت حلول تانية كتير قبل كدة، لكن عازل بروتيرم النانو سيراميك فرق جداً في كفاءة التكييف وهدوء البيت. فريق محترم والتزام دقيق بالمواعيد."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">م. إسلام رفعت</h4>
-            <p class="text-xs text-slate-500 mt-0.5">دوبلكس - هايد بارك، التجمع</p>
-          </div>
-        </div>
-
-        <!-- CLIENT 8 -->
-        <div class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "الواجهات البحرية كانت بتسخن الصالة لدرجة إن التكييف مبيسقعش، بعد العزل القعدة بقت ممتازة ودرجة الحرارة انخفضت أكتر من 14 درجة."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">أ. عمرو الصاوي</h4>
-            <p class="text-xs text-slate-500 mt-0.5">شاليه - ستيلا دي ماري، العين السخنة</p>
-          </div>
-        </div>
-
-        <!-- ================= DUPLICATE SET FOR INFINITE SMOOTH LOOP ================= -->
-
-        <!-- CLIENT 1 (DUP) -->
-        <div aria-hidden="true" class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "فرق الحرارة بعد تركيب فيلم النانو سيراميك على واجهات الفيلا الزجاجية غير طبيعي، التكييفات بقت تفصل أسرع بكتير ووفرنا في فاتورة الكهرباء بشكل ملحوظ جداً."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">م. كريم الدسوقي</h4>
-            <p class="text-xs text-slate-500 mt-0.5">فيلا - كمبوند سوديك، الشيخ زايد</p>
-          </div>
-        </div>
-
-        <!-- CLIENT 2 (DUP) -->
-        <div aria-hidden="true" class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "الرؤية واضحة ونقية تماماً، والإضاءة الطبيعية بتدخل كاملة بدون وهج يضايق المرضى وبدون حرارة خانقة. خدمة راقية وتركيب هندسي نظيف بدون أي فوضى."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">د. سارة عبد الرحمن</h4>
-            <p class="text-xs text-slate-500 mt-0.5">عيادة ومقر خاص - التجمع الخامس</p>
-          </div>
-        </div>
-
-        <!-- CLIENT 3 (DUP) -->
-        <div aria-hidden="true" class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "كنت قلقان إن الفيلم يغمق شكل الواجهة أو يغير لون الزجاج، لكن النتيجة إبهار بصري حقيقي وحرارة الشمس نزلت أكتر من النصف من أول يوم."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">أ. شريف المنياوي</h4>
-            <p class="text-xs text-slate-500 mt-0.5">بنتهاوس - بالم هيلز، 6 أكتوبر</p>
-          </div>
-        </div>
-
-        <!-- CLIENT 4 (DUP) -->
-        <div aria-hidden="true" class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "جهاز قياس الحرارة أثناء المعاينة ورانا الفرق بالأرقام، والتركيب الهندسي نظيف وسريع بدون أي فقاعات أو أتربة. تجربة ممتازة تستحق كل قرش."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">م. تامر فؤاد</h4>
-            <p class="text-xs text-slate-500 mt-0.5">فيلا مستقلة - ميفيدا، القاهرة الجديدة</p>
-          </div>
-        </div>
-
-        <!-- CLIENT 5 (DUP) -->
-        <div aria-hidden="true" class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "استجابة سريعة ومعاينة احترافية بالعينات في نفس اليوم. الفيلم عزل الحرارة تماماً وشهادة الضمان المعتمدة 25 سنة بتدي راحة بال تامة."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">د. هشام القاضي</h4>
-            <p class="text-xs text-slate-500 mt-0.5">مكتب استشارات هندسية - المعادي دجلة</p>
-          </div>
-        </div>
-
-        <!-- CLIENT 6 (DUP) -->
-        <div aria-hidden="true" class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "حماية حقيقية للفرش والباركيه من التلف والبهتان بسبب أشعة الشمس المباشرة، والحرارة جوة البيت بقت لطيفة ومريحة طوال ساعات النهار."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">أ. ياسمين خيري</h4>
-            <p class="text-xs text-slate-500 mt-0.5">تاون هاوس - مدينتي</p>
-          </div>
-        </div>
-
-        <!-- CLIENT 7 (DUP) -->
-        <div aria-hidden="true" class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "جربت حلول تانية كتير قبل كدة، لكن عازل بروتيرم النانو سيراميك فرق جداً في كفاءة التكييف وهدوء البيت. فريق محترم والتزام دقيق بالمواعيد."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">م. إسلام رفعت</h4>
-            <p class="text-xs text-slate-500 mt-0.5">دوبلكس - هايد بارك، التجمع</p>
-          </div>
-        </div>
-
-        <!-- CLIENT 8 (DUP) -->
-        <div aria-hidden="true" class="w-[340px] sm:w-[380px] shrink-0 p-6 rounded-3xl bg-slate-50 border border-slate-200 hover:border-cyan-400 hover:bg-white shadow-xs hover:shadow-lg transition-all flex flex-col justify-between space-y-4">
-          <div class="space-y-3">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1 text-amber-400 text-xs">
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-              </div>
-              <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-emerald-100/70 text-emerald-800 border border-emerald-200">
-                <i class="fa-solid fa-check-circle me-1"></i>تجربة مؤكدة
-              </span>
-            </div>
-            <p class="text-sm text-slate-700 leading-relaxed font-medium">
-              "الواجهات البحرية كانت بتسخن الصالة لدرجة إن التكييف مبيسقعش، بعد العزل القعدة بقت ممتازة ودرجة الحرارة انخفضت أكتر من 14 درجة."
-            </p>
-          </div>
-          <div class="pt-3 border-t border-slate-200/80">
-            <h4 class="font-bold text-slate-950 text-sm">أ. عمرو الصاوي</h4>
-            <p class="text-xs text-slate-500 mt-0.5">شاليه - ستيلا دي ماري، العين السخنة</p>
-          </div>
-        </div>
-
+        </template>
       </div>
     </div>
   </section>
@@ -3215,7 +2844,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- CONVERSION FAQ & OVERCOMING OBJECTIONS     -->
   <!-- ========================================== -->
-  <section id="faq" class="py-20 bg-slate-50/80 border-b border-slate-200/90 relative z-10">
+  <section id="faq" x-show="cms.visibility.faq !== false" class="py-20 bg-slate-50/80 border-b border-slate-200/90 relative z-10">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div data-aos="fade-up" class="text-center mb-12 space-y-3">
@@ -3305,7 +2934,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- DIRECT CONTACT & ADVISORY HUB (NO FORM)    -->
   <!-- ========================================== -->
-  <section id="contact" class="py-24 relative z-10">
+  <section id="contact" x-show="cms.visibility.contact !== false" class="py-24 relative z-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <!-- Section Header -->

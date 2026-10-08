@@ -217,6 +217,27 @@
               <span>الهيرو</span>
             </button>
             <button 
+              @click="activeTab = 'video'" 
+              :class="activeTab === 'video' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold shadow-xs' : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200'" 
+              class="whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 shrink-0 transition-all active:scale-95">
+              <i class="fa-solid fa-video text-xs"></i>
+              <span>الفيديو</span>
+            </button>
+            <button 
+              @click="activeTab = 'steps'" 
+              :class="activeTab === 'steps' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold shadow-xs' : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200'" 
+              class="whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 shrink-0 transition-all active:scale-95">
+              <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+              <span>الخطوات</span>
+            </button>
+            <button 
+              @click="activeTab = 'sectors'" 
+              :class="activeTab === 'sectors' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold shadow-xs' : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200'" 
+              class="whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 shrink-0 transition-all active:scale-95">
+              <i class="fa-solid fa-city text-xs"></i>
+              <span>القطاعات</span>
+            </button>
+            <button 
               @click="activeTab = 'pillars'" 
               :class="activeTab === 'pillars' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold shadow-xs' : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200'" 
               class="whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 shrink-0 transition-all active:scale-95">
@@ -236,6 +257,27 @@
               class="whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 shrink-0 transition-all active:scale-95">
               <i class="fa-solid fa-images text-xs"></i>
               <span>المعرض</span>
+            </button>
+            <button 
+              @click="activeTab = 'reviews'" 
+              :class="activeTab === 'reviews' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold shadow-xs' : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200'" 
+              class="whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 shrink-0 transition-all active:scale-95">
+              <i class="fa-solid fa-comments text-xs"></i>
+              <span>الآراء</span>
+            </button>
+            <button 
+              @click="activeTab = 'faq'" 
+              :class="activeTab === 'faq' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold shadow-xs' : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200'" 
+              class="whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 shrink-0 transition-all active:scale-95">
+              <i class="fa-solid fa-circle-question text-xs"></i>
+              <span>الأسئلة</span>
+            </button>
+            <button 
+              @click="activeTab = 'footer'" 
+              :class="activeTab === 'footer' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold shadow-xs' : 'bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200'" 
+              class="whitespace-nowrap px-3 py-2 rounded-xl flex items-center gap-1.5 shrink-0 transition-all active:scale-95">
+              <i class="fa-solid fa-shoe-prints text-xs"></i>
+              <span>الفوتر</span>
             </button>
             <button 
               @click="activeTab = 'buttons'" 
@@ -286,7 +328,40 @@
               class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
               <span class="flex items-center gap-2.5">
                 <i class="fa-solid fa-bullhorn text-cyan-600 w-4"></i>
-                <span>واجهة الهيرو والإحصائيات</span>
+                <span>الهيرو، الإحصائيات، وشريط الثقة</span>
+              </span>
+              <i class="fa-solid fa-chevron-left text-xs opacity-40"></i>
+            </button>
+
+            <button 
+              @click="activeTab = 'video'" 
+              :class="activeTab === 'video' ? 'bg-cyan-50/80 text-cyan-900 border-cyan-300 font-bold shadow-xs' : 'text-slate-700 hover:bg-slate-50 border-transparent'" 
+              class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+              <span class="flex items-center gap-2.5">
+                <i class="fa-solid fa-video text-rose-600 w-4"></i>
+                <span>فيديو المعاينة العملية والنتائج</span>
+              </span>
+              <i class="fa-solid fa-chevron-left text-xs opacity-40"></i>
+            </button>
+
+            <button 
+              @click="activeTab = 'steps'" 
+              :class="activeTab === 'steps' ? 'bg-cyan-50/80 text-cyan-900 border-cyan-300 font-bold shadow-xs' : 'text-slate-700 hover:bg-slate-50 border-transparent'" 
+              class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+              <span class="flex items-center gap-2.5">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-600 w-4"></i>
+                <span>رحلة العميل في 3 خطوات</span>
+              </span>
+              <i class="fa-solid fa-chevron-left text-xs opacity-40"></i>
+            </button>
+
+            <button 
+              @click="activeTab = 'sectors'" 
+              :class="activeTab === 'sectors' ? 'bg-cyan-50/80 text-cyan-900 border-cyan-300 font-bold shadow-xs' : 'text-slate-700 hover:bg-slate-50 border-transparent'" 
+              class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+              <span class="flex items-center gap-2.5">
+                <i class="fa-solid fa-city text-cyan-600 w-4"></i>
+                <span>القطاعات: الفلل والشركات الفندقية</span>
               </span>
               <i class="fa-solid fa-chevron-left text-xs opacity-40"></i>
             </button>
@@ -320,6 +395,39 @@
               <span class="flex items-center gap-2.5">
                 <i class="fa-solid fa-images text-emerald-600 w-4"></i>
                 <span>معرض الصور والمشاريع</span>
+              </span>
+              <i class="fa-solid fa-chevron-left text-xs opacity-40"></i>
+            </button>
+
+            <button 
+              @click="activeTab = 'reviews'" 
+              :class="activeTab === 'reviews' ? 'bg-cyan-50/80 text-cyan-900 border-cyan-300 font-bold shadow-xs' : 'text-slate-700 hover:bg-slate-50 border-transparent'" 
+              class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+              <span class="flex items-center gap-2.5">
+                <i class="fa-solid fa-comments text-amber-600 w-4"></i>
+                <span>آراء العملاء وشريط التقييمات</span>
+              </span>
+              <i class="fa-solid fa-chevron-left text-xs opacity-40"></i>
+            </button>
+
+            <button 
+              @click="activeTab = 'faq'" 
+              :class="activeTab === 'faq' ? 'bg-cyan-50/80 text-cyan-900 border-cyan-300 font-bold shadow-xs' : 'text-slate-700 hover:bg-slate-50 border-transparent'" 
+              class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+              <span class="flex items-center gap-2.5">
+                <i class="fa-solid fa-circle-question text-cyan-600 w-4"></i>
+                <span>الأسئلة الشائعة والأجوبة</span>
+              </span>
+              <i class="fa-solid fa-chevron-left text-xs opacity-40"></i>
+            </button>
+
+            <button 
+              @click="activeTab = 'footer'" 
+              :class="activeTab === 'footer' ? 'bg-cyan-50/80 text-cyan-900 border-cyan-300 font-bold shadow-xs' : 'text-slate-700 hover:bg-slate-50 border-transparent'" 
+              class="w-full text-start px-3.5 py-3 rounded-xl text-xs sm:text-sm border transition-all flex items-center justify-between">
+              <span class="flex items-center gap-2.5">
+                <i class="fa-solid fa-shoe-prints text-slate-600 w-4"></i>
+                <span>تذييل الصفحة ومعلومات الفوتر</span>
               </span>
               <i class="fa-solid fa-chevron-left text-xs opacity-40"></i>
             </button>
@@ -766,6 +874,45 @@
               </div>
             </div>
 
+            <!-- Trust Bar Editor (شريط معايير الجودة والاعتمادات) -->
+            <div class="pt-4 border-t border-slate-200 space-y-4">
+              <div class="flex items-center gap-2 text-cyan-800 font-bold text-xs sm:text-sm">
+                <i class="fa-solid fa-shield-halved text-cyan-600"></i>
+                <span>شريط الثقة والاعتمادات الأربعة (Trust Bar):</span>
+              </div>
+
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">الوسم التعريفي لشريط الثقة:</label>
+                <input type="text" x-model="cms.texts[editLang].trust.tag" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-bold">
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 shadow-xs">
+                  <span class="text-[11px] font-bold text-cyan-700">الاعتماد 1: المعاينة والعينات</span>
+                  <input type="text" x-model="cms.texts[editLang].trust.t1" placeholder="العنوان الرئيسي" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                  <input type="text" x-model="cms.texts[editLang].trust.t1_sub" placeholder="النص الفرعي" class="w-full px-2 py-1 rounded bg-white border border-slate-300 text-xs text-slate-500">
+                </div>
+
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 shadow-xs">
+                  <span class="text-[11px] font-bold text-emerald-700">الاعتماد 2: سابقة الأعمال (+500 مشروع)</span>
+                  <input type="text" x-model="cms.texts[editLang].trust.t2" placeholder="العنوان الرئيسي" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                  <input type="text" x-model="cms.texts[editLang].trust.t2_sub" placeholder="النص الفرعي" class="w-full px-2 py-1 rounded bg-white border border-slate-300 text-xs text-slate-500">
+                </div>
+
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 shadow-xs">
+                  <span class="text-[11px] font-bold text-cyan-700">الاعتماد 3: التركيب الهندسي النظيف</span>
+                  <input type="text" x-model="cms.texts[editLang].trust.t3" placeholder="العنوان الرئيسي" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                  <input type="text" x-model="cms.texts[editLang].trust.t3_sub" placeholder="النص الفرعي" class="w-full px-2 py-1 rounded bg-white border border-slate-300 text-xs text-slate-500">
+                </div>
+
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 shadow-xs">
+                  <span class="text-[11px] font-bold text-emerald-700">الاعتماد 4: الضمان الرسمي 25 سنة</span>
+                  <input type="text" x-model="cms.texts[editLang].trust.t4" placeholder="العنوان الرئيسي" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                  <input type="text" x-model="cms.texts[editLang].trust.t4_sub" placeholder="النص الفرعي" class="w-full px-2 py-1 rounded bg-white border border-slate-300 text-xs text-slate-500">
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -1106,6 +1253,457 @@
         </div>
 
         <!-- ============================================== -->
+        <!-- TAB: VIDEO LIVE DEMONSTRATION & PROOF          -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'video'" class="space-y-6">
+          <div class="border-b border-slate-200 pb-4">
+            <h3 class="text-xl font-black text-slate-950">فيديو المعاينة العملية وفحص الليزر الحراري</h3>
+            <p class="text-xs text-slate-500 mt-1" x-text="editLang === 'ar' ? 'تعديل نصوص وروابط فيديو التجربة العملية الميدانية' : 'Editing video section texts and assets'"></p>
+          </div>
+
+          <div class="space-y-5">
+            <!-- Video File URL & Direct Upload -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-2">رابط / مسار ملف الفيديو (Video URL):</label>
+                <div class="flex gap-2">
+                  <input type="text" x-model="cms.video.url" dir="ltr" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 font-mono text-xs focus:outline-none focus:border-cyan-600 shadow-xs">
+                  <label class="cursor-pointer px-3 py-2.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold inline-flex items-center gap-1 shrink-0 shadow-xs" title="رفع فيديو من جهازك">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span class="hidden sm:inline">رفع</span>
+                    <input type="file" accept="video/mp4,video/*" class="hidden" @change="handleFileUpload($event, 'video')">
+                  </label>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-2">صورة غلاف الفيديو (Poster Image):</label>
+                <div class="flex gap-2">
+                  <input type="text" x-model="cms.video.poster" dir="ltr" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 font-mono text-xs focus:outline-none focus:border-cyan-600 shadow-xs">
+                  <label class="cursor-pointer px-3 py-2.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold inline-flex items-center gap-1 shrink-0 shadow-xs" title="رفع غلاف">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span class="hidden sm:inline">رفع</span>
+                    <input type="file" accept="image/*" class="hidden" @change="handleFileUpload($event, 'videoPoster')">
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Section Tag & Badges -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">الوسم العلوي (Section Tag):</label>
+                <input type="text" x-model="cms.video.tag[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-bold shadow-xs">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">شارة البث الحي (Live Badge):</label>
+                <input type="text" x-model="cms.video.badge_top[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-rose-700 font-bold shadow-xs">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">شارة الجودة (Quality Tag):</label>
+                <input type="text" x-model="cms.video.badge_quality[editLang]" dir="ltr" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-mono text-slate-900 shadow-xs">
+              </div>
+            </div>
+
+            <!-- Title & Subtitle -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-2">عنوان قسم الفيديو الرئيسي:</label>
+              <input type="text" x-model="cms.video.title[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-cyan-600 shadow-xs">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-2">النص التوضيحي للفيديو (Subtitle):</label>
+              <textarea rows="2" x-model="cms.video.subtitle[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-cyan-600 shadow-xs"></textarea>
+            </div>
+
+            <!-- Video Caption -->
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-2">ملاحظة أسفل مشغل الفيديو (Info Caption):</label>
+              <input type="text" x-model="cms.video.caption[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-300 text-xs text-slate-700 shadow-xs">
+            </div>
+
+            <!-- Metrics Column Box -->
+            <div class="pt-4 border-t border-slate-200 space-y-4">
+              <h4 class="text-sm font-bold text-cyan-800">عمود النتائج والأرقام الموثقة:</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-700 mb-1">عنوان النتائج:</label>
+                  <input type="text" x-model="cms.video.metrics_title[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold shadow-xs">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-700 mb-1">زر طلب الاختبار (CTA Button):</label>
+                  <input type="text" x-model="cms.video.btn_cta[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-emerald-800 font-bold shadow-xs">
+                </div>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">وصف النتائج:</label>
+                <textarea rows="2" x-model="cms.video.metrics_desc[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600 shadow-xs"></textarea>
+              </div>
+
+              <!-- 3 Highlights Cards -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2 shadow-xs">
+                  <div class="text-xs font-bold text-orange-700">الميزة 1: هبوط الحرارة</div>
+                  <input type="text" x-model="cms.video.h1_title[editLang]" placeholder="العنوان" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold">
+                  <textarea rows="2" x-model="cms.video.h1_desc[editLang]" placeholder="الوصف" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-600"></textarea>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2 shadow-xs">
+                  <div class="text-xs font-bold text-emerald-700">الميزة 2: توفير التكييف</div>
+                  <input type="text" x-model="cms.video.h2_title[editLang]" placeholder="العنوان" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold">
+                  <textarea rows="2" x-model="cms.video.h2_desc[editLang]" placeholder="الوصف" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-600"></textarea>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2 shadow-xs">
+                  <div class="text-xs font-bold text-cyan-700">الميزة 3: الرؤية النقية</div>
+                  <input type="text" x-model="cms.video.h3_title[editLang]" placeholder="العنوان" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs font-bold">
+                  <textarea rows="2" x-model="cms.video.h3_desc[editLang]" placeholder="الوصف" class="w-full px-2 py-1.5 rounded bg-white border border-slate-300 text-xs text-slate-600"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB: 3-STEP JOURNEY                            -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'steps'" class="space-y-6">
+          <div class="border-b border-slate-200 pb-4">
+            <h3 class="text-xl font-black text-slate-950">رحلة العميل في 3 خطوات بسيطة</h3>
+            <p class="text-xs text-slate-500 mt-1" x-text="editLang === 'ar' ? 'تعديل خطوات طلب المعاينة والتركيب' : 'Editing 3-step customer journey'"></p>
+          </div>
+
+          <div class="space-y-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">الوسم العلوي (Section Tag):</label>
+                <input type="text" x-model="cms.texts[editLang].steps.tag" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-bold shadow-xs">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">عنوان القسم:</label>
+                <input type="text" x-model="cms.texts[editLang].steps.title" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold shadow-xs">
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">الوصف التوضيحي (Subtitle):</label>
+              <input type="text" x-model="cms.texts[editLang].steps.subtitle" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600 shadow-xs">
+            </div>
+
+            <!-- 3 Steps Cards -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-3">
+              <!-- Step 1 -->
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5 shadow-xs">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-cyan-800">الخطوة الأولى</span>
+                  <input type="text" x-model="cms.texts[editLang].steps.s1_num" dir="ltr" class="w-12 px-2 py-1 text-center font-mono font-bold text-xs rounded bg-white border border-slate-300">
+                </div>
+                <input type="text" x-model="cms.texts[editLang].steps.s1_title" placeholder="عنوان الخطوة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                <textarea rows="3" x-model="cms.texts[editLang].steps.s1_desc" placeholder="شرح الخطوة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600"></textarea>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5 shadow-xs">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-emerald-800">الخطوة الثانية</span>
+                  <input type="text" x-model="cms.texts[editLang].steps.s2_num" dir="ltr" class="w-12 px-2 py-1 text-center font-mono font-bold text-xs rounded bg-white border border-slate-300">
+                </div>
+                <input type="text" x-model="cms.texts[editLang].steps.s2_title" placeholder="عنوان الخطوة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                <textarea rows="3" x-model="cms.texts[editLang].steps.s2_desc" placeholder="شرح الخطوة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600"></textarea>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5 shadow-xs">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-cyan-800">الخطوة الثالثة</span>
+                  <input type="text" x-model="cms.texts[editLang].steps.s3_num" dir="ltr" class="w-12 px-2 py-1 text-center font-mono font-bold text-xs rounded bg-white border border-slate-300">
+                </div>
+                <input type="text" x-model="cms.texts[editLang].steps.s3_title" placeholder="عنوان الخطوة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                <textarea rows="3" x-model="cms.texts[editLang].steps.s3_desc" placeholder="شرح الخطوة" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB: SECTORS SHOWCASE                          -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'sectors'" class="space-y-6">
+          <div class="border-b border-slate-200 pb-4">
+            <h3 class="text-xl font-black text-slate-950">حلول القطاعات: فلل الكمبوندات والمشاريع الكبرى</h3>
+            <p class="text-xs text-slate-500 mt-1" x-text="editLang === 'ar' ? 'تعديل نصوص قطاع الفلل والمنازل الفاخرة وقطاع الشركات والفنادق' : 'Editing sectors showcase texts'"></p>
+          </div>
+
+          <div class="space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">الوسم العلوي (Section Tag):</label>
+                <input type="text" x-model="cms.texts[editLang].sectors.tag" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-bold shadow-xs">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">عنوان القسم:</label>
+                <input type="text" x-model="cms.texts[editLang].sectors.title" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold shadow-xs">
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">الوصف التوضيحي للقسم:</label>
+              <textarea rows="2" x-model="cms.texts[editLang].sectors.subtitle" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600 shadow-xs"></textarea>
+            </div>
+
+            <!-- SECTOR 1: VILLAS -->
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4 shadow-xs">
+              <div class="flex items-center gap-2 text-cyan-800 font-bold text-sm">
+                <i class="fa-solid fa-house-chimney"></i>
+                <span>قطاع فلل الكمبوندات والمنازل الفاخرة (Residential Villas):</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-700 mb-1">الشارة (Badge):</label>
+                  <input type="text" x-model="cms.texts[editLang].sectors.villa_badge" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-700 mb-1">عنوان القطاع:</label>
+                  <input type="text" x-model="cms.texts[editLang].sectors.villa_title" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                </div>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">الوصف التوضيحي:</label>
+                <textarea rows="2" x-model="cms.texts[editLang].sectors.villa_desc" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600"></textarea>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-xs">
+                  <span class="text-[11px] font-bold text-cyan-700">الميزة 1 (الزجاج والمسابح)</span>
+                  <input type="text" x-model="cms.texts[editLang].sectors.villa_f1_title" placeholder="العنوان" class="w-full px-2 py-1 rounded border border-slate-300 text-xs font-bold">
+                  <textarea rows="2" x-model="cms.texts[editLang].sectors.villa_f1_desc" placeholder="الوصف" class="w-full px-2 py-1 rounded border border-slate-300 text-xs text-slate-600"></textarea>
+                </div>
+                <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-xs">
+                  <span class="text-[11px] font-bold text-cyan-700">الميزة 2 (الرخام والطاولات)</span>
+                  <input type="text" x-model="cms.texts[editLang].sectors.villa_f2_title" placeholder="العنوان" class="w-full px-2 py-1 rounded border border-slate-300 text-xs font-bold">
+                  <textarea rows="2" x-model="cms.texts[editLang].sectors.villa_f2_desc" placeholder="الوصف" class="w-full px-2 py-1 rounded border border-slate-300 text-xs text-slate-600"></textarea>
+                </div>
+                <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-xs">
+                  <span class="text-[11px] font-bold text-cyan-700">الميزة 3 (سيارات PPF)</span>
+                  <input type="text" x-model="cms.texts[editLang].sectors.villa_f3_title" placeholder="العنوان" class="w-full px-2 py-1 rounded border border-slate-300 text-xs font-bold">
+                  <textarea rows="2" x-model="cms.texts[editLang].sectors.villa_f3_desc" placeholder="الوصف" class="w-full px-2 py-1 rounded border border-slate-300 text-xs text-slate-600"></textarea>
+                </div>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">نص زر حجز المعاينة (CTA):</label>
+                <input type="text" x-model="cms.texts[editLang].sectors.villa_cta" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-bold text-emerald-800">
+              </div>
+            </div>
+
+            <!-- SECTOR 2: ENTERPRISE -->
+            <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-4 shadow-xs">
+              <div class="flex items-center gap-2 text-cyan-800 font-bold text-sm">
+                <i class="fa-solid fa-hotel"></i>
+                <span>قطاع الفنادق والمشاريع الكبرى (Enterprise & Hospitality):</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-700 mb-1">الشارة (Badge):</label>
+                  <input type="text" x-model="cms.texts[editLang].sectors.ent_badge" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-700 mb-1">عنوان القطاع:</label>
+                  <input type="text" x-model="cms.texts[editLang].sectors.ent_title" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                </div>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">الوصف التوضيحي:</label>
+                <textarea rows="2" x-model="cms.texts[editLang].sectors.ent_desc" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600"></textarea>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-xs">
+                  <span class="text-[11px] font-bold text-cyan-700">الميزة 1 (توفير 30% تكييف)</span>
+                  <input type="text" x-model="cms.texts[editLang].sectors.ent_f1_title" placeholder="العنوان" class="w-full px-2 py-1 rounded border border-slate-300 text-xs font-bold">
+                  <textarea rows="2" x-model="cms.texts[editLang].sectors.ent_f1_desc" placeholder="الوصف" class="w-full px-2 py-1 rounded border border-slate-300 text-xs text-slate-600"></textarea>
+                </div>
+                <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-xs">
+                  <span class="text-[11px] font-bold text-cyan-700">الميزة 2 (رخام البهو والاستقبال)</span>
+                  <input type="text" x-model="cms.texts[editLang].sectors.ent_f2_title" placeholder="العنوان" class="w-full px-2 py-1 rounded border border-slate-300 text-xs font-bold">
+                  <textarea rows="2" x-model="cms.texts[editLang].sectors.ent_f2_desc" placeholder="الوصف" class="w-full px-2 py-1 rounded border border-slate-300 text-xs text-slate-600"></textarea>
+                </div>
+                <div class="p-3 rounded-xl bg-white border border-slate-200 space-y-1.5 shadow-xs">
+                  <span class="text-[11px] font-bold text-cyan-700">الميزة 3 (مواصفات هندسية ISO)</span>
+                  <input type="text" x-model="cms.texts[editLang].sectors.ent_f3_title" placeholder="العنوان" class="w-full px-2 py-1 rounded border border-slate-300 text-xs font-bold">
+                  <textarea rows="2" x-model="cms.texts[editLang].sectors.ent_f3_desc" placeholder="الوصف" class="w-full px-2 py-1 rounded border border-slate-300 text-xs text-slate-600"></textarea>
+                </div>
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">نص زر طلب دراسة للمشروع (CTA):</label>
+                <input type="text" x-model="cms.texts[editLang].sectors.ent_cta" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-bold text-cyan-800">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB: CUSTOMER REVIEWS & MARQUEE                -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'reviews'" class="space-y-6">
+          <div class="border-b border-slate-200 pb-4">
+            <h3 class="text-xl font-black text-slate-950">آراء وتجارب العملاء (الشريط المتحرك)</h3>
+            <p class="text-xs text-slate-500 mt-1" x-text="editLang === 'ar' ? 'تعديل تجارب العملاء الحقيقية وأسمائهم ومواقعهم وتقييماتهم' : 'Editing client reviews and marquee cards'"></p>
+          </div>
+
+          <div class="space-y-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">الوسم العلوي (Section Tag):</label>
+                <input type="text" x-model="cms.reviews.tag[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-emerald-800 font-bold shadow-xs">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">عنوان القسم:</label>
+                <input type="text" x-model="cms.reviews.title[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold shadow-xs">
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">الوصف التوضيحي:</label>
+              <input type="text" x-model="cms.reviews.subtitle[editLang]" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600 shadow-xs">
+            </div>
+
+            <!-- Review Items List -->
+            <div class="pt-4 border-t border-slate-200 space-y-4">
+              <div class="flex items-center justify-between">
+                <h4 class="text-sm font-bold text-slate-900">قائمة بطاقات التقييمات (<span x-text="(cms.reviews.items || []).length"></span> عملاء):</h4>
+                <button 
+                  type="button" 
+                  @click="if(!cms.reviews.items) cms.reviews.items = []; cms.reviews.items.push({ name: { ar: 'عميل جديد', en: 'New Client' }, location: { ar: 'القاهرة', en: 'Cairo' }, text: { ar: 'تجربة ممتازة وخدمة راقية.', en: 'Great experience.' }, badge: { ar: 'تجربة مؤكدة', en: 'Verified' }, rating: 5 })" 
+                  class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs">
+                  <i class="fa-solid fa-plus"></i>
+                  <span>إضافة رأي عميل جديد</span>
+                </button>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <template x-for="(review, rIdx) in (cms.reviews.items || [])" :key="rIdx">
+                  <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 shadow-xs">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-cyan-800" x-text="'العميل #' + (rIdx + 1)"></span>
+                      <div class="flex items-center gap-2">
+                        <select x-model.number="review.rating" class="text-xs px-2 py-1 rounded bg-white border border-slate-300 text-amber-500 font-bold">
+                          <option value="5">⭐⭐⭐⭐⭐ (5 نجوم)</option>
+                          <option value="4">⭐⭐⭐⭐ (4 نجوم)</option>
+                          <option value="3">⭐⭐⭐ (3 نجوم)</option>
+                        </select>
+                        <button 
+                          type="button" 
+                          @click="cms.reviews.items.splice(rIdx, 1)" 
+                          class="text-rose-600 hover:text-rose-800 p-1 text-xs" 
+                          title="حذف هذا الرأي">
+                          <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                      <input type="text" x-model="review.name[editLang]" placeholder="اسم العميل" class="px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                      <input type="text" x-model="review.badge[editLang]" placeholder="شارة التحقق" class="px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs text-emerald-800 font-medium">
+                    </div>
+
+                    <input type="text" x-model="review.location[editLang]" placeholder="المكان / الكمبوند" class="w-full px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs text-slate-500">
+
+                    <textarea rows="3" x-model="review.text[editLang]" placeholder="نص التقييم والتجربة..." class="w-full px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs text-slate-700 leading-relaxed"></textarea>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB: FAQ SECTION                               -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'faq'" class="space-y-6">
+          <div class="border-b border-slate-200 pb-4">
+            <h3 class="text-xl font-black text-slate-950">الأسئلة الشائعة والأجوبة (FAQ)</h3>
+            <p class="text-xs text-slate-500 mt-1" x-text="editLang === 'ar' ? 'تعديل أسئلة العملاء وإجاباتها' : 'Editing Frequently Asked Questions and answers'"></p>
+          </div>
+
+          <div class="space-y-5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">الوسم العلوي (Section Tag):</label>
+                <input type="text" x-model="cms.texts[editLang].faq.tag" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-bold shadow-xs">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1">عنوان القسم:</label>
+                <input type="text" x-model="cms.texts[editLang].faq.title" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-bold shadow-xs">
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-700 mb-1">الوصف التوضيحي:</label>
+              <input type="text" x-model="cms.texts[editLang].faq.subtitle" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600 shadow-xs">
+            </div>
+
+            <!-- 4 FAQs Accordion Items -->
+            <div class="pt-3 border-t border-slate-200 space-y-4">
+              <template x-for="qNum in [1, 2, 3, 4]" :key="qNum">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2 shadow-xs">
+                  <div class="text-xs font-bold text-cyan-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <span x-text="'السؤال رقم ' + qNum"></span>
+                  </div>
+                  <input type="text" x-model="cms.texts[editLang].faq['q' + qNum]" placeholder="نص السؤال..." class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-900">
+                  <textarea rows="3" x-model="cms.texts[editLang].faq['a' + qNum]" placeholder="نص الإجابة التفصيلية..." class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-600 leading-relaxed"></textarea>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- TAB: FOOTER & BRANDING                         -->
+        <!-- ============================================== -->
+        <div x-show="activeTab === 'footer'" class="space-y-6">
+          <div class="border-b border-slate-200 pb-4">
+            <h3 class="text-xl font-black text-slate-950">تذييل الموقع ومعلومات الفوتر (Footer)</h3>
+            <p class="text-xs text-slate-500 mt-1" x-text="editLang === 'ar' ? 'تعديل النصوص القانونية، روابط الخدمات وتذييل الصفحة' : 'Editing footer branding, service links and legal notices'"></p>
+          </div>
+
+          <div class="space-y-5">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-2">نبذة بروتيرم في الفوتر (Brand Description):</label>
+              <textarea rows="3" x-model="cms.texts[editLang].footer.desc" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-slate-900 text-xs leading-relaxed shadow-xs"></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-2">نص الاعتماد والشراكة الدولية (Partner Text):</label>
+                <input type="text" x-model="cms.texts[editLang].footer.partner_text" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-300 text-xs text-cyan-800 font-medium shadow-xs">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-2">حقوق الملكية والنشر (Copyright Notice):</label>
+                <input type="text" x-model="cms.texts[editLang].footer.copyright" :dir="editLang === 'ar' ? 'rtl' : 'ltr'" class="w-full px-4 py-2.5 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 shadow-xs">
+              </div>
+            </div>
+
+            <!-- 4 Core Service Links in Footer -->
+            <div class="pt-4 border-t border-slate-200 space-y-3">
+              <h4 class="text-sm font-bold text-cyan-800">أسماء روابط الخدمات في الفوتر (Services Links):</h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <template x-for="sNum in [1, 2, 3, 4]" :key="sNum">
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-700 mb-1" x-text="'الخدمة ' + sNum"></label>
+                    <input type="text" x-model="cms.texts[editLang].footer['s' + sNum]" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900">
+                  </div>
+                </template>
+              </div>
+            </div>
+
+            <!-- Back to top and misc labels -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">زر العودة للأعلى (Back to Top):</label>
+                <input type="text" x-model="cms.texts[editLang].footer.back_to_top" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">عنوان ساعات العمل (Hours Label):</label>
+                <input type="text" x-model="cms.texts[editLang].footer.hours_label" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
         <!-- TAB 8: SECURITY & PASSWORD SETTINGS            -->
         <!-- ============================================== -->
         <div x-show="activeTab === 'security'" class="space-y-6">
@@ -1393,6 +1991,9 @@
               ['ar', 'en'].forEach(l => {
                 if (!data.texts[l]) data.texts[l] = {};
                 if (!data.texts[l].hero) data.texts[l].hero = {};
+                if (!data.texts[l].trust) data.texts[l].trust = {};
+                if (!data.texts[l].steps) data.texts[l].steps = {};
+                if (!data.texts[l].sectors) data.texts[l].sectors = {};
                 if (!data.texts[l].services) data.texts[l].services = { tag: '', title: '', subtitle: '' };
                 if (!data.texts[l].pillars) data.texts[l].pillars = { p1: {}, p2: {}, p3: {} };
                 ['p1', 'p2', 'p3'].forEach(p => {
@@ -1401,8 +2002,12 @@
                 if (!data.texts[l].tech_standards) data.texts[l].tech_standards = {};
                 if (!data.texts[l].comparison) data.texts[l].comparison = {};
                 if (!data.texts[l].gallery) data.texts[l].gallery = {};
+                if (!data.texts[l].faq) data.texts[l].faq = {};
                 if (!data.texts[l].contact) data.texts[l].contact = {};
+                if (!data.texts[l].footer) data.texts[l].footer = {};
               });
+              if (!data.video) data.video = { tag: {}, title: {}, subtitle: {}, badge_top: {}, badge_quality: {}, caption: {}, metrics_title: {}, metrics_desc: {}, h1_title: {}, h1_desc: {}, h2_title: {}, h2_desc: {}, h3_title: {}, h3_desc: {}, btn_cta: {} };
+              if (!data.reviews) data.reviews = { tag: {}, title: {}, subtitle: {}, items: [] };
               if (!data.images) data.images = {};
               if (!data.buttons) data.buttons = {};
               if (!data.heroStats) data.heroStats = {};
@@ -1509,6 +2114,9 @@
             heroBadge: 'شارة الشراكة العائمة (Partner Badge)',
             heroStats: 'شريط إحصائيات الهيرو (Live Stats Grid)',
             trustBar: 'شريط معايير الجودة والاعتماد (Trust Bar)',
+            video: 'فيديو المعاينة العملية وفحص الليزر الحراري (Video)',
+            steps: 'رحلة العميل في 3 خطوات (3 Steps Journey)',
+            sectors: 'قسم القطاعات: الفلل والشركات الفندقية (Sectors)',
             pillar1: 'الركيزة 01: أفلام زجاج المباني والعزل المعماري',
             pillar2: 'الركيزة 02: حماية الأسطح الفاخرة (رخام وخشب)',
             pillar3: 'الركيزة 03: توزيع أفلام حماية السيارات PPF',
@@ -1516,6 +2124,10 @@
             technology: 'قسم معايير وتكنولوجيا Global Hi-Tech',
             comparisonTable: 'جدول المقارنة الفنية (Comparison Table)',
             gallery: 'معرض المشاريع والصور الميدانية (Gallery)',
+            reviews: 'آراء العملاء وشريط التقييمات (Client Reviews)',
+            faq: 'الأسئلة الشائعة والأجوبة (FAQ Section)',
+            contact: 'قسم التواصل الرئيسي وحجز المعاينة (Contact)',
+            footer: 'تذييل الموقع وحقوق الملكية (Footer)',
             speedDial: 'زر الاتصال والواتساب العائم (Speed Dial)'
           };
           return map[key] || key;
@@ -1527,6 +2139,9 @@
             heroBadge: 'الشارة المتحركة أعلى العنوان الرئيسي',
             heroStats: 'إحصائيات 88% عزل، 99.9% UV، والضمان الدولي',
             trustBar: 'شريط الاعتمادات تحت قسم الهيرو مباشرة',
+            video: 'فيديو تجربة الليزر الحراري ونتائج العزل بالأرقام',
+            steps: 'شرح رحلة العميل وخطوات الطلب والمعاينة والتركيب',
+            sectors: 'حلول فلل الكمبوندات والمشاريع والفنادق والرخام والسيارات',
             pillar1: 'كرت الخدمة المعمارية للواجهات والفلل',
             pillar2: 'كرت حماية طاولات الرخام الطبيعي والأخشاب',
             pillar3: 'كرت التوريد التجاري لمراكز العناية بالسيارات',
@@ -1534,6 +2149,10 @@
             technology: 'الأعمدة الأربعة للريادة التكنولوجية العالمية',
             comparisonTable: 'مقارنة بروتيرم مقابل المنتجات التجارية',
             gallery: 'الصور الواقعية لمشاريع التنفيذ',
+            reviews: 'الشريط المتحرك لتجارب العملاء الحقيقية',
+            faq: 'قسم الإجابة على استفسارات العملاء واعتراضاتهم',
+            contact: 'كروت الاتصال المباشر والواتساب والبريد ومواعيد العمل',
+            footer: 'روابط الخدمات وشبكات التواصل والاعتماد الرسمي',
             speedDial: 'أزرار الاتصال الهاتفي والواتساب الثابتة بالزاوية'
           };
           return map[key] || '';

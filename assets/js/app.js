@@ -32,6 +32,9 @@ document.addEventListener('alpine:init', () => {
         heroBadge: true,
         heroStats: true,
         trustBar: true,
+        video: true,
+        steps: true,
+        sectors: true,
         pillar1: true,
         pillar2: true,
         pillar3: true,
@@ -39,6 +42,10 @@ document.addEventListener('alpine:init', () => {
         technology: true,
         comparisonTable: true,
         gallery: true,
+        reviews: true,
+        faq: true,
+        contact: true,
+        footer: true,
         speedDial: true
       },
       contacts: {

@@ -4,6 +4,9 @@
     "heroBadge": true,
     "heroStats": true,
     "trustBar": true,
+    "video": true,
+    "steps": true,
+    "sectors": true,
     "pillar1": true,
     "pillar2": true,
     "pillar3": true,
@@ -11,6 +14,10 @@
     "technology": true,
     "comparisonTable": true,
     "gallery": true,
+    "reviews": true,
+    "faq": true,
+    "contact": true,
+    "footer": true,
     "speedDial": true
   },
   "contacts": {
@@ -617,5 +624,238 @@
         "back_to_top": "Back to Top"
       }
     }
+  },
+  "video": {
+    "url": "assets/videos/beforeafter.mp4",
+    "poster": "assets/images/hero-beforeafter.jpg?v=2",
+    "autoplay": true,
+    "tag": {
+      "ar": "تجربة عملية موثقة بالفيديو",
+      "en": "Verified Live Video Demonstration"
+    },
+    "title": {
+      "ar": "شاهد الفرق الحقيقي: قياس الحرارة بالأرقام قبل وبعد التركيب",
+      "en": "See The Real Difference: Temperature Readings Before & After Installation"
+    },
+    "subtitle": {
+      "ar": "فيديو ميداني مباشر بجهاز الليزر الحراري يثبت انخفاض درجة الحرارة فوراً بمجرد وضع عازل بروتيرم النانو سيراميك.",
+      "en": "Live field video with thermal laser meter demonstrating instant temperature drop with ProTherme nano-ceramic shield."
+    },
+    "badge_top": {
+      "ar": "فحص ميداني حي بجهاز الليزر الحراري",
+      "en": "Live On-Site Thermal Laser Test"
+    },
+    "badge_quality": {
+      "ar": "HD 1080p | On-Site Test",
+      "en": "HD 1080p | On-Site Test"
+    },
+    "caption": {
+      "ar": "تم توثيق هذا الاختبار على زجاج حقيقي بنفس العينات المقدمة للعملاء.",
+      "en": "This test was documented on real glass using the exact same samples provided to clients."
+    },
+    "metrics_title": {
+      "ar": "أرقام موثقة تثبت لك النتيجة قبل أن تدفع قرشاً واحداً",
+      "en": "Verified Numbers That Prove The Result Before You Spend a Single Penny"
+    },
+    "metrics_desc": {
+      "ar": "لا نعتمد على الوعود النظرية. أثناء زيارة المعاينة، يحضر مهندسنا جهاز كاشف الحرارة ويجري نفس هذا الاختبار العملي على زجاج بيتك لتشعر بفارق البرودة بنفسك.",
+      "en": "We don't rely on theoretical promises. During our survey visit, our engineer brings the thermal detector and conducts this live test on your own windows."
+    },
+    "h1_title": {
+      "ar": "هبوط فوري يتجاوز 15°C إلى 20°C",
+      "en": "Instant Drop Exceeding 15°C to 20°C"
+    },
+    "h1_desc": {
+      "ar": "انخفاض مباشر وملحوظ في درجة حرارة سطح الزجاج بمجرد وضع فيلم النانو سيراميك.",
+      "en": "Immediate drop in glass surface temperature the moment nano-ceramic film is placed."
+    },
+    "h2_title": {
+      "ar": "توفير 30% من استهلاك التكييف",
+      "en": "30% Reduction in AC Power Consumption"
+    },
+    "h2_desc": {
+      "ar": "التكييف يفصل في وقت أسرع ويحافظ على برودة المكان دون الحاجة للتشغيل المستمر بأقصى طاقة.",
+      "en": "Air conditioners cycle off faster and maintain comfort without continuous maximum-power strain."
+    },
+    "h3_title": {
+      "ar": "رؤية طبيعية نقية 100%",
+      "en": "100% Crystal-Clear Daylight & View"
+    },
+    "h3_desc": {
+      "ar": "لا تعتيم، لا سواد، ولا حجب للإضاءة الطبيعية أو المنظر الخارجي الخلاب.",
+      "en": "No darkening, no mirror blackout, and zero distortion of natural sunlight or panoramic scenery."
+    },
+    "btn_cta": {
+      "ar": "اطلب نفس الاختبار بموقعك مجاناً",
+      "en": "Request This Free Live Test at Your Location"
+    }
+  },
+  "reviews": {
+    "tag": {
+      "ar": "آراء وتجارب واقعية",
+      "en": "Real Client Experiences"
+    },
+    "title": {
+      "ar": "ماذا يقول عملاؤنا بعد تجربة عوازل بروتيرم؟",
+      "en": "What Our Clients Say After Experiencing ProTherme?"
+    },
+    "subtitle": {
+      "ar": "تجارب حقيقية لأصحاب الفلل والوحدات السكنية والمقرات الخاصة تؤكد فارق الحرارة وتوفير الكهرباء.",
+      "en": "Authentic experiences from villa owners, residential units, and private headquarters confirming heat reduction and power savings."
+    },
+    "items": [
+      {
+        "name": {
+          "ar": "م. كريم الدسوقي",
+          "en": "Eng. Karim El-Desouky"
+        },
+        "location": {
+          "ar": "فيلا - كمبوند سوديك، الشيخ زايد",
+          "en": "Villa - SODIC Compound, Sheikh Zayed"
+        },
+        "text": {
+          "ar": "فرق الحرارة بعد تركيب فيلم النانو سيراميك على واجهات الفيلا الزجاجية غير طبيعي، التكييفات بقت تفصل أسرع بكتير ووفرنا في فاتورة الكهرباء بشكل ملحوظ جداً.",
+          "en": "The temperature difference after installing the nano-ceramic film is extraordinary. The AC cuts off much faster and our electric bill dropped noticeably."
+        },
+        "badge": {
+          "ar": "تجربة مؤكدة",
+          "en": "Verified Experience"
+        },
+        "rating": 5
+      },
+      {
+        "name": {
+          "ar": "د. سارة عبد الرحمن",
+          "en": "Dr. Sara Abdelrahman"
+        },
+        "location": {
+          "ar": "عيادة ومقر خاص - التجمع الخامس",
+          "en": "Clinic & Private Office - New Cairo"
+        },
+        "text": {
+          "ar": "الرؤية واضحة ونقية تماماً، والإضاءة الطبيعية بتدخل كاملة بدون وهج يضايق المرضى وبدون حرارة خانقة. خدمة راقية وتركيب هندسي نظيف بدون أي فوضى.",
+          "en": "Vision is crystal clear, natural light enters fully without irritating glare or suffocating heat. Clean engineering installation with zero mess."
+        },
+        "badge": {
+          "ar": "تجربة مؤكدة",
+          "en": "Verified Experience"
+        },
+        "rating": 5
+      },
+      {
+        "name": {
+          "ar": "أ. شريف المنياوي",
+          "en": "Mr. Sherif El-Meniawy"
+        },
+        "location": {
+          "ar": "بنتهاوس - بالم هيلز، 6 أكتوبر",
+          "en": "Penthouse - Palm Hills, 6th of October"
+        },
+        "text": {
+          "ar": "كنت قلقان إن الفيلم يغمق شكل الواجهة أو يغير لون الزجاج، لكن النتيجة إبهار بصري حقيقي وحرارة الشمس نزلت أكتر من النصف من أول يوم.",
+          "en": "I was worried the film might darken the facade, but the result is a true optical triumph and heat dropped by more than half on day one."
+        },
+        "badge": {
+          "ar": "تجربة مؤكدة",
+          "en": "Verified Experience"
+        },
+        "rating": 5
+      },
+      {
+        "name": {
+          "ar": "م. تامر فؤاد",
+          "en": "Eng. Tamer Fouad"
+        },
+        "location": {
+          "ar": "فيلا مستقلة - ميفيدا، القاهرة الجديدة",
+          "en": "Stand-alone Villa - Mivida, New Cairo"
+        },
+        "text": {
+          "ar": "جهاز قياس الحرارة أثناء المعاينة ورانا الفرق بالأرقام، والتركيب الهندسي نظيف وسريع بدون أي فقاعات أو أتربة. تجربة ممتازة تستحق كل قرش.",
+          "en": "The heat detector meter during the survey showed us exact numbers. Flawless dust-free installation without bubbles. Worth every penny."
+        },
+        "badge": {
+          "ar": "تجربة مؤكدة",
+          "en": "Verified Experience"
+        },
+        "rating": 5
+      },
+      {
+        "name": {
+          "ar": "د. هشام القاضي",
+          "en": "Dr. Hesham El-Kady"
+        },
+        "location": {
+          "ar": "مكتب استشارات هندسية - المعادي دجلة",
+          "en": "Engineering Consulting Office - Maadi Degla"
+        },
+        "text": {
+          "ar": "استجابة سريعة ومعاينة احترافية بالعينات في نفس اليوم. الفيلم عزل الحرارة تماماً وشهادة الضمان المعتمدة 25 سنة بتدي راحة بال تامة.",
+          "en": "Fast response and same-day sample visit. The film completely rejected the heat and the 25-year official warranty gives complete peace of mind."
+        },
+        "badge": {
+          "ar": "تجربة مؤكدة",
+          "en": "Verified Experience"
+        },
+        "rating": 5
+      },
+      {
+        "name": {
+          "ar": "أ. ياسمين خيري",
+          "en": "Ms. Yasmine Kheiry"
+        },
+        "location": {
+          "ar": "تاون هاوس - مدينتي",
+          "en": "Townhouse - Madinaty"
+        },
+        "text": {
+          "ar": "حماية حقيقية للفرش والباركيه من التلف والبهتان بسبب أشعة الشمس المباشرة، والحرارة جوة البيت بقت لطيفة ومريحة طوال ساعات النهار.",
+          "en": "True protection for furniture and parquet from fading caused by direct sun. Indoor temperature stays cool and pleasant all day."
+        },
+        "badge": {
+          "ar": "تجربة مؤكدة",
+          "en": "Verified Experience"
+        },
+        "rating": 5
+      },
+      {
+        "name": {
+          "ar": "م. إسلام رفعت",
+          "en": "Eng. Eslam Refaat"
+        },
+        "location": {
+          "ar": "دوبلكس - هايد بارك، التجمع",
+          "en": "Duplex - Hyde Park, New Cairo"
+        },
+        "text": {
+          "ar": "جربت حلول تانية كتير قبل كدة، لكن عازل بروتيرم النانو سيراميك فرق جداً في كفاءة التكييف وهدوء البيت. فريق محترم والتزام دقيق بالمواعيد.",
+          "en": "I tried many other solutions before, but ProTherme nano-ceramic made a huge difference in AC efficiency and indoor tranquility. Great crew and punctual."
+        },
+        "badge": {
+          "ar": "تجربة مؤكدة",
+          "en": "Verified Experience"
+        },
+        "rating": 5
+      },
+      {
+        "name": {
+          "ar": "أ. عمرو الصاوي",
+          "en": "Mr. Amr El-Sawy"
+        },
+        "location": {
+          "ar": "شاليه - ستيلا دي ماري، العين السخنة",
+          "en": "Chalet - Stella Di Mare, Ain Sokhna"
+        },
+        "text": {
+          "ar": "الواجهات البحرية كانت بتسخن الصالة لدرجة إن التكييف مبيسقعش، بعد العزل القعدة بقت ممتازة ودرجة الحرارة انخفضت أكتر من 14 درجة.",
+          "en": "The sea-facing windows used to overheat the living area so AC couldn't cool it down. After insulation, temperature dropped over 14°C and it's wonderful."
+        },
+        "badge": {
+          "ar": "تجربة مؤكدة",
+          "en": "Verified Experience"
+        },
+        "rating": 5
+      }
+    ]
   }
 }
