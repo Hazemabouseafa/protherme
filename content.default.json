@@ -155,7 +155,7 @@
         "title": "بروتيرم للحلول الهندسية | عزل حراري وحماية الأسطح الفاخرة"
       },
       "nav": {
-        "brand_sub": "الممثل المعتمد لـ Global Hi-Tech Films",
+        "brand_sub": "Authorized Global-Tech Films Partner",
         "services": "الحلول والخدمات",
         "sectors": "قطاعات التميز",
         "tech": "التقنية والضمان",
@@ -393,7 +393,7 @@
         "title": "ProTherme Engineering Solutions | Thermal Insulation & Surface Shield"
       },
       "nav": {
-        "brand_sub": "Authorized Global Hi-Tech Films Partner",
+        "brand_sub": "Authorized Global-Tech Films Partner",
         "services": "Solutions",
         "sectors": "Sectors",
         "tech": "Technology",
@@ -858,7 +858,107 @@
       }
     ]
   },
-  "blocks": [],
+  "blocks": [
+    {
+      "id": "block_intro_trailer",
+      "enabled": true,
+      "title": {
+        "ar": "الفيديو التعريفي ببروتيرم | حلول العزل الحراري المتقدمة",
+        "en": "ProTherme Official Showcase | Advanced Thermal Shield"
+      },
+      "tag": {
+        "ar": "فيديو تعريفي",
+        "en": "Official Trailer"
+      },
+      "subtitle": {
+        "ar": "تعرف على قوة تقنية النانو سيراميك وتأثيرها المباشر في خفض الحرارة وتوفير استهلاك الطاقة",
+        "en": "Discover the breakthrough nano-ceramic technology protecting architectural glass and cutting energy costs"
+      },
+      "content": {
+        "ar": "شاهد العرض المرئي الرسمي لشركة بروتيرم، الشريك المعتمد لـ Global-Tech Films. استكشف التطبيقات الواقعية والنتائج الهندسية المعتمدة لعوازل النانو سيراميك للواجهات والأسطح الزجاجية.",
+        "en": "Watch the official presentation of ProTherme, Authorized Global-Tech Films Partner. Explore real-world applications and certified engineering results of nano-ceramic coatings."
+      },
+      "theme": "dark",
+      "layout": "banner",
+      "image": "download/trailer.mp4",
+      "video": "download/trailer.mp4",
+      "mediaType": "video",
+      "imageAlign": "right",
+      "ctaText": {
+        "ar": "طلب معاينة فنية",
+        "en": "Request Survey"
+      },
+      "ctaLink": "#contact",
+      "secondaryCtaText": {
+        "ar": "استشارة عبر واتساب",
+        "en": "WhatsApp Advisory"
+      },
+      "secondaryCtaLink": "https://wa.me/201010010030"
+    },
+    {
+      "id": "block_protherme_posters",
+      "enabled": true,
+      "title": {
+        "ar": "بوسترات وحملات بروتيرم التوعوية والهندسية",
+        "en": "ProTherme Official Posters & Campaigns"
+      },
+      "tag": {
+        "ar": "إصدارات رسمية",
+        "en": "Official Editions"
+      },
+      "subtitle": {
+        "ar": "حلول متكاملة للمباني الذكية وخفض أحمال التكييف وتوفير استهلاك الكهرباء",
+        "en": "Integrated solutions for smart buildings, slashing AC loads and saving electricity"
+      },
+      "content": {
+        "ar": "تصميمات وحملات بروتيرم المعتمدة لتوعية الملاك والمطورين بأهمية عزل الزجاج والواجهات المعمارية بأحدث تقنيات النانو سيراميك العالمية.",
+        "en": "Certified campaigns educating property owners and developers on protecting architectural glass with cutting-edge nano-ceramic films."
+      },
+      "theme": "dark",
+      "layout": "posters",
+      "image": "assets/images/protherme-poster-smart-buildings.jpg",
+      "secondaryImage": "assets/images/protherme-poster-save-electricity.jpg",
+      "images": [
+        "assets/images/protherme-poster-smart-buildings.jpg",
+        "assets/images/protherme-poster-save-electricity.jpg"
+      ],
+      "posters": [
+        {
+          "title": {
+            "ar": "المباني الذكية تحتاج حلولاً ذكية",
+            "en": "Smart Buildings Need Smart Solutions"
+          },
+          "desc": {
+            "ar": "عوازل نانو سيراميك متطورة للزجاج والواجهات المعمارية لعزل أشعة الشمس وحرارة الصيف القاسية",
+            "en": "Advanced nano-ceramic coatings for architectural glass blocking solar heat and UV radiation"
+          },
+          "image": "assets/images/protherme-poster-smart-buildings.jpg"
+        },
+        {
+          "title": {
+            "ar": "وفر كهرباء وخفف حمل التكييف",
+            "en": "Save Electricity & Lighten AC Load"
+          },
+          "desc": {
+            "ar": "كفاءة تبريد فائقة وحماية متكاملة من الأشعة فوق البنفسجية وتحت الحمراء بنسبة تصل إلى 99%",
+            "en": "Superior cooling efficiency and complete UV & IR protection up to 99%"
+          },
+          "image": "assets/images/protherme-poster-save-electricity.jpg"
+        }
+      ],
+      "imageAlign": "right",
+      "ctaText": {
+        "ar": "تحميل الفيديو التعريفي",
+        "en": "Download Official Video"
+      },
+      "ctaLink": "download/trailer.mp4",
+      "secondaryCtaText": {
+        "ar": "حجز موعد استشارة",
+        "en": "Book Consultation"
+      },
+      "secondaryCtaLink": "#contact"
+    }
+  ],
   "navList": [
     {
       "id": "services",
@@ -955,59 +1055,73 @@
       "type": "builtin"
     },
     {
+      "id": "block_intro_trailer",
+      "name_ar": "فيديو بروتيرم التعريفي",
+      "name_en": "ProTherme Intro Trailer",
+      "order": 3,
+      "type": "custom"
+    },
+    {
       "id": "steps",
       "name_ar": "قسم خطوات العمل (3 خطوات)",
       "name_en": "3 Simple Steps",
-      "order": 3,
+      "order": 4,
       "type": "builtin"
+    },
+    {
+      "id": "block_protherme_posters",
+      "name_ar": "بوسترات بروتيرم الرسمية",
+      "name_en": "ProTherme Posters",
+      "order": 5,
+      "type": "custom"
     },
     {
       "id": "sectors",
       "name_ar": "قسم القطاعات (فلل ومشاريع)",
       "name_en": "Sectors Showcase",
-      "order": 4,
+      "order": 6,
       "type": "builtin"
     },
     {
       "id": "services",
       "name_ar": "قسم الركائز والخدمات الـ 3",
       "name_en": "3 Core Pillars",
-      "order": 5,
+      "order": 7,
       "type": "builtin"
     },
     {
       "id": "technology",
       "name_ar": "قسم التقنية والمعايير",
       "name_en": "Technology & Standards",
-      "order": 6,
+      "order": 8,
       "type": "builtin"
     },
     {
       "id": "gallery",
       "name_ar": "معرض صور المشاريع",
       "name_en": "Projects Gallery",
-      "order": 7,
+      "order": 9,
       "type": "builtin"
     },
     {
       "id": "reviews",
       "name_ar": "قسم آراء وتجارب العملاء",
       "name_en": "Customer Reviews",
-      "order": 8,
+      "order": 10,
       "type": "builtin"
     },
     {
       "id": "faq",
       "name_ar": "قسم الأسئلة الشائعة",
       "name_en": "FAQ Section",
-      "order": 9,
+      "order": 11,
       "type": "builtin"
     },
     {
       "id": "contact",
       "name_ar": "قسم طلب المعاينة والاتصال",
       "name_en": "Contact & Leads Hub",
-      "order": 10,
+      "order": 12,
       "type": "builtin"
     }
   ]

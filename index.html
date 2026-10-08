@@ -516,7 +516,7 @@ var translations = {
       "title": "بروتيرم للحلول الهندسية | عزل حراري وحماية الأسطح الفاخرة"
     },
     "nav": {
-      "brand_sub": "الممثل المعتمد لـ Global Hi-Tech Films",
+      "brand_sub": "Authorized Global-Tech Films Partner",
       "services": "الحلول والخدمات",
       "sectors": "قطاعات التميز",
       "tech": "التقنية والضمان",
@@ -755,7 +755,7 @@ var translations = {
       "title": "ProTherme Engineering Solutions | Thermal Insulation & Surface Shield"
     },
     "nav": {
-      "brand_sub": "Authorized Global Hi-Tech Films Partner",
+      "brand_sub": "Authorized Global-Tech Films Partner",
       "services": "Solutions",
       "sectors": "Sectors",
       "tech": "Technology",
@@ -1862,8 +1862,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           </div>
           <div class="flex flex-col shrink-0 min-w-0">
             <span class="text-xl sm:text-2xl font-black tracking-tight text-slate-950 group-hover:text-cyan-700 transition-colors leading-none">ProTherme</span>
-            <span class="hidden 2xl:block text-[11px] text-cyan-700 font-bold mt-1 tracking-tight whitespace-nowrap" x-text="t('nav.brand_sub')"></span>
-            <span class="hidden sm:block 2xl:hidden text-[10px] sm:text-[11px] text-cyan-700 font-bold mt-0.5 tracking-tight whitespace-nowrap" x-text="lang === 'ar' ? 'وكيل معتمد | Global Hi-Tech' : 'Authorized Global Hi-Tech'"></span>
+            <span class="hidden sm:block text-[10px] sm:text-[11px] text-cyan-700 font-bold mt-0.5 sm:mt-1 tracking-tight whitespace-nowrap" x-text="t('nav.brand_sub')">Authorized Global-Tech Films Partner</span>
           </div>
         </a>
 
@@ -3379,10 +3378,15 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             <div 
               :class="block.imageAlign === 'left' ? 'lg:col-span-5 lg:order-1' : 'lg:col-span-5 lg:order-2'" 
               class="flex items-center justify-center">
-              <template x-if="block.image">
+              <template x-if="block.image || block.video">
                 <div class="relative w-full rounded-3xl overflow-hidden shadow-2xl border"
-                     :class="block.theme === 'white' ? 'border-slate-200' : 'border-white/20'">
-                  <img :src="block.image" :alt="block.title ? (block.title.ar || block.title.en || 'Block Visual') : 'Visual'" class="w-full h-auto max-h-[380px] object-cover">
+                     :class="block.theme === 'white' ? 'border-slate-200 bg-slate-100' : 'border-white/20 bg-slate-900'">
+                  <template x-if="(block.image && (block.image.endsWith('.mp4') || block.image.endsWith('.webm'))) || block.video || block.mediaType === 'video'">
+                    <video :src="block.video || block.image" controls playsinline preload="metadata" class="w-full h-auto max-h-[400px] object-cover rounded-3xl"></video>
+                  </template>
+                  <template x-if="!((block.image && (block.image.endsWith('.mp4') || block.image.endsWith('.webm'))) || block.video || block.mediaType === 'video')">
+                    <img :src="block.image" :alt="block.title ? (block.title.ar || block.title.en || 'Block Visual') : 'Visual'" class="w-full h-auto max-h-[380px] object-cover">
+                  </template>
                 </div>
               </template>
             </div>
@@ -3412,11 +3416,19 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               :class="block.theme === 'white' ? 'text-slate-600' : 'text-slate-300'"
               x-text="block.subtitle ? (block.subtitle[lang] || block.subtitle.ar || block.subtitle.en || block.subtitle) : ''"></p>
 
-            <!-- Optional Image in Banner -->
-            <template x-if="block.image">
-              <div class="pt-4 max-w-2xl mx-auto">
-                <img :src="block.image" :alt="block.title ? (block.title.ar || block.title.en || 'Visual') : 'Visual'" class="w-full max-h-[340px] rounded-3xl object-cover shadow-2xl border"
-                     :class="block.theme === 'white' ? 'border-slate-200' : 'border-white/20'">
+            <!-- Optional Image or Video in Banner -->
+            <template x-if="block.image || block.video">
+              <div class="pt-4 max-w-4xl mx-auto">
+                <template x-if="(block.image && (block.image.endsWith('.mp4') || block.image.endsWith('.webm'))) || block.video || block.mediaType === 'video'">
+                  <div class="relative rounded-3xl overflow-hidden shadow-2xl border aspect-video max-h-[480px] bg-slate-950 flex items-center justify-center"
+                       :class="block.theme === 'white' ? 'border-slate-200' : 'border-white/20'">
+                    <video :src="block.video || block.image" controls playsinline preload="metadata" class="w-full h-full object-contain mx-auto rounded-3xl"></video>
+                  </div>
+                </template>
+                <template x-if="!((block.image && (block.image.endsWith('.mp4') || block.image.endsWith('.webm'))) || block.video || block.mediaType === 'video')">
+                  <img :src="block.image" :alt="block.title ? (block.title.ar || block.title.en || 'Visual') : 'Visual'" class="w-full max-h-[380px] rounded-3xl object-cover shadow-2xl border"
+                       :class="block.theme === 'white' ? 'border-slate-200' : 'border-white/20'">
+                </template>
               </div>
             </template>
 
@@ -3476,11 +3488,19 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 x-text="block.content ? (block.content[lang] || block.content.ar || block.content.en || block.content) : ''"></div>
             </div>
 
-            <!-- Right: Image & Action -->
+            <!-- Right: Image or Video & Action -->
             <div class="flex flex-col sm:flex-row md:flex-col items-center gap-4 shrink-0">
-              <template x-if="block.image">
-                <img :src="block.image" :alt="block.title ? (block.title.ar || block.title.en || 'Card Visual') : 'Card Visual'" class="w-48 h-32 rounded-2xl object-cover shadow-md border"
-                     :class="block.theme === 'white' ? 'border-slate-200' : 'border-white/20'">
+              <template x-if="block.image || block.video">
+                <div>
+                  <template x-if="(block.image && (block.image.endsWith('.mp4') || block.image.endsWith('.webm'))) || block.video || block.mediaType === 'video'">
+                    <video :src="block.video || block.image" controls playsinline preload="metadata" class="w-56 h-36 rounded-2xl object-cover shadow-md border"
+                           :class="block.theme === 'white' ? 'border-slate-200' : 'border-white/20'"></video>
+                  </template>
+                  <template x-if="!((block.image && (block.image.endsWith('.mp4') || block.image.endsWith('.webm'))) || block.video || block.mediaType === 'video')">
+                    <img :src="block.image" :alt="block.title ? (block.title.ar || block.title.en || 'Card Visual') : 'Card Visual'" class="w-48 h-32 rounded-2xl object-cover shadow-md border"
+                         :class="block.theme === 'white' ? 'border-slate-200' : 'border-white/20'">
+                  </template>
+                </div>
               </template>
 
               <template x-if="block.ctaText && (block.ctaText[lang] || block.ctaText.ar || block.ctaText.en || block.ctaText)">
@@ -3491,6 +3511,98 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               </template>
             </div>
 
+          </div>
+        </template>
+
+        <!-- LAYOUT 4: POSTERS (Showcase ProTherme Posters) -->
+        <template x-if="block.layout === 'posters'">
+          <div class="space-y-10">
+            <!-- Header Section -->
+            <div class="text-center max-w-3xl mx-auto space-y-4">
+              <div x-show="block.tag && (block.tag[lang] || block.tag.ar || block.tag.en)" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold shadow-xs mx-auto"
+                   :class="block.theme === 'white' ? 'bg-cyan-50 border border-cyan-200 text-cyan-800' : 'bg-white/10 border border-white/20 text-cyan-300 backdrop-blur-md'">
+                <span x-text="block.tag ? (block.tag[lang] || block.tag.ar || block.tag.en || block.tag) : ''"></span>
+              </div>
+              <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight"
+                  :class="block.theme === 'white' ? 'text-slate-950' : 'text-white'"
+                  x-text="block.title ? (block.title[lang] || block.title.ar || block.title.en || block.title) : ''"></h2>
+              <p x-show="block.subtitle && (block.subtitle[lang] || block.subtitle.ar || block.subtitle.en)"
+                 class="text-base sm:text-lg leading-relaxed max-w-2xl mx-auto"
+                 :class="block.theme === 'white' ? 'text-slate-600' : 'text-slate-300'"
+                 x-text="block.subtitle ? (block.subtitle[lang] || block.subtitle.ar || block.subtitle.en || block.subtitle) : ''"></p>
+            </div>
+
+            <!-- Posters Grid: Two user-uploaded posters -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-5xl mx-auto">
+              <!-- Poster 1: Smart Buildings -->
+              <div class="group relative rounded-3xl overflow-hidden border shadow-2xl transition-all duration-300 hover:-translate-y-1.5 hover:shadow-cyan-500/20 flex flex-col"
+                   :class="block.theme === 'white' ? 'bg-white border-slate-200' : 'bg-slate-900 border-white/20'">
+                <div class="overflow-hidden bg-slate-950 flex items-center justify-center p-3">
+                  <img :src="block.images ? block.images[0] : (block.image || 'assets/images/protherme-poster-smart-buildings.jpg')" 
+                       alt="ProTherme Smart Buildings Poster" 
+                       class="w-full h-auto max-h-[550px] object-contain rounded-2xl group-hover:scale-[1.02] transition-transform duration-500">
+                </div>
+                <div class="p-6 space-y-2 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 class="text-lg sm:text-xl font-black" :class="block.theme === 'white' ? 'text-slate-900' : 'text-white'"
+                        x-text="block.posters && block.posters[0] ? (block.posters[0].title[lang] || block.posters[0].title.ar || block.posters[0].title) : (lang === 'ar' ? 'المباني الذكية تحتاج حلولاً ذكية' : 'Smart Buildings Need Smart Solutions')"></h3>
+                    <p class="text-xs sm:text-sm mt-1" :class="block.theme === 'white' ? 'text-slate-600' : 'text-slate-300'"
+                       x-text="block.posters && block.posters[0] ? (block.posters[0].desc[lang] || block.posters[0].desc.ar || block.posters[0].desc) : (lang === 'ar' ? 'عوازل نانو سيراميك متطورة للزجاج والواجهات المعمارية لعزل أشعة الشمس وحرارة الصيف القاسية' : 'Advanced nano-ceramic coatings for architectural glass blocking solar heat and UV')"></p>
+                  </div>
+                  <div class="pt-4 flex items-center gap-2">
+                    <a :href="block.images ? block.images[0] : (block.image || 'assets/images/protherme-poster-smart-buildings.jpg')" 
+                       target="_blank" 
+                       class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5"
+                       :class="block.theme === 'white' ? 'bg-slate-100 hover:bg-slate-200 text-slate-800' : 'bg-white/10 hover:bg-white/20 text-white'">
+                      <i class="fa-solid fa-up-right-and-down-left-from-center text-xs"></i>
+                      <span x-text="lang === 'ar' ? 'عرض البوستر بدقة كاملة' : 'View Full Poster'"></span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Poster 2: Save Electricity -->
+              <div class="group relative rounded-3xl overflow-hidden border shadow-2xl transition-all duration-300 hover:-translate-y-1.5 hover:shadow-emerald-500/20 flex flex-col"
+                   :class="block.theme === 'white' ? 'bg-white border-slate-200' : 'bg-slate-900 border-white/20'">
+                <div class="overflow-hidden bg-slate-950 flex items-center justify-center p-3">
+                  <img :src="(block.images && block.images[1]) ? block.images[1] : (block.secondaryImage || 'assets/images/protherme-poster-save-electricity.jpg')" 
+                       alt="ProTherme Save Electricity Poster" 
+                       class="w-full h-auto max-h-[550px] object-contain rounded-2xl group-hover:scale-[1.02] transition-transform duration-500">
+                </div>
+                <div class="p-6 space-y-2 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h3 class="text-lg sm:text-xl font-black" :class="block.theme === 'white' ? 'text-slate-900' : 'text-white'"
+                        x-text="block.posters && block.posters[1] ? (block.posters[1].title[lang] || block.posters[1].title.ar || block.posters[1].title) : (lang === 'ar' ? 'وفر كهرباء وخفف حمل التكييف' : 'Save Electricity & Lighten AC Load')"></h3>
+                    <p class="text-xs sm:text-sm mt-1" :class="block.theme === 'white' ? 'text-slate-600' : 'text-slate-300'"
+                       x-text="block.posters && block.posters[1] ? (block.posters[1].desc[lang] || block.posters[1].desc.ar || block.posters[1].desc) : (lang === 'ar' ? 'كفاءة تبريد فائقة وحماية متكاملة من الأشعة فوق البنفسجية وتحت الحمراء بنسبة تصل إلى 99%' : 'Superior cooling efficiency and complete UV & IR protection up to 99%')"></p>
+                  </div>
+                  <div class="pt-4 flex items-center gap-2">
+                    <a :href="(block.images && block.images[1]) ? block.images[1] : (block.secondaryImage || 'assets/images/protherme-poster-save-electricity.jpg')" 
+                       target="_blank" 
+                       class="px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5"
+                       :class="block.theme === 'white' ? 'bg-slate-100 hover:bg-slate-200 text-slate-800' : 'bg-white/10 hover:bg-white/20 text-white'">
+                      <i class="fa-solid fa-up-right-and-down-left-from-center text-xs"></i>
+                      <span x-text="lang === 'ar' ? 'عرض البوستر بدقة كاملة' : 'View Full Poster'"></span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CTAs -->
+            <div class="pt-4 flex flex-wrap items-center justify-center gap-3">
+              <template x-if="block.ctaText && (block.ctaText[lang] || block.ctaText.ar || block.ctaText.en || block.ctaText)">
+                <a :href="block.ctaLink || '#contact'" 
+                   class="px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white font-black text-sm shadow-lg shadow-cyan-600/30 transition active:scale-95 flex items-center gap-2"
+                   x-text="block.ctaText[lang] || block.ctaText.ar || block.ctaText.en || block.ctaText"></a>
+              </template>
+              <template x-if="block.secondaryCtaText && (block.secondaryCtaText[lang] || block.secondaryCtaText.ar || block.secondaryCtaText.en || block.secondaryCtaText)">
+                <a :href="block.secondaryCtaLink || 'tel:01010010030'" 
+                   class="px-6 py-4 rounded-2xl border font-bold text-sm transition flex items-center gap-2"
+                   :class="block.theme === 'white' ? 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300' : 'bg-white/10 hover:bg-white/20 text-white border-white/20'"
+                   x-text="block.secondaryCtaText[lang] || block.secondaryCtaText.ar || block.secondaryCtaText.en || block.secondaryCtaText"></a>
+              </template>
+            </div>
           </div>
         </template>
 

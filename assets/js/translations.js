@@ -10,7 +10,7 @@ var translations = {
       title: 'بروتيرم للحلول الهندسية | الممثل المعتمد لـ Global Hi-Tech Films'
     },
     nav: {
-      brand_sub: 'الممثل المعتمد لـ Global Hi-Tech Films',
+      brand_sub: 'Authorized Global-Tech Films Partner',
       services: 'الخدمات والحلول',
       tech: 'تقنية Global Hi-Tech',
       simulator: 'حاسبة الأداء',
@@ -213,7 +213,7 @@ var translations = {
       title: 'ProTherme Engineering Solutions | Authorized Global Hi-Tech Films Representative'
     },
     nav: {
-      brand_sub: 'Official Partner of Global Hi-Tech Films',
+      brand_sub: 'Authorized Global-Tech Films Partner',
       services: 'Solutions',
       tech: 'Global Hi-Tech Tech',
       simulator: 'Simulator',
