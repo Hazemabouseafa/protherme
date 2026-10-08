@@ -859,6 +859,86 @@
     ]
   },
   "blocks": [],
+  "navList": [
+    {
+      "id": "services",
+      "target": "services",
+      "title": {
+        "ar": "الحلول والخدمات",
+        "en": "Solutions"
+      },
+      "visible": true,
+      "isExternal": false,
+      "order": 1
+    },
+    {
+      "id": "sectors",
+      "target": "sectors",
+      "title": {
+        "ar": "قطاعات التميز",
+        "en": "Sectors"
+      },
+      "visible": true,
+      "isExternal": false,
+      "order": 2
+    },
+    {
+      "id": "faq",
+      "target": "faq",
+      "title": {
+        "ar": "الأسئلة الشائعة",
+        "en": "FAQ"
+      },
+      "visible": true,
+      "isExternal": false,
+      "order": 3
+    },
+    {
+      "id": "technology",
+      "target": "technology",
+      "title": {
+        "ar": "التقنية والضمان",
+        "en": "Technology"
+      },
+      "visible": true,
+      "isExternal": false,
+      "order": 4
+    },
+    {
+      "id": "gallery",
+      "target": "gallery",
+      "title": {
+        "ar": "مشاريع حية",
+        "en": "Projects"
+      },
+      "visible": true,
+      "isExternal": false,
+      "order": 5
+    },
+    {
+      "id": "careers",
+      "target": "careers.html",
+      "title": {
+        "ar": "الوظائف",
+        "en": "Careers"
+      },
+      "visible": true,
+      "isExternal": true,
+      "icon": "fa-solid fa-briefcase",
+      "order": 6
+    },
+    {
+      "id": "contact",
+      "target": "contact",
+      "title": {
+        "ar": "اتصل بنا",
+        "en": "Contact"
+      },
+      "visible": true,
+      "isExternal": false,
+      "order": 7
+    }
+  ],
   "sectionOrder": [
     {
       "id": "trustBar",

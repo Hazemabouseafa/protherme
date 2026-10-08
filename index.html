@@ -1203,11 +1203,13 @@ function prothermeApp() {
 
     // Fetch CMS Content from Server API (with cache invalidation)
     async loadCMSContent() {
-      const CACHE_KEY = 'protherme_cms_v20261008_rev';
+      const CACHE_KEY = 'protherme_cms_v20261008_rev3';
       // Invalidate obsolete prior caches
       try {
         localStorage.removeItem('protherme_cms_content');
         localStorage.removeItem('protherme_cms_v20261008');
+        localStorage.removeItem('protherme_cms_v20261008_rev');
+        localStorage.removeItem('protherme_cms_v20261008_rev2');
       } catch (e) {}
 
       const cached = localStorage.getItem(CACHE_KEY);
@@ -1238,7 +1240,8 @@ function prothermeApp() {
     },
 
     // Translation Lookup Helper (with CMS overrides & smart alias support)
-    t(keyPath) {
+    t(keyPath, forcedLang) {
+      const activeLang = forcedLang || this.lang || 'ar';
       const resolveFromObj = (rootObj) => {
         if (!rootObj) return undefined;
         const keys = keyPath.split('.');
@@ -1270,28 +1273,29 @@ function prothermeApp() {
         return typeof cur === 'string' ? cur : undefined;
       };
 
-      // 1. Check CMS texts override first (current lang)
-      if (this.cms && this.cms.texts && this.cms.texts[this.lang]) {
-        const val = resolveFromObj(this.cms.texts[this.lang]);
-        if (val !== undefined) return val;
-      }
-
-      // 2. Fallback to static dictionary (current lang)
       const dict = (typeof translations !== 'undefined' ? translations : (typeof window !== 'undefined' ? window.translations : {}));
-      if (dict && dict[this.lang]) {
-        const val = resolveFromObj(dict[this.lang]);
+
+      // 1. Check CMS texts override first (target activeLang)
+      if (this.cms && this.cms.texts && this.cms.texts[activeLang]) {
+        const val = resolveFromObj(this.cms.texts[activeLang]);
         if (val !== undefined) return val;
       }
 
-      // 3. Fallback to English in CMS
-      if (this.cms && this.cms.texts && this.cms.texts['en']) {
-        const val = resolveFromObj(this.cms.texts['en']);
+      // 2. Fallback to static dictionary (target activeLang)
+      if (dict && dict[activeLang]) {
+        const val = resolveFromObj(dict[activeLang]);
         if (val !== undefined) return val;
       }
 
-      // 4. Fallback to English in static dict
-      if (dict && dict['en']) {
-        const val = resolveFromObj(dict['en']);
+      // 3. Fallback to alternate language
+      const fallbackLang = activeLang === 'ar' ? 'en' : 'ar';
+      if (this.cms && this.cms.texts && this.cms.texts[fallbackLang]) {
+        const val = resolveFromObj(this.cms.texts[fallbackLang]);
+        if (val !== undefined) return val;
+      }
+
+      if (dict && dict[fallbackLang]) {
+        const val = resolveFromObj(dict[fallbackLang]);
         if (val !== undefined) return val;
       }
 
@@ -1320,7 +1324,15 @@ function prothermeApp() {
       const dir = this.lang === 'ar' ? 'rtl' : 'ltr';
       document.documentElement.setAttribute('dir', dir);
       document.documentElement.setAttribute('lang', this.lang);
-      document.title = this.t('meta.title');
+      document.title = this.lang === 'ar' 
+        ? (this.t('meta.title') || 'بروتيرم للحلول الهندسية | عزل حراري وحماية الأسطح الفاخرة')
+        : (this.t('meta.title') || 'ProTherme Engineering Solutions | Thermal Insulation & Surface Shield');
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content', this.lang === 'ar'
+          ? 'شركة بروتيرم للحلول الهندسية - الممثل والموزع المعتمد لشركة Global Hi-Tech Films العالمية المتخصصة في أفلام العزل الحراري، حماية الأسطح الفاخرة، وأفلام PPF للسيارات.'
+          : 'ProTherme Engineering Solutions - Official Distributor of Global Hi-Tech Films specializing in high-performance architectural thermal insulation, luxury surface protection, and automotive PPF.');
+      }
     },
 
     // Computed Simulator Metrics
@@ -1430,17 +1442,17 @@ function prothermeApp() {
       // 1. FAQ List
       if (!this.cms.faqList || !Array.isArray(this.cms.faqList) || this.cms.faqList.length === 0) {
         this.cms.faqList = [1, 2, 3, 4].map(n => ({
-          q: { ar: this.t('faq.q' + n), en: (this.cms.texts?.en?.faq?.['q' + n] || (typeof translations !== 'undefined' ? translations.en?.faq?.['q' + n] : '') || this.t('faq.q' + n)) },
-          a: { ar: this.t('faq.a' + n), en: (this.cms.texts?.en?.faq?.['a' + n] || (typeof translations !== 'undefined' ? translations.en?.faq?.['a' + n] : '') || this.t('faq.a' + n)) }
+          q: { ar: this.t('faq.q' + n, 'ar'), en: (this.cms.texts?.en?.faq?.['q' + n] || (typeof translations !== 'undefined' ? translations.en?.faq?.['q' + n] : '') || this.t('faq.q' + n, 'en')) },
+          a: { ar: this.t('faq.a' + n, 'ar'), en: (this.cms.texts?.en?.faq?.['a' + n] || (typeof translations !== 'undefined' ? translations.en?.faq?.['a' + n] : '') || this.t('faq.a' + n, 'en')) }
         }));
       }
 
       // 2. Steps List
       if (!this.cms.stepsList || !Array.isArray(this.cms.stepsList) || this.cms.stepsList.length === 0) {
         this.cms.stepsList = [1, 2, 3].map(n => ({
-          num: this.t('steps.s' + n + '_num'),
-          title: { ar: this.t('steps.s' + n + '_title'), en: (this.cms.texts?.en?.steps?.['s' + n + '_title'] || (typeof translations !== 'undefined' ? translations.en?.steps?.['s' + n + '_title'] : '') || this.t('steps.s' + n + '_title')) },
-          desc: { ar: this.t('steps.s' + n + '_desc'), en: (this.cms.texts?.en?.steps?.['s' + n + '_desc'] || (typeof translations !== 'undefined' ? translations.en?.steps?.['s' + n + '_desc'] : '') || this.t('steps.s' + n + '_desc')) }
+          num: this.t('steps.s' + n + '_num', 'ar'),
+          title: { ar: this.t('steps.s' + n + '_title', 'ar'), en: (this.cms.texts?.en?.steps?.['s' + n + '_title'] || (typeof translations !== 'undefined' ? translations.en?.steps?.['s' + n + '_title'] : '') || this.t('steps.s' + n + '_title', 'en')) },
+          desc: { ar: this.t('steps.s' + n + '_desc', 'ar'), en: (this.cms.texts?.en?.steps?.['s' + n + '_desc'] || (typeof translations !== 'undefined' ? translations.en?.steps?.['s' + n + '_desc'] : '') || this.t('steps.s' + n + '_desc', 'en')) }
         }));
       }
 
@@ -1449,15 +1461,15 @@ function prothermeApp() {
         this.cms.pillarsList = ['p1', 'p2', 'p3'].map((pKey, i) => ({
           key: pKey,
           enabled: this.cms.visibility?.['pillar' + (i + 1)] !== false,
-          name: { ar: this.t('pillars.' + pKey + '.name'), en: (this.cms.texts?.en?.pillars?.[pKey]?.name || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.name : '') || this.t('pillars.' + pKey + '.name')) },
-          tag: { ar: this.t('pillars.' + pKey + '.tag'), en: (this.cms.texts?.en?.pillars?.[pKey]?.tag || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.tag : '') || this.t('pillars.' + pKey + '.tag')) },
-          desc: { ar: this.t('pillars.' + pKey + '.desc'), en: (this.cms.texts?.en?.pillars?.[pKey]?.desc || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.desc : '') || this.t('pillars.' + pKey + '.desc')) },
-          f1: { ar: this.t('pillars.' + pKey + '.f1'), en: (this.cms.texts?.en?.pillars?.[pKey]?.f1 || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.f1 : '') || this.t('pillars.' + pKey + '.f1')) },
-          f2: { ar: this.t('pillars.' + pKey + '.f2'), en: (this.cms.texts?.en?.pillars?.[pKey]?.f2 || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.f2 : '') || this.t('pillars.' + pKey + '.f2')) },
-          f3: { ar: this.t('pillars.' + pKey + '.f3'), en: (this.cms.texts?.en?.pillars?.[pKey]?.f3 || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.f3 : '') || this.t('pillars.' + pKey + '.f3')) },
-          f4: { ar: this.t('pillars.' + pKey + '.f4'), en: (this.cms.texts?.en?.pillars?.[pKey]?.f4 || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.f4 : '') || this.t('pillars.' + pKey + '.f4')) },
-          specs: { ar: this.t('pillars.' + pKey + '.specs'), en: (this.cms.texts?.en?.pillars?.[pKey]?.specs || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.specs : '') || this.t('pillars.' + pKey + '.specs')) },
-          cta: { ar: this.t('pillars.' + pKey + '.cta'), en: (this.cms.texts?.en?.pillars?.[pKey]?.cta || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.cta : '') || this.t('pillars.' + pKey + '.cta')) },
+          name: { ar: this.t('pillars.' + pKey + '.name', 'ar'), en: (this.cms.texts?.en?.pillars?.[pKey]?.name || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.name : '') || this.t('pillars.' + pKey + '.name', 'en')) },
+          tag: { ar: this.t('pillars.' + pKey + '.tag', 'ar'), en: (this.cms.texts?.en?.pillars?.[pKey]?.tag || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.tag : '') || this.t('pillars.' + pKey + '.tag', 'en')) },
+          desc: { ar: this.t('pillars.' + pKey + '.desc', 'ar'), en: (this.cms.texts?.en?.pillars?.[pKey]?.desc || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.desc : '') || this.t('pillars.' + pKey + '.desc', 'en')) },
+          f1: { ar: this.t('pillars.' + pKey + '.f1', 'ar'), en: (this.cms.texts?.en?.pillars?.[pKey]?.f1 || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.f1 : '') || this.t('pillars.' + pKey + '.f1', 'en')) },
+          f2: { ar: this.t('pillars.' + pKey + '.f2', 'ar'), en: (this.cms.texts?.en?.pillars?.[pKey]?.f2 || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.f2 : '') || this.t('pillars.' + pKey + '.f2', 'en')) },
+          f3: { ar: this.t('pillars.' + pKey + '.f3', 'ar'), en: (this.cms.texts?.en?.pillars?.[pKey]?.f3 || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.f3 : '') || this.t('pillars.' + pKey + '.f3', 'en')) },
+          f4: { ar: this.t('pillars.' + pKey + '.f4', 'ar'), en: (this.cms.texts?.en?.pillars?.[pKey]?.f4 || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.f4 : '') || this.t('pillars.' + pKey + '.f4', 'en')) },
+          specs: { ar: this.t('pillars.' + pKey + '.specs', 'ar'), en: (this.cms.texts?.en?.pillars?.[pKey]?.specs || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.specs : '') || this.t('pillars.' + pKey + '.specs', 'en')) },
+          cta: { ar: this.t('pillars.' + pKey + '.cta', 'ar'), en: (this.cms.texts?.en?.pillars?.[pKey]?.cta || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.cta : '') || this.t('pillars.' + pKey + '.cta', 'en')) },
           image: this.cms.images?.['pillar' + (i + 1)] || (i === 0 ? 'assets/images/compound-villa-new.jpg' : i === 1 ? 'assets/images/marble-surface-new.jpg' : 'assets/images/supercar-ppf-new.jpg'),
           badge: { ar: this.cms.imageBadges?.['pillar' + (i + 1)]?.ar || (i === 0 ? 'IRR: 88% | UV: 99.9%' : i === 1 ? '8.5 Mil | Self-Healing TPU' : 'Direct Wholesale Supply'), en: this.cms.imageBadges?.['pillar' + (i + 1)]?.en || (i === 0 ? 'IRR: 88% | UV: 99.9%' : i === 1 ? '8.5 Mil | Self-Healing TPU' : 'Direct Wholesale Supply') }
         }));
@@ -1469,9 +1481,9 @@ function prothermeApp() {
           id: 'gallery' + gNum,
           category: gNum === '1' || gNum === '3' ? 'arch' : gNum === '2' ? 'surface' : 'auto',
           image: this.cms.images?.['gallery' + gNum] || (gNum === '1' ? 'assets/images/hotel-enterprise-new.jpg' : gNum === '2' ? 'assets/images/marble-surface-new.jpg' : gNum === '3' ? 'assets/images/compound-villa-new.jpg' : 'assets/images/supercar-ppf-new.jpg'),
-          title: { ar: this.t('gallery.item' + gNum + '_title'), en: (this.cms.texts?.en?.gallery?.['item' + gNum + '_title'] || (typeof translations !== 'undefined' ? translations.en?.gallery?.['item' + gNum + '_title'] : '') || this.t('gallery.item' + gNum + '_title')) },
-          desc: { ar: this.t('gallery.item' + gNum + '_desc'), en: (this.cms.texts?.en?.gallery?.['item' + gNum + '_desc'] || (typeof translations !== 'undefined' ? translations.en?.gallery?.['item' + gNum + '_desc'] : '') || this.t('gallery.item' + gNum + '_desc')) },
-          badge: { ar: this.cms.imageBadges?.['gallery' + gNum + '_badge']?.ar || this.t('gallery.item' + gNum + '_badge'), en: this.cms.imageBadges?.['gallery' + gNum + '_badge']?.en || this.t('gallery.item' + gNum + '_badge') },
+          title: { ar: this.t('gallery.item' + gNum + '_title', 'ar'), en: (this.cms.texts?.en?.gallery?.['item' + gNum + '_title'] || (typeof translations !== 'undefined' ? translations.en?.gallery?.['item' + gNum + '_title'] : '') || this.t('gallery.item' + gNum + '_title', 'en')) },
+          desc: { ar: this.t('gallery.item' + gNum + '_desc', 'ar'), en: (this.cms.texts?.en?.gallery?.['item' + gNum + '_desc'] || (typeof translations !== 'undefined' ? translations.en?.gallery?.['item' + gNum + '_desc'] : '') || this.t('gallery.item' + gNum + '_desc', 'en')) },
+          badge: { ar: this.cms.imageBadges?.['gallery' + gNum + '_badge']?.ar || this.t('gallery.item' + gNum + '_badge', 'ar'), en: this.cms.imageBadges?.['gallery' + gNum + '_badge']?.en || this.t('gallery.item' + gNum + '_badge', 'en') },
           footer: { ar: this.cms.imageBadges?.['gallery' + gNum + '_footer']?.ar || '', en: this.cms.imageBadges?.['gallery' + gNum + '_footer']?.en || '' }
         }));
       }
@@ -1480,8 +1492,8 @@ function prothermeApp() {
       if (!this.cms.techList || !Array.isArray(this.cms.techList) || this.cms.techList.length === 0) {
         this.cms.techList = ['c1', 'c2', 'c3', 'c4'].map((cKey, i) => ({
           key: cKey,
-          title: { ar: this.t('tech_standards.' + cKey + '_title'), en: (this.cms.texts?.en?.tech_standards?.[cKey + '_title'] || (typeof translations !== 'undefined' ? translations.en?.tech_standards?.[cKey + '_title'] : '') || this.t('tech_standards.' + cKey + '_title')) },
-          desc: { ar: this.t('tech_standards.' + cKey + '_desc'), en: (this.cms.texts?.en?.tech_standards?.[cKey + '_desc'] || (typeof translations !== 'undefined' ? translations.en?.tech_standards?.[cKey + '_desc'] : '') || this.t('tech_standards.' + cKey + '_desc')) }
+          title: { ar: this.t('tech_standards.' + cKey + '_title', 'ar'), en: (this.cms.texts?.en?.tech_standards?.[cKey + '_title'] || (typeof translations !== 'undefined' ? translations.en?.tech_standards?.[cKey + '_title'] : '') || this.t('tech_standards.' + cKey + '_title', 'en')) },
+          desc: { ar: this.t('tech_standards.' + cKey + '_desc', 'ar'), en: (this.cms.texts?.en?.tech_standards?.[cKey + '_desc'] || (typeof translations !== 'undefined' ? translations.en?.tech_standards?.[cKey + '_desc'] : '') || this.t('tech_standards.' + cKey + '_desc', 'en')) }
         }));
       }
 
@@ -1489,9 +1501,9 @@ function prothermeApp() {
       if (!this.cms.comparisonList || !Array.isArray(this.cms.comparisonList) || this.cms.comparisonList.length === 0) {
         this.cms.comparisonList = ['r1', 'r2', 'r3', 'r4'].map(rKey => ({
           key: rKey,
-          title: { ar: this.t('comparison.' + rKey + '_title'), en: (this.cms.texts?.en?.comparison?.[rKey + '_title'] || (typeof translations !== 'undefined' ? translations.en?.comparison?.[rKey + '_title'] : '') || this.t('comparison.' + rKey + '_title')) },
-          pro: { ar: this.t('comparison.' + rKey + '_pro'), en: (this.cms.texts?.en?.comparison?.[rKey + '_pro'] || (typeof translations !== 'undefined' ? translations.en?.comparison?.[rKey + '_pro'] : '') || this.t('comparison.' + rKey + '_pro')) },
-          std: { ar: this.t('comparison.' + rKey + '_std'), en: (this.cms.texts?.en?.comparison?.[rKey + '_std'] || (typeof translations !== 'undefined' ? translations.en?.comparison?.[rKey + '_std'] : '') || this.t('comparison.' + rKey + '_std')) }
+          title: { ar: this.t('comparison.' + rKey + '_title', 'ar'), en: (this.cms.texts?.en?.comparison?.[rKey + '_title'] || (typeof translations !== 'undefined' ? translations.en?.comparison?.[rKey + '_title'] : '') || this.t('comparison.' + rKey + '_title', 'en')) },
+          pro: { ar: this.t('comparison.' + rKey + '_pro', 'ar'), en: (this.cms.texts?.en?.comparison?.[rKey + '_pro'] || (typeof translations !== 'undefined' ? translations.en?.comparison?.[rKey + '_pro'] : '') || this.t('comparison.' + rKey + '_pro', 'en')) },
+          std: { ar: this.t('comparison.' + rKey + '_std', 'ar'), en: (this.cms.texts?.en?.comparison?.[rKey + '_std'] || (typeof translations !== 'undefined' ? translations.en?.comparison?.[rKey + '_std'] : '') || this.t('comparison.' + rKey + '_std', 'en')) }
         }));
       }
 
@@ -1500,7 +1512,7 @@ function prothermeApp() {
         this.cms.heroStatsList = ['stat1', 'stat2', 'stat3', 'stat4'].map(k => ({
           key: k,
           num: this.cms.heroStats?.[k]?.num || (k === 'stat1' ? '30%' : k === 'stat2' ? '88%' : k === 'stat3' ? '99%' : '100%'),
-          label: { ar: this.cms.heroStats?.[k]?.label_ar || this.t('hero.' + k + '_label'), en: this.cms.heroStats?.[k]?.label_en || this.t('hero.' + k + '_label') }
+          label: { ar: this.cms.heroStats?.[k]?.label_ar || this.t('hero.' + k + '_label', 'ar'), en: this.cms.heroStats?.[k]?.label_en || this.t('hero.' + k + '_label', 'en') }
         }));
       }
 
@@ -1508,8 +1520,8 @@ function prothermeApp() {
       if (!this.cms.trustList || !Array.isArray(this.cms.trustList) || this.cms.trustList.length === 0) {
         this.cms.trustList = ['t1', 't2', 't3', 't4'].map((tKey, i) => ({
           key: tKey,
-          title: { ar: this.t('trust.' + tKey), en: (this.cms.texts?.en?.trust?.[tKey] || (typeof translations !== 'undefined' ? translations.en?.trust?.[tKey] : '') || this.t('trust.' + tKey)) },
-          sub: { ar: this.t('trust.' + tKey + '_sub'), en: (this.cms.texts?.en?.trust?.[tKey + '_sub'] || (typeof translations !== 'undefined' ? translations.en?.trust?.[tKey + '_sub'] : '') || this.t('trust.' + tKey + '_sub')) }
+          title: { ar: this.t('trust.' + tKey, 'ar'), en: (this.cms.texts?.en?.trust?.[tKey] || (typeof translations !== 'undefined' ? translations.en?.trust?.[tKey] : '') || this.t('trust.' + tKey, 'en')) },
+          sub: { ar: this.t('trust.' + tKey + '_sub', 'ar'), en: (this.cms.texts?.en?.trust?.[tKey + '_sub'] || (typeof translations !== 'undefined' ? translations.en?.trust?.[tKey + '_sub'] : '') || this.t('trust.' + tKey + '_sub', 'en')) }
         }));
       }
 
@@ -1517,28 +1529,132 @@ function prothermeApp() {
       if (!this.cms.videoBulletsList || !Array.isArray(this.cms.videoBulletsList) || this.cms.videoBulletsList.length === 0) {
         this.cms.videoBulletsList = ['h1', 'h2', 'h3'].map((hKey, i) => ({
           key: hKey,
-          title: { ar: this.cms.video?.[hKey + '_title']?.ar || this.cms.video?.[hKey + '_title'] || (hKey === 'h1' ? 'هبوط فوري يتجاوز 15°C إلى 20°C' : hKey === 'h2' ? 'توفير 30% من استهلاك التكييف' : 'رؤية طبيعية نقية 100%'), en: this.cms.video?.[hKey + '_title']?.en || (hKey === 'h1' ? 'Instant 15°C - 20°C Drop' : hKey === 'h2' ? '30% AC Energy Savings' : '100% Natural Optical Clarity') },
-          desc: { ar: this.cms.video?.[hKey + '_desc']?.ar || this.cms.video?.[hKey + '_desc'] || (hKey === 'h1' ? 'انخفاض مباشر وملحوظ في درجة حرارة سطح الزجاج بمجرد وضع فيلم النانو سيراميك.' : hKey === 'h2' ? 'التكييف يفصل في وقت أسرع ويحافظ على برودة المكان دون الحاجة للتشغيل المستمر بأقصى طاقة.' : 'لا تعتيم، لا سواد، ولا حجب للإضاءة الطبيعية أو المنظر الخارجي الخلاب.'), en: this.cms.video?.[hKey + '_desc']?.en || '' }
+          title: { 
+            ar: this.cms.video?.[hKey + '_title']?.ar || this.cms.video?.[hKey + '_title'] || (hKey === 'h1' ? 'هبوط فوري يتجاوز 15°C إلى 20°C' : hKey === 'h2' ? 'توفير 30% من استهلاك التكييف' : 'رؤية طبيعية نقية 100%'), 
+            en: this.cms.video?.[hKey + '_title']?.en || (hKey === 'h1' ? 'Instant 15°C - 20°C Drop' : hKey === 'h2' ? '30% AC Energy Savings' : '100% Natural Optical Clarity') 
+          },
+          desc: { 
+            ar: this.cms.video?.[hKey + '_desc']?.ar || this.cms.video?.[hKey + '_desc'] || (hKey === 'h1' ? 'انخفاض مباشر وملحوظ في درجة حرارة سطح الزجاج بمجرد وضع فيلم النانو سيراميك.' : hKey === 'h2' ? 'التكييف يفصل في وقت أسرع ويحافظ على برودة المكان دون الحاجة للتشغيل المستمر بأقصى طاقة.' : 'لا تعتيم، لا سواد، ولا حجب للإضاءة الطبيعية أو المنظر الخارجي الخلاب.'), 
+            en: this.cms.video?.[hKey + '_desc']?.en || (hKey === 'h1' ? 'Immediate reduction in glass temperature as soon as the nano-ceramic film is installed.' : hKey === 'h2' ? 'AC cycles off faster and keeps indoor spaces cool without running continuously at peak power.' : 'No dimming, no darkness, and zero obstruction of natural daylight or scenic views.') 
+          }
         }));
       }
 
       // 10. Sector Features (Villas & Enterprise)
       if (!this.cms.villaFeaturesList || !Array.isArray(this.cms.villaFeaturesList) || this.cms.villaFeaturesList.length === 0) {
         this.cms.villaFeaturesList = [1, 2, 3].map(n => ({
-          title: { ar: this.t('sectors.villa_f' + n + '_title'), en: (this.cms.texts?.en?.sectors?.['villa_f' + n + '_title'] || this.t('sectors.villa_f' + n + '_title')) },
-          desc: { ar: this.t('sectors.villa_f' + n + '_desc'), en: (this.cms.texts?.en?.sectors?.['villa_f' + n + '_desc'] || this.t('sectors.villa_f' + n + '_desc')) }
+          title: { ar: this.t('sectors.villa_f' + n + '_title', 'ar'), en: (this.cms.texts?.en?.sectors?.['villa_f' + n + '_title'] || this.t('sectors.villa_f' + n + '_title', 'en')) },
+          desc: { ar: this.t('sectors.villa_f' + n + '_desc', 'ar'), en: (this.cms.texts?.en?.sectors?.['villa_f' + n + '_desc'] || this.t('sectors.villa_f' + n + '_desc', 'en')) }
         }));
       }
 
       if (!this.cms.enterpriseFeaturesList || !Array.isArray(this.cms.enterpriseFeaturesList) || this.cms.enterpriseFeaturesList.length === 0) {
         this.cms.enterpriseFeaturesList = [1, 2, 3].map(n => ({
-          title: { ar: this.t('sectors.ent_f' + n + '_title'), en: (this.cms.texts?.en?.sectors?.['ent_f' + n + '_title'] || this.t('sectors.ent_f' + n + '_title')) },
-          desc: { ar: this.t('sectors.ent_f' + n + '_desc'), en: (this.cms.texts?.en?.sectors?.['ent_f' + n + '_desc'] || this.t('sectors.ent_f' + n + '_desc')) }
+          title: { ar: this.t('sectors.ent_f' + n + '_title', 'ar'), en: (this.cms.texts?.en?.sectors?.['ent_f' + n + '_title'] || this.t('sectors.ent_f' + n + '_title', 'en')) },
+          desc: { ar: this.t('sectors.ent_f' + n + '_desc', 'ar'), en: (this.cms.texts?.en?.sectors?.['ent_f' + n + '_desc'] || this.t('sectors.ent_f' + n + '_desc', 'en')) }
         }));
+      }
+
+      // Self-heal any items where en mistakenly contains Arabic text
+      const arabicRegex = /[\u0600-\u06FF]/;
+      if (Array.isArray(this.cms.villaFeaturesList)) {
+        this.cms.villaFeaturesList.forEach((item, idx) => {
+          const n = idx + 1;
+          if (!item.title || !item.title.en || arabicRegex.test(item.title.en)) {
+            if (!item.title) item.title = {};
+            item.title.en = this.cms.texts?.en?.sectors?.['villa_f' + n + '_title'] || this.t('sectors.villa_f' + n + '_title', 'en');
+          }
+          if (!item.desc || !item.desc.en || arabicRegex.test(item.desc.en)) {
+            if (!item.desc) item.desc = {};
+            item.desc.en = this.cms.texts?.en?.sectors?.['villa_f' + n + '_desc'] || this.t('sectors.villa_f' + n + '_desc', 'en');
+          }
+        });
+      }
+      if (Array.isArray(this.cms.enterpriseFeaturesList)) {
+        this.cms.enterpriseFeaturesList.forEach((item, idx) => {
+          const n = idx + 1;
+          if (!item.title || !item.title.en || arabicRegex.test(item.title.en)) {
+            if (!item.title) item.title = {};
+            item.title.en = this.cms.texts?.en?.sectors?.['ent_f' + n + '_title'] || this.t('sectors.ent_f' + n + '_title', 'en');
+          }
+          if (!item.desc || !item.desc.en || arabicRegex.test(item.desc.en)) {
+            if (!item.desc) item.desc = {};
+            item.desc.en = this.cms.texts?.en?.sectors?.['ent_f' + n + '_desc'] || this.t('sectors.ent_f' + n + '_desc', 'en');
+          }
+        });
+      }
+      if (Array.isArray(this.cms.videoBulletsList)) {
+        const fallbackEnTitles = { h1: 'Instant 15°C - 20°C Drop', h2: '30% AC Energy Savings', h3: '100% Natural Optical Clarity' };
+        const fallbackEnDescs = { 
+          h1: 'Immediate reduction in glass temperature as soon as the nano-ceramic film is installed.', 
+          h2: 'AC cycles off faster and keeps indoor spaces cool without running continuously at peak power.', 
+          h3: 'No dimming, no darkness, and zero obstruction of natural daylight or scenic views.' 
+        };
+        this.cms.videoBulletsList.forEach((item, idx) => {
+          const hKey = item.key || ('h' + (idx + 1));
+          if (!item.title || !item.title.en || arabicRegex.test(item.title.en)) {
+            if (!item.title) item.title = {};
+            item.title.en = fallbackEnTitles[hKey] || '';
+          }
+          if (!item.desc || !item.desc.en || arabicRegex.test(item.desc.en)) {
+            if (!item.desc) item.desc = {};
+            item.desc.en = fallbackEnDescs[hKey] || '';
+          }
+        });
+      }
+      if (Array.isArray(this.cms.galleryList)) {
+        this.cms.galleryList.forEach((item, idx) => {
+          const gNum = idx + 1;
+          if (!item.badge || !item.badge.en || arabicRegex.test(item.badge.en)) {
+            if (!item.badge) item.badge = {};
+            item.badge.en = this.cms.imageBadges?.['gallery' + gNum + '_badge']?.en || this.t('gallery.item' + gNum + '_badge', 'en');
+          }
+        });
       }
 
       if (!this.cms.customButtonsList || !Array.isArray(this.cms.customButtonsList)) {
         this.cms.customButtonsList = [];
+      }
+
+      // 11. Nav List (Navbar Dynamic Items)
+      if (!this.cms.navList || !Array.isArray(this.cms.navList) || this.cms.navList.length === 0) {
+        this.cms.navList = [
+          { id: 'services', target: 'services', title: { ar: 'الحلول والخدمات', en: 'Solutions' }, visible: true, isExternal: false, order: 1 },
+          { id: 'sectors', target: 'sectors', title: { ar: 'قطاعات التميز', en: 'Sectors' }, visible: true, isExternal: false, order: 2 },
+          { id: 'faq', target: 'faq', title: { ar: 'الأسئلة الشائعة', en: 'FAQ' }, visible: true, isExternal: false, order: 3 },
+          { id: 'technology', target: 'technology', title: { ar: 'التقنية والضمان', en: 'Technology' }, visible: true, isExternal: false, order: 4 },
+          { id: 'gallery', target: 'gallery', title: { ar: 'مشاريع حية', en: 'Projects' }, visible: true, isExternal: false, order: 5 },
+          { id: 'careers', target: 'careers.html', title: { ar: 'الوظائف', en: 'Careers' }, visible: true, isExternal: true, icon: 'fa-solid fa-briefcase', order: 6 },
+          { id: 'contact', target: 'contact', title: { ar: 'اتصل بنا', en: 'Contact' }, visible: true, isExternal: false, order: 7 }
+        ];
+      }
+    },
+
+    getNavList() {
+      this.ensureDynamicLists();
+      if (this.cms && Array.isArray(this.cms.navList) && this.cms.navList.length > 0) {
+        return this.cms.navList.filter(item => item.visible !== false);
+      }
+      return [
+        { id: 'services', target: 'services', title: { ar: 'الحلول والخدمات', en: 'Solutions' }, visible: true, isExternal: false, order: 1 },
+        { id: 'sectors', target: 'sectors', title: { ar: 'قطاعات التميز', en: 'Sectors' }, visible: true, isExternal: false, order: 2 },
+        { id: 'faq', target: 'faq', title: { ar: 'الأسئلة الشائعة', en: 'FAQ' }, visible: true, isExternal: false, order: 3 },
+        { id: 'technology', target: 'technology', title: { ar: 'التقنية والضمان', en: 'Technology' }, visible: true, isExternal: false, order: 4 },
+        { id: 'gallery', target: 'gallery', title: { ar: 'مشاريع حية', en: 'Projects' }, visible: true, isExternal: false, order: 5 },
+        { id: 'careers', target: 'careers.html', title: { ar: 'الوظائف', en: 'Careers' }, visible: true, isExternal: true, icon: 'fa-solid fa-briefcase', order: 6 },
+        { id: 'contact', target: 'contact', title: { ar: 'اتصل بنا', en: 'Contact' }, visible: true, isExternal: false, order: 7 }
+      ];
+    },
+
+    navigateNav(item) {
+      if (!item) return;
+      this.mobileMenuOpen = false;
+      const target = (item.target || '').trim();
+      if (item.isExternal || target.endsWith('.html') || target.startsWith('http') || target.startsWith('/')) {
+        window.location.href = target;
+      } else {
+        const secId = target.replace(/^#/, '');
+        this.scrollTo(secId);
       }
     },
 
@@ -1751,15 +1867,17 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           </div>
         </a>
 
-        <!-- DESKTOP NAVIGATION LINKS (SPACIOUS & COLLISION-FREE) -->
+        <!-- DESKTOP NAVIGATION LINKS (DYNAMIC & REORDERABLE) -->
         <nav class="hidden lg:flex items-center justify-center gap-0.5 xl:gap-1.5 2xl:gap-2 flex-1 min-w-0 px-1 xl:px-3">
-          <button @click="scrollTo('services')" class="px-2 xl:px-2.5 py-1.5 rounded-lg text-xs xl:text-sm font-bold text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all whitespace-nowrap nav-hover-line" x-text="t('nav.services')"></button>
-          <button @click="scrollTo('sectors')" class="px-2 xl:px-2.5 py-1.5 rounded-lg text-xs xl:text-sm font-bold text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all whitespace-nowrap nav-hover-line" x-text="t('nav.sectors')"></button>
-          <button @click="scrollTo('faq')" class="px-2 xl:px-2.5 py-1.5 rounded-lg text-xs xl:text-sm font-bold text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all whitespace-nowrap nav-hover-line" x-text="t('nav.faq')"></button>
-          <button x-show="cms.visibility.technology" @click="scrollTo('technology')" class="px-2 xl:px-2.5 py-1.5 rounded-lg text-xs xl:text-sm font-bold text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all whitespace-nowrap nav-hover-line" x-text="t('nav.tech')"></button>
-          <button x-show="cms.visibility.gallery" @click="scrollTo('gallery')" class="px-2 xl:px-2.5 py-1.5 rounded-lg text-xs xl:text-sm font-bold text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all whitespace-nowrap nav-hover-line" x-text="t('nav.gallery')"></button>
-          <a href="careers.html" class="px-2 xl:px-2.5 py-1.5 rounded-lg text-xs xl:text-sm font-bold text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all whitespace-nowrap nav-hover-line flex items-center gap-1.5"><i class="fa-solid fa-briefcase text-xs text-cyan-600"></i><span x-text="t('nav.careers') || (lang === 'ar' ? 'الوظائف' : 'Careers')">الوظائف</span></a>
-          <button @click="scrollTo('contact')" class="px-2 xl:px-2.5 py-1.5 rounded-lg text-xs xl:text-sm font-bold text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all whitespace-nowrap nav-hover-line" x-text="t('nav.contact')"></button>
+          <template x-for="(item, idx) in getNavList()" :key="item.id || idx">
+            <a 
+              :href="item.target && item.target.endsWith('.html') ? item.target : ('#' + (item.target || '').replace(/^#/, ''))" 
+              @click="item.target && item.target.endsWith('.html') ? null : ($event.preventDefault(), navigateNav(item))"
+              class="px-2 xl:px-2.5 py-1.5 rounded-lg text-xs xl:text-sm font-bold text-slate-700 hover:text-cyan-700 hover:bg-slate-100 transition-all whitespace-nowrap nav-hover-line flex items-center gap-1.5">
+              <span x-show="item.icon" class="me-0.5"><i :class="item.icon + ' text-xs text-cyan-600'"></i></span>
+              <span x-text="item.title ? (item.title[lang] || item.title.ar) : ''"></span>
+            </a>
+          </template>
         </nav>
 
         <!-- RIGHT ACTIONS: LANGUAGE SWITCHER & CTAS -->
@@ -1771,7 +1889,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                @click="switchLang('ar')" 
                :class="lang === 'ar' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-xs' : 'text-slate-600 hover:text-slate-950'"
                class="px-2 sm:px-2.5 py-1 text-xs font-bold rounded-lg transition-all duration-200">
-               عربي
+               <span x-text="lang === 'ar' ? 'عربي' : 'AR'">عربي</span>
              </button>
              <button 
                @click="switchLang('en')" 
@@ -1802,11 +1920,11 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <button 
             @click="toggleLanguage()" 
             class="h-10 px-3 text-xs font-bold rounded-xl bg-slate-100 border border-slate-200 text-cyan-700 hover:bg-slate-200 flex items-center justify-center transition-all active:scale-95">
-            <span x-text="lang === 'ar' ? 'English' : 'عربي'"></span>
+            <span x-text="lang === 'ar' ? 'English' : 'Arabic'"></span>
           </button>
           <button 
             @click="mobileMenuOpen = !mobileMenuOpen" 
-            aria-label="قائمة التصفح"
+            :aria-label="mobileMenuOpen ? (lang === 'ar' ? 'إغلاق القائمة' : 'Close menu') : (lang === 'ar' ? 'فتح القائمة' : 'Open menu')"
             :aria-expanded="mobileMenuOpen"
             class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 hover:bg-slate-200 focus:outline-none flex items-center justify-center transition-all active:scale-95">
             <i class="fa-solid text-base" :class="mobileMenuOpen ? 'fa-xmark' : 'fa-bars'"></i>
@@ -1816,31 +1934,20 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
       </div>
     </div>
 
-    <!-- MOBILE MENU DRAWER -->
+    <!-- MOBILE MENU DRAWER (DYNAMIC & REORDERABLE) -->
     <div x-show="mobileMenuOpen" x-transition.opacity.duration.200ms class="lg:hidden bg-white/98 border-b border-slate-200 px-4 pt-3 pb-6 space-y-2 backdrop-blur-2xl shadow-xl">
-      <button @click="scrollTo('services')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-cyan-50/70 hover:text-cyan-800 active:bg-slate-100 transition-colors flex items-center justify-between">
-        <span x-text="t('nav.services')"></span>
-        <i class="fa-solid fa-angle-left rtl:rotate-0 ltr:rotate-180 text-xs text-slate-400"></i>
-      </button>
-      <button x-show="cms.visibility.technology" @click="scrollTo('technology')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-cyan-50/70 hover:text-cyan-800 active:bg-slate-100 transition-colors flex items-center justify-between">
-        <span x-text="t('nav.tech')"></span>
-        <i class="fa-solid fa-angle-left rtl:rotate-0 ltr:rotate-180 text-xs text-slate-400"></i>
-      </button>
-      <button x-show="cms.visibility.gallery" @click="scrollTo('gallery')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-cyan-50/70 hover:text-cyan-800 active:bg-slate-100 transition-colors flex items-center justify-between">
-        <span x-text="t('nav.gallery')"></span>
-        <i class="fa-solid fa-angle-left rtl:rotate-0 ltr:rotate-180 text-xs text-slate-400"></i>
-      </button>
-      <a href="careers.html" class="w-full text-start px-4 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-cyan-50/70 hover:text-cyan-800 active:bg-slate-100 transition-colors flex items-center justify-between">
-        <span class="flex items-center gap-2">
-          <i class="fa-solid fa-briefcase text-xs text-cyan-600"></i>
-          <span x-text="t('nav.careers') || (lang === 'ar' ? 'الوظائف' : 'Careers')">الوظائف</span>
-        </span>
-        <i class="fa-solid fa-angle-left rtl:rotate-0 ltr:rotate-180 text-xs text-slate-400"></i>
-      </a>
-      <button @click="scrollTo('contact')" class="w-full text-start px-4 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-cyan-50/70 hover:text-cyan-800 active:bg-slate-100 transition-colors flex items-center justify-between">
-        <span x-text="t('nav.contact')"></span>
-        <i class="fa-solid fa-angle-left rtl:rotate-0 ltr:rotate-180 text-xs text-slate-400"></i>
-      </button>
+      <template x-for="(item, idx) in getNavList()" :key="item.id || idx">
+        <a 
+          :href="item.target && item.target.endsWith('.html') ? item.target : ('#' + (item.target || '').replace(/^#/, ''))" 
+          @click="item.target && item.target.endsWith('.html') ? (mobileMenuOpen = false) : ($event.preventDefault(), navigateNav(item))"
+          class="w-full text-start px-4 py-3 rounded-xl text-sm font-bold text-slate-800 hover:bg-cyan-50/70 hover:text-cyan-800 active:bg-slate-100 transition-colors flex items-center justify-between">
+          <span class="flex items-center gap-2">
+            <i x-show="item.icon" :class="item.icon + ' text-xs text-cyan-600'"></i>
+            <span x-text="item.title ? (item.title[lang] || item.title.ar) : ''"></span>
+          </span>
+          <i class="fa-solid fa-angle-left rtl:rotate-0 ltr:rotate-180 text-xs text-slate-400"></i>
+        </a>
+      </template>
       
       <div class="pt-3 border-t border-slate-200 space-y-2.5">
         <a :href="'tel:' + cms.contacts.phone" class="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 font-bold text-sm active:scale-[0.99] transition-all">
@@ -1904,7 +2011,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <div data-aos="fade-up" data-aos-duration="700" data-aos-delay="150" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-2">
             <a 
               x-show="cms.buttons.heroPrimary.visible"
-              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent('مرحبا بروتيرم، أود حجز معاينة مجانية بالعينات واختبار العزل بموقعي')" 
+              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent(lang === 'ar' ? 'مرحبا بروتيرم، أود حجز معاينة مجانية بالعينات واختبار العزل بموقعي' : 'Hello ProTherme, I would like to book a free sample survey and on-site insulation test')" 
               target="_blank"
               rel="noopener noreferrer"
               class="w-full sm:w-auto justify-center px-7 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-black text-sm sm:text-base shadow-lg shadow-emerald-600/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2.5 cursor-pointer btn-shimmer">
@@ -1919,14 +2026,14 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               <div class="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center">
                 <i class="fa-solid fa-phone text-xs"></i>
               </div>
-              <span x-text="cms.buttons.heroCall[lang] || ('اتصال بمهندس: ' + cms.contacts.phone)">اتصال بمهندس استشاري: 01010010030</span>
+              <span x-text="cms.buttons.heroCall[lang] || ((lang === 'ar' ? 'اتصال بمهندس: ' : 'Call Engineer: ') + cms.contacts.phone)"></span>
             </a>
 
             <button 
               @click="scrollTo('thermal-proof')" 
               class="w-full sm:w-auto justify-center px-4 py-3.5 rounded-2xl bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs sm:text-sm font-bold flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
               <i class="fa-solid fa-circle-play text-cyan-600 text-base"></i>
-              <span>فيديو اختبار الحرارة ↓</span>
+              <span x-text="lang === 'ar' ? 'فيديو اختبار الحرارة ↓' : 'Thermal Test Video ↓'">فيديو اختبار الحرارة ↓</span>
             </button>
 
             <!-- Custom CTA Buttons added from Admin -->
@@ -1971,7 +2078,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                   :class="heroVisualTab === 'image' ? 'bg-white text-slate-950 shadow-xs' : 'text-slate-500 hover:text-slate-900'"
                   class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer">
                   <i class="fa-solid fa-building text-cyan-600"></i>
-                  <span>مبنى فعلي (قبل وبعد)</span>
+                  <span x-text="lang === 'ar' ? 'مبنى فعلي (قبل وبعد)' : 'Real Building (Before / After)'">مبنى فعلي (قبل وبعد)</span>
                 </button>
                 <button 
                   type="button" 
@@ -1979,14 +2086,14 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                   :class="heroVisualTab === '3d' ? 'bg-white text-slate-950 shadow-xs' : 'text-slate-500 hover:text-slate-900'"
                   class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer">
                   <i class="fa-solid fa-cube text-emerald-600"></i>
-                  <span>درع نانو 3D</span>
+                  <span x-text="lang === 'ar' ? 'درع نانو 3D' : '3D Nano Shield'">درع نانو 3D</span>
                 </button>
               </div>
 
               <button 
                 @click="openLightbox(cms.images.heroVisual || 'assets/images/hero-beforeafter.jpg', 'hero.title_p1', 'hero.subtitle')" 
                 class="p-2 rounded-xl bg-slate-50 hover:bg-cyan-50 text-slate-600 hover:text-cyan-700 transition-colors border border-slate-200 cursor-pointer shadow-xs" 
-                title="عرض الصورة بملء الشاشة">
+                :title="lang === 'ar' ? 'عرض الصورة بملء الشاشة' : 'View Fullscreen'">
                 <i class="fa-solid fa-expand text-xs"></i>
               </button>
             </div>
@@ -2005,20 +2112,20 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               <!-- Right Side: Before Badge (Hot side of reversed photo - RTL natural reading) -->
               <div class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-orange-400 text-[11px] font-bold text-orange-800 flex items-center gap-1.5 shadow-md">
                 <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
-                <span>قبل: لهيب ووهج 41°C</span>
+                <span x-text="lang === 'ar' ? 'قبل: لهيب ووهج 41°C' : 'Before: 41°C Heat & Glare'">قبل: لهيب ووهج 41°C</span>
               </div>
 
               <!-- Left Side: After Badge (Cool side of reversed photo - RTL natural reading) -->
               <div class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-cyan-400 text-[11px] font-bold text-cyan-800 flex items-center gap-1.5 shadow-md">
                 <span class="w-2 h-2 rounded-full bg-cyan-500 beacon-dot"></span>
-                <span>بعد: راحة وبرودة 25°C</span>
+                <span x-text="lang === 'ar' ? 'بعد: راحة وبرودة 25°C' : 'After: 25°C Cool Comfort'">بعد: راحة وبرودة 25°C</span>
               </div>
 
               <!-- Bottom Bar: Value Statement (Light Architectural Aesthetic) -->
               <div class="absolute bottom-3 inset-x-3 p-2.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 text-center shadow-md">
                 <p class="text-[11px] sm:text-xs font-bold text-slate-800 flex items-center justify-center gap-2">
                   <i class="fa-solid fa-circle-check text-emerald-600 text-xs"></i>
-                  <span>عزل حراري حقيقي يصل إلى 88% مع الحفاظ الكامل على الرؤية النقية 100%</span>
+                  <span x-text="lang === 'ar' ? 'عزل حراري حقيقي يصل إلى 88% مع الحفاظ الكامل على الرؤية النقية 100%' : 'True heat insulation up to 88% while preserving 100% crystal optical clarity'">عزل حراري حقيقي يصل إلى 88% مع الحفاظ الكامل على الرؤية النقية 100%</span>
                 </p>
               </div>
             </div>
@@ -2032,7 +2139,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               <!-- Top Badges inside 3D View -->
               <div class="absolute top-3 start-3 z-30 flex items-center gap-2 px-3 py-1 rounded-xl bg-slate-900/85 backdrop-blur-md border border-white/20 text-[11px] font-bold text-slate-100 shadow-md">
                 <span class="w-2 h-2 rounded-full bg-cyan-400 beacon-dot"></span>
-                <span x-text="cms.imageBadges?.heroTop?.[lang] || 'طاقم هندسي معتمد'"></span>
+                <span x-text="cms.imageBadges?.heroTop?.[lang] || (lang === 'ar' ? 'طاقم هندسي معتمد' : 'Certified Engineering Crew')"></span>
               </div>
 
               <!-- 3D Mode Switcher (Protected / Unprotected) -->
@@ -2042,20 +2149,20 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                   type="button"
                   class="px-2 py-0.5 rounded-lg transition-all duration-200 flex items-center gap-1 bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-xs cursor-pointer">
                   <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-                  <span>مع العزل ❄️</span>
+                  <span x-text="lang === 'ar' ? 'مع العزل ❄️' : 'With Film ❄️'">مع العزل ❄️</span>
                 </button>
                 <button 
                   id="btn-mode-unprotected"
                   type="button"
                   class="px-2 py-0.5 rounded-lg transition-all duration-200 flex items-center gap-1 text-slate-400 hover:text-white cursor-pointer">
-                  <span>بدون عزل 🔥</span>
+                  <span x-text="lang === 'ar' ? 'بدون عزل 🔥' : 'Without Film 🔥'">بدون عزل 🔥</span>
                 </button>
               </div>
 
               <!-- Drag Rotation Hint -->
               <div class="absolute top-12 inset-x-0 mx-auto w-fit z-30 pointer-events-none px-2.5 py-0.5 rounded-full bg-slate-900/80 backdrop-blur-sm border border-white/10 text-[9px] text-cyan-300 font-mono flex items-center gap-1.5 shadow-md">
                 <i class="fa-solid fa-arrows-rotate text-[8px] animate-spin"></i>
-                <span>اسحب لتدوير زجاج النانو 3D</span>
+                <span x-text="lang === 'ar' ? 'اسحب لتدوير زجاج النانو 3D' : 'Drag to rotate 3D Nano Glass'">اسحب لتدوير زجاج النانو 3D</span>
               </div>
 
               <!-- Live 3D Status Banner -->
@@ -2064,11 +2171,9 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                   <div>
                     <h4 id="hero-3d-status-title" class="text-xs font-bold text-white flex items-center gap-1.5">
                       <i class="fa-solid fa-shield-halved text-cyan-400"></i>
-                      <span>درع النانو سيراميك نشط (88% عزل حراري)</span>
+                      <span x-text="lang === 'ar' ? 'درع النانو سيراميك نشط (88% عزل حراري)' : 'Nano-Ceramic Shield Active (88% Heat Rejection)'">درع النانو سيراميك نشط (88% عزل حراري)</span>
                     </h4>
-                    <p id="hero-3d-status-desc" class="text-[10px] text-slate-300 mt-0.5">
-                      حجب 99% أشعة ضارة | انخفاض الحرارة: -14°C | ووضوح بصري 100%
-                    </p>
+                    <p id="hero-3d-status-desc" class="text-[10px] text-slate-300 mt-0.5" x-text="lang === 'ar' ? 'حجب 99% أشعة ضارة | انخفاض الحرارة: -14°C | ووضوح بصري 100%' : '99% UV/IR Block | -14°C Temp Drop | 100% Optical Clarity'"></p>
                   </div>
                 </div>
               </div>
@@ -2122,13 +2227,11 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
       <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-14 space-y-3">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-100/80 border border-cyan-200 text-cyan-800 text-xs font-bold uppercase tracking-wider">
           <i class="fa-solid fa-temperature-arrow-down"></i>
-          <span x-text="cms.video && cms.video.tag ? (cms.video.tag[lang] || cms.video.tag.ar || '') : 'تجربة عملية موثقة بالفيديو'"></span>
+          <span x-text="cms.video && cms.video.tag ? (cms.video.tag[lang] || cms.video.tag.ar || '') : (lang === 'ar' ? 'تجربة عملية موثقة بالفيديو' : 'Verified Live Field Demo')"></span>
         </div>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950" x-text="cms.video && cms.video.title ? (cms.video.title[lang] || cms.video.title.ar || '') : 'شاهد الفرق الحقيقي: شدة أشعة الشمس قبل وبعد التركيب'">
-          شاهد الفرق الحقيقي: شدة أشعة الشمس قبل وبعد التركيب
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950" x-text="cms.video && cms.video.title ? (cms.video.title[lang] || cms.video.title.ar || '') : (lang === 'ar' ? 'شاهد الفرق الحقيقي: شدة أشعة الشمس قبل وبعد التركيب' : 'Watch the Real Difference: Solar Heat Before & After Installation')">
         </h2>
-        <p class="text-base sm:text-lg text-slate-600" x-text="cms.video && cms.video.subtitle ? (cms.video.subtitle[lang] || cms.video.subtitle.ar || '') : 'فيديو ميداني مباشر بجهاز الليزر الحراري يثبت انخفاض درجة الحرارة فوراً بمجرد وضع عازل بروتيرم النانو سيراميك.'">
-          فيديو ميداني مباشر بجهاز الليزر الحراري يثبت انخفاض درجة الحرارة فوراً بمجرد وضع عازل بروتيرم النانو سيراميك.
+        <p class="text-base sm:text-lg text-slate-600" x-text="cms.video && cms.video.subtitle ? (cms.video.subtitle[lang] || cms.video.subtitle.ar || '') : (lang === 'ar' ? 'فيديو ميداني مباشر بجهاز الليزر الحراري يثبت انخفاض درجة الحرارة فوراً بمجرد وضع عازل بروتيرم النانو سيراميك.' : 'Live on-site laser test proves immediate temperature drop upon applying ProTherme Nano-Ceramic film.')">
         </p>
       </div>
 
@@ -2143,7 +2246,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
               <div class="flex items-center gap-2 text-xs font-bold text-slate-800">
                 <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
-                <span x-text="cms.video && cms.video.badge_top ? (cms.video.badge_top[lang] || cms.video.badge_top.ar || '') : 'فحص ميداني حي بجهاز الليزر الحراري'"></span>
+                <span x-text="cms.video && cms.video.badge_top ? (cms.video.badge_top[lang] || cms.video.badge_top.ar || '') : (lang === 'ar' ? 'فحص ميداني حي بجهاز الليزر الحراري' : 'Live On-Site Laser Thermal Test')"></span>
               </div>
               <span class="text-[11px] font-mono font-semibold px-2.5 py-1 rounded-md bg-cyan-50 text-cyan-800 border border-cyan-200" x-text="cms.video && cms.video.badge_quality ? (cms.video.badge_quality[lang] || cms.video.badge_quality.ar || '') : 'HD 1080p | On-Site Test'">
                 HD 1080p | On-Site Test
@@ -2166,7 +2269,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 poster="assets/images/hero-beforeafter.jpg?v=2"
                 class="w-full h-full object-cover">
                 <source :src="cms.video ? (cms.video.url || 'assets/videos/beforeafter.mp4') : 'assets/videos/beforeafter.mp4'" src="assets/videos/beforeafter.mp4" type="video/mp4">
-                متصفحك لا يدعم تشغيل الفيديو المباشر.
+                <span x-text="lang === 'ar' ? 'متصفحك لا يدعم تشغيل الفيديو المباشر.' : 'Your browser does not support HTML5 video.'"></span>
               </video>
             </div>
 
@@ -2174,7 +2277,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             <div class="pt-3 mt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs text-slate-500">
               <div class="flex items-center gap-1.5 text-cyan-800 font-semibold">
                 <i class="fa-solid fa-circle-info"></i>
-                <span x-text="cms.video && cms.video.caption ? (cms.video.caption[lang] || cms.video.caption.ar || '') : 'تم توثيق هذا الاختبار على زجاج حقيقي بنفس العينات المقدمة للعملاء.'"></span>
+                <span x-text="cms.video && cms.video.caption ? (cms.video.caption[lang] || cms.video.caption.ar || '') : (lang === 'ar' ? 'تم توثيق هذا الاختبار على زجاج حقيقي بنفس العينات المقدمة للعملاء.' : 'Documented on actual architectural glass with genuine client samples.')"></span>
               </div>
               <span class="font-mono text-[11px] text-slate-400">ProTherme Field Verification</span>
             </div>
@@ -2186,11 +2289,9 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         <div data-aos="fade-up" data-aos-delay="200" class="lg:col-span-5 space-y-6">
           
           <div class="space-y-4">
-            <h3 class="text-2xl font-black text-slate-950 leading-snug" x-text="cms.video && cms.video.metrics_title ? (cms.video.metrics_title[lang] || cms.video.metrics_title.ar || '') : 'أرقام موثقة تثبت لك النتيجة قبل أن تدفع قرشاً واحداً'">
-              أرقام موثقة تثبت لك النتيجة قبل أن تدفع قرشاً واحداً
+            <h3 class="text-2xl font-black text-slate-950 leading-snug" x-text="cms.video && cms.video.metrics_title ? (cms.video.metrics_title[lang] || cms.video.metrics_title.ar || '') : (lang === 'ar' ? 'أرقام موثقة تثبت لك النتيجة قبل أن تدفع قرشاً واحداً' : 'Verified Data Proving Results Before You Pay a Single Cent')">
             </h3>
-            <p class="text-sm text-slate-600 leading-relaxed" x-text="cms.video && cms.video.metrics_desc ? (cms.video.metrics_desc[lang] || cms.video.metrics_desc.ar || '') : 'لا نعتمد على الوعود النظرية...'">
-              لا نعتمد على الوعود النظرية. أثناء زيارة المعاينة، يحضر مهندسنا جهاز كاشف الحرارة ويجري نفس هذا الاختبار العملي على زجاج بيتك لتشعر بفارق البرودة بنفسك.
+            <p class="text-sm text-slate-600 leading-relaxed" x-text="cms.video && cms.video.metrics_desc ? (cms.video.metrics_desc[lang] || cms.video.metrics_desc.ar || '') : (lang === 'ar' ? 'لا نعتمد على الوعود النظرية. أثناء زيارة المعاينة، يحضر مهندسنا جهاز كاشف الحرارة ويجري نفس هذا الاختبار العملي على زجاج بيتك لتشعر بفارق البرودة بنفسك.' : 'We do not rely on theoretical claims. During your survey visit, our engineer brings the digital laser thermal meter to perform this exact live test on your glass so you feel the cooling difference yourself.')">
             </p>
           </div>
 
@@ -2213,12 +2314,12 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <!-- Direct CTAs inside Video Section -->
           <div class="pt-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <a 
-              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent('مرحبا بروتيرم، شاهدت فيديو اختبار الحرارة وأود حجز معاينة واختبار عملي بموقعي')" 
+              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent(lang === 'ar' ? 'مرحبا بروتيرم، شاهدت فيديو اختبار الحرارة وأود حجز معاينة واختبار عملي بموقعي' : 'Hello ProTherme, I watched the thermal test video and would like to book a site demonstration and survey')" 
               target="_blank" 
               rel="noopener noreferrer" 
               class="flex-1 justify-center py-4 px-6 rounded-2xl bg-gradient-to-r from-emerald-600 to-green-600 text-white font-black text-sm shadow-md shadow-emerald-600/25 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center gap-2 btn-shimmer">
               <i class="fa-brands fa-whatsapp text-lg"></i>
-              <span x-text="cms.video && cms.video.btn_cta ? (cms.video.btn_cta[lang] || cms.video.btn_cta.ar || '') : 'اطلب نفس الاختبار بموقعك مجاناً'">اطلب نفس الاختبار بموقعك مجاناً</span>
+              <span x-text="cms.video && cms.video.btn_cta ? (cms.video.btn_cta[lang] || cms.video.btn_cta.ar || '') : (lang === 'ar' ? 'اطلب نفس الاختبار بموقعك مجاناً' : 'Request This Free Live Test At Your Site')">اطلب نفس الاختبار بموقعك مجاناً</span>
             </a>
 
             <a 
@@ -2271,7 +2372,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             </div>
             <div class="pt-2">
               <template x-if="sIdx < 2">
-                <a :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent('مرحبا، أرغب بالاستفسار عن خطوة ' + (step.title?.[lang] || step.title?.ar || ''))"
+                <a :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent((lang === 'ar' ? 'مرحبا، أرغب بالاستفسار عن خطوة: ' : 'Hello, I would like to inquire about step: ') + (step.title?.[lang] || step.title?.ar || ''))"
                    target="_blank" rel="noopener noreferrer"
                    class="inline-flex items-center gap-1.5 text-xs font-bold transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1"
                    :class="sIdx % 2 === 0 ? 'text-cyan-700 hover:text-cyan-900' : 'text-emerald-700 hover:text-emerald-900'">
@@ -2353,9 +2454,9 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             <div class="flex items-center justify-between text-xs font-bold text-slate-900">
               <span class="flex items-center gap-1.5 text-cyan-700">
                 <i class="fa-solid fa-temperature-arrow-down"></i>
-                <span>عزل حراري 88% لواجهات المسبح والحديقة</span>
+                <span x-text="lang === 'ar' ? 'عزل حراري 88% لواجهات المسبح والحديقة' : '88% Heat Rejection for Pool & Garden Facades'">عزل حراري 88% لواجهات المسبح والحديقة</span>
               </span>
-              <span class="text-slate-500 font-normal">فلل التجمع والشيخ زايد والساحل</span>
+              <span class="text-slate-500 font-normal" x-text="lang === 'ar' ? 'فلل التجمع والشيخ زايد والساحل' : 'New Cairo, Zayed & North Coast Villas'">فلل التجمع والشيخ زايد والساحل</span>
             </div>
           </div>
         </div>
@@ -2364,7 +2465,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <div class="space-y-2">
             <div class="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-700">
               <i class="fa-solid fa-sparkles"></i>
-              <span>حلول مصممة لأصحاب الفلل والقصور</span>
+              <span x-text="lang === 'ar' ? 'حلول مصممة لأصحاب الفلل والقصور' : 'Engineered Solutions for Villas & Mansions'">حلول مصممة لأصحاب الفلل والقصور</span>
             </div>
             <h3 class="text-2xl sm:text-3xl font-black text-slate-950" x-text="t('sectors.villa_title')"></h3>
             <p class="text-sm sm:text-base text-slate-600 leading-relaxed" x-text="t('sectors.villa_desc')"></p>
@@ -2387,7 +2488,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
           <div class="pt-2">
             <a 
-              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent('مرحبا، أرغب بالاستفسار عن عزل وحماية فيلا في كمبوند')"
+              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent(lang === 'ar' ? 'مرحبا، أرغب بالاستفسار عن عزل وحماية فيلا في كمبوند' : 'Hello, I would like to inquire about compound villa thermal insulation and protection')"
               target="_blank"
               rel="noopener noreferrer"
               class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold text-sm shadow-md shadow-emerald-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all btn-shimmer cursor-pointer">
@@ -2410,9 +2511,9 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             <div class="flex items-center justify-between text-xs font-bold text-slate-900">
               <span class="flex items-center gap-1.5 text-emerald-700">
                 <i class="fa-solid fa-bolt-lightning"></i>
-                <span>توفير حتى 30% من استهلاك التكييف السنوي</span>
+                <span x-text="lang === 'ar' ? 'توفير حتى 30% من استهلاك التكييف السنوي' : 'Up to 30% Annual HVAC Energy Savings'">توفير حتى 30% من استهلاك التكييف السنوي</span>
               </span>
-              <span class="text-slate-500 font-normal">فنادق وأبراج ومقرات إدارية</span>
+              <span class="text-slate-500 font-normal" x-text="lang === 'ar' ? 'فنادق وأبراج ومقرات إدارية' : 'Hotels, Towers & Corporate HQs'">فنادق وأبراج ومقرات إدارية</span>
             </div>
           </div>
         </div>
@@ -2421,7 +2522,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <div class="space-y-2">
             <div class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700">
               <i class="fa-solid fa-building-circle-check"></i>
-              <span>معايير هندسية معتمدة للشركات والفنادق</span>
+              <span x-text="lang === 'ar' ? 'معايير هندسية معتمدة للشركات والفنادق' : 'Certified Engineering Specs for Hotels & Enterprises'">معايير هندسية معتمدة للشركات والفنادق</span>
             </div>
             <h3 class="text-2xl sm:text-3xl font-black text-slate-950" x-text="t('sectors.ent_title')"></h3>
             <p class="text-sm sm:text-base text-slate-600 leading-relaxed" x-text="t('sectors.ent_desc')"></p>
@@ -2444,7 +2545,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
           <div class="pt-2">
             <a 
-              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent('مرحبا، أود طلب دراسة فنية ومعاينة هندسية لمشروع فندقي / تجاري')"
+              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent(lang === 'ar' ? 'مرحبا، أود طلب دراسة فنية ومعاينة هندسية لمشروع فندقي / تجاري' : 'Hello, I would like to request a technical survey for a commercial / hotel project')"
               target="_blank"
               rel="noopener noreferrer"
               class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold text-sm shadow-md shadow-cyan-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all btn-shimmer cursor-pointer">
@@ -2461,15 +2562,15 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <img src="assets/images/marble-surface-new.jpg" alt="Luxury Marble Protection" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none"></div>
           <div class="absolute top-4 start-4 px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 text-xs font-bold text-emerald-800 shadow-sm">
-            <span>حماية الأسطح الفاخرة | Luxury Surfaces</span>
+            <span x-text="lang === 'ar' ? 'حماية الأسطح الفاخرة | Luxury Surfaces' : 'Luxury Surfaces Protection | Marble TPU'">حماية الأسطح الفاخرة | Luxury Surfaces</span>
           </div>
           <div class="absolute bottom-4 inset-x-4 p-3.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-md">
             <div class="flex items-center justify-between text-xs font-bold text-slate-900">
               <span class="flex items-center gap-1.5 text-emerald-700">
                 <i class="fa-solid fa-shield-halved"></i>
-                <span>مقاومة 100% لبقع الليمون والقهوة والزيوت</span>
+                <span x-text="lang === 'ar' ? 'مقاومة 100% لبقع الليمون والقهوة والزيوت' : '100% Stain Resistance against Acid, Coffee & Oils'">مقاومة 100% لبقع الليمون والقهوة والزيوت</span>
               </span>
-              <span class="text-slate-500 font-normal">سماكة 8.5 ميل TPU معالجة ذاتية</span>
+              <span class="text-slate-500 font-normal" x-text="lang === 'ar' ? 'سماكة 8.5 ميل TPU معالجة ذاتية' : '8.5 Mil Self-Healing TPU Film'">سماكة 8.5 ميل TPU معالجة ذاتية</span>
             </div>
           </div>
         </div>
@@ -2478,10 +2579,10 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <div class="space-y-2">
             <div class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700">
               <i class="fa-solid fa-gem"></i>
-              <span>حماية رخام استاتوريو وكلكتا الإيطالي</span>
+              <span x-text="lang === 'ar' ? 'حماية رخام استاتوريو وكلكتا الإيطالي' : 'Statuario & Calacatta Marble Defense'">حماية رخام استاتوريو وكلكتا الإيطالي</span>
             </div>
-            <h3 class="text-2xl sm:text-3xl font-black text-slate-950">حماية غير مرئية تحافظ على جمال وبريق الرخام للأبد</h3>
-            <p class="text-sm sm:text-base text-slate-600 leading-relaxed">أفلام TPU شفافة فائقة اللمعان تحمي طاولات الطعام، الجزيرة بالمطابخ، ورخام الاستقبال من أي تلف دائم مع خاصية المعالجة الذاتية للخدوش.</p>
+            <h3 class="text-2xl sm:text-3xl font-black text-slate-950" x-text="lang === 'ar' ? 'حماية غير مرئية تحافظ على جمال وبريق الرخام للأبد' : 'Invisible Armor Preserving Natural Marble Luster Forever'">حماية غير مرئية تحافظ على جمال وبريق الرخام للأبد</h3>
+            <p class="text-sm sm:text-base text-slate-600 leading-relaxed" x-text="lang === 'ar' ? 'أفلام TPU شفافة فائقة اللمعان تحمي طاولات الطعام، الجزيرة بالمطابخ، ورخام الاستقبال من أي تلف دائم مع خاصية المعالجة الذاتية للخدوش.' : 'Ultra-clear high gloss TPU films guarding dining tables, kitchen islands, and vanity tops from etching, scratches and stains.'">أفلام TPU شفافة فائقة اللمعان تحمي طاولات الطعام، الجزيرة بالمطابخ، ورخام الاستقبال من أي تلف دائم مع خاصية المعالجة الذاتية للخدوش.</p>
           </div>
 
           <div class="space-y-3.5">
@@ -2490,8 +2591,8 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 <i class="fa-solid fa-check text-sm"></i>
               </div>
               <div>
-                <h4 class="text-sm font-bold text-slate-950">مقاومة تامة للأحماض والزيوت والمنظفات</h4>
-                <p class="text-xs text-slate-600 mt-0.5">حماية 100% من امتصاص الرخام لعصائر الليمون والمشروبات الساخنة والزيوت.</p>
+                <h4 class="text-sm font-bold text-slate-950" x-text="lang === 'ar' ? 'مقاومة تامة للأحماض والزيوت والمنظفات' : 'Total Resistance to Acids, Oils & Cleaners'">مقاومة تامة للأحماض والزيوت والمنظفات</h4>
+                <p class="text-xs text-slate-600 mt-0.5" x-text="lang === 'ar' ? 'حماية 100% من امتصاص الرخام لعصائر الليمون والمشروبات الساخنة والزيوت.' : '100% protection against absorption of citrus juices, coffee, wine, and harsh cleaners.'">حماية 100% من امتصاص الرخام لعصائر الليمون والمشروبات الساخنة والزيوت.</p>
               </div>
             </div>
 
@@ -2500,8 +2601,8 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
               </div>
               <div>
-                <h4 class="text-sm font-bold text-slate-950">معالجة ذاتية فورية للخدوش السطحية</h4>
-                <p class="text-xs text-slate-600 mt-0.5">تلتئم الخدوش الدقيقة الناتجة عن الأواني والمفاتيح تلقائياً بمجرد التعرض لحرارة الجو.</p>
+                <h4 class="text-sm font-bold text-slate-950" x-text="lang === 'ar' ? 'معالجة ذاتية فورية للخدوش السطحية' : 'Instant Self-Healing Top Coat'">معالجة ذاتية فورية للخدوش السطحية</h4>
+                <p class="text-xs text-slate-600 mt-0.5" x-text="lang === 'ar' ? 'تلتئم الخدوش الدقيقة الناتجة عن الأواني والمفاتيح تلقائياً بمجرد التعرض لحرارة الجو.' : 'Micro-scratches from utensils and keys disappear automatically under ambient heat.'">تلتئم الخدوش الدقيقة الناتجة عن الأواني والمفاتيح تلقائياً بمجرد التعرض لحرارة الجو.</p>
               </div>
             </div>
 
@@ -2510,20 +2611,20 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 <i class="fa-solid fa-certificate text-sm"></i>
               </div>
               <div>
-                <h4 class="text-sm font-bold text-slate-950">مظهر زجاجي كريستالي بدون اصفرار</h4>
-                <p class="text-xs text-slate-600 mt-0.5">يحافظ على ملمس وعروق الرخام الطبيعي مع ضمان 10 سنوات ضد الاصفرار أو التفكك.</p>
+                <h4 class="text-sm font-bold text-slate-950" x-text="lang === 'ar' ? 'مظهر زجاجي كريستالي بدون اصفرار' : 'Crystal Clear Finish with Zero Yellowing'">مظهر زجاجي كريستالي بدون اصفرار</h4>
+                <p class="text-xs text-slate-600 mt-0.5" x-text="lang === 'ar' ? 'يحافظ على ملمس وعروق الرخام الطبيعي مع ضمان 10 سنوات ضد الاصفرار أو التفكك.' : 'Preserves natural marble veining depth with 10-year warranty against yellowing or peeling.'">يحافظ على ملمس وعروق الرخام الطبيعي مع ضمان 10 سنوات ضد الاصفرار أو التفكك.</p>
               </div>
             </div>
           </div>
 
           <div class="pt-2">
             <a 
-              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent('مرحبا، أود طلب معاينة وعينات لحماية أسطح الرخام')"
+              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent(lang === 'ar' ? 'مرحبا، أود طلب معاينة وعينات لحماية أسطح الرخام' : 'Hello, I would like to request marble protection samples and consultation')"
               target="_blank"
               rel="noopener noreferrer"
               class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold text-sm shadow-md shadow-emerald-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all btn-shimmer cursor-pointer">
               <i class="fa-brands fa-whatsapp text-lg"></i>
-              <span>احجز معاينة رخام بالعينات مجاناً</span>
+              <span x-text="lang === 'ar' ? 'احجز معاينة رخام بالعينات مجاناً' : 'Book Free Marble Samples Survey'">احجز معاينة رخام بالعينات مجاناً</span>
             </a>
           </div>
         </div>
@@ -2535,15 +2636,15 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <img src="assets/images/supercar-ppf-new.jpg" alt="Supercars PPF Distribution" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none"></div>
           <div class="absolute top-4 start-4 px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 text-xs font-bold text-cyan-800 shadow-sm">
-            <span>أفلام حماية السيارات | Supercar PPF</span>
+            <span x-text="lang === 'ar' ? 'أفلام حماية السيارات | Supercar PPF' : 'Automotive Paint Protection | Supercar PPF'">أفلام حماية السيارات | Supercar PPF</span>
           </div>
           <div class="absolute bottom-4 inset-x-4 p-3.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-md">
             <div class="flex items-center justify-between text-xs font-bold text-slate-900">
               <span class="flex items-center gap-1.5 text-cyan-700">
                 <i class="fa-solid fa-car"></i>
-                <span>توريد واعتراف دولي من Global Hi-Tech</span>
+                <span x-text="lang === 'ar' ? 'توريد واعتراف دولي من Global Hi-Tech' : 'Global Hi-Tech International Supply & Certification'">توريد واعتراف دولي من Global Hi-Tech</span>
               </span>
-              <span class="text-slate-500 font-normal">Top-Coat TPU لمعان فائق</span>
+              <span class="text-slate-500 font-normal" x-text="lang === 'ar' ? 'Top-Coat TPU لمعان فائق' : 'Top-Coat TPU Ultra Gloss'">Top-Coat TPU لمعان فائق</span>
             </div>
           </div>
         </div>
@@ -2552,10 +2653,10 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <div class="space-y-2">
             <div class="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-700">
               <i class="fa-solid fa-bolt"></i>
-              <span>التوريد المعتمد لمراكز الـ Detailing</span>
+              <span x-text="lang === 'ar' ? 'التوريد المعتمد لمراكز الـ Detailing' : 'Authorized Supply for Detailing Studios'">التوريد المعتمد لمراكز الـ Detailing</span>
             </div>
-            <h3 class="text-2xl sm:text-3xl font-black text-slate-950">حماية فائقة لطلاء السيارات الفارهة ضد الخدوش وحصى الطرق</h3>
-            <p class="text-sm sm:text-base text-slate-600 leading-relaxed">أفلام TPU ذاتية المعالجة مع طبقة هيدروفوبيك فائقة طاردة للماء والأوساخ، تحافظ على طلاء السيارة الأصلي كأنه جديد من صالة العرض.</p>
+            <h3 class="text-2xl sm:text-3xl font-black text-slate-950" x-text="lang === 'ar' ? 'حماية فائقة لطلاء السيارات الفارهة ضد الخدوش وحصى الطرق' : 'Ultimate PPF Armor for Supercars Against Chips & Scratches'">حماية فائقة لطلاء السيارات الفارهة ضد الخدوش وحصى الطرق</h3>
+            <p class="text-sm sm:text-base text-slate-600 leading-relaxed" x-text="lang === 'ar' ? 'أفلام TPU ذاتية المعالجة مع طبقة هيدروفوبيك فائقة طاردة للماء والأوساخ، تحافظ على طلاء السيارة الأصلي كأنه جديد من صالة العرض.' : 'Self-healing TPU film with super-hydrophobic top coat repelling water and road contaminants, preserving factory paint in showroom condition.'">أفلام TPU ذاتية المعالجة مع طبقة هيدروفوبيك فائقة طاردة للماء والأوساخ، تحافظ على طلاء السيارة الأصلي كأنه جديد من صالة العرض.</p>
           </div>
 
           <div class="space-y-3.5">
@@ -2564,8 +2665,8 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 <i class="fa-solid fa-shield-cat text-sm"></i>
               </div>
               <div>
-                <h4 class="text-sm font-bold text-slate-950">معالجة ذاتية Top-Coat فورية</h4>
-                <p class="text-xs text-slate-600 mt-0.5">تختفي آثار الخدوش الدقيقة وحصى الطرق تلقائياً بالحرارة وأشعة الشمس.</p>
+                <h4 class="text-sm font-bold text-slate-950" x-text="lang === 'ar' ? 'معالجة ذاتية Top-Coat فورية' : 'Instant Self-Healing Top Coat'">معالجة ذاتية Top-Coat فورية</h4>
+                <p class="text-xs text-slate-600 mt-0.5" x-text="lang === 'ar' ? 'تختفي آثار الخدوش الدقيقة وحصى الطرق تلقائياً بالحرارة وأشعة الشمس.' : 'Micro-swirls and rock chip marks vanish under sunlight and engine warmth.'">تختفي آثار الخدوش الدقيقة وحصى الطرق تلقائياً بالحرارة وأشعة الشمس.</p>
               </div>
             </div>
 
@@ -2574,8 +2675,8 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 <i class="fa-solid fa-droplet text-sm"></i>
               </div>
               <div>
-                <h4 class="text-sm font-bold text-slate-950">خاصية طرد المياه والأتربة (Super-Hydrophobic)</h4>
-                <p class="text-xs text-slate-600 mt-0.5">نعومة ولمعان مرآة يسهل تنظيف السيارة ويمنع التصاق الأوساخ وبقع الأملاح.</p>
+                <h4 class="text-sm font-bold text-slate-950" x-text="lang === 'ar' ? 'خاصية طرد المياه والأتربة (Super-Hydrophobic)' : 'Super-Hydrophobic Surface'">خاصية طرد المياه والأتربة (Super-Hydrophobic)</h4>
+                <p class="text-xs text-slate-600 mt-0.5" x-text="lang === 'ar' ? 'نعومة ولمعان مرآة يسهل تنظيف السيارة ويمنع التصاق الأوساخ وبقع الأملاح.' : 'Deep mirror gloss and water-sheeting capability making washes effortless and repelling stains.'">نعومة ولمعان مرآة يسهل تنظيف السيارة ويمنع التصاق الأوساخ وبقع الأملاح.</p>
               </div>
             </div>
 
@@ -2584,20 +2685,20 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 <i class="fa-solid fa-box-open text-sm"></i>
               </div>
               <div>
-                <h4 class="text-sm font-bold text-slate-950">رولات أصلية وتوريد فوري بالجملة</h4>
-                <p class="text-xs text-slate-600 mt-0.5">أسعار تجارية تنافسية وعقود توريد مباشرة من المصنع الأم لمراكز العناية في مصر.</p>
+                <h4 class="text-sm font-bold text-slate-950" x-text="lang === 'ar' ? 'رولات أصلية وتوريد فوري بالجملة' : 'Genuine Master Rolls & Wholesale Supply'">رولات أصلية وتوريد فوري بالجملة</h4>
+                <p class="text-xs text-slate-600 mt-0.5" x-text="lang === 'ar' ? 'أسعار تجارية تنافسية وعقود توريد مباشرة من المصنع الأم لمراكز العناية في مصر.' : 'Direct factory master roll supply and distributor pricing for premium detailing centers across Egypt.'">أسعار تجارية تنافسية وعقود توريد مباشرة من المصنع الأم لمراكز العناية في مصر.</p>
               </div>
             </div>
           </div>
 
           <div class="pt-2">
             <a 
-              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent('مرحبا، أود الاستفسار عن توريد وتوزيع أفلام حماية السيارات PPF')"
+              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent(lang === 'ar' ? 'مرحبا، أود الاستفسار عن توريد وتوزيع أفلام حماية السيارات PPF' : 'Hello, I would like to inquire about automotive PPF film wholesale distribution')"
               target="_blank"
               rel="noopener noreferrer"
               class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold text-sm shadow-md shadow-cyan-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all btn-shimmer cursor-pointer">
               <i class="fa-brands fa-whatsapp text-lg"></i>
-              <span>تواصل لطلب عينات وتوريد PPF</span>
+              <span x-text="lang === 'ar' ? 'تواصل لطلب عينات وتوريد PPF' : 'Contact for PPF Master Rolls & Samples'">تواصل لطلب عينات وتوريد PPF</span>
             </a>
           </div>
         </div>
@@ -2728,7 +2829,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <p class="text-xs sm:text-sm text-slate-600 mt-1" x-text="t('comparison.subtitle')"></p>
           <div class="text-[11px] text-cyan-800 sm:hidden flex items-center gap-1.5 mt-2 bg-cyan-50 px-3 py-1.5 rounded-lg border border-cyan-200 w-fit">
             <i class="fa-solid fa-arrows-left-right"></i>
-            <span>مرر الجدول أفقياً للاطلاع على كامل المقارنة</span>
+            <span x-text="lang === 'ar' ? 'مرر الجدول أفقياً للاطلاع على كامل المقارنة' : 'Swipe horizontally to view full comparison'">مرر الجدول أفقياً للاطلاع على كامل المقارنة</span>
           </div>
         </div>
 
@@ -2859,14 +2960,10 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
       <div data-aos="fade-up" class="text-center max-w-3xl mx-auto space-y-3">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold uppercase tracking-wider">
           <i class="fa-solid fa-comments"></i>
-          <span x-text="cms.reviews && cms.reviews.tag ? (cms.reviews.tag[lang] || cms.reviews.tag.ar || 'آراء وتجارب واقعية') : 'آراء وتجارب واقعية'">آراء وتجارب واقعية</span>
+          <span x-text="cms.reviews && cms.reviews.tag ? (cms.reviews.tag[lang] || cms.reviews.tag.ar || '') : (lang === 'ar' ? 'آراء وتجارب واقعية' : 'Real Client Experiences')"></span>
         </div>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950" x-text="cms.reviews && cms.reviews.title ? (cms.reviews.title[lang] || cms.reviews.title.ar || 'ماذا يقول عملاؤنا بعد تجربة عوازل بروتيرم؟') : 'ماذا يقول عملاؤنا بعد تجربة عوازل بروتيرم؟'">
-          ماذا يقول عملاؤنا بعد تجربة عوازل بروتيرم؟
-        </h2>
-        <p class="text-base sm:text-lg text-slate-600" x-text="cms.reviews && cms.reviews.subtitle ? (cms.reviews.subtitle[lang] || cms.reviews.subtitle.ar || 'تجارب حقيقية لأصحاب الفلل والوحدات السكنية والمقرات الخاصة تؤكد فارق الحرارة وتوفير الكهرباء.') : 'تجارب حقيقية لأصحاب الفلل والوحدات السكنية والمقرات الخاصة تؤكد فارق الحرارة وتوفير الكهرباء.'">
-          تجارب حقيقية لأصحاب الفلل والوحدات السكنية والمقرات الخاصة تؤكد فارق الحرارة وتوفير الكهرباء.
-        </p>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950" x-text="cms.reviews && cms.reviews.title ? (cms.reviews.title[lang] || cms.reviews.title.ar || '') : (lang === 'ar' ? 'ماذا يقول عملاؤنا بعد تجربة عوازل بروتيرم؟' : 'What Our Clients Say After Experiencing ProTherme?')"></h2>
+        <p class="text-base sm:text-lg text-slate-600" x-text="cms.reviews && cms.reviews.subtitle ? (cms.reviews.subtitle[lang] || cms.reviews.subtitle.ar || '') : (lang === 'ar' ? 'تجارب حقيقية لأصحاب الفلل والوحدات السكنية والمقرات الخاصة تؤكد فارق الحرارة وتوفير الكهرباء.' : 'Authentic experiences from villa owners and corporate clients confirming thermal reduction and energy savings.')"></p>
       </div>
     </div>
 
@@ -2944,16 +3041,16 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
       <!-- Quick Consultation Strip below FAQ -->
       <div class="mt-8 text-center p-6 rounded-2xl bg-gradient-to-r from-cyan-50 to-teal-50 border border-cyan-200 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div class="text-start">
-          <h4 class="font-bold text-slate-950 text-sm sm:text-base">عندك سؤال إضافي أو ترغب في استشارة فورية؟</h4>
-          <p class="text-xs text-slate-600 mt-0.5">فريقنا الهندسي متاح الآن للرد على كافة أسئلتك على الواتساب</p>
+          <h4 class="font-bold text-slate-950 text-sm sm:text-base" x-text="lang === 'ar' ? 'عندك سؤال إضافي أو ترغب في استشارة فورية؟' : 'Have More Questions or Need Instant Advice?'">عندك سؤال إضافي أو ترغب في استشارة فورية؟</h4>
+          <p class="text-xs text-slate-600 mt-0.5" x-text="lang === 'ar' ? 'فريقنا الهندسي متاح الآن للرد على كافة أسئلتك على الواتساب' : 'Our engineering team is online on WhatsApp to answer all your questions'">فريقنا الهندسي متاح الآن للرد على كافة أسئلتك على الواتساب</p>
         </div>
         <a 
-          :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent('مرحبا بروتيرم، أود الاستفسار عن تفاصيل خدمات العزل وحماية الرخام')"
+          :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent(lang === 'ar' ? 'مرحبا بروتيرم، أود الاستفسار عن تفاصيل خدمات العزل وحماية الرخام' : 'Hello ProTherme, I would like to inquire about heat insulation and marble protection')"
           target="_blank"
           rel="noopener noreferrer"
           class="shrink-0 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/25 hover:scale-105 active:scale-95 transition-all">
           <i class="fa-brands fa-whatsapp text-base"></i>
-          <span>تواصل مع مهندس على واتساب</span>
+          <span x-text="lang === 'ar' ? 'تواصل مع مهندس على واتساب' : 'Chat with Engineer on WhatsApp'">تواصل مع مهندس على واتساب</span>
         </a>
       </div>
 
@@ -3150,11 +3247,11 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                   <span x-text="lang === 'ar' ? 'الخدمة المطلوبة' : 'Service Needed'">الخدمة المطلوبة</span>
                 </label>
                 <select x-model="contactForm.service" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition bg-white">
-                  <option value="عزل زجاج المباني والفلل">عزل زجاج المباني والفلل (Architectural Window Films)</option>
-                  <option value="حماية الرخام والأسطح الفاخرة">حماية الرخام والأسطح الفاخرة (Marble Protection)</option>
-                  <option value="أفلام PPF للسيارات">أفلام PPF للسيارات (Automotive PPF)</option>
-                  <option value="معاينة هندسية لمشروع كود">معاينة هندسية لمشروع كود (Enterprise Survey)</option>
-                  <option value="استشارة أخرى">استشارة أخرى (Other)</option>
+                  <option value="عزل زجاج المباني والفلل" x-text="lang === 'ar' ? 'عزل زجاج المباني والفلل (Architectural Window Films)' : 'Architectural Window Films (Villas & Buildings)'">عزل زجاج المباني والفلل (Architectural Window Films)</option>
+                  <option value="حماية الرخام والأسطح الفاخرة" x-text="lang === 'ar' ? 'حماية الرخام والأسطح الفاخرة (Marble Protection)' : 'Luxury Marble Protection (TPU Films)'">حماية الرخام والأسطح الفاخرة (Marble Protection)</option>
+                  <option value="أفلام PPF للسيارات" x-text="lang === 'ar' ? 'أفلام PPF للسيارات (Automotive PPF)' : 'Automotive Paint Protection (PPF)'">أفلام PPF للسيارات (Automotive PPF)</option>
+                  <option value="معاينة هندسية لمشروع كود" x-text="lang === 'ar' ? 'معاينة هندسية لمشروع كود (Enterprise Survey)' : 'Commercial / Enterprise Engineering Survey'">معاينة هندسية لمشروع كود (Enterprise Survey)</option>
+                  <option value="استشارة أخرى" x-text="lang === 'ar' ? 'استشارة أخرى (Other)' : 'Other Inquiries'">استشارة أخرى (Other)</option>
                 </select>
               </div>
             </div>
@@ -3551,7 +3648,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
     x-transition:leave-start="opacity-100 translate-y-0"
     x-transition:leave-end="opacity-0 translate-y-4"
     @click="scrollToTop()"
-    aria-label="العودة للأعلى"
+    :aria-label="lang === 'ar' ? 'العودة للأعلى' : 'Scroll to top'"
     class="fixed bottom-4 end-4 sm:bottom-6 sm:end-6 z-40 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-slate-900/90 hover:bg-cyan-600 text-white flex items-center justify-center text-sm sm:text-base shadow-lg shadow-slate-900/25 border border-slate-700/50 backdrop-blur-md hover:scale-110 active:scale-95 transition-all group">
     <i class="fa-solid fa-arrow-up transition-transform group-hover:-translate-y-0.5"></i>
   </button>
@@ -3795,11 +3892,16 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         heatLight.intensity = 0;
         sunLight.color.setHex(0xffedd5);
 
+        const isEn = document.documentElement.lang === 'en' || document.documentElement.dir === 'ltr';
         if (statusTitle) {
-          statusTitle.innerHTML = '<i class="fa-solid fa-shield-halved text-cyan-600"></i><span>درع النانو سيراميك نشط (88% عزل حراري)</span>';
+          statusTitle.innerHTML = isEn
+            ? '<i class="fa-solid fa-shield-halved text-cyan-600"></i><span>Active Nano-Ceramic Shield (88% Heat Rejection)</span>'
+            : '<i class="fa-solid fa-shield-halved text-cyan-600"></i><span>درع النانو سيراميك نشط (88% عزل حراري)</span>';
         }
         if (statusDesc) {
-          statusDesc.textContent = 'حجب 99.9% أشعة ضارة | انخفاض الحرارة: -14°C | وضوح بصري 100%';
+          statusDesc.textContent = isEn
+            ? '99.9% Harmful UV Shielding | Temperature Drop: -14°C | 100% Optical Clarity'
+            : 'حجب 99.9% أشعة ضارة | انخفاض الحرارة: -14°C | وضوح بصري 100%';
         }
       } else {
         if (btnProtected) {
@@ -3814,11 +3916,16 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         heatLight.intensity = 2.2;
         sunLight.color.setHex(0xff7733);
 
+        const isEn = document.documentElement.lang === 'en' || document.documentElement.dir === 'ltr';
         if (statusTitle) {
-          statusTitle.innerHTML = '<i class="fa-solid fa-fire text-red-500"></i><span class="text-red-700">بدون عزل: حرارة الشمس تخترق بالكامل</span>';
+          statusTitle.innerHTML = isEn
+            ? '<i class="fa-solid fa-fire text-red-500"></i><span class="text-red-700">Without Insulation: Sun Heat Fully Penetrates</span>'
+            : '<i class="fa-solid fa-fire text-red-500"></i><span class="text-red-700">بدون عزل: حرارة الشمس تخترق بالكامل</span>';
         }
         if (statusDesc) {
-          statusDesc.textContent = '0% حجب حراري | حرارة الغرفة تصل 45°C | بهتان وتلف الأثاث';
+          statusDesc.textContent = isEn
+            ? '0% Solar Heat Block | Room Heat Reaches 45°C | Interior Fading & Wear'
+            : '0% حجب حراري | حرارة الغرفة تصل 45°C | بهتان وتلف الأثاث';
         }
       }
     }
