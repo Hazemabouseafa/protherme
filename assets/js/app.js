@@ -6,7 +6,10 @@ document.addEventListener('alpine:init', () => {
   Alpine.data('prothermeApp', () => ({
     // Language State: 'ar' or 'en'
     lang: localStorage.getItem('protherme_lang') || 'ar',
+    activeSector: 'villas',
+    activeFaq: 1,
     mobileMenuOpen: false,
+    heroVisualTab: 'image', // 'image' or '3d'
     
     // Performance Simulator State
     vlt: 35, // Visible Light Transmission %

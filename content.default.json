@@ -31,7 +31,7 @@
   },
   "images": {
     "logo": "assets/images/protherme-logo.jpg",
-    "heroVisual": "assets/images/hero-fullwidth.jpg",
+    "heroVisual": "assets/images/hero-beforeafter.jpg",
     "pillar1": "assets/images/compound-villa-new.jpg",
     "pillar2": "assets/images/marble-surface-new.jpg",
     "pillar3": "assets/images/supercar-ppf-new.jpg",
@@ -62,24 +62,24 @@
   },
   "heroStats": {
     "stat1": {
+      "num": "30%",
+      "label_ar": "توفير فاتورة الكهرباء",
+      "label_en": "AC & Electricity Savings"
+    },
+    "stat2": {
       "num": "88%",
       "label_ar": "عزل حرارة الشمس (IR)",
       "label_en": "Sun Heat Rejection (IR)"
     },
-    "stat2": {
-      "num": "99.9%",
+    "stat3": {
+      "num": "99%",
       "label_ar": "حماية من الأشعة الضارة (UV)",
       "label_en": "Harmful UV Shielding"
     },
-    "stat3": {
-      "num": "25 سنة",
-      "label_ar": "ضمان دولي معتمد",
-      "label_en": "Certified Global Warranty"
-    },
     "stat4": {
       "num": "100%",
-      "label_ar": "معاينة وتوريد متكامل",
-      "label_en": "Turnkey Survey & Install"
+      "label_ar": "رؤية نقية دون تعتيم",
+      "label_en": "Crystal Optical Clarity"
     }
   },
   "imageBadges": {
@@ -162,21 +162,21 @@
         "badge": "الممثل والموزع المعتمد لشركة Global Hi-Tech Films العالمية",
         "sector_villas": "🏰 فلل الكمبوندات الفاخرة",
         "sector_hotels": "🏢 الفنادق والمشاريع الكبرى",
-        "title_p1": "عزل زجاج وحماية رخام بمواصفات عالمية",
-        "title_p2": "راحة تامة وبرودة دائمة لبيتك ومشروعك",
-        "subtitle": "بنحميك من لهيب الصيف وتلف الرخام بضمان معتمد 25 سنة. كل اللي عليك تبعت صورة أو مقاس، وفريقنا الهندسي يزورك بالمعاينة والعينات مجاناً.",
-        "cta_primary": "احجز معاينة مجانية بالعينات الآن",
+        "title_p1": "قلل فاتورة الكهرباء .. واحمِ بيتك ومشروعك",
+        "title_p2": "من حرارة الصيف بأفلام النانو سيراميك",
+        "subtitle": "أفلام عزل حراري أمريكية فائقة الوضوح توفر حتى 30% من استهلاك التكييف وتعزل 88% من الحرارة دون أي تعتيم أو تغيير للإضاءة الطبيعية.",
+        "cta_primary": "طلب معاينة واختبار حراري مجاني",
         "cta_call": "تحدث مع مهندس: 01010010030",
-        "stat1_num": "88%",
-        "stat1_label": "عزل حرارة الشمس (IR)",
-        "stat2_num": "99.9%",
-        "stat2_label": "حماية من الأشعة الضارة (UV)",
-        "stat3_num": "25 سنة",
-        "stat3_label": "ضمان دولي معتمد",
+        "stat1_num": "30%",
+        "stat1_label": "توفير فاتورة الكهرباء",
+        "stat2_num": "88%",
+        "stat2_label": "عزل حرارة الشمس (IR)",
+        "stat3_num": "99%",
+        "stat3_label": "حجب الأشعة الضارة (UV)",
         "stat4_num": "100%",
-        "stat4_label": "معاينة وتوريد متكامل",
-        "visual_badge": "مشاريع Enterprise: واجهات زجاجية فندقية كبرى",
-        "visual_badge_sub": "تركيب هندسي معتمد لتقليل أحمال التكييف",
+        "stat4_label": "رؤية نقية دون تعتيم",
+        "visual_badge": "مبنى فعلي: مقارنة الحرارة قبل وبعد التركيب",
+        "visual_badge_sub": "105°F بدون عزل مقابل 78°F مع فيلم النانو سيراميك",
         "hotspot1": "حجب حراري بنسبة 88%",
         "hotspot2": "وضوح بصري نقي 100%",
         "hotspot3": "معايير تركيب هندسية معتمدة"
@@ -400,21 +400,21 @@
         "badge": "Authorized Representative & Distributor of Global Hi-Tech Films",
         "sector_villas": "🏰 Luxury Compound Villas",
         "sector_hotels": "🏢 Hotels & Enterprise Projects",
-        "title_p1": "Certified Glass & Marble Protection",
-        "title_p2": "Ultimate Cooling & Surface Care for Your Estate",
-        "subtitle": "Block extreme summer heat and safeguard precious marble with a 25-year warranty. Just send a photo or size, and our engineering team visits with free samples & on-site testing.",
+        "title_p1": "Lower Your Electric Bill & Protect Your Property",
+        "title_p2": "From Scorching Summer Heat with Nano-Ceramic",
+        "subtitle": "Genuine American optical solar films that cut AC bills by up to 30% and reject up to 88% solar heat while maintaining 100% crystal-clear daylight.",
         "cta_primary": "Book Free On-Site Survey & Samples",
         "cta_call": "Advisory Line: 01010010030",
-        "stat1_num": "88%",
-        "stat1_label": "Sun Heat Rejection (IR)",
-        "stat2_num": "99.9%",
-        "stat2_label": "Harmful UV Shielding",
-        "stat3_num": "25 Yrs",
-        "stat3_label": "Certified Global Warranty",
+        "stat1_num": "30%",
+        "stat1_label": "AC & Electricity Savings",
+        "stat2_num": "88%",
+        "stat2_label": "Sun Heat Rejection (IR)",
+        "stat3_num": "99%",
+        "stat3_label": "Harmful UV Shielding",
         "stat4_num": "100%",
-        "stat4_label": "Turnkey Survey & Install",
-        "visual_badge": "Enterprise Projects: Major Hotel Glass Facade",
-        "visual_badge_sub": "Certified engineering installation reducing HVAC loads",
+        "stat4_label": "Crystal Optical Clarity",
+        "visual_badge": "Real Building: Before & After Thermal Comparison",
+        "visual_badge_sub": "105°F Unprotected vs 78°F with Nano-Ceramic Shield",
         "hotspot1": "88% Thermal Solar Block",
         "hotspot2": "100% Optical Clarity",
         "hotspot3": "Certified Precision Fit"
