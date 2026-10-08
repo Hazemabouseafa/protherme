@@ -85,7 +85,7 @@ document.addEventListener('alpine:init', () => {
 
       // Listen for CMS updates across tabs
       window.addEventListener('storage', (e) => {
-        if (e.key === 'protherme_cms_v20261008' && e.newValue) {
+        if (e.key === 'protherme_cms_v20261008_rev' && e.newValue) {
           try {
             this.cms = JSON.parse(e.newValue);
           } catch (err) {}
@@ -105,9 +105,10 @@ document.addEventListener('alpine:init', () => {
 
     // Fetch CMS Content from Server API (with cache invalidation)
     async loadCMSContent() {
-      const CACHE_KEY = 'protherme_cms_v20261008';
+      const CACHE_KEY = 'protherme_cms_v20261008_rev';
       try {
         localStorage.removeItem('protherme_cms_content');
+        localStorage.removeItem('protherme_cms_v20261008');
       } catch (e) {}
 
       const cached = localStorage.getItem(CACHE_KEY);

@@ -602,14 +602,14 @@ var translations = {
       "ent_cta": "طلب دراسة فنية وعينات للمشروع"
     },
     "services": {
-      "tag": "حلول متكاملة لبيتك ومشروعك",
-      "title": "3 خدمات أساسية لحماية أصولك واستثماراتك",
-      "subtitle": "كل اللي عليك تبعت المقاسات أو صورة المكان، وفريقنا الهندسي هيتكفل بالمعاينة والتركيب والضمان."
+      "tag": "خدمات العزل والحماية الهندسية",
+      "title": "3 حلول هندسية تضمن لك الراحة والبرودة وحماية استثماراتك",
+      "subtitle": "حلول نانو تكنولوجي أمريكية مصممة خصيصاً لمقاومة مناخ الصيف القاسي وحماية أصولك وممتلكاتك بأعلى معايير الدقة الهندسية وضمان معتمد حتى 25 سنة."
     },
     "pillars": {
-      "tag": "حلول متكاملة لبيتك ومشروعك",
-      "title": "3 خدمات أساسية لحماية أصولك واستثماراتك",
-      "subtitle": "كل اللي عليك تبعت المقاسات أو صورة المكان، وفريقنا الهندسي هيتكفل بالمعاينة والتركيب والضمان.",
+      "tag": "خدمات العزل والحماية الهندسية",
+      "title": "3 حلول هندسية تضمن لك الراحة والبرودة وحماية استثماراتك",
+      "subtitle": "حلول نانو تكنولوجي أمريكية مصممة خصيصاً لمقاومة مناخ الصيف القاسي وحماية أصولك وممتلكاتك بأعلى معايير الدقة الهندسية وضمان معتمد حتى 25 سنة.",
       "p1": {
         "tag": "الأفلام المعمارية",
         "name": "عزل زجاج المباني والفلل",
@@ -1089,7 +1089,7 @@ function prothermeApp() {
 
       // Listen for CMS updates across tabs
       window.addEventListener('storage', (e) => {
-        if (e.key === 'protherme_cms_v20261008' && e.newValue) {
+        if (e.key === 'protherme_cms_v20261008_rev' && e.newValue) {
           try {
             this.cms = JSON.parse(e.newValue);
           } catch (err) {}
@@ -1109,10 +1109,11 @@ function prothermeApp() {
 
     // Fetch CMS Content from Server API (with cache invalidation)
     async loadCMSContent() {
-      const CACHE_KEY = 'protherme_cms_v20261008';
+      const CACHE_KEY = 'protherme_cms_v20261008_rev';
       // Invalidate obsolete prior caches
       try {
         localStorage.removeItem('protherme_cms_content');
+        localStorage.removeItem('protherme_cms_v20261008');
       } catch (e) {}
 
       const cached = localStorage.getItem(CACHE_KEY);
@@ -1609,14 +1610,14 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 loading="eager"
                 fetchpriority="high">
               
-              <!-- Left Side: Before Badge (Hot side of photo) -->
-              <div class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-orange-400 text-[11px] font-bold text-orange-800 flex items-center gap-1.5 shadow-md">
+              <!-- Right Side: Before Badge (Hot side of reversed photo - RTL natural reading) -->
+              <div class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-orange-400 text-[11px] font-bold text-orange-800 flex items-center gap-1.5 shadow-md">
                 <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
                 <span>قبل: لهيب ووهج 105°F</span>
               </div>
 
-              <!-- Right Side: After Badge (Cool side of photo) -->
-              <div class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-cyan-400 text-[11px] font-bold text-cyan-800 flex items-center gap-1.5 shadow-md">
+              <!-- Left Side: After Badge (Cool side of reversed photo - RTL natural reading) -->
+              <div class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-cyan-400 text-[11px] font-bold text-cyan-800 flex items-center gap-1.5 shadow-md">
                 <span class="w-2 h-2 rounded-full bg-cyan-500 beacon-dot"></span>
                 <span>بعد: راحة وبرودة 78°F</span>
               </div>
@@ -2335,10 +2336,10 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
       <div data-aos="fade-up" class="text-center max-w-3xl mx-auto mb-16 space-y-4">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs font-bold uppercase tracking-wider">
           <i class="fa-solid fa-layer-group"></i>
-          <span x-text="t('services.tag')"></span>
+          <span x-text="t('services.tag')">خدمات العزل والحماية الهندسية</span>
         </div>
-        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950" x-text="t('services.title')"></h2>
-        <p class="text-base sm:text-lg text-slate-600" x-text="t('services.subtitle')"></p>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-950" x-text="t('services.title')">3 حلول هندسية تضمن لك الراحة والبرودة وحماية استثماراتك</h2>
+        <p class="text-base sm:text-lg text-slate-600" x-text="t('services.subtitle')">حلول نانو تكنولوجي أمريكية مصممة خصيصاً لمقاومة مناخ الصيف القاسي وحماية أصولك وممتلكاتك بأعلى معايير الدقة الهندسية وضمان معتمد حتى 25 سنة.</p>
       </div>
 
       <!-- 3 Pillars Grid -->
