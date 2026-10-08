@@ -31,14 +31,14 @@
   },
   "images": {
     "logo": "assets/images/protherme-logo.jpg",
-    "heroVisual": "assets/images/hero-luxury-facade.jpg",
-    "pillar1": "assets/images/compound-villa.jpg",
-    "pillar2": "assets/images/marble-surface.jpg",
-    "pillar3": "assets/images/supercar-ppf.jpg",
-    "gallery1": "assets/images/hotel-enterprise.jpg",
-    "gallery2": "assets/images/marble-surface.jpg",
-    "gallery3": "assets/images/compound-villa.jpg",
-    "gallery4": "assets/images/supercar-ppf.jpg"
+    "heroVisual": "assets/images/hero-fullwidth.jpg",
+    "pillar1": "assets/images/compound-villa-new.jpg",
+    "pillar2": "assets/images/marble-surface-new.jpg",
+    "pillar3": "assets/images/supercar-ppf-new.jpg",
+    "gallery1": "assets/images/hotel-enterprise-new.jpg",
+    "gallery2": "assets/images/marble-surface-new.jpg",
+    "gallery3": "assets/images/compound-villa-new.jpg",
+    "gallery4": "assets/images/supercar-ppf-new.jpg"
   },
   "buttons": {
     "heroPrimary": {
@@ -162,9 +162,9 @@
         "badge": "الممثل والموزع المعتمد لشركة Global Hi-Tech Films العالمية",
         "sector_villas": "🏰 فلل الكمبوندات الفاخرة",
         "sector_hotels": "🏢 الفنادق والمشاريع الكبرى",
-        "title_p1": "حرارة الصيف وبقع الرخام؟",
-        "title_p2": "حماية هندسية متكاملة لبيتك ومشروعك",
-        "subtitle": "استمتع بنور الشمس والفيو الطبيعي بدون لهيب الصيف، واحمِ رخامك الفاخر من التلف للأبد. بنوصلك لحد بابك بالعينات والمعاينة الهندسية المجانية — ابعت صورة أو مقاس المكان وفريقنا هيتكفل بالباقي.",
+        "title_p1": "عزل زجاج وحماية رخام بمواصفات عالمية",
+        "title_p2": "راحة تامة وبرودة دائمة لبيتك ومشروعك",
+        "subtitle": "بنحميك من لهيب الصيف وتلف الرخام بضمان معتمد 25 سنة. كل اللي عليك تبعت صورة أو مقاس، وفريقنا الهندسي يزورك بالمعاينة والعينات مجاناً.",
         "cta_primary": "احجز معاينة مجانية بالعينات الآن",
         "cta_call": "تحدث مع مهندس: 01010010030",
         "stat1_num": "88%",
@@ -235,13 +235,13 @@
       },
       "services": {
         "tag": "حلول متكاملة لبيتك ومشروعك",
-        "title": "3 خدمات تضمن لك راحة تامة وبرودة دائمة وحماية لأغلى ما تملك",
-        "subtitle": "سواء فيلتك في كمبوند بتعاني من حرارة الصيف أو بتدير مشروع فندقي ضخم — ابعت المقاسات أو صورة المكان، وفريقنا الهندسي هيتكفل بالمعاينة والتركيب والضمان."
+        "title": "3 خدمات أساسية لحماية أصولك واستثماراتك",
+        "subtitle": "كل اللي عليك تبعت المقاسات أو صورة المكان، وفريقنا الهندسي هيتكفل بالمعاينة والتركيب والضمان."
       },
       "pillars": {
         "tag": "حلول متكاملة لبيتك ومشروعك",
-        "title": "3 خدمات تضمن لك راحة تامة وبرودة دائمة وحماية لأغلى ما تملك",
-        "subtitle": "سواء فيلتك في كمبوند بتعاني من حرارة الصيف أو بتدير مشروع فندقي ضخم — ابعت المقاسات أو صورة المكان، وفريقنا الهندسي هيتكفل بالمعاينة والتركيب والضمان.",
+        "title": "3 خدمات أساسية لحماية أصولك واستثماراتك",
+        "subtitle": "كل اللي عليك تبعت المقاسات أو صورة المكان، وفريقنا الهندسي هيتكفل بالمعاينة والتركيب والضمان.",
         "p1": {
           "tag": "الأفلام المعمارية",
           "title": "عزل زجاج المباني والفلل",
@@ -400,9 +400,9 @@
         "badge": "Authorized Representative & Distributor of Global Hi-Tech Films",
         "sector_villas": "🏰 Luxury Compound Villas",
         "sector_hotels": "🏢 Hotels & Enterprise Projects",
-        "title_p1": "Summer Heat & Damaged Marble?",
-        "title_p2": "Engineered Protection For Home & Business",
-        "subtitle": "Enjoy natural sunlight and scenic vistas without blistering summer heat, and shield luxury marble from permanent stains. We arrive at your doorstep with live samples and free on-site thermal testing — simply send rough sizes or photos on WhatsApp.",
+        "title_p1": "Certified Glass & Marble Protection",
+        "title_p2": "Ultimate Cooling & Surface Care for Your Estate",
+        "subtitle": "Block extreme summer heat and safeguard precious marble with a 25-year warranty. Just send a photo or size, and our engineering team visits with free samples & on-site testing.",
         "cta_primary": "Book Free On-Site Survey & Samples",
         "cta_call": "Advisory Line: 01010010030",
         "stat1_num": "88%",
@@ -472,14 +472,14 @@
         "ent_cta": "Request Project Engineering Proposal & Samples"
       },
       "services": {
-        "tag": "ENGINEERING PROTECTION SOLUTIONS",
-        "title": "3 Specialized Services for Complete Comfort, Cooling & Asset Protection",
-        "subtitle": "Whether it's your luxury compound villa or an enterprise hotel project — just send us the glass dimensions or a quick photo, and our certified team handles everything with a 25-year warranty."
+        "tag": "INTEGRATED PROTECTION SOLUTIONS",
+        "title": "3 Core Services Safeguarding Your High-End Investments",
+        "subtitle": "Just send your dimensions or photos, and our certified team handles inspection, installation, and warranty."
       },
       "pillars": {
-        "tag": "ENGINEERING PROTECTION SOLUTIONS",
-        "title": "3 Specialized Services for Complete Comfort, Cooling & Asset Protection",
-        "subtitle": "Whether it's your luxury compound villa or an enterprise hotel project — just send us the glass dimensions or a quick photo, and our certified team handles everything with a 25-year warranty.",
+        "tag": "INTEGRATED PROTECTION SOLUTIONS",
+        "title": "3 Core Services Safeguarding Your High-End Investments",
+        "subtitle": "Just send your dimensions or photos, and our certified team handles inspection, installation, and warranty.",
         "p1": {
           "tag": "Architectural Films",
           "title": "Architectural Glass Insulation",

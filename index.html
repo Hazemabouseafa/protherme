@@ -66,6 +66,11 @@
 }
 
 /* Base Typography & Smooth Scroll */
+html, body {
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
 html {
   scroll-behavior: smooth;
   font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
@@ -489,9 +494,9 @@ var translations = {
       "badge": "الممثل والموزع المعتمد لشركة Global Hi-Tech Films العالمية",
       "sector_villas": "🏰 فلل الكمبوندات الفاخرة",
       "sector_hotels": "🏢 الفنادق والمشاريع الكبرى",
-      "title_p1": "حرارة الصيف وبقع الرخام؟",
-      "title_p2": "حماية هندسية متكاملة لبيتك ومشروعك",
-      "subtitle": "استمتع بنور الشمس والفيو الطبيعي بدون لهيب الصيف، واحمِ رخامك الفاخر من التلف للأبد. بنوصلك لحد بابك بالعينات والمعاينة الهندسية المجانية — ابعت صورة أو مقاس المكان وفريقنا هيتكفل بالباقي.",
+      "title_p1": "عزل زجاج وحماية رخام بمواصفات عالمية",
+      "title_p2": "راحة تامة وبرودة دائمة لبيتك ومشروعك",
+      "subtitle": "بنحميك من لهيب الصيف وتلف الرخام بضمان معتمد 25 سنة. كل اللي عليك تبعت صورة أو مقاس، وفريقنا الهندسي يزورك بالمعاينة والعينات مجاناً.",
       "cta_primary": "احجز معاينة مجانية بالعينات الآن",
       "cta_call": "تحدث مع مهندس: 01010010030",
       "stat1_num": "88%",
@@ -562,13 +567,13 @@ var translations = {
     },
     "services": {
       "tag": "حلول متكاملة لبيتك ومشروعك",
-      "title": "3 خدمات تضمن لك راحة تامة وبرودة دائمة وحماية لأغلى ما تملك",
-      "subtitle": "سواء فيلتك في كمبوند بتعاني من حرارة الصيف أو بتدير مشروع فندقي ضخم — ابعت المقاسات أو صورة المكان، وفريقنا الهندسي هيتكفل بالمعاينة والتركيب والضمان."
+      "title": "3 خدمات أساسية لحماية أصولك واستثماراتك",
+      "subtitle": "كل اللي عليك تبعت المقاسات أو صورة المكان، وفريقنا الهندسي هيتكفل بالمعاينة والتركيب والضمان."
     },
     "pillars": {
       "tag": "حلول متكاملة لبيتك ومشروعك",
-      "title": "3 خدمات تضمن لك راحة تامة وبرودة دائمة وحماية لأغلى ما تملك",
-      "subtitle": "سواء فيلتك في كمبوند بتعاني من حرارة الصيف أو بتدير مشروع فندقي ضخم — ابعت المقاسات أو صورة المكان، وفريقنا الهندسي هيتكفل بالمعاينة والتركيب والضمان.",
+      "title": "3 خدمات أساسية لحماية أصولك واستثماراتك",
+      "subtitle": "كل اللي عليك تبعت المقاسات أو صورة المكان، وفريقنا الهندسي هيتكفل بالمعاينة والتركيب والضمان.",
       "p1": {
         "tag": "الأفلام المعمارية",
         "name": "عزل زجاج المباني والفلل",
@@ -727,9 +732,9 @@ var translations = {
       "badge": "Authorized Representative & Distributor of Global Hi-Tech Films",
       "sector_villas": "🏰 Luxury Compound Villas",
       "sector_hotels": "🏢 Hotels & Enterprise Projects",
-      "title_p1": "Summer Heat & Damaged Marble?",
-      "title_p2": "Engineered Protection For Home & Business",
-      "subtitle": "Enjoy natural sunlight and scenic vistas without blistering summer heat, and shield luxury marble from permanent stains. We arrive at your doorstep with live samples and free on-site thermal testing — simply send rough sizes or photos on WhatsApp.",
+      "title_p1": "Certified Glass & Marble Protection",
+      "title_p2": "Ultimate Cooling & Surface Care for Your Estate",
+      "subtitle": "Block extreme summer heat and safeguard precious marble with a 25-year warranty. Just send a photo or size, and our engineering team visits with free samples & on-site testing.",
       "cta_primary": "Book Free On-Site Survey & Samples",
       "cta_call": "Advisory Line: 01010010030",
       "stat1_num": "88%",
@@ -799,14 +804,14 @@ var translations = {
       "ent_cta": "Request Project Engineering Proposal & Samples"
     },
     "services": {
-      "tag": "ENGINEERING PROTECTION SOLUTIONS",
-      "title": "3 Specialized Services for Complete Comfort, Cooling & Asset Protection",
-      "subtitle": "Whether it's your luxury compound villa or an enterprise hotel project — just send us the glass dimensions or a quick photo, and our certified team handles everything with a 25-year warranty."
+      "tag": "INTEGRATED PROTECTION SOLUTIONS",
+      "title": "3 Core Services Safeguarding Your High-End Investments",
+      "subtitle": "Just send your dimensions or photos, and our certified team handles inspection, installation, and warranty."
     },
     "pillars": {
-      "tag": "ENGINEERING PROTECTION SOLUTIONS",
-      "title": "3 Specialized Services for Complete Comfort, Cooling & Asset Protection",
-      "subtitle": "Whether it's your luxury compound villa or an enterprise hotel project — just send us the glass dimensions or a quick photo, and our certified team handles everything with a 25-year warranty.",
+      "tag": "INTEGRATED PROTECTION SOLUTIONS",
+      "title": "3 Core Services Safeguarding Your High-End Investments",
+      "subtitle": "Just send your dimensions or photos, and our certified team handles inspection, installation, and warranty.",
       "p1": {
         "tag": "Architectural Films",
         "name": "Architectural Glass Insulation",
@@ -1014,14 +1019,14 @@ function prothermeApp() {
       },
       images: {
         logo: 'assets/images/protherme-logo.jpg',
-        heroVisual: 'assets/images/installation-site-real.jpg',
-        pillar1: 'assets/images/arch-glass-villa.jpg',
-        pillar2: 'assets/images/marble-surface.jpg',
-        pillar3: 'assets/images/supercar-ppf.jpg',
-        gallery1: 'assets/images/installation-site-real.jpg',
-        gallery2: 'assets/images/marble-surface.jpg',
-        gallery3: 'assets/images/arch-glass-villa.jpg',
-        gallery4: 'assets/images/supercar-ppf.jpg'
+        heroVisual: 'assets/images/hero-fullwidth.jpg',
+        pillar1: 'assets/images/compound-villa-new.jpg',
+        pillar2: 'assets/images/marble-surface-new.jpg',
+        pillar3: 'assets/images/supercar-ppf-new.jpg',
+        gallery1: 'assets/images/hotel-enterprise-new.jpg',
+        gallery2: 'assets/images/marble-surface-new.jpg',
+        gallery3: 'assets/images/compound-villa-new.jpg',
+        gallery4: 'assets/images/supercar-ppf-new.jpg'
       },
       buttons: {
         heroPrimary: { ar: 'طلب استشارة هندسية فورية', en: 'Request Instant Consultation', target: '#contact', visible: true },
@@ -1278,17 +1283,17 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <div x-show="cms.visibility.topbar" class="relative z-50 bg-slate-100/90 border-b border-slate-200/90 text-xs py-2 px-4 backdrop-blur-md">
     <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
-      <div class="flex items-center gap-2 text-slate-600">
-        <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-cyan-100/80 text-cyan-800 border border-cyan-200">
-          <i class="fa-solid fa-award me-1.5 text-cyan-600"></i>
-          <span x-text="t('hero.badge')"></span>
+      <div class="flex items-center gap-2 text-slate-600 max-w-full">
+        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] sm:text-[11px] font-semibold bg-cyan-100/80 text-cyan-800 border border-cyan-200 max-w-[220px] sm:max-w-none truncate">
+          <i class="fa-solid fa-award me-1.5 text-cyan-600 shrink-0"></i>
+          <span class="truncate" x-text="t('hero.badge')"></span>
         </span>
         <a href="https://globalhitechfilms.com" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center text-slate-500 hover:text-cyan-700 transition-colors">
           <i class="fa-solid fa-arrow-up-right-from-square text-[10px] me-1"></i>
           <span>globalhitechfilms.com</span>
         </a>
       </div>
-      <div class="flex items-center gap-4 text-slate-600 ms-auto">
+      <div class="flex items-center gap-3 sm:gap-4 text-slate-600 ms-auto text-[11px] sm:text-xs">
         <a :href="'tel:' + cms.contacts.phone" class="inline-flex items-center gap-1.5 text-slate-700 hover:text-cyan-700 transition-colors font-semibold">
           <i class="fa-solid fa-phone text-cyan-600"></i>
           <span dir="ltr" x-text="cms.contacts.phone"></span>
@@ -1307,16 +1312,16 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-slate-200/90 transition-all duration-300 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20">
+      <div class="flex items-center justify-between h-20 sm:h-26">
         
-        <!-- BRAND LOGO -->
-        <a href="#" class="flex items-center gap-3.5 group py-2">
-          <div class="relative p-1 bg-white rounded-xl border border-slate-200 shadow-sm transition-transform duration-300 group-hover:scale-105">
-            <img :src="cms.images.logo || 'assets/images/protherme-logo.jpg'" alt="ProTherme Engineering Solutions" class="h-11 w-auto object-contain rounded-lg">
+        <!-- BRAND LOGO (ENLARGED & CRYSTAL CLEAR) -->
+        <a href="#" class="flex items-center gap-2.5 sm:gap-4 group py-2">
+          <div class="relative p-1.5 sm:p-2 bg-white rounded-2xl border border-slate-200/90 shadow-md transition-transform duration-300 group-hover:scale-105 shrink-0">
+            <img :src="cms.images.logo || 'assets/images/protherme-logo.jpg'" alt="ProTherme Engineering Solutions" class="h-11 sm:h-16 md:h-18 w-auto object-contain rounded-xl">
           </div>
           <div class="flex flex-col">
-            <span class="text-xl font-black tracking-tight text-slate-950 group-hover:text-cyan-700 transition-colors">ProTherme</span>
-            <span class="text-[11px] text-cyan-700 font-semibold" x-text="t('nav.brand_sub')"></span>
+            <span class="text-xl sm:text-3xl font-black tracking-tight text-slate-950 group-hover:text-cyan-700 transition-colors leading-none">ProTherme</span>
+            <span class="hidden sm:block text-xs sm:text-sm text-cyan-700 font-bold mt-1" x-text="t('nav.brand_sub')"></span>
           </div>
         </a>
 
@@ -1414,115 +1419,120 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   </header>
 
   <!-- ========================================== -->
-  <!-- HERO SECTION                               -->
+  <!-- FULL-WIDTH CINEMATIC HERO SECTION          -->
   <!-- ========================================== -->
-  <section class="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden z-10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+  <section class="relative w-full min-h-[88vh] lg:min-h-[92vh] flex items-center justify-center overflow-hidden bg-slate-950 text-white z-10">
+    
+    <!-- Full-Width 16:9 Cinematic Estate Background Image -->
+    <div class="absolute inset-0 z-0 select-none">
+      <img 
+        id="hero-fallback-img"
+        :src="cms.images.heroVisual || 'assets/images/hero-fullwidth.jpg'" 
+        alt="ProTherme Full-Width Architectural Facade" 
+        class="w-full h-full object-cover object-center filter brightness-[0.70] contrast-[1.10] transition-transform duration-1000 ease-out">
+      
+      <!-- Luxury Architectural Scrim Overlay (Ensures 100% Crisp Typography Contrast) -->
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/65 to-slate-950/45"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/40 to-slate-950/85 rtl:from-slate-950/85 rtl:to-slate-950/85"></div>
+    </div>
+
+    <!-- Content & Interactive Three.js Container -->
+    <div class="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
         
-        <!-- HERO TEXT CONTENT -->
+        <!-- Hero Text & Conversions (Minimalist & Straight to the Point) -->
         <div class="lg:col-span-7 space-y-6 text-start">
           
-          <!-- AUTHORIZED PARTNER FLOATING BADGE -->
-          <div x-show="cms.visibility.heroBadge" data-aos="fade-down" data-aos-duration="600" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-xs sm:text-sm font-semibold shadow-xs animate-float-slow">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 beacon-dot"></span>
-            <span x-text="t('hero.badge')"></span>
+          <!-- Authorized Partner Top Badge -->
+          <div x-show="cms.visibility.heroBadge" data-aos="fade-down" data-aos-duration="600" class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-900/80 backdrop-blur-md border border-cyan-500/40 text-cyan-300 text-xs sm:text-sm font-bold shadow-lg shadow-cyan-900/20">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 beacon-dot"></span>
+            <span x-text="cms.imageBadges?.heroTop?.[lang] || t('hero.badge')"></span>
           </div>
 
-          <!-- HEADLINE WITH VIBRANT GRADIENT -->
-          <h1 data-aos="fade-up" data-aos-duration="700" class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-950 leading-[1.15]">
+          <!-- Impactful Headline -->
+          <h1 data-aos="fade-up" data-aos-duration="700" class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.18]">
             <span class="block" x-text="t('hero.title_p1')"></span>
-            <span class="block bg-gradient-to-r from-cyan-700 via-teal-700 to-cyan-800 bg-clip-text text-transparent animate-gradient-text" x-text="t('hero.title_p2')"></span>
+            <span class="block bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent animate-gradient-text" x-text="t('hero.title_p2')"></span>
           </h1>
 
-          <!-- SUBTITLE -->
-          <p data-aos="fade-up" data-aos-duration="700" data-aos-delay="100" class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl font-normal" x-text="t('hero.subtitle')"></p>
+          <!-- Straight-to-the-point Subtitle -->
+          <p data-aos="fade-up" data-aos-duration="700" data-aos-delay="100" class="text-base sm:text-lg text-slate-200 leading-relaxed max-w-2xl font-normal drop-shadow-sm" x-text="t('hero.subtitle')"></p>
 
-          <!-- SECTOR PILLS: COMPOUNDS & ENTERPRISE -->
+          <!-- Quick Sector Jump Pills -->
           <div data-aos="fade-up" data-aos-duration="700" data-aos-delay="120" class="flex flex-wrap items-center gap-2.5 pt-1">
-            <button @click="activeSector = 'villas'; scrollTo('sectors')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-800 border border-slate-300 shadow-xs hover:border-cyan-500 hover:text-cyan-700 transition-all hover:scale-105 active:scale-95 cursor-pointer">
-              <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+            <button @click="activeSector = 'villas'; scrollTo('sectors')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 shadow-xs hover:border-cyan-400 transition-all hover:scale-105 active:scale-95 cursor-pointer">
+              <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
               <span x-text="t('hero.sector_villas')"></span>
             </button>
-            <button @click="activeSector = 'enterprise'; scrollTo('sectors')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-white text-slate-800 border border-slate-300 shadow-xs hover:border-emerald-500 hover:text-emerald-700 transition-all hover:scale-105 active:scale-95 cursor-pointer">
-              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <button @click="activeSector = 'enterprise'; scrollTo('sectors')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 shadow-xs hover:border-emerald-400 transition-all hover:scale-105 active:scale-95 cursor-pointer">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
               <span x-text="t('hero.sector_hotels')"></span>
             </button>
           </div>
 
-          <!-- DUAL CTA BUTTONS -->
+          <!-- Direct Frictionless CTAs (WhatsApp Instant Quote & Phone) -->
           <div data-aos="fade-up" data-aos-duration="700" data-aos-delay="150" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-2">
             <a 
               x-show="cms.buttons.heroPrimary.visible"
-              @click.prevent="scrollTo('contact')" 
-              :href="cms.buttons.heroPrimary.target" 
-              class="w-full sm:w-auto justify-center px-6 sm:px-7 py-3.5 sm:py-4 rounded-xl bg-gradient-to-r from-cyan-600 via-teal-600 to-emerald-600 text-white font-black text-sm sm:text-base shadow-lg shadow-cyan-600/25 hover:shadow-xl hover:shadow-cyan-600/35 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2 cursor-pointer glow-pulse-subtle btn-shimmer">
-              <i class="fa-solid fa-headset text-white"></i>
+              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent('مرحبا بروتيرم، أود حجز معاينة مجانية بالعينات واختبار العزل بموقعي')" 
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full sm:w-auto justify-center px-7 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black text-sm sm:text-base shadow-xl shadow-cyan-500/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2.5 cursor-pointer btn-shimmer">
+              <i class="fa-brands fa-whatsapp text-lg"></i>
               <span x-text="cms.buttons.heroPrimary[lang] || t('hero.cta_primary')"></span>
             </a>
 
             <a 
               x-show="cms.buttons.heroCall.visible"
               :href="'tel:' + cms.contacts.phone" 
-              class="w-full sm:w-auto justify-center px-5 sm:px-6 py-3.5 sm:py-4 rounded-xl bg-white border border-slate-300 text-slate-800 hover:text-cyan-700 hover:border-cyan-400 font-bold text-sm sm:text-base hover:bg-slate-50 hover:scale-[1.02] active:scale-[0.98] shadow-xs transition-all duration-200 flex items-center gap-2.5">
-              <div class="w-8 h-8 rounded-lg bg-cyan-50 text-cyan-700 flex items-center justify-center">
-                <i class="fa-solid fa-phone"></i>
+              class="w-full sm:w-auto justify-center px-6 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 hover:border-cyan-400 font-bold text-sm sm:text-base hover:scale-[1.02] active:scale-[0.98] shadow-lg transition-all duration-200 flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-300 flex items-center justify-center">
+                <i class="fa-solid fa-phone text-xs"></i>
               </div>
-              <span x-text="cms.buttons.heroCall[lang] || ('اتصال مباشر: ' + cms.contacts.phone)"></span>
+              <span x-text="cms.buttons.heroCall[lang] || ('تحدث مع مهندس: ' + cms.contacts.phone)"></span>
             </a>
           </div>
 
-          <!-- LIVE STATS GRID -->
-          <div x-show="cms.visibility.heroStats" data-aos="fade-up" data-aos-duration="700" data-aos-delay="200" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-6 border-t border-slate-200">
-            <div class="p-3.5 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-cyan-400 interactive-lift">
-              <div class="text-2xl sm:text-3xl font-black font-mono text-cyan-700" x-text="cms.heroStats.stat1.num"></div>
-              <div class="text-xs text-slate-600 font-medium mt-1" x-text="cms.heroStats.stat1['label_' + lang]"></div>
+          <!-- 4 Core Trust & Performance Stats -->
+          <div x-show="cms.visibility.heroStats" data-aos="fade-up" data-aos-duration="700" data-aos-delay="200" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-6 border-t border-white/15">
+            <div class="p-3.5 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-cyan-400/50 transition-colors">
+              <div class="text-2xl sm:text-3xl font-black font-mono text-cyan-400" x-text="cms.heroStats.stat1.num"></div>
+              <div class="text-xs text-slate-300 font-medium mt-1" x-text="cms.heroStats.stat1['label_' + lang]"></div>
             </div>
-            <div class="p-3.5 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-emerald-400 interactive-lift">
-              <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-700" x-text="cms.heroStats.stat2.num"></div>
-              <div class="text-xs text-slate-600 font-medium mt-1" x-text="cms.heroStats.stat2['label_' + lang]"></div>
+            <div class="p-3.5 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-emerald-400/50 transition-colors">
+              <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-400" x-text="cms.heroStats.stat2.num"></div>
+              <div class="text-xs text-slate-300 font-medium mt-1" x-text="cms.heroStats.stat2['label_' + lang]"></div>
             </div>
-            <div class="p-3.5 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-cyan-400 interactive-lift">
-              <div class="text-2xl sm:text-3xl font-black font-mono text-cyan-700" x-text="cms.heroStats.stat3.num"></div>
-              <div class="text-xs text-slate-600 font-medium mt-1" x-text="cms.heroStats.stat3['label_' + lang]"></div>
+            <div class="p-3.5 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-cyan-400/50 transition-colors">
+              <div class="text-2xl sm:text-3xl font-black font-mono text-cyan-400" x-text="cms.heroStats.stat3.num"></div>
+              <div class="text-xs text-slate-300 font-medium mt-1" x-text="cms.heroStats.stat3['label_' + lang]"></div>
             </div>
-            <div class="p-3.5 rounded-xl bg-white border border-slate-200 shadow-xs hover:border-emerald-400 interactive-lift">
-              <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-700" x-text="cms.heroStats.stat4.num"></div>
-              <div class="text-xs text-slate-600 font-medium mt-1" x-text="cms.heroStats.stat4['label_' + lang]"></div>
+            <div class="p-3.5 rounded-2xl bg-slate-900/60 backdrop-blur-md border border-white/10 hover:border-emerald-400/50 transition-colors">
+              <div class="text-2xl sm:text-3xl font-black font-mono text-emerald-400" x-text="cms.heroStats.stat4.num"></div>
+              <div class="text-xs text-slate-300 font-medium mt-1" x-text="cms.heroStats.stat4['label_' + lang]"></div>
             </div>
           </div>
 
         </div>
 
-        <!-- HERO VISUAL: 3D THREE.JS INTERACTIVE NANO-SHIELD -->
+        <!-- 3D Interactive Nano-Shield Holographic Card -->
         <div class="lg:col-span-5 relative" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
           
-          <!-- Elegant Light Border Around Container -->
-          <div class="relative rounded-3xl p-2.5 sm:p-3 bg-gradient-to-b from-white via-slate-50 to-slate-100 border border-slate-200 shadow-2xl shadow-slate-200/80">
+          <div class="relative rounded-3xl p-3 sm:p-4 bg-slate-900/70 backdrop-blur-xl border border-white/15 shadow-2xl shadow-cyan-950/50">
             
-            <div id="hero-3d-wrapper" class="relative rounded-2xl overflow-hidden bg-slate-900 aspect-[4/5] sm:aspect-[3/4] border border-slate-200/80 group select-none shadow-inner">
+            <div id="hero-3d-wrapper" class="relative rounded-2xl overflow-hidden bg-slate-950/90 aspect-[4/5] sm:aspect-[3/4] border border-white/10 group select-none shadow-inner">
               
               <!-- 3D WebGL Canvas Container -->
               <div id="hero-3d-canvas" class="w-full h-full cursor-grab active:cursor-grabbing relative z-20"></div>
 
-              <!-- Ultra-Luxury Villa Background Image (CMS Bound) -->
-              <img 
-                id="hero-fallback-img"
-                :src="cms.images.heroVisual || 'assets/images/hero-luxury-facade.jpg'" 
-                alt="ProTherme Architectural Shield" 
-                class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none transition-transform duration-700 ease-out group-hover:scale-105 z-0">
-
-              <!-- Chic Luxury Gradient Overlay (Provides Contrast & Depth) -->
-              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/30 to-slate-950/35 pointer-events-none z-10"></div>
-
               <!-- Top Badge (CMS Bound) -->
-              <div class="absolute top-4 start-4 z-30 flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border border-white/60 text-xs font-bold text-slate-800 shadow-lg">
-                <span class="w-2.5 h-2.5 rounded-full bg-cyan-600 beacon-dot"></span>
-                <span x-text="cms.imageBadges?.heroTop?.[lang] || 'طاقم هندسي معتمد من Global Hi-Tech'"></span>
+              <div class="absolute top-4 start-4 z-30 flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900/85 backdrop-blur-md border border-white/20 text-xs font-bold text-slate-100 shadow-md">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 beacon-dot"></span>
+                <span x-text="cms.imageBadges?.heroTop?.[lang] || 'طاقم هندسي معتمد'"></span>
               </div>
 
               <!-- 3D Interactive Mode Switcher Pill -->
-              <div class="absolute top-4 end-4 z-30 flex items-center bg-white/90 backdrop-blur-md p-1 rounded-xl border border-white/60 shadow-lg text-[11px] font-bold text-slate-800">
+              <div class="absolute top-4 end-4 z-30 flex items-center bg-slate-900/90 backdrop-blur-md p-1 rounded-xl border border-white/20 shadow-lg text-[11px] font-bold text-white">
                 <button 
                   id="btn-mode-protected"
                   type="button"
@@ -1533,30 +1543,30 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 <button 
                   id="btn-mode-unprotected"
                   type="button"
-                  class="px-2.5 py-1 rounded-lg transition-all duration-200 flex items-center gap-1.5 text-slate-600 hover:text-slate-950 cursor-pointer">
+                  class="px-2.5 py-1 rounded-lg transition-all duration-200 flex items-center gap-1.5 text-slate-400 hover:text-white cursor-pointer">
                   <span>بدون عزل 🔥</span>
                 </button>
               </div>
 
-              <!-- 3D Interaction Drag Instruction Pill -->
-              <div class="absolute top-16 inset-x-0 mx-auto w-fit z-30 pointer-events-none px-3.5 py-1 rounded-full bg-slate-900/75 backdrop-blur-sm border border-white/15 text-[10px] text-cyan-200 font-mono flex items-center gap-1.5 shadow-md">
+              <!-- Drag Rotation Hint -->
+              <div class="absolute top-16 inset-x-0 mx-auto w-fit z-30 pointer-events-none px-3 py-1 rounded-full bg-slate-900/80 backdrop-blur-sm border border-white/10 text-[10px] text-cyan-300 font-mono flex items-center gap-1.5 shadow-md">
                 <i class="fa-solid fa-arrows-rotate text-[9px] animate-spin"></i>
-                <span>اسحب لتدوير الزجاج 3D</span>
+                <span>اسحب لتدوير زجاج النانو 3D</span>
               </div>
 
-              <!-- Live 3D Thermal Metrics Bar -->
-              <div class="absolute bottom-4 inset-x-4 p-3.5 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-2xl z-30">
+              <!-- Live 3D Status Banner -->
+              <div class="absolute bottom-4 inset-x-4 p-3.5 rounded-2xl bg-slate-900/90 backdrop-blur-md border border-white/20 shadow-2xl z-30">
                 <div class="flex items-center justify-between">
                   <div>
-                    <h4 id="hero-3d-status-title" class="text-xs sm:text-sm font-bold text-slate-950 flex items-center gap-2">
-                      <i class="fa-solid fa-shield-halved text-cyan-600"></i>
+                    <h4 id="hero-3d-status-title" class="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+                      <i class="fa-solid fa-shield-halved text-cyan-400"></i>
                       <span>درع النانو سيراميك نشط (88% عزل حراري)</span>
                     </h4>
-                    <p id="hero-3d-status-desc" class="text-[11px] text-slate-600 mt-0.5">
-                      حجب 99.9% أشعة ضارة | انخفاض الحرارة: -14°C | وضوح بصري 100%
+                    <p id="hero-3d-status-desc" class="text-[11px] text-slate-300 mt-0.5">
+                      حجب 99.9% أشعة ضارة | انخفاض الحرارة: -14°C | ووضوح بصري 100%
                     </p>
                   </div>
-                  <button @click="openLightbox(cms.images.heroVisual || 'assets/images/hero-luxury-facade.jpg', 'hero.title_p1', 'hero.subtitle')" class="p-2.5 rounded-xl bg-cyan-50 text-cyan-700 hover:bg-cyan-600 hover:text-white transition-colors cursor-pointer shadow-xs" title="عرض الصورة بدقة كاملة">
+                  <button @click="openLightbox(cms.images.heroVisual || 'assets/images/hero-fullwidth.jpg', 'hero.title_p1', 'hero.subtitle')" class="p-2.5 rounded-xl bg-white/10 text-cyan-300 hover:bg-cyan-500 hover:text-white transition-colors cursor-pointer shadow-xs" title="عرض الصورة الكاملة">
                     <i class="fa-solid fa-expand text-xs"></i>
                   </button>
                 </div>
@@ -1566,14 +1576,14 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
           </div>
 
-          <!-- Decorative Floating Corner Card -->
-          <div class="hidden sm:flex absolute -bottom-6 -start-6 p-4 rounded-2xl bg-white border border-slate-200 shadow-xl z-30 items-center gap-3 animate-float-delayed">
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-600 to-teal-500 flex items-center justify-center text-white text-xl font-bold shadow-xs">
+          <!-- Decorative Floating Corner Badge -->
+          <div class="hidden sm:flex absolute -bottom-5 -start-5 p-3.5 rounded-2xl bg-slate-900/90 backdrop-blur-md border border-white/20 shadow-2xl z-30 items-center gap-3 animate-float-delayed">
+            <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-cyan-600 to-teal-500 flex items-center justify-center text-white text-lg font-bold shadow-xs">
               <i class="fa-solid fa-shield-halved"></i>
             </div>
             <div>
-              <div class="text-xs text-slate-500" x-text="cms.imageBadges?.heroCornerTag?.[lang] || 'الممثل المعتمد'"></div>
-              <div class="text-sm font-bold text-slate-950" x-text="cms.imageBadges?.heroCornerName?.[lang] || 'Global Hi-Tech Films'"></div>
+              <div class="text-[11px] text-slate-400" x-text="cms.imageBadges?.heroCornerTag?.[lang] || 'الممثل المعتمد'"></div>
+              <div class="text-xs font-bold text-white" x-text="cms.imageBadges?.heroCornerName?.[lang] || 'Global Hi-Tech Films'"></div>
             </div>
           </div>
 
@@ -1740,48 +1750,57 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         <p class="text-sm sm:text-base text-slate-600" x-text="t('sectors.subtitle')"></p>
         
         <!-- Interactive Sector Switcher Tabs -->
-        <div class="flex flex-wrap items-center justify-center gap-3 pt-4">
+        <div class="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 pt-4">
           <button 
             @click="activeSector = 'villas'" 
             :class="activeSector === 'villas' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-md shadow-cyan-600/25 scale-[1.02]' : 'bg-white text-slate-700 border border-slate-300 hover:border-cyan-400 hover:bg-slate-50'"
-            class="px-5 py-3 rounded-2xl font-bold text-sm sm:text-base transition-all duration-200 flex items-center gap-2.5 cursor-pointer">
-            <i class="fa-solid fa-house-chimney text-base"></i>
-            <span x-text="t('sectors.tab_villas')"></span>
+            class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl font-bold text-xs sm:text-sm md:text-base transition-all duration-200 flex items-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-house-chimney text-sm"></i>
+            <span x-text="lang === 'ar' ? '🏡 فلل الكمبوندات' : '🏡 Compound Villas'"></span>
           </button>
           <button 
             @click="activeSector = 'enterprise'" 
             :class="activeSector === 'enterprise' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-md shadow-cyan-600/25 scale-[1.02]' : 'bg-white text-slate-700 border border-slate-300 hover:border-cyan-400 hover:bg-slate-50'"
-            class="px-5 py-3 rounded-2xl font-bold text-sm sm:text-base transition-all duration-200 flex items-center gap-2.5 cursor-pointer">
-            <i class="fa-solid fa-hotel text-base"></i>
-            <span x-text="t('sectors.tab_enterprise')"></span>
+            class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl font-bold text-xs sm:text-sm md:text-base transition-all duration-200 flex items-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-hotel text-sm"></i>
+            <span x-text="lang === 'ar' ? '🏢 الفنادق والمشاريع' : '🏢 Hotels & Enterprise'"></span>
+          </button>
+          <button 
+            @click="activeSector = 'marble'" 
+            :class="activeSector === 'marble' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-md shadow-cyan-600/25 scale-[1.02]' : 'bg-white text-slate-700 border border-slate-300 hover:border-cyan-400 hover:bg-slate-50'"
+            class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl font-bold text-xs sm:text-sm md:text-base transition-all duration-200 flex items-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-gem text-sm"></i>
+            <span x-text="lang === 'ar' ? '💎 حماية الرخام والأسطح' : '💎 Marble Protection'"></span>
+          </button>
+          <button 
+            @click="activeSector = 'supercars'" 
+            :class="activeSector === 'supercars' ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-md shadow-cyan-600/25 scale-[1.02]' : 'bg-white text-slate-700 border border-slate-300 hover:border-cyan-400 hover:bg-slate-50'"
+            class="px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl font-bold text-xs sm:text-sm md:text-base transition-all duration-200 flex items-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-car-side text-sm"></i>
+            <span x-text="lang === 'ar' ? '🏎️ أفلام سيارات PPF' : '🏎️ Supercar PPF'"></span>
           </button>
         </div>
       </div>
 
       <!-- VIEW 1: LUXURY COMPOUND VILLAS -->
       <div x-show="activeSector === 'villas'" data-aos="fade-up" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-sm">
-        
-        <!-- Image Card with Badges -->
         <div class="lg:col-span-6 relative rounded-2xl overflow-hidden aspect-[16/10] bg-slate-100 border border-slate-200 group">
-          <img src="assets/images/compound-villa.jpg" alt="Luxury Compound Villa" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <img src="assets/images/compound-villa-new.jpg" alt="Luxury Compound Villa" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none"></div>
-          
           <div class="absolute top-4 start-4 px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 text-xs font-bold text-cyan-800 shadow-sm">
             <span x-text="t('sectors.villa_badge')"></span>
           </div>
-
           <div class="absolute bottom-4 inset-x-4 p-3.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-md">
             <div class="flex items-center justify-between text-xs font-bold text-slate-900">
               <span class="flex items-center gap-1.5 text-cyan-700">
                 <i class="fa-solid fa-temperature-arrow-down"></i>
                 <span>عزل حراري 88% لواجهات المسبح والحديقة</span>
               </span>
-              <span class="text-slate-500 font-normal">فلل التجمع والشيخ زايد</span>
+              <span class="text-slate-500 font-normal">فلل التجمع والشيخ زايد والساحل</span>
             </div>
           </div>
         </div>
 
-        <!-- Content Details -->
         <div class="lg:col-span-6 space-y-6">
           <div class="space-y-2">
             <div class="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-700">
@@ -1792,7 +1811,6 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             <p class="text-sm sm:text-base text-slate-600 leading-relaxed" x-text="t('sectors.villa_desc')"></p>
           </div>
 
-          <!-- Feature Bullets -->
           <div class="space-y-3.5">
             <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
               <div class="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center shrink-0 mt-0.5 font-bold">
@@ -1825,7 +1843,6 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             </div>
           </div>
 
-          <!-- Direct CTA -->
           <div class="pt-2">
             <a 
               :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent('مرحبا، أرغب بالاستفسار عن عزل وحماية فيلا في كمبوند')"
@@ -1836,35 +1853,28 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               <span x-text="t('sectors.villa_cta')"></span>
             </a>
           </div>
-
         </div>
-
       </div>
 
       <!-- VIEW 2: ENTERPRISE, HOTELS & COMMERCIAL -->
       <div x-show="activeSector === 'enterprise'" data-aos="fade-up" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-sm">
-        
-        <!-- Image Card with Badges -->
         <div class="lg:col-span-6 relative rounded-2xl overflow-hidden aspect-[16/10] bg-slate-100 border border-slate-200 group">
-          <img src="assets/images/hotel-enterprise.jpg" alt="Enterprise Hotels & Commercial" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <img src="assets/images/hotel-enterprise-new.jpg" alt="Enterprise Hotels & Commercial" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none"></div>
-          
           <div class="absolute top-4 start-4 px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 text-xs font-bold text-emerald-800 shadow-sm">
             <span x-text="t('sectors.ent_badge')"></span>
           </div>
-
           <div class="absolute bottom-4 inset-x-4 p-3.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-md">
             <div class="flex items-center justify-between text-xs font-bold text-slate-900">
               <span class="flex items-center gap-1.5 text-emerald-700">
                 <i class="fa-solid fa-bolt-lightning"></i>
                 <span>توفير حتى 30% من استهلاك التكييف السنوي</span>
               </span>
-              <span class="text-slate-500 font-normal">فنادق وأبراج تجارية</span>
+              <span class="text-slate-500 font-normal">فنادق وأبراج ومقرات إدارية</span>
             </div>
           </div>
         </div>
 
-        <!-- Content Details -->
         <div class="lg:col-span-6 space-y-6">
           <div class="space-y-2">
             <div class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700">
@@ -1875,7 +1885,6 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             <p class="text-sm sm:text-base text-slate-600 leading-relaxed" x-text="t('sectors.ent_desc')"></p>
           </div>
 
-          <!-- Feature Bullets -->
           <div class="space-y-3.5">
             <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
               <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 font-bold">
@@ -1908,7 +1917,6 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             </div>
           </div>
 
-          <!-- Direct CTA -->
           <div class="pt-2">
             <a 
               :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent('مرحبا، أود طلب دراسة فنية ومعاينة هندسية لمشروع فندقي / تجاري')"
@@ -1919,9 +1927,155 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               <span x-text="t('sectors.ent_cta')"></span>
             </a>
           </div>
+        </div>
+      </div>
 
+      <!-- VIEW 3: LUXURY MARBLE & SURFACE PROTECTION -->
+      <div x-show="activeSector === 'marble'" data-aos="fade-up" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-sm">
+        <div class="lg:col-span-6 relative rounded-2xl overflow-hidden aspect-[16/10] bg-slate-100 border border-slate-200 group">
+          <img src="assets/images/marble-surface-new.jpg" alt="Luxury Marble Protection" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none"></div>
+          <div class="absolute top-4 start-4 px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 text-xs font-bold text-emerald-800 shadow-sm">
+            <span>حماية الأسطح الفاخرة | Luxury Surfaces</span>
+          </div>
+          <div class="absolute bottom-4 inset-x-4 p-3.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-md">
+            <div class="flex items-center justify-between text-xs font-bold text-slate-900">
+              <span class="flex items-center gap-1.5 text-emerald-700">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>مقاومة 100% لبقع الليمون والقهوة والزيوت</span>
+              </span>
+              <span class="text-slate-500 font-normal">سماكة 8.5 ميل TPU معالجة ذاتية</span>
+            </div>
+          </div>
         </div>
 
+        <div class="lg:col-span-6 space-y-6">
+          <div class="space-y-2">
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700">
+              <i class="fa-solid fa-gem"></i>
+              <span>حماية رخام استاتوريو وكلكتا الإيطالي</span>
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-black text-slate-950">حماية غير مرئية تحافظ على جمال وبريق الرخام للأبد</h3>
+            <p class="text-sm sm:text-base text-slate-600 leading-relaxed">أفلام TPU شفافة فائقة اللمعان تحمي طاولات الطعام، الجزيرة بالمطابخ، ورخام الاستقبال من أي تلف دائم مع خاصية المعالجة الذاتية للخدوش.</p>
+          </div>
+
+          <div class="space-y-3.5">
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                <i class="fa-solid fa-check text-sm"></i>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-950">مقاومة تامة للأحماض والزيوت والمنظفات</h4>
+                <p class="text-xs text-slate-600 mt-0.5">حماية 100% من امتصاص الرخام لعصائر الليمون والمشروبات الساخنة والزيوت.</p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                <i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-950">معالجة ذاتية فورية للخدوش السطحية</h4>
+                <p class="text-xs text-slate-600 mt-0.5">تلتئم الخدوش الدقيقة الناتجة عن الأواني والمفاتيح تلقائياً بمجرد التعرض لحرارة الجو.</p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                <i class="fa-solid fa-certificate text-sm"></i>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-950">مظهر زجاجي كريستالي بدون اصفرار</h4>
+                <p class="text-xs text-slate-600 mt-0.5">يحافظ على ملمس وعروق الرخام الطبيعي مع ضمان 10 سنوات ضد الاصفرار أو التفكك.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <a 
+              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent('مرحبا، أود طلب معاينة وعينات لحماية أسطح الرخام')"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 text-white font-bold text-sm shadow-md shadow-emerald-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all btn-shimmer cursor-pointer">
+              <i class="fa-brands fa-whatsapp text-lg"></i>
+              <span>احجز معاينة رخام بالعينات مجاناً</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 4: SUPERCARS PPF & DETAILING -->
+      <div x-show="activeSector === 'supercars'" data-aos="fade-up" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-sm">
+        <div class="lg:col-span-6 relative rounded-2xl overflow-hidden aspect-[16/10] bg-slate-100 border border-slate-200 group">
+          <img src="assets/images/supercar-ppf-new.jpg" alt="Supercars PPF Distribution" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent pointer-events-none"></div>
+          <div class="absolute top-4 start-4 px-3.5 py-1.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 text-xs font-bold text-cyan-800 shadow-sm">
+            <span>أفلام حماية السيارات | Supercar PPF</span>
+          </div>
+          <div class="absolute bottom-4 inset-x-4 p-3.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-md">
+            <div class="flex items-center justify-between text-xs font-bold text-slate-900">
+              <span class="flex items-center gap-1.5 text-cyan-700">
+                <i class="fa-solid fa-car"></i>
+                <span>توريد واعتراف دولي من Global Hi-Tech</span>
+              </span>
+              <span class="text-slate-500 font-normal">Top-Coat TPU لمعان فائق</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 space-y-6">
+          <div class="space-y-2">
+            <div class="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-700">
+              <i class="fa-solid fa-bolt"></i>
+              <span>التوريد المعتمد لمراكز الـ Detailing</span>
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-black text-slate-950">حماية فائقة لطلاء السيارات الفارهة ضد الخدوش وحصى الطرق</h3>
+            <p class="text-sm sm:text-base text-slate-600 leading-relaxed">أفلام TPU ذاتية المعالجة مع طبقة هيدروفوبيك فائقة طاردة للماء والأوساخ، تحافظ على طلاء السيارة الأصلي كأنه جديد من صالة العرض.</p>
+          </div>
+
+          <div class="space-y-3.5">
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                <i class="fa-solid fa-shield-cat text-sm"></i>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-950">معالجة ذاتية Top-Coat فورية</h4>
+                <p class="text-xs text-slate-600 mt-0.5">تختفي آثار الخدوش الدقيقة وحصى الطرق تلقائياً بالحرارة وأشعة الشمس.</p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                <i class="fa-solid fa-droplet text-sm"></i>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-950">خاصية طرد المياه والأتربة (Super-Hydrophobic)</h4>
+                <p class="text-xs text-slate-600 mt-0.5">نعومة ولمعان مرآة يسهل تنظيف السيارة ويمنع التصاق الأوساخ وبقع الأملاح.</p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
+              <div class="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                <i class="fa-solid fa-box-open text-sm"></i>
+              </div>
+              <div>
+                <h4 class="text-sm font-bold text-slate-950">رولات أصلية وتوريد فوري بالجملة</h4>
+                <p class="text-xs text-slate-600 mt-0.5">أسعار تجارية تنافسية وعقود توريد مباشرة من المصنع الأم لمراكز العناية في مصر.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <a 
+              :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent('مرحبا، أود الاستفسار عن توريد وتوزيع أفلام حماية السيارات PPF')"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-bold text-sm shadow-md shadow-cyan-600/20 hover:scale-[1.02] active:scale-[0.98] transition-all btn-shimmer cursor-pointer">
+              <i class="fa-brands fa-whatsapp text-lg"></i>
+              <span>تواصل لطلب عينات وتوريد PPF</span>
+            </a>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -1949,7 +2103,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         <!-- PILLAR 1: ARCHITECTURAL WINDOW FILMS -->
         <div x-show="cms.visibility.pillar1" data-aos="fade-up" data-aos-delay="100" class="glass-card-hover rounded-3xl overflow-hidden flex flex-col group border border-slate-200 bg-white shadow-sm hover:shadow-xl hover:border-cyan-400">
           <div class="relative h-60 overflow-hidden">
-            <img :src="cms.images.pillar1 || 'assets/images/arch-glass-villa.jpg'" alt="Architectural Window Films" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
+            <img :src="cms.images.pillar1 || 'assets/images/compound-villa-new.jpg'" alt="Architectural Window Films" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent"></div>
             
             <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/90 backdrop-blur-md border border-slate-200 text-cyan-800 text-xs font-bold shadow-xs">
@@ -2001,7 +2155,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         <!-- PILLAR 2: LUXURY SURFACE PROTECTION (MARBLE & WOOD) -->
         <div x-show="cms.visibility.pillar2" data-aos="fade-up" data-aos-delay="200" class="glass-card-hover rounded-3xl overflow-hidden flex flex-col group border border-slate-200 bg-white shadow-sm hover:shadow-xl hover:border-emerald-400">
           <div class="relative h-60 overflow-hidden">
-            <img :src="cms.images.pillar2 || 'assets/images/marble-surface.jpg'" alt="Luxury Surface Protection" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
+            <img :src="cms.images.pillar2 || 'assets/images/marble-surface-new.jpg'" alt="Luxury Surface Protection" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent"></div>
             
             <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/90 backdrop-blur-md border border-slate-200 text-emerald-800 text-xs font-bold shadow-xs">
@@ -2053,7 +2207,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         <!-- PILLAR 3: AUTOMOTIVE PPF & TINT DISTRIBUTION -->
         <div x-show="cms.visibility.pillar3" data-aos="fade-up" data-aos-delay="300" class="glass-card-hover rounded-3xl overflow-hidden flex flex-col group border border-slate-200 bg-white shadow-sm hover:shadow-xl hover:border-cyan-400">
           <div class="relative h-60 overflow-hidden">
-            <img :src="cms.images.pillar3 || 'assets/images/supercar-ppf.jpg'" alt="Automotive PPF Wholesale Distribution" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
+            <img :src="cms.images.pillar3 || 'assets/images/supercar-ppf-new.jpg'" alt="Automotive PPF Wholesale Distribution" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent"></div>
             
             <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/90 backdrop-blur-md border border-slate-200 text-cyan-800 text-xs font-bold shadow-xs">
@@ -2268,8 +2422,8 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         
         <!-- PROJECT 1: REAL UPLOADED INSTALLATION -->
         <div x-show="galleryFilter === 'all' || galleryFilter === 'arch'" data-aos="fade-up" data-aos-delay="100" class="glass-card-hover rounded-3xl overflow-hidden group border border-slate-200 bg-white shadow-sm hover:shadow-xl flex flex-col">
-          <div class="relative h-72 sm:h-80 overflow-hidden cursor-pointer" @click="openLightbox(cms.images.gallery1 || 'assets/images/installation-site-real.jpg', 'gallery.item1_title', 'gallery.item1_desc')">
-            <img :src="cms.images.gallery1 || 'assets/images/installation-site-real.jpg'" alt="Le Bistro Commercial Facade" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative h-72 sm:h-80 overflow-hidden cursor-pointer" @click="openLightbox(cms.images.gallery1 || 'assets/images/hotel-enterprise-new.jpg', 'gallery.item1_title', 'gallery.item1_desc')">
+            <img :src="cms.images.gallery1 || 'assets/images/hotel-enterprise-new.jpg'" alt="Hotel Enterprise Facade" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
             
             <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-slate-200 text-emerald-800 text-xs font-bold shadow-xs">
@@ -2288,15 +2442,15 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             </div>
             <div class="flex items-center gap-2 pt-3 border-t border-slate-200 text-xs text-cyan-700 font-mono font-semibold">
               <i class="fa-solid fa-location-dot"></i>
-              <span x-text="cms.imageBadges?.gallery1_footer?.[lang] || 'Commercial Plaza | Le Bistro'"></span>
+              <span x-text="cms.imageBadges?.gallery1_footer?.[lang] || 'Enterprise Hotel Facade'"></span>
             </div>
           </div>
         </div>
 
         <!-- PROJECT 2: ITALIAN MARBLE PROTECTION -->
         <div x-show="galleryFilter === 'all' || galleryFilter === 'surface'" data-aos="fade-up" data-aos-delay="200" class="glass-card-hover rounded-3xl overflow-hidden group border border-slate-200 bg-white shadow-sm hover:shadow-xl flex flex-col">
-          <div class="relative h-72 sm:h-80 overflow-hidden cursor-pointer" @click="openLightbox(cms.images.gallery2 || 'assets/images/marble-surface.jpg', 'gallery.item2_title', 'gallery.item2_desc')">
-            <img :src="cms.images.gallery2 || 'assets/images/marble-surface.jpg'" alt="Luxury Marble Protection" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative h-72 sm:h-80 overflow-hidden cursor-pointer" @click="openLightbox(cms.images.gallery2 || 'assets/images/marble-surface-new.jpg', 'gallery.item2_title', 'gallery.item2_desc')">
+            <img :src="cms.images.gallery2 || 'assets/images/marble-surface-new.jpg'" alt="Luxury Marble Protection" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
             
             <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-slate-200 text-cyan-800 text-xs font-bold shadow-xs">
@@ -2321,8 +2475,8 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
         <!-- PROJECT 3: LUXURY VILLA ARCHITECTURAL GLAZING -->
         <div x-show="galleryFilter === 'all' || galleryFilter === 'arch'" data-aos="fade-up" data-aos-delay="300" class="glass-card-hover rounded-3xl overflow-hidden group border border-slate-200 bg-white shadow-sm hover:shadow-xl flex flex-col">
-          <div class="relative h-72 sm:h-80 overflow-hidden cursor-pointer" @click="openLightbox(cms.images.gallery3 || 'assets/images/arch-glass-villa.jpg', 'gallery.item3_title', 'gallery.item3_desc')">
-            <img :src="cms.images.gallery3 || 'assets/images/arch-glass-villa.jpg'" alt="Villa Solar Glazing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative h-72 sm:h-80 overflow-hidden cursor-pointer" @click="openLightbox(cms.images.gallery3 || 'assets/images/compound-villa-new.jpg', 'gallery.item3_title', 'gallery.item3_desc')">
+            <img :src="cms.images.gallery3 || 'assets/images/compound-villa-new.jpg'" alt="Villa Solar Glazing" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
             
             <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-slate-200 text-cyan-800 text-xs font-bold shadow-xs">
@@ -2347,8 +2501,8 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
         <!-- PROJECT 4: AUTOMOTIVE SUPERCAR PPF -->
         <div x-show="galleryFilter === 'all' || galleryFilter === 'auto'" data-aos="fade-up" data-aos-delay="400" class="glass-card-hover rounded-3xl overflow-hidden group border border-slate-200 bg-white shadow-sm hover:shadow-xl flex flex-col">
-          <div class="relative h-72 sm:h-80 overflow-hidden cursor-pointer" @click="openLightbox(cms.images.gallery4 || 'assets/images/supercar-ppf.jpg', 'gallery.item4_title', 'gallery.item4_desc')">
-            <img :src="cms.images.gallery4 || 'assets/images/supercar-ppf.jpg'" alt="Supercar PPF" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="relative h-72 sm:h-80 overflow-hidden cursor-pointer" @click="openLightbox(cms.images.gallery4 || 'assets/images/supercar-ppf-new.jpg', 'gallery.item4_title', 'gallery.item4_desc')">
+            <img :src="cms.images.gallery4 || 'assets/images/supercar-ppf-new.jpg'" alt="Supercar PPF" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
             <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
             
             <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-slate-200 text-cyan-800 text-xs font-bold shadow-xs">
@@ -2617,9 +2771,14 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         
         <!-- Brand Info -->
         <div class="lg:col-span-5 space-y-4">
-          <div class="flex items-center gap-3">
-            <img :src="cms.images.logo || 'assets/images/protherme-logo.jpg'" alt="ProTherme Logo" class="h-10 w-auto rounded-lg bg-white p-1 border border-slate-200">
-            <span class="text-xl font-black text-slate-950">ProTherme</span>
+          <div class="flex items-center gap-3.5">
+            <div class="relative p-2 bg-white rounded-2xl border border-slate-200 shadow-md shrink-0">
+              <img :src="cms.images.logo || 'assets/images/protherme-logo.jpg'" alt="ProTherme Logo" class="h-14 sm:h-16 w-auto object-contain rounded-xl">
+            </div>
+            <div class="flex flex-col">
+              <span class="text-2xl font-black text-slate-950 leading-tight">ProTherme</span>
+              <span class="text-xs text-cyan-700 font-bold" x-text="t('nav.brand_sub')"></span>
+            </div>
           </div>
           <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-md" x-text="t('footer.desc')"></p>
           <div class="text-xs text-cyan-800 font-semibold flex items-center gap-2">
