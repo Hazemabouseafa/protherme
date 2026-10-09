@@ -18,16 +18,22 @@ const mimeTypes = {
   '.ico': 'image/x-icon',
   '.webp': 'image/webp',
   '.gif': 'image/gif',
-  '.mp4': 'video/mp4'
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
+  '.mov': 'video/quicktime',
+  '.ogg': 'video/ogg'
 };
 
 const server = http.createServer(async (req, res) => {
   let urlPath = decodeURIComponent(req.url.split('?')[0]);
 
-  // Normalize subpaths: strip leading /protherme
+  // Normalize subpaths: strip leading /protherme or /admin/assets
   let subPath = urlPath;
   if (subPath.startsWith('/protherme')) {
     subPath = subPath.substring('/protherme'.length);
+  }
+  if (subPath.startsWith('/admin/assets/')) {
+    subPath = subPath.substring('/admin'.length);
   }
 
   // Handle CORS preflight
@@ -95,13 +101,14 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // --- API: POST /api/upload (Direct Image Upload) ---
+  // --- API: POST /api/upload (Direct Image & Video Upload) ---
   if ((subPath === '/api/upload' || urlPath === '/api/upload') && req.method === 'POST') {
-    let body = '';
-    req.on('data', chunk => { body += chunk; });
+    const chunks = [];
+    req.on('data', chunk => { chunks.push(chunk); });
     req.on('end', async () => {
       try {
-        const parsed = JSON.parse(body);
+        const rawBody = Buffer.concat(chunks).toString('utf8');
+        const parsed = JSON.parse(rawBody);
         if (!parsed.data || !parsed.filename) {
           res.writeHead(400, { 'Content-Type': 'application/json' });
           res.end(JSON.stringify({ error: 'Missing data or filename' }));
@@ -115,8 +122,9 @@ const server = http.createServer(async (req, res) => {
         });
         res.end(JSON.stringify({ success: true, url: result.url, filename: result.filename }));
       } catch (err) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Invalid upload payload' }));
+        console.error('Upload API processing error:', err);
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: err.message || 'Upload processing failed' }));
       }
     });
     return;
@@ -135,10 +143,12 @@ const server = http.createServer(async (req, res) => {
     if (record && record.data) {
       let rawBase64 = record.data;
       let contentType = 'image/jpeg';
-      const matches = record.data.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-      if (matches && matches.length === 3) {
-        contentType = matches[1];
-        rawBase64 = matches[2];
+      const commaIdx = record.data.indexOf('base64,');
+      if (commaIdx !== -1) {
+        const header = record.data.substring(0, commaIdx);
+        const m = header.match(/^data:([^;]+)/);
+        if (m) contentType = m[1];
+        rawBase64 = record.data.substring(commaIdx + 7);
       }
       const buffer = Buffer.from(rawBase64, 'base64');
       res.writeHead(200, {
@@ -148,6 +158,9 @@ const server = http.createServer(async (req, res) => {
       res.end(buffer);
       return;
     }
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.end('Media not found');
+    return;
   }
 
   // --- API: /api/video (Video Stream) ---
@@ -357,7 +370,7 @@ const server = http.createServer(async (req, res) => {
   const contentType = mimeTypes[ext] || 'application/octet-stream';
 
   // Video Streaming with HTTP Range (206) Support
-  if ((ext === '.mp4' || ext === '.webm') && fs.existsSync(filePath)) {
+  if ((ext === '.mp4' || ext === '.webm' || ext === '.mov' || ext === '.ogg') && fs.existsSync(filePath)) {
     const stat = fs.statSync(filePath);
     const fileSize = stat.size;
     const range = req.headers.range;

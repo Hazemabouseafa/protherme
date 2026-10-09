@@ -947,10 +947,15 @@
 
             <!-- Hero Visual Image Path with Direct Upload -->
             <div class="pt-4 border-t border-slate-200 space-y-3">
-              <label class="block text-xs font-bold text-slate-700">مسار صورة الهيرو الرئيسية (Hero Visual Path):</label>
+              <label class="block text-xs font-bold text-slate-700" x-text="tA('مسار صورة أو فيديو الهيرو الرئيسية (Hero Visual Path):', 'Main Hero Visual Media (Image or Video):')">مسار صورة أو فيديو الهيرو الرئيسية (Hero Visual Path):</label>
               <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center">
-                <div class="w-20 h-16 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0 shadow-xs">
-                  <img :src="cms.images.heroVisual" alt="Hero Preview" class="w-full h-full object-cover">
+                <div class="w-20 h-16 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0 shadow-xs flex items-center justify-center">
+                  <template x-if="cms.images.heroVisual && (cms.images.heroVisual.endsWith('.mp4') || cms.images.heroVisual.endsWith('.webm'))">
+                    <video :src="cms.images.heroVisual" class="w-full h-full object-cover" autoplay muted loop></video>
+                  </template>
+                  <template x-if="!cms.images.heroVisual || !(cms.images.heroVisual.endsWith('.mp4') || cms.images.heroVisual.endsWith('.webm'))">
+                    <img :src="cms.images.heroVisual" alt="Hero Preview" class="w-full h-full object-cover">
+                  </template>
                 </div>
                 <div class="flex-1 min-w-0 flex gap-2 items-center">
                   <input 
@@ -958,14 +963,14 @@
                     x-model="cms.images.heroVisual" 
                     dir="ltr" 
                     class="w-full min-w-0 px-3 sm:px-4 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 font-mono text-xs sm:text-sm focus:outline-none focus:border-cyan-600 shadow-xs">
-                  <label class="cursor-pointer px-3 sm:px-3.5 py-2.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold inline-flex items-center gap-1.5 shrink-0 transition-colors shadow-xs" title="رفع صورة من جهازك">
+                  <label class="cursor-pointer px-3 sm:px-3.5 py-2.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold inline-flex items-center gap-1.5 shrink-0 transition-colors shadow-xs" title="رفع صورة أو فيديو من جهازك">
                     <i class="fa-solid fa-cloud-arrow-up text-cyan-600"></i>
-                    <span class="hidden sm:inline">رفع صورة</span>
-                    <input type="file" accept="image/*" class="hidden" @change="handleFileUpload($event, 'heroVisual')">
+                    <span class="hidden sm:inline" x-text="tA('رفع صورة/فيديو', 'Upload Media')">رفع صورة/فيديو</span>
+                    <input type="file" accept="image/*,video/*,.mp4,.webm" class="hidden" @change="handleFileUpload($event, 'heroVisual')">
                   </label>
                 </div>
               </div>
-              <div class="text-[11px] text-slate-500">يمكنك كتابة مسار محلي أو رفع صورة مباشرة من جهازك أو هاتفك.</div>
+              <div class="text-[11px] text-slate-500" x-text="tA('يمكنك كتابة مسار محلي أو رفع صورة أو فيديو مباشرة من جهازك أو هاتفك.', 'Enter local path or upload an image/video directly from your device.')">يمكنك كتابة مسار محلي أو رفع صورة أو فيديو مباشرة من جهازك أو هاتفك.</div>
             </div>
 
             <!-- Hero Image Badges (الشارات الموضوعة فوق صورة الهيرو) -->
@@ -1145,14 +1150,21 @@
 
               <!-- Image & Direct Upload -->
               <div class="pt-2">
-                <label class="block text-[11px] font-bold text-slate-700 mb-1">صورة الركيزة (Pillar Image):</label>
+                <label class="block text-[11px] font-bold text-slate-700 mb-1" x-text="tA('صورة أو فيديو الركيزة (Pillar Media):', 'Pillar Media (Image or Video):')">صورة أو فيديو الركيزة (Pillar Media):</label>
                 <div class="flex gap-2 items-center">
-                  <img :src="pillar.image" class="w-10 h-10 rounded-lg object-cover border border-slate-200 shrink-0 shadow-xs">
+                  <div class="w-10 h-10 rounded-lg overflow-hidden border border-slate-200 shrink-0 shadow-xs flex items-center justify-center bg-slate-100">
+                    <template x-if="pillar.image && (pillar.image.endsWith('.mp4') || pillar.image.endsWith('.webm'))">
+                      <video :src="pillar.image" class="w-full h-full object-cover" autoplay muted loop></video>
+                    </template>
+                    <template x-if="!pillar.image || !(pillar.image.endsWith('.mp4') || pillar.image.endsWith('.webm'))">
+                      <img :src="pillar.image" class="w-full h-full object-cover">
+                    </template>
+                  </div>
                   <input type="text" x-model="pillar.image" dir="ltr" class="flex-1 px-3 py-2 rounded-xl bg-white border border-slate-300 text-xs text-slate-900 font-mono">
-                  <label class="cursor-pointer px-3 py-2 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold inline-flex items-center gap-1.5 shrink-0 transition-colors shadow-xs" title="رفع صورة من جهازك">
+                  <label class="cursor-pointer px-3 py-2 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold inline-flex items-center gap-1.5 shrink-0 transition-colors shadow-xs" title="رفع صورة أو فيديو من جهازك">
                     <i class="fa-solid fa-cloud-arrow-up text-cyan-600"></i>
-                    <span class="hidden sm:inline">رفع صورة</span>
-                    <input type="file" accept="image/*" class="hidden" @change="handlePillarUpload($event, pillar)">
+                    <span class="hidden sm:inline" x-text="tA('رفع صورة/فيديو', 'Upload Media')">رفع صورة/فيديو</span>
+                    <input type="file" accept="image/*,video/*,.mp4,.webm" class="hidden" @change="handlePillarUpload($event, pillar)">
                   </label>
                 </div>
               </div>
@@ -1369,19 +1381,24 @@
                 </div>
                 
                 <!-- Live Preview -->
-                <div class="h-36 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shadow-inner">
-                  <img :src="item.image" :alt="'Project ' + (gIdx + 1)" class="w-full h-full object-cover">
+                <div class="h-36 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shadow-inner flex items-center justify-center">
+                  <template x-if="item.image && (item.image.endsWith('.mp4') || item.image.endsWith('.webm'))">
+                    <video :src="item.image" controls class="w-full h-full object-cover"></video>
+                  </template>
+                  <template x-if="!item.image || !(item.image.endsWith('.mp4') || item.image.endsWith('.webm'))">
+                    <img :src="item.image" :alt="'Project ' + (gIdx + 1)" class="w-full h-full object-cover">
+                  </template>
                 </div>
 
                 <!-- Image Path & Direct Upload -->
                 <div>
-                  <label class="block text-[11px] text-slate-600 mb-1 font-bold">مسار الصورة (Image Path):</label>
+                  <label class="block text-[11px] text-slate-600 mb-1 font-bold" x-text="tA('مسار صورة أو فيديو المشروع (Media Path):', 'Project Media Path (Image or Video):')">مسار صورة أو فيديو المشروع (Media Path):</label>
                   <div class="flex gap-2 items-center">
                     <input type="text" x-model="item.image" dir="ltr" class="flex-1 px-3 py-2 rounded-lg bg-white border border-slate-300 text-xs text-slate-900 font-mono">
-                    <label class="cursor-pointer px-2.5 py-2 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold inline-flex items-center gap-1.5 shrink-0 transition-colors shadow-xs" title="رفع صورة من جهازك">
+                    <label class="cursor-pointer px-2.5 py-2 rounded-lg bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold inline-flex items-center gap-1.5 shrink-0 transition-colors shadow-xs" title="رفع صورة أو فيديو من جهازك">
                       <i class="fa-solid fa-cloud-arrow-up text-cyan-600"></i>
-                      <span class="hidden sm:inline">رفع صورة</span>
-                      <input type="file" accept="image/*" class="hidden" @change="handleGalleryUpload($event, item)">
+                      <span class="hidden sm:inline" x-text="tA('رفع صورة/فيديو', 'Upload Media')">رفع صورة/فيديو</span>
+                      <input type="file" accept="image/*,video/*,.mp4,.webm" class="hidden" @change="handleGalleryUpload($event, item)">
                     </label>
                   </div>
                 </div>
@@ -1545,25 +1562,41 @@
             <!-- Video File URL & Direct Upload -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-2">رابط / مسار ملف الفيديو (Video URL):</label>
+                <label class="block text-xs font-bold text-slate-700 mb-2" x-text="tA('رابط / مسار ملف الفيديو (Video URL):', 'Video File URL / Path:')">رابط / مسار ملف الفيديو (Video URL):</label>
                 <div class="flex gap-2">
                   <input type="text" x-model="cms.video.url" dir="ltr" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 font-mono text-xs focus:outline-none focus:border-cyan-600 shadow-xs">
                   <label class="cursor-pointer px-3 py-2.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold inline-flex items-center gap-1 shrink-0 shadow-xs" title="رفع فيديو من جهازك">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <span class="hidden sm:inline">رفع</span>
-                    <input type="file" accept="video/mp4,video/*" class="hidden" @change="handleFileUpload($event, 'video')">
+                    <span class="hidden sm:inline" x-text="tA('رفع فيديو', 'Upload Video')">رفع فيديو</span>
+                    <input type="file" accept="video/mp4,video/*,.mp4,.webm" class="hidden" @change="handleFileUpload($event, 'video')">
                   </label>
                 </div>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-2">صورة غلاف الفيديو (Poster Image):</label>
+                <label class="block text-xs font-bold text-slate-700 mb-2" x-text="tA('صورة غلاف الفيديو (Poster Image):', 'Video Poster Image:')">صورة غلاف الفيديو (Poster Image):</label>
                 <div class="flex gap-2">
                   <input type="text" x-model="cms.video.poster" dir="ltr" class="w-full px-3 py-2.5 rounded-xl bg-white border border-slate-300 text-slate-900 font-mono text-xs focus:outline-none focus:border-cyan-600 shadow-xs">
                   <label class="cursor-pointer px-3 py-2.5 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-bold inline-flex items-center gap-1 shrink-0 shadow-xs" title="رفع غلاف">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <span class="hidden sm:inline">رفع</span>
+                    <span class="hidden sm:inline" x-text="tA('رفع غلاف', 'Upload Poster')">رفع غلاف</span>
                     <input type="file" accept="image/*" class="hidden" @change="handleFileUpload($event, 'videoPoster')">
                   </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Video & Poster Live Preview -->
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col sm:flex-row items-center gap-4">
+              <div class="w-full sm:w-1/2">
+                <label class="block text-[11px] font-bold text-slate-600 mb-1" x-text="tA('معاينة الفيديو المشغل (Live Video Preview):', 'Live Video Preview:')">معاينة الفيديو المشغل (Live Video Preview):</label>
+                <div class="h-40 rounded-xl overflow-hidden border border-slate-300 bg-black flex items-center justify-center shadow-xs">
+                  <video :src="cms.video.url" :poster="cms.video.poster" controls class="w-full h-full object-cover"></video>
+                </div>
+              </div>
+              <div class="w-full sm:w-1/2">
+                <label class="block text-[11px] font-bold text-slate-600 mb-1" x-text="tA('معاينة صورة غلاف الفيديو (Poster Preview):', 'Poster Preview:')">معاينة صورة غلاف الفيديو (Poster Preview):</label>
+                <div class="h-40 rounded-xl overflow-hidden border border-slate-300 bg-white flex items-center justify-center p-2 shadow-xs">
+                  <img :src="cms.video.poster" alt="Poster Preview" class="max-h-full max-w-full object-contain">
                 </div>
               </div>
             </div>
@@ -2716,6 +2749,16 @@
                       </div>
                       <i class="fa-solid fa-id-card text-cyan-600 text-sm"></i>
                     </label>
+
+                    <label 
+                      :class="newBlockForm.layout === 'posters' ? 'border-cyan-600 bg-white shadow-xs font-bold ring-2 ring-cyan-500/20' : 'border-slate-200 bg-white text-slate-600'" 
+                      class="p-2.5 rounded-xl border cursor-pointer flex items-center justify-between transition">
+                      <div class="flex items-center gap-2">
+                        <input type="radio" value="posters" x-model="newBlockForm.layout" class="text-cyan-600">
+                        <span x-text="tA('بوسترات تفاعلية متجاورة (Posters Showcase)', 'Posters Showcase Layout')">بوسترات تفاعلية متجاورة (Posters Showcase)</span>
+                      </div>
+                      <i class="fa-solid fa-images text-cyan-600 text-sm"></i>
+                    </label>
                   </div>
                 </div>
 
@@ -2955,6 +2998,7 @@
                         <option value="split">متقابل (Split: نص وصورة)</option>
                         <option value="banner">بانر عريض (Full Banner)</option>
                         <option value="card">بطاقة بارزة (Elevated Card)</option>
+                        <option value="posters">بوسترات متجاورة (Posters Showcase)</option>
                       </select>
                     </div>
                   </div>
@@ -2988,6 +3032,40 @@
                         </template>
                         <template x-if="block.image && !(block.image.endsWith('.mp4') || block.image.endsWith('.webm'))">
                           <img :src="block.image" alt="Preview" class="h-16 w-auto rounded-xl border border-slate-300 object-cover shadow-xs">
+                        </template>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Secondary Poster / Media for Existing Block (Posters Layout or Multiple Images) -->
+                  <div x-show="block.layout === 'posters' || block.secondaryImage || (block.images && block.images.length > 1)" class="pt-3 border-t border-slate-200">
+                    <label class="block text-xs font-bold text-slate-700 mb-1" x-text="tA('البوستر أو ملف الوسائط الثانوي (صورة أو فيديو):', 'Secondary Media / Poster (Image or Video):')">البوستر أو ملف الوسائط الثانوي (صورة أو فيديو):</label>
+                    <div class="flex gap-2">
+                      <input type="text" x-model="block.secondaryImage" dir="ltr" placeholder="assets/images/protherme-poster-...jpg" class="flex-1 px-3 py-2 rounded-xl bg-slate-50 border border-slate-300 text-xs font-mono">
+                      
+                      <input 
+                        type="file" 
+                        accept="image/*,video/*,.mp4,.webm" 
+                        :id="'block-sec-uploader-' + bIdx" 
+                        class="hidden" 
+                        @change="handleExistingBlockSecondaryUpload($event, block)">
+                      
+                      <button 
+                        type="button"
+                        @click="document.getElementById('block-sec-uploader-' + bIdx).click()" 
+                        class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-xs font-bold text-slate-700 flex items-center gap-1.5 shrink-0">
+                        <i class="fa-solid fa-cloud-arrow-up text-cyan-600"></i>
+                        <span x-text="tA('رفع البوستر الثاني', 'Upload 2nd Poster')">رفع البوستر الثاني</span>
+                      </button>
+                    </div>
+                    <!-- Secondary Preview -->
+                    <div x-show="block.secondaryImage" class="pt-2 flex items-center gap-3">
+                      <div class="relative w-fit">
+                        <template x-if="block.secondaryImage && (block.secondaryImage.endsWith('.mp4') || block.secondaryImage.endsWith('.webm'))">
+                          <video :src="block.secondaryImage" controls class="h-24 w-auto rounded-xl border border-slate-300 object-cover shadow-xs"></video>
+                        </template>
+                        <template x-if="block.secondaryImage && !(block.secondaryImage.endsWith('.mp4') || block.secondaryImage.endsWith('.webm'))">
+                          <img :src="block.secondaryImage" alt="Secondary Preview" class="h-16 w-auto rounded-xl border border-slate-300 object-cover shadow-xs">
                         </template>
                       </div>
                     </div>
@@ -3614,12 +3692,22 @@
         async handlePillarUpload(event, pillar) {
           const file = event.target.files && event.target.files[0];
           if (!file) return;
-          if (file.size > 15 * 1024 * 1024) {
-            this.showToast('حجم كبير', 'الحد الأقصى هو 15 ميجابايت.');
+          const isVideo = file.type.startsWith('video/') || file.name.endsWith('.mp4') || file.name.endsWith('.webm');
+          const maxBytes = isVideo ? 100 * 1024 * 1024 : 30 * 1024 * 1024;
+          if (file.size > maxBytes) {
+            this.showToast(
+              this.tA('حجم كبير', 'File too large'),
+              isVideo
+                ? this.tA('الحد الأقصى لملفات الفيديو هو 100 ميجابايت.', 'Max size for videos is 100MB.')
+                : this.tA('الحد الأقصى للصور هو 30 ميجابايت.', 'Max size for images is 30MB.')
+            );
             event.target.value = '';
             return;
           }
-          this.showToast('جاري الرفع...', 'يتم الآن رفع الصورة...');
+          this.showToast(
+            this.tA('جاري الرفع...', 'Uploading...'),
+            isVideo ? this.tA('يتم الآن رفع وحفظ ملف الفيديو...', 'Uploading video file...') : this.tA('يتم الآن رفع وحفظ الصورة...', 'Uploading image...')
+          );
           const reader = new FileReader();
           reader.onload = async (e) => {
             try {
@@ -3631,12 +3719,15 @@
               const r = await res.json();
               if (res.ok && r.success) {
                 pillar.image = r.url;
-                this.showToast('تم الرفع!', 'تم تعيين صورة الركيزة بنجاح.');
+                this.showToast(
+                  this.tA('تم الرفع بنجاح!', 'Upload complete!'),
+                  isVideo ? this.tA('تم تعيين فيديو الركيزة بنجاح.', 'Pillar video set successfully.') : this.tA('تم تعيين صورة الركيزة بنجاح.', 'Pillar image set successfully.')
+                );
               } else {
-                this.showToast('فشل الرفع', r.error || 'تعذر حفظ الصورة.');
+                this.showToast(this.tA('فشل الرفع', 'Upload failed'), r.error || this.tA('تعذر حفظ الملف.', 'Failed to save file.'));
               }
             } catch(err) {
-              this.showToast('خطأ في الاتصال', 'تعذر رفع الصورة.');
+              this.showToast(this.tA('خطأ في الاتصال', 'Connection error'), this.tA('تعذر رفع الملف.', 'Failed to upload file.'));
             } finally {
               event.target.value = '';
             }
@@ -3667,12 +3758,22 @@
         async handleGalleryUpload(event, item) {
           const file = event.target.files && event.target.files[0];
           if (!file) return;
-          if (file.size > 15 * 1024 * 1024) {
-            this.showToast('حجم كبير', 'الحد الأقصى هو 15 ميجابايت.');
+          const isVideo = file.type.startsWith('video/') || file.name.endsWith('.mp4') || file.name.endsWith('.webm');
+          const maxBytes = isVideo ? 100 * 1024 * 1024 : 30 * 1024 * 1024;
+          if (file.size > maxBytes) {
+            this.showToast(
+              this.tA('حجم كبير', 'File too large'),
+              isVideo
+                ? this.tA('الحد الأقصى لملفات الفيديو هو 100 ميجابايت.', 'Max size for videos is 100MB.')
+                : this.tA('الحد الأقصى للصور هو 30 ميجابايت.', 'Max size for images is 30MB.')
+            );
             event.target.value = '';
             return;
           }
-          this.showToast('جاري الرفع...', 'يتم الآن رفع الصورة...');
+          this.showToast(
+            this.tA('جاري الرفع...', 'Uploading...'),
+            isVideo ? this.tA('يتم الآن رفع وحفظ ملف الفيديو...', 'Uploading video file...') : this.tA('يتم الآن رفع وحفظ الصورة...', 'Uploading image...')
+          );
           const reader = new FileReader();
           reader.onload = async (e) => {
             try {
@@ -3684,12 +3785,15 @@
               const r = await res.json();
               if (res.ok && r.success) {
                 item.image = r.url;
-                this.showToast('تم الرفع!', 'تم تعيين صورة المشروع بنجاح.');
+                this.showToast(
+                  this.tA('تم الرفع بنجاح!', 'Upload complete!'),
+                  isVideo ? this.tA('تم تعيين فيديو المشروع بنجاح.', 'Project video set successfully.') : this.tA('تم تعيين صورة المشروع بنجاح.', 'Project image set successfully.')
+                );
               } else {
-                this.showToast('فشل الرفع', r.error || 'تعذر حفظ الصورة.');
+                this.showToast(this.tA('فشل الرفع', 'Upload failed'), r.error || this.tA('تعذر حفظ الملف.', 'Failed to save file.'));
               }
             } catch(err) {
-              this.showToast('خطأ في الاتصال', 'تعذر رفع الصورة.');
+              this.showToast(this.tA('خطأ في الاتصال', 'Connection error'), this.tA('تعذر رفع الملف.', 'Failed to upload file.'));
             } finally {
               event.target.value = '';
             }
@@ -4198,7 +4302,58 @@
                   block.video = result.url;
                   block.mediaType = 'video';
                 }
+                if (Array.isArray(block.images) && block.images.length > 0) {
+                  block.images[0] = result.url;
+                }
+                if (Array.isArray(block.posters) && block.posters.length > 0) {
+                  block.posters[0].image = result.url;
+                }
                 this.showToast(this.tA('تم الرفع بنجاح!', 'Upload complete!'), isVideo ? this.tA('تم تحديث فيديو هذا البلوك بنجاح.', 'Block video updated.') : this.tA('تم تحديث صورة هذا البلوك بنجاح.', 'Block image updated.'));
+              } else {
+                this.showToast(this.tA('فشل الرفع', 'Upload failed'), result.error || this.tA('تعذر حفظ الملف.', 'Failed to save file.'));
+              }
+            } catch(err) {
+              this.showToast(this.tA('خطأ في الاتصال', 'Connection error'), this.tA('تعذر رفع الملف.', 'Failed to upload file.'));
+            } finally {
+              event.target.value = '';
+            }
+          };
+          reader.readAsDataURL(file);
+        },
+
+        async handleExistingBlockSecondaryUpload(event, block) {
+          const file = event.target.files && event.target.files[0];
+          if (!file) return;
+
+          if (file.size > 100 * 1024 * 1024) {
+            this.showToast(this.tA('حجم كبير', 'File too large'), this.tA('الحد الأقصى المسموح به هو 100 ميجابايت.', 'Maximum allowed size is 100MB.'));
+            event.target.value = '';
+            return;
+          }
+
+          const isVideo = file.type.startsWith('video/') || file.name.endsWith('.mp4') || file.name.endsWith('.webm');
+          this.showToast(this.tA('جاري الرفع...', 'Uploading...'), isVideo ? this.tA('يتم الآن رفع وحفظ ملف الفيديو...', 'Uploading video file...') : this.tA('يتم الآن رفع وحفظ الصورة...', 'Uploading image...'));
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            try {
+              const res = await fetch('/api/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: file.name, data: e.target.result })
+              });
+              const result = await res.json();
+              if (res.ok && result.success) {
+                block.secondaryImage = result.url;
+                if (!Array.isArray(block.images)) block.images = [block.image || ''];
+                if (block.images.length > 1) {
+                  block.images[1] = result.url;
+                } else {
+                  block.images.push(result.url);
+                }
+                if (Array.isArray(block.posters) && block.posters.length > 1) {
+                  block.posters[1].image = result.url;
+                }
+                this.showToast(this.tA('تم الرفع بنجاح!', 'Upload complete!'), isVideo ? this.tA('تم تحديث الوسائط الثانوية للبلوك بنجاح.', 'Secondary media updated.') : this.tA('تم تحديث البوستر الثاني للبلوك بنجاح.', 'Secondary poster updated.'));
               } else {
                 this.showToast(this.tA('فشل الرفع', 'Upload failed'), result.error || this.tA('تعذر حفظ الملف.', 'Failed to save file.'));
               }
@@ -4654,13 +4809,25 @@
           const file = event.target.files && event.target.files[0];
           if (!file) return;
 
-          if (file.size > 15 * 1024 * 1024) {
-            this.showToast('خطأ في حجم الصورة', 'الحد الأقصى المسموح به لحجم الصورة هو 15 ميجابايت.');
+          const isVideo = file.type.startsWith('video/') || file.name.endsWith('.mp4') || file.name.endsWith('.webm') || file.name.endsWith('.mov') || file.name.endsWith('.ogg');
+          const maxBytes = isVideo ? 100 * 1024 * 1024 : 30 * 1024 * 1024;
+          if (file.size > maxBytes) {
+            this.showToast(
+              this.tA('حجم الملف كبير', 'File Too Large'),
+              isVideo
+                ? this.tA('الحد الأقصى المسموح به لملفات الفيديو هو 100 ميجابايت.', 'Maximum allowed size for videos is 100MB.')
+                : this.tA('الحد الأقصى المسموح به للصور هو 30 ميجابايت.', 'Maximum allowed size for images is 30MB.')
+            );
             event.target.value = '';
             return;
           }
 
-          this.showToast('جاري رفع الصورة...', 'يتم الآن رفع الصورة وحفظها على السيرفر...');
+          this.showToast(
+            this.tA('جاري الرفع...', 'Uploading...'),
+            isVideo
+              ? this.tA('يتم الآن رفع وحفظ ملف الفيديو على السيرفر...', 'Uploading and saving video file on server...')
+              : this.tA('يتم الآن رفع وحفظ الصورة على السيرفر...', 'Uploading and saving image on server...')
+          );
           const reader = new FileReader();
           reader.onload = async (e) => {
             try {
@@ -4675,14 +4842,34 @@
               });
               const result = await res.json();
               if (res.ok && result.success) {
-                this.cms.images[imageKey] = result.url;
-                this.showToast('تم رفع الصورة بنجاح!', `تم حفظ الصورة وتعيين مسارها: ${result.url}`);
+                if (imageKey === 'video') {
+                  if (!this.cms.video) this.cms.video = {};
+                  this.cms.video.url = result.url;
+                } else if (imageKey === 'videoPoster') {
+                  if (!this.cms.video) this.cms.video = {};
+                  this.cms.video.poster = result.url;
+                } else {
+                  if (!this.cms.images) this.cms.images = {};
+                  this.cms.images[imageKey] = result.url;
+                }
+                this.showToast(
+                  this.tA('تم الرفع بنجاح!', 'Upload Complete!'),
+                  isVideo
+                    ? this.tA(`تم حفظ ملف الفيديو وتعيين مساره: ${result.url}`, `Video saved and path set: ${result.url}`)
+                    : this.tA(`تم حفظ الصورة وتعيين مسارها: ${result.url}`, `Image saved and path set: ${result.url}`)
+                );
               } else {
-                this.showToast('فشل الرفع', result.error || 'تعذر حفظ الصورة على الخادم.');
+                this.showToast(
+                  this.tA('فشل الرفع', 'Upload Failed'),
+                  result.error || this.tA('تعذر حفظ الملف على الخادم.', 'Failed to save file on server.')
+                );
               }
             } catch (err) {
               console.error('Upload failed:', err);
-              this.showToast('خطأ في الاتصال', 'تعذر إرسال الصورة إلى الخادم.');
+              this.showToast(
+                this.tA('خطأ في الاتصال', 'Connection Error'),
+                this.tA('تعذر إرسال الملف إلى الخادم.', 'Failed to send file to server.')
+              );
             } finally {
               event.target.value = '';
             }
