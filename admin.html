@@ -5125,8 +5125,9 @@
 
             if (res.ok) {
               this.showToast('تم الحفظ بنجاح!', 'تم تحديث كافة محتويات الموقع وتطبيقها فورياً.');
-              // Also sync to localStorage for instant client reflection
+              // Also sync to localStorage for instant client reflection across tabs
               localStorage.setItem('protherme_cms_content', JSON.stringify(this.cms));
+              localStorage.setItem('protherme_cms_v20261008_rev', JSON.stringify(this.cms));
             } else {
               this.showToast('خطأ في الحفظ', 'حدث خطأ أثناء الاتصال بالخادم.');
             }

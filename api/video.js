@@ -6,7 +6,11 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = (req, res) => {
-  const videoPath = path.join(process.cwd(), 'assets', 'videos', 'beforeafter.mp4');
+  const reqFile = (req.query && req.query.file) ? path.basename(req.query.file) : 'beforeafter.mp4';
+  let videoPath = path.join(process.cwd(), 'assets', 'videos', reqFile);
+  if (!fs.existsSync(videoPath)) {
+    videoPath = path.join(process.cwd(), 'assets', 'videos', 'beforeafter.mp4');
+  }
   
   if (!fs.existsSync(videoPath)) {
     return res.status(404).send('Video file not found');

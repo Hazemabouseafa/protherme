@@ -1257,17 +1257,50 @@ function prothermeApp() {
           }
         ]
       },
+      video: {
+        url: 'assets/videos/beforeafter.mp4',
+        poster: 'assets/images/hero-beforeafter.jpg?v=2',
+        autoplay: true
+      },
       blocks: [],
       sectionOrder: []
     },
     cmsLoaded: false,
 
+    getVideoUrl() {
+      if (this.cms && this.cms.video && this.cms.video.url) {
+        return this.cms.video.url;
+      }
+      return 'assets/videos/beforeafter.mp4';
+    },
+
     async init() {
       // Set initial direction and lang attribute on root HTML
       this.updateDocumentAttributes();
 
+      // Watch for dynamic video URL changes and reload media element
+      this.$watch('cms.video.url', (newUrl) => {
+        if (!newUrl) return;
+        const v = document.getElementById('thermal-demo-video');
+        if (v && v.getAttribute('src') !== newUrl) {
+          v.src = newUrl;
+          v.addEventListener('loadeddata', () => { v.play().catch(() => {}); }, { once: true });
+          v.load();
+        }
+      });
+
       // Load cached or API CMS Content
       await this.loadCMSContent();
+
+      // Ensure video element loads and plays the CMS configured video
+      const v = document.getElementById('thermal-demo-video');
+      if (v && this.cms && this.cms.video && this.cms.video.url) {
+        if (v.getAttribute('src') !== this.cms.video.url) {
+          v.src = this.cms.video.url;
+          v.addEventListener('loadeddata', () => { v.play().catch(() => {}); }, { once: true });
+          v.load();
+        }
+      }
 
       window.addEventListener('scroll', () => {
         this.showBackToTop = window.scrollY > 300;
@@ -1275,9 +1308,16 @@ function prothermeApp() {
 
       // Listen for CMS updates across tabs
       window.addEventListener('storage', (e) => {
-        if (e.key === 'protherme_cms_v20261008_rev' && e.newValue) {
+        if ((e.key === 'protherme_cms_v20261008_rev3' || e.key === 'protherme_cms_content' || e.key === 'protherme_cms_v20261008_rev') && e.newValue) {
           try {
-            this.cms = JSON.parse(e.newValue);
+            this.cms = Object.assign({}, this.cms, JSON.parse(e.newValue));
+            this.ensureDynamicLists();
+            const vid = document.getElementById('thermal-demo-video');
+            if (vid && this.cms.video && this.cms.video.url && vid.getAttribute('src') !== this.cms.video.url) {
+              vid.src = this.cms.video.url;
+              vid.addEventListener('loadeddata', () => { vid.play().catch(() => {}); }, { once: true });
+              vid.load();
+            }
           } catch (err) {}
         }
       });
@@ -1296,13 +1336,13 @@ function prothermeApp() {
     // Fetch CMS Content from Server API (with cache invalidation)
     async loadCMSContent() {
       const CACHE_KEY = 'protherme_cms_v20261008_rev3';
-      // Invalidate obsolete prior caches
-      try {
-        localStorage.removeItem('protherme_cms_content');
-        localStorage.removeItem('protherme_cms_v20261008');
-        localStorage.removeItem('protherme_cms_v20261008_rev');
-        localStorage.removeItem('protherme_cms_v20261008_rev2');
-      } catch (e) {}
+      const localAdminSaved = localStorage.getItem('protherme_cms_content');
+      if (localAdminSaved) {
+        try {
+          this.cms = Object.assign({}, this.cms, JSON.parse(localAdminSaved));
+          this.ensureDynamicLists();
+        } catch (e) {}
+      }
 
       const cached = localStorage.getItem(CACHE_KEY);
       if (cached) {
@@ -2357,12 +2397,9 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                 loop
                 playsinline 
                 preload="auto" 
-                :src="cms.video ? (cms.video.url || 'assets/videos/beforeafter.mp4') : 'assets/videos/beforeafter.mp4'"
-                :poster="cms.video ? (cms.video.poster || 'assets/images/hero-beforeafter.jpg?v=2') : 'assets/images/hero-beforeafter.jpg?v=2'"
-                src="assets/videos/beforeafter.mp4"
-                poster="assets/images/hero-beforeafter.jpg?v=2"
+                :src="getVideoUrl()"
+                :poster="cms.video && cms.video.poster ? cms.video.poster : 'assets/images/hero-beforeafter.jpg?v=2'"
                 class="w-full h-full object-cover">
-                <source :src="cms.video ? (cms.video.url || 'assets/videos/beforeafter.mp4') : 'assets/videos/beforeafter.mp4'" src="assets/videos/beforeafter.mp4" type="video/mp4">
                 <span x-text="lang === 'ar' ? 'متصفحك لا يدعم تشغيل الفيديو المباشر.' : 'Your browser does not support HTML5 video.'"></span>
               </video>
             </div>

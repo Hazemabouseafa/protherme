@@ -4,14 +4,16 @@
   "functions": {
     "api/video.js": {
       "includeFiles": "assets/videos/**"
+    },
+    "api/image.js": {
+      "includeFiles": "assets/**"
     }
   },
   "rewrites": [
     { "source": "/assets/images/(upload-.*)", "destination": "/api/image?id=$1" },
-    { "source": "/assets/videos/(upload-.*)", "destination": "/api/image?id=$1" },
+    { "source": "/assets/videos/(.*)", "destination": "/api/image?id=$1" },
     { "source": "/protherme/assets/images/(upload-.*)", "destination": "/api/image?id=$1" },
-    { "source": "/protherme/assets/videos/(upload-.*)", "destination": "/api/image?id=$1" },
-    { "source": "/assets/videos/beforeafter.mp4", "destination": "/api/video" },
+    { "source": "/protherme/assets/videos/(.*)", "destination": "/api/image?id=$1" },
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/protherme/admin", "destination": "/admin.html" },
     { "source": "/protherme", "destination": "/index.html" },

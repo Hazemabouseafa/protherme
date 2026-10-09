@@ -19,11 +19,64 @@ const mimeTypes = {
   '.ogg': 'video/ogg'
 };
 
+function streamFileWithRange(req, res, filePath, contentType) {
+  const stat = fs.statSync(filePath);
+  const fileSize = stat.size;
+  const range = req.headers.range;
+
+  if (range) {
+    const parts = range.replace(/bytes=/, '').split('-');
+    const start = parseInt(parts[0], 10);
+    const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+    const chunkSize = (end - start) + 1;
+
+    const stream = fs.createReadStream(filePath, { start, end });
+    res.writeHead(206, {
+      'Content-Range': `bytes ${start}-${end}/${fileSize}`,
+      'Accept-Ranges': 'bytes',
+      'Content-Length': chunkSize,
+      'Content-Type': contentType,
+      'Cache-Control': 'public, max-age=31536000, immutable'
+    });
+    return stream.pipe(res);
+  } else {
+    if (fileSize > 3.5 * 1024 * 1024) {
+      const end = Math.min(fileSize - 1, (2 * 1024 * 1024) - 1);
+      const chunkSize = end + 1;
+      const stream = fs.createReadStream(filePath, { start: 0, end });
+      res.writeHead(206, {
+        'Content-Range': `bytes 0-${end}/${fileSize}`,
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunkSize,
+        'Content-Type': contentType,
+        'Cache-Control': 'public, max-age=31536000, immutable'
+      });
+      return stream.pipe(res);
+    }
+
+    res.writeHead(200, {
+      'Content-Length': fileSize,
+      'Content-Type': contentType,
+      'Accept-Ranges': 'bytes',
+      'Cache-Control': 'public, max-age=31536000, immutable'
+    });
+    return fs.createReadStream(filePath).pipe(res);
+  }
+}
+
 module.exports = async function handler(req, res) {
-  const { id } = req.query;
+  let { id } = req.query || {};
+  if (!id && req.url) {
+    try {
+      const parsed = new URL(req.url, 'http://localhost');
+      id = parsed.searchParams.get('id');
+    } catch (e) {}
+  }
   if (!id) {
     return res.status(400).send('Missing media id');
   }
+
+  id = path.basename(id);
 
   try {
     // 1. Try getUpload (checks Neon DB, /tmp buffer, and local assets)
@@ -33,17 +86,35 @@ module.exports = async function handler(req, res) {
     if (record && record.data && record.data.startsWith('chunked:')) {
       const ext = path.extname(id).toLowerCase();
       const contentType = mimeTypes[ext] || 'video/mp4';
-      const range = req.headers.range;
+      const parts = record.data.split(':');
+      const totalChunks = parseInt(parts[1], 10) || 1;
       const CHUNK_SIZE = 2 * 1024 * 1024;
-      let chunkIdx = 0;
-      let startOffset = 0;
+      let totalSize = parseInt(parts[2], 10) || 0;
+      if (!totalSize) {
+        totalSize = totalChunks * CHUNK_SIZE;
+      }
+
+      // Check /tmp first for complete local assembly
+      const tmpPath = path.join(TMP_UPLOAD_DIR, id);
+      if (fs.existsSync(tmpPath) && fs.statSync(tmpPath).size >= totalSize) {
+        return streamFileWithRange(req, res, tmpPath, contentType);
+      }
+
+      const range = req.headers.range;
+      let start = 0;
+      let end = totalSize - 1;
 
       if (range) {
-        const parts = range.replace(/bytes=/, '').split('-');
-        const start = parseInt(parts[0], 10) || 0;
-        chunkIdx = Math.floor(start / CHUNK_SIZE);
-        startOffset = start % CHUNK_SIZE;
+        const rangeParts = range.replace(/bytes=/, '').split('-');
+        start = parseInt(rangeParts[0], 10) || 0;
+        if (rangeParts[1]) {
+          end = parseInt(rangeParts[1], 10);
+        }
+        if (end >= totalSize) end = totalSize - 1;
       }
+
+      const chunkIdx = Math.floor(start / CHUNK_SIZE);
+      const startOffset = start % CHUNK_SIZE;
 
       const chunkData = await getUploadChunk(id, chunkIdx);
       if (chunkData) {
@@ -51,10 +122,17 @@ module.exports = async function handler(req, res) {
         const commaIdx = chunkData.indexOf('base64,');
         if (commaIdx !== -1) rawBase64 = chunkData.substring(commaIdx + 7);
         const buf = Buffer.from(rawBase64, 'base64');
-        const slice = buf.subarray(startOffset);
+
+        const maxChunkBytes = buf.length - startOffset;
+        const requestedBytes = (end - start) + 1;
+        const bytesToSend = Math.min(maxChunkBytes, requestedBytes);
+        const slice = buf.subarray(startOffset, startOffset + bytesToSend);
+
+        const actualStart = (chunkIdx * CHUNK_SIZE) + startOffset;
+        const actualEnd = actualStart + slice.length - 1;
 
         res.writeHead(206, {
-          'Content-Range': `bytes ${startOffset}-${startOffset + slice.length - 1}/${buf.length}`,
+          'Content-Range': `bytes ${actualStart}-${actualEnd}/${totalSize}`,
           'Accept-Ranges': 'bytes',
           'Content-Length': slice.length,
           'Content-Type': contentType,
@@ -63,6 +141,7 @@ module.exports = async function handler(req, res) {
         return res.end(slice);
       }
     }
+
     if (record && record.data) {
       let rawBase64 = record.data;
       const ext = path.extname(id).toLowerCase();
@@ -105,6 +184,10 @@ module.exports = async function handler(req, res) {
     if (fs.existsSync(tmpPath)) {
       const ext = path.extname(id).toLowerCase();
       const contentType = mimeTypes[ext] || 'application/octet-stream';
+      const isVid = ext === '.mp4' || ext === '.webm' || ext === '.mov' || ext === '.ogg';
+      if (isVid) {
+        return streamFileWithRange(req, res, tmpPath, contentType);
+      }
       res.setHeader('Content-Type', contentType);
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
       return res.status(200).send(fs.readFileSync(tmpPath));
@@ -116,6 +199,10 @@ module.exports = async function handler(req, res) {
       if (fs.existsSync(localPath)) {
         const ext = path.extname(id).toLowerCase();
         const contentType = mimeTypes[ext] || 'application/octet-stream';
+        const isVid = ext === '.mp4' || ext === '.webm' || ext === '.mov' || ext === '.ogg';
+        if (isVid) {
+          return streamFileWithRange(req, res, localPath, contentType);
+        }
         res.setHeader('Content-Type', contentType);
         res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
         return res.status(200).send(fs.readFileSync(localPath));

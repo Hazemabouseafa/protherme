@@ -94,18 +94,51 @@ document.addEventListener('alpine:init', () => {
         stat3: { num: '99%', label_ar: 'حماية من الأشعة الضارة (UV)', label_en: 'Harmful UV Shielding' },
         stat4: { num: '100%', label_ar: 'رؤية نقية دون تعتيم', label_en: 'Crystal Optical Clarity' }
       },
+      video: {
+        url: 'assets/videos/beforeafter.mp4',
+        poster: 'assets/images/hero-beforeafter.jpg?v=2',
+        autoplay: true
+      },
       texts: {},
       imageBadges: {},
       blocks: [],
       sectionOrder: []
     },
 
+    getVideoUrl() {
+      if (this.cms && this.cms.video && this.cms.video.url) {
+        return this.cms.video.url;
+      }
+      return 'assets/videos/beforeafter.mp4';
+    },
+
     async init() {
       // Set initial direction and lang attribute on root HTML
       this.updateDocumentAttributes();
 
+      // Watch for dynamic video URL changes
+      this.$watch('cms.video.url', (newUrl) => {
+        if (!newUrl) return;
+        const v = document.getElementById('thermal-demo-video');
+        if (v && v.getAttribute('src') !== newUrl) {
+          v.src = newUrl;
+          v.addEventListener('loadeddata', () => { v.play().catch(() => {}); }, { once: true });
+          v.load();
+        }
+      });
+
       // Load cached or API CMS Content
       await this.loadCMSContent();
+
+      // Ensure video element loads and plays the CMS configured video
+      const v = document.getElementById('thermal-demo-video');
+      if (v && this.cms && this.cms.video && this.cms.video.url) {
+        if (v.getAttribute('src') !== this.cms.video.url) {
+          v.src = this.cms.video.url;
+          v.addEventListener('loadeddata', () => { v.play().catch(() => {}); }, { once: true });
+          v.load();
+        }
+      }
 
       // Scroll listener for back-to-top button
       window.addEventListener('scroll', () => {
@@ -114,9 +147,15 @@ document.addEventListener('alpine:init', () => {
 
       // Listen for CMS updates across tabs
       window.addEventListener('storage', (e) => {
-        if (e.key === 'protherme_cms_v20261008_rev' && e.newValue) {
+        if ((e.key === 'protherme_cms_v20261008_rev' || e.key === 'protherme_cms_content') && e.newValue) {
           try {
-            this.cms = JSON.parse(e.newValue);
+            this.cms = Object.assign({}, this.cms, JSON.parse(e.newValue));
+            const vid = document.getElementById('thermal-demo-video');
+            if (vid && this.cms.video && this.cms.video.url && vid.getAttribute('src') !== this.cms.video.url) {
+              vid.src = this.cms.video.url;
+              vid.addEventListener('loadeddata', () => { vid.play().catch(() => {}); }, { once: true });
+              vid.load();
+            }
           } catch (err) {}
         }
       });
@@ -135,10 +174,12 @@ document.addEventListener('alpine:init', () => {
     // Fetch CMS Content from Server API (with cache invalidation)
     async loadCMSContent() {
       const CACHE_KEY = 'protherme_cms_v20261008_rev';
-      try {
-        localStorage.removeItem('protherme_cms_content');
-        localStorage.removeItem('protherme_cms_v20261008');
-      } catch (e) {}
+      const localAdminSaved = localStorage.getItem('protherme_cms_content');
+      if (localAdminSaved) {
+        try {
+          this.cms = Object.assign({}, this.cms, JSON.parse(localAdminSaved));
+        } catch (e) {}
+      }
 
       const cached = localStorage.getItem(CACHE_KEY);
       if (cached) {
