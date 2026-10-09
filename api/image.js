@@ -16,7 +16,8 @@ const mimeTypes = {
   '.mp4': 'video/mp4',
   '.webm': 'video/webm',
   '.mov': 'video/quicktime',
-  '.ogg': 'video/ogg'
+  '.ogg': 'video/ogg',
+  '.m4v': 'video/mp4'
 };
 
 function streamFileWithRange(req, res, filePath, contentType) {

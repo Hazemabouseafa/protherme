@@ -2796,18 +2796,17 @@
                   <div class="flex items-center gap-2">
                     <input 
                       type="file" 
-                      accept="image/*,video/*,.mp4,.webm" 
+                      accept="image/*,video/*,.mp4,.webm,.mov,.ogg,.m4v" 
                       id="new-block-file-uploader" 
                       class="hidden" 
                       @change="handleNewBlockFileUpload($event)">
                     
-                    <button 
-                      type="button" 
-                      @click="document.getElementById('new-block-file-uploader').click()" 
-                      class="px-3.5 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs shadow-xs transition flex items-center gap-1.5">
+                    <label 
+                      for="new-block-file-uploader" 
+                      class="cursor-pointer px-3.5 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs shadow-xs transition flex items-center gap-1.5">
                       <i class="fa-solid fa-cloud-arrow-up"></i>
                       <span x-text="tA('رفع صورة أو فيديو من جهازك', 'Upload Image or Video')">رفع صورة أو فيديو من جهازك</span>
-                    </button>
+                    </label>
                   </div>
                 </div>
 
@@ -2832,15 +2831,15 @@
                 <!-- Preview Thumbnail: Image or Video -->
                 <div x-show="newBlockForm.image" class="pt-2 flex items-center gap-3">
                   <div class="relative w-fit">
-                    <template x-if="newBlockForm.image && (newBlockForm.image.endsWith('.mp4') || newBlockForm.image.endsWith('.webm'))">
-                      <video :src="newBlockForm.image" controls class="h-28 w-auto rounded-xl border border-slate-300 object-cover shadow-xs"></video>
+                    <template x-if="newBlockForm.image && (isVideoMedia(newBlockForm.image) || newBlockForm.mediaType === 'video' || newBlockForm.video)">
+                      <video :src="newBlockForm.video || newBlockForm.image" controls playsinline class="h-28 w-auto rounded-xl border border-slate-300 object-cover shadow-xs"></video>
                     </template>
-                    <template x-if="newBlockForm.image && !(newBlockForm.image.endsWith('.mp4') || newBlockForm.image.endsWith('.webm'))">
+                    <template x-if="newBlockForm.image && !(isVideoMedia(newBlockForm.image) || newBlockForm.mediaType === 'video' || newBlockForm.video)">
                       <img :src="newBlockForm.image" alt="Preview" class="h-20 w-auto rounded-xl border border-slate-300 object-cover shadow-xs">
                     </template>
                     <button 
                       type="button" 
-                      @click="newBlockForm.image = ''" 
+                      @click="newBlockForm.image = ''; newBlockForm.video = ''; newBlockForm.mediaType = 'image'" 
                       class="absolute -top-2 -end-2 w-6 h-6 rounded-full bg-rose-600 text-white text-xs flex items-center justify-center hover:bg-rose-700 transition" 
                       title="إزالة الوسائط">
                       <i class="fa-solid fa-xmark"></i>
@@ -3035,26 +3034,25 @@
                       
                       <input 
                         type="file" 
-                        accept="image/*,video/*,.mp4,.webm" 
+                        accept="image/*,video/*,.mp4,.webm,.mov,.ogg,.m4v" 
                         :id="'block-uploader-' + bIdx" 
                         class="hidden" 
                         @change="handleExistingBlockUpload($event, block)">
                       
-                      <button 
-                        type="button"
-                        @click="document.getElementById('block-uploader-' + bIdx).click()" 
-                        class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-xs font-bold text-slate-700 flex items-center gap-1.5 shrink-0">
+                      <label 
+                        :for="'block-uploader-' + bIdx" 
+                        class="cursor-pointer px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-xs font-bold text-slate-700 flex items-center gap-1.5 shrink-0">
                         <i class="fa-solid fa-cloud-arrow-up text-cyan-600"></i>
                         <span x-text="tA('رفع صورة / فيديو', 'Upload Image/Video')">رفع صورة / فيديو</span>
-                      </button>
+                      </label>
                     </div>
                     <!-- Existing Block Media Preview -->
                     <div x-show="block.image" class="pt-2 flex items-center gap-3">
                       <div class="relative w-fit">
-                        <template x-if="block.image && (block.image.endsWith('.mp4') || block.image.endsWith('.webm'))">
-                          <video :src="block.image" controls class="h-24 w-auto rounded-xl border border-slate-300 object-cover shadow-xs"></video>
+                        <template x-if="block.image && (isVideoMedia(block.image) || block.mediaType === 'video' || block.video)">
+                          <video :src="block.video || block.image" controls playsinline class="h-24 w-auto rounded-xl border border-slate-300 object-cover shadow-xs"></video>
                         </template>
-                        <template x-if="block.image && !(block.image.endsWith('.mp4') || block.image.endsWith('.webm'))">
+                        <template x-if="block.image && !(isVideoMedia(block.image) || block.mediaType === 'video' || block.video)">
                           <img :src="block.image" alt="Preview" class="h-16 w-auto rounded-xl border border-slate-300 object-cover shadow-xs">
                         </template>
                       </div>
@@ -3069,26 +3067,25 @@
                       
                       <input 
                         type="file" 
-                        accept="image/*,video/*,.mp4,.webm" 
+                        accept="image/*,video/*,.mp4,.webm,.mov,.ogg,.m4v" 
                         :id="'block-sec-uploader-' + bIdx" 
                         class="hidden" 
                         @change="handleExistingBlockSecondaryUpload($event, block)">
                       
-                      <button 
-                        type="button"
-                        @click="document.getElementById('block-sec-uploader-' + bIdx).click()" 
-                        class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-xs font-bold text-slate-700 flex items-center gap-1.5 shrink-0">
+                      <label 
+                        :for="'block-sec-uploader-' + bIdx" 
+                        class="cursor-pointer px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-300 text-xs font-bold text-slate-700 flex items-center gap-1.5 shrink-0">
                         <i class="fa-solid fa-cloud-arrow-up text-cyan-600"></i>
                         <span x-text="tA('رفع البوستر الثاني', 'Upload 2nd Poster')">رفع البوستر الثاني</span>
-                      </button>
+                      </label>
                     </div>
                     <!-- Secondary Preview -->
                     <div x-show="block.secondaryImage" class="pt-2 flex items-center gap-3">
                       <div class="relative w-fit">
-                        <template x-if="block.secondaryImage && (block.secondaryImage.endsWith('.mp4') || block.secondaryImage.endsWith('.webm'))">
-                          <video :src="block.secondaryImage" controls class="h-24 w-auto rounded-xl border border-slate-300 object-cover shadow-xs"></video>
+                        <template x-if="block.secondaryImage && (isVideoMedia(block.secondaryImage) || block.secondaryMediaType === 'video' || block.secondaryVideo)">
+                          <video :src="block.secondaryVideo || block.secondaryImage" controls playsinline class="h-24 w-auto rounded-xl border border-slate-300 object-cover shadow-xs"></video>
                         </template>
-                        <template x-if="block.secondaryImage && !(block.secondaryImage.endsWith('.mp4') || block.secondaryImage.endsWith('.webm'))">
+                        <template x-if="block.secondaryImage && !(isVideoMedia(block.secondaryImage) || block.secondaryMediaType === 'video' || block.secondaryVideo)">
                           <img :src="block.secondaryImage" alt="Secondary Preview" class="h-16 w-auto rounded-xl border border-slate-300 object-cover shadow-xs">
                         </template>
                       </div>
@@ -3457,6 +3454,11 @@
         tA(ar, en) {
           return this.adminLang === 'en' ? (en || ar) : ar;
         },
+        isVideoMedia(url) {
+          if (!url || typeof url !== 'string') return false;
+          const clean = url.split('?')[0].toLowerCase();
+          return /\.(mp4|webm|mov|ogg|m4v)$/i.test(clean) || url.includes('/videos/') || url.includes('/video/');
+        },
         activeTab: 'visibility',
         saving: false,
         
@@ -3502,6 +3504,8 @@
           theme: 'cyan',
           layout: 'split',
           image: '',
+          video: '',
+          mediaType: 'image',
           imageAlign: 'right',
           ctaText: { ar: 'احجز معاينة مجانية', en: 'Book Free Survey' },
           ctaLink: '#contact',
@@ -4495,6 +4499,7 @@
 
           if (!this.cms.blocks) this.cms.blocks = [];
           const newId = 'block_' + Date.now();
+          const isVid = this.isVideoMedia(this.newBlockForm.image) || this.newBlockForm.mediaType === 'video' || !!this.newBlockForm.video;
           const newBlock = {
             id: newId,
             enabled: true,
@@ -4517,6 +4522,8 @@
               en: (this.newBlockForm.content.en || '').trim()
             },
             image: (this.newBlockForm.image || '').trim(),
+            video: isVid ? (this.newBlockForm.video || this.newBlockForm.image || '').trim() : '',
+            mediaType: isVid ? 'video' : 'image',
             imageAlign: this.newBlockForm.imageAlign || 'right',
             ctaText: {
               ar: (this.newBlockForm.ctaText.ar || '').trim() || 'احجز معاينة مجانية',
@@ -4572,6 +4579,8 @@
             theme: 'cyan',
             layout: 'split',
             image: '',
+            video: '',
+            mediaType: 'image',
             imageAlign: 'right',
             ctaText: { ar: 'احجز معاينة مجانية', en: 'Book Free Survey' },
             ctaLink: '#contact',
@@ -4607,6 +4616,9 @@
             if (isVideo) {
               this.newBlockForm.video = result.url;
               this.newBlockForm.mediaType = 'video';
+            } else {
+              this.newBlockForm.video = '';
+              this.newBlockForm.mediaType = 'image';
             }
           }
           event.target.value = '';
@@ -4622,6 +4634,9 @@
             if (isVideo) {
               block.video = result.url;
               block.mediaType = 'video';
+            } else {
+              block.video = '';
+              block.mediaType = 'image';
             }
             if (Array.isArray(block.images) && block.images.length > 0) {
               block.images[0] = result.url;
@@ -4640,6 +4655,13 @@
           const result = await this.uploadMediaWithProgress(file);
           if (result && result.success) {
             block.secondaryImage = result.url;
+            if (isVideo) {
+              block.secondaryVideo = result.url;
+              block.secondaryMediaType = 'video';
+            } else {
+              block.secondaryVideo = '';
+              block.secondaryMediaType = 'image';
+            }
             if (!Array.isArray(block.images)) block.images = [block.image || ''];
             if (block.images.length > 1) {
               block.images[1] = result.url;

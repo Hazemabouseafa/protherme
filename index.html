@@ -1274,6 +1274,12 @@ function prothermeApp() {
       return 'assets/videos/beforeafter.mp4';
     },
 
+    isVideoMedia(url) {
+      if (!url || typeof url !== 'string') return false;
+      const clean = url.split('?')[0].toLowerCase();
+      return /\.(mp4|webm|mov|ogg|m4v)$/i.test(clean) || url.includes('/videos/') || url.includes('/video/');
+    },
+
     async init() {
       // Set initial direction and lang attribute on root HTML
       this.updateDocumentAttributes();
@@ -3513,10 +3519,10 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               <template x-if="block.image || block.video">
                 <div class="relative w-full rounded-3xl overflow-hidden shadow-2xl border"
                      :class="block.theme === 'white' ? 'border-slate-200 bg-slate-100' : 'border-white/20 bg-slate-900'">
-                  <template x-if="(block.image && (block.image.endsWith('.mp4') || block.image.endsWith('.webm'))) || block.video || block.mediaType === 'video'">
+                  <template x-if="(block.image && isVideoMedia(block.image)) || block.video || block.mediaType === 'video'">
                     <video :src="block.video || block.image" controls playsinline preload="metadata" class="w-full h-auto max-h-[400px] object-cover rounded-3xl"></video>
                   </template>
-                  <template x-if="!((block.image && (block.image.endsWith('.mp4') || block.image.endsWith('.webm'))) || block.video || block.mediaType === 'video')">
+                  <template x-if="!((block.image && isVideoMedia(block.image)) || block.video || block.mediaType === 'video')">
                     <img :src="block.image" :alt="block.title ? (block.title.ar || block.title.en || 'Block Visual') : 'Visual'" class="w-full h-auto max-h-[380px] object-cover">
                   </template>
                 </div>
@@ -3551,13 +3557,13 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             <!-- Optional Image or Video in Banner -->
             <template x-if="block.image || block.video">
               <div class="pt-4 max-w-4xl mx-auto">
-                <template x-if="(block.image && (block.image.endsWith('.mp4') || block.image.endsWith('.webm'))) || block.video || block.mediaType === 'video'">
+                <template x-if="(block.image && isVideoMedia(block.image)) || block.video || block.mediaType === 'video'">
                   <div class="relative rounded-3xl overflow-hidden shadow-2xl border aspect-video max-h-[480px] bg-slate-950 flex items-center justify-center"
                        :class="block.theme === 'white' ? 'border-slate-200' : 'border-white/20'">
                     <video :src="block.video || block.image" controls playsinline preload="metadata" class="w-full h-full object-contain mx-auto rounded-3xl"></video>
                   </div>
                 </template>
-                <template x-if="!((block.image && (block.image.endsWith('.mp4') || block.image.endsWith('.webm'))) || block.video || block.mediaType === 'video')">
+                <template x-if="!((block.image && isVideoMedia(block.image)) || block.video || block.mediaType === 'video')">
                   <img :src="block.image" :alt="block.title ? (block.title.ar || block.title.en || 'Visual') : 'Visual'" class="w-full max-h-[380px] rounded-3xl object-cover shadow-2xl border"
                        :class="block.theme === 'white' ? 'border-slate-200' : 'border-white/20'">
                 </template>
@@ -3624,11 +3630,11 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             <div class="flex flex-col sm:flex-row md:flex-col items-center gap-4 shrink-0">
               <template x-if="block.image || block.video">
                 <div>
-                  <template x-if="(block.image && (block.image.endsWith('.mp4') || block.image.endsWith('.webm'))) || block.video || block.mediaType === 'video'">
+                  <template x-if="(block.image && isVideoMedia(block.image)) || block.video || block.mediaType === 'video'">
                     <video :src="block.video || block.image" controls playsinline preload="metadata" class="w-56 h-36 rounded-2xl object-cover shadow-md border"
                            :class="block.theme === 'white' ? 'border-slate-200' : 'border-white/20'"></video>
                   </template>
-                  <template x-if="!((block.image && (block.image.endsWith('.mp4') || block.image.endsWith('.webm'))) || block.video || block.mediaType === 'video')">
+                  <template x-if="!((block.image && isVideoMedia(block.image)) || block.video || block.mediaType === 'video')">
                     <img :src="block.image" :alt="block.title ? (block.title.ar || block.title.en || 'Card Visual') : 'Card Visual'" class="w-48 h-32 rounded-2xl object-cover shadow-md border"
                          :class="block.theme === 'white' ? 'border-slate-200' : 'border-white/20'">
                   </template>
@@ -3670,16 +3676,21 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               <div class="group relative rounded-3xl overflow-hidden border shadow-2xl transition-all duration-300 hover:-translate-y-1.5 hover:shadow-cyan-500/20 flex flex-col"
                    :class="block.theme === 'white' ? 'bg-white border-slate-200' : 'bg-slate-900 border-white/20'">
                 <div class="overflow-hidden bg-slate-950 flex items-center justify-center p-3">
-                  <img :src="block.images ? block.images[0] : (block.image || 'assets/images/protherme-poster-smart-buildings.jpg')" 
-                       alt="ProTherme Smart Buildings Poster" 
-                       class="w-full h-auto max-h-[550px] object-contain rounded-2xl group-hover:scale-[1.02] transition-transform duration-500">
+                  <template x-if="(block.image && isVideoMedia(block.image)) || block.video || block.mediaType === 'video'">
+                    <video :src="block.video || (block.images ? block.images[0] : block.image)" controls playsinline preload="metadata" class="w-full h-auto max-h-[550px] object-contain rounded-2xl"></video>
+                  </template>
+                  <template x-if="!((block.image && isVideoMedia(block.image)) || block.video || block.mediaType === 'video')">
+                    <img :src="block.images ? block.images[0] : (block.image || 'assets/images/protherme-poster-smart-buildings.jpg')" 
+                         alt="ProTherme Smart Buildings Poster" 
+                         class="w-full h-auto max-h-[550px] object-contain rounded-2xl group-hover:scale-[1.02] transition-transform duration-500">
+                  </template>
                 </div>
                 <div class="p-6 space-y-2 flex-1 flex flex-col justify-between">
                   <div>
                     <h3 class="text-lg sm:text-xl font-black" :class="block.theme === 'white' ? 'text-slate-900' : 'text-white'"
                         x-text="block.posters && block.posters[0] ? (block.posters[0].title[lang] || block.posters[0].title.ar || block.posters[0].title) : (lang === 'ar' ? 'المباني الذكية تحتاج حلولاً ذكية' : 'Smart Buildings Need Smart Solutions')"></h3>
                     <p class="text-xs sm:text-sm mt-1" :class="block.theme === 'white' ? 'text-slate-600' : 'text-slate-300'"
-                       x-text="block.posters && block.posters[0] ? (block.posters[0].desc[lang] || block.posters[0].desc.ar || block.posters[0].desc) : (lang === 'ar' ? 'عوازل نانو سيراميك متطورة للزجاج والواجهات المعمارية لعزل أشعة الشمس وحرارة الصيف القاسية' : 'Advanced nano-ceramic coatings for architectural glass blocking solar heat and UV')"></p>
+                        x-text="block.posters && block.posters[0] ? (block.posters[0].desc[lang] || block.posters[0].desc.ar || block.posters[0].desc) : (lang === 'ar' ? 'عوازل نانو سيراميك متطورة للزجاج والواجهات المعمارية لعزل أشعة الشمس وحرارة الصيف القاسية' : 'Advanced nano-ceramic coatings for architectural glass blocking solar heat and UV')"></p>
                   </div>
                   <div class="pt-4 flex items-center gap-2">
                     <a :href="block.images ? block.images[0] : (block.image || 'assets/images/protherme-poster-smart-buildings.jpg')" 
@@ -3697,16 +3708,21 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               <div class="group relative rounded-3xl overflow-hidden border shadow-2xl transition-all duration-300 hover:-translate-y-1.5 hover:shadow-emerald-500/20 flex flex-col"
                    :class="block.theme === 'white' ? 'bg-white border-slate-200' : 'bg-slate-900 border-white/20'">
                 <div class="overflow-hidden bg-slate-950 flex items-center justify-center p-3">
-                  <img :src="(block.images && block.images[1]) ? block.images[1] : (block.secondaryImage || 'assets/images/protherme-poster-save-electricity.jpg')" 
-                       alt="ProTherme Save Electricity Poster" 
-                       class="w-full h-auto max-h-[550px] object-contain rounded-2xl group-hover:scale-[1.02] transition-transform duration-500">
+                  <template x-if="(block.secondaryImage && isVideoMedia(block.secondaryImage)) || block.secondaryVideo || block.secondaryMediaType === 'video'">
+                    <video :src="block.secondaryVideo || ((block.images && block.images[1]) ? block.images[1] : block.secondaryImage)" controls playsinline preload="metadata" class="w-full h-auto max-h-[550px] object-contain rounded-2xl"></video>
+                  </template>
+                  <template x-if="!((block.secondaryImage && isVideoMedia(block.secondaryImage)) || block.secondaryVideo || block.secondaryMediaType === 'video')">
+                    <img :src="(block.images && block.images[1]) ? block.images[1] : (block.secondaryImage || 'assets/images/protherme-poster-save-electricity.jpg')" 
+                         alt="ProTherme Save Electricity Poster" 
+                         class="w-full h-auto max-h-[550px] object-contain rounded-2xl group-hover:scale-[1.02] transition-transform duration-500">
+                  </template>
                 </div>
                 <div class="p-6 space-y-2 flex-1 flex flex-col justify-between">
                   <div>
                     <h3 class="text-lg sm:text-xl font-black" :class="block.theme === 'white' ? 'text-slate-900' : 'text-white'"
                         x-text="block.posters && block.posters[1] ? (block.posters[1].title[lang] || block.posters[1].title.ar || block.posters[1].title) : (lang === 'ar' ? 'وفر كهرباء وخفف حمل التكييف' : 'Save Electricity & Lighten AC Load')"></h3>
                     <p class="text-xs sm:text-sm mt-1" :class="block.theme === 'white' ? 'text-slate-600' : 'text-slate-300'"
-                       x-text="block.posters && block.posters[1] ? (block.posters[1].desc[lang] || block.posters[1].desc.ar || block.posters[1].desc) : (lang === 'ar' ? 'كفاءة تبريد فائقة وحماية متكاملة من الأشعة فوق البنفسجية وتحت الحمراء بنسبة تصل إلى 99%' : 'Superior cooling efficiency and complete UV & IR protection up to 99%')"></p>
+                        x-text="block.posters && block.posters[1] ? (block.posters[1].desc[lang] || block.posters[1].desc.ar || block.posters[1].desc) : (lang === 'ar' ? 'كفاءة تبريد فائقة وحماية متكاملة من الأشعة فوق البنفسجية وتحت الحمراء بنسبة تصل إلى 99%' : 'Superior cooling efficiency and complete UV & IR protection up to 99%')"></p>
                   </div>
                   <div class="pt-4 flex items-center gap-2">
                     <a :href="(block.images && block.images[1]) ? block.images[1] : (block.secondaryImage || 'assets/images/protherme-poster-save-electricity.jpg')" 

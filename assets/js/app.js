@@ -200,6 +200,12 @@ document.addEventListener('alpine:init', () => {
       }
     },
 
+    isVideoMedia(url) {
+      if (!url || typeof url !== 'string') return false;
+      const clean = url.split('?')[0].toLowerCase();
+      return /\.(mp4|webm|mov|ogg|m4v)$/i.test(clean) || url.includes('/videos/') || url.includes('/video/');
+    },
+
     // Translation Lookup Helper (with CMS overrides support)
     t(keyPath) {
       // Check CMS texts override first
