@@ -58,6 +58,13 @@
     }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    @keyframes uploadShimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(200%); }
+    }
+    .animate-upload-shimmer {
+      animation: uploadShimmer 1.8s infinite linear;
+    }
   </style>
 </head>
 
@@ -1583,6 +1590,11 @@
                   </label>
                 </div>
               </div>
+            </div>
+
+            <div class="text-[11px] text-cyan-800 bg-cyan-50/70 border border-cyan-200/60 rounded-xl px-3.5 py-2 flex items-center gap-2">
+              <i class="fa-solid fa-circle-info text-cyan-600"></i>
+              <span x-text="tA('مسموح برفع ملفات فيديو حتى 100 ميجابايت (100MB) بصيغ MP4 و WebM مع شريط تقدم مباشر لعملية التحميل.', 'Video uploads are allowed up to 100MB (MP4, WebM) with real-time progress loading bar.')"></span>
             </div>
 
             <!-- Video & Poster Live Preview -->
@@ -3314,6 +3326,96 @@
     </div>
   </div>
 
+  <!-- ========================================== -->
+  <!-- UPLOAD PROGRESS BAR NOTIFICATION           -->
+  <!-- ========================================== -->
+  <div 
+    x-show="uploadProgress.active"
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0 transform translate-y-6 scale-95"
+    x-transition:enter-end="opacity-100 transform translate-y-0 scale-100"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100 transform translate-y-0 scale-100"
+    x-transition:leave-end="opacity-0 transform translate-y-6 scale-95"
+    class="fixed bottom-6 start-6 z-[9999] w-96 max-w-[92vw] bg-slate-950/95 border border-amber-500/30 text-white p-4 rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl ring-1 ring-white/10"
+    style="display: none;">
+    
+    <!-- Top Row: Icon, File Details, Percentage, Close Button -->
+    <div class="flex items-center justify-between gap-3 mb-3">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <!-- Status Icon -->
+        <div class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-sm font-bold"
+          :class="{
+            'bg-amber-500/20 text-amber-400 ring-1 ring-amber-500/40 animate-pulse': uploadProgress.phase === 'reading' || uploadProgress.phase === 'uploading',
+            'bg-sky-500/20 text-sky-400 ring-1 ring-sky-500/40 animate-spin': uploadProgress.phase === 'processing',
+            'bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-500/40': uploadProgress.phase === 'done',
+            'bg-rose-500/20 text-rose-400 ring-1 ring-rose-500/40': uploadProgress.phase === 'error'
+          }">
+          <template x-if="uploadProgress.phase === 'reading' || uploadProgress.phase === 'uploading'">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </template>
+          <template x-if="uploadProgress.phase === 'processing'">
+            <i class="fa-solid fa-spinner"></i>
+          </template>
+          <template x-if="uploadProgress.phase === 'done'">
+            <i class="fa-solid fa-check"></i>
+          </template>
+          <template x-if="uploadProgress.phase === 'error'">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </template>
+        </div>
+
+        <!-- File Title & Size -->
+        <div class="min-w-0">
+          <div class="text-xs font-semibold text-slate-100 truncate" x-text="uploadProgress.filename"></div>
+          <div class="flex items-center gap-1.5 text-[10px] text-slate-400">
+            <span class="px-1.5 py-0.5 bg-amber-500/20 text-amber-300 font-mono rounded" x-text="uploadProgress.fileSizeStr"></span>
+            <span>•</span>
+            <span x-text="tA('الحد المسموح 100MB', 'Max Limit 100MB')"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Percentage and Close -->
+      <div class="flex items-center gap-2 shrink-0">
+        <span class="text-sm font-bold font-mono"
+          :class="uploadProgress.phase === 'error' ? 'text-rose-400' : (uploadProgress.phase === 'done' ? 'text-emerald-400' : 'text-amber-400')"
+          x-text="uploadProgress.percent + '%'"></span>
+        <button 
+          @click="uploadProgress.active = false"
+          type="button"
+          class="w-6 h-6 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 flex items-center justify-center transition text-xs"
+          title="Dismiss">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Progress Track & Fill -->
+    <div class="h-2.5 w-full bg-slate-900 rounded-full overflow-hidden border border-white/10 relative p-0.5">
+      <div 
+        class="h-full rounded-full transition-all duration-300 ease-out relative overflow-hidden"
+        :class="{
+          'bg-gradient-to-r from-amber-500 via-amber-400 to-emerald-400 shadow-[0_0_12px_rgba(245,158,11,0.5)]': uploadProgress.phase !== 'error' && uploadProgress.phase !== 'done',
+          'bg-gradient-to-r from-emerald-500 to-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.5)]': uploadProgress.phase === 'done',
+          'bg-rose-500 shadow-[0_0_12px_rgba(244,63,94,0.5)]': uploadProgress.phase === 'error'
+        }"
+        :style="'width: ' + uploadProgress.percent + '%'">
+        <!-- Shimmer highlight bar while active -->
+        <div 
+          x-show="uploadProgress.phase === 'uploading' || uploadProgress.phase === 'reading'"
+          class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-upload-shimmer"
+          style="background-size: 200% 100%;"></div>
+      </div>
+    </div>
+
+    <!-- Bottom Status Text & Loaded MB -->
+    <div class="flex items-center justify-between mt-2.5 text-[11px] text-slate-300">
+      <span class="truncate" x-text="uploadProgress.statusText"></span>
+      <span class="font-mono text-[10px] text-slate-400 shrink-0 ps-2" x-text="uploadProgress.loadedStr"></span>
+    </div>
+  </div>
+
 <!-- DASHBOARD SCRIPT -->
   <script>
     function adminCMS() {
@@ -3349,6 +3451,18 @@
         toastShow: false,
         toastTitle: '',
         toastMsg: '',
+
+        // Video & Media Upload Progress Bar State
+        uploadProgress: {
+          active: false,
+          percent: 0,
+          filename: '',
+          fileSizeStr: '',
+          loadedStr: '',
+          phase: 'idle', // 'idle' | 'reading' | 'uploading' | 'processing' | 'done' | 'error'
+          statusText: '',
+          error: null
+        },
 
         // Password / PIN Change State
         currentPinInput: '',
@@ -3689,50 +3803,199 @@
           this.showToast('تم الحذف', 'تم حذف الركيزة.');
         },
 
+        async uploadMediaWithProgress(file, customOptions = {}) {
+          if (!file) return null;
+
+          const isVideo = file.type.startsWith('video/') || /\.(mp4|webm|mov|ogg|m4v)$/i.test(file.name);
+          const maxBytes = isVideo ? (100 * 1024 * 1024) : (30 * 1024 * 1024);
+          const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+
+          if (file.size > maxBytes) {
+            const errorMsg = isVideo
+              ? this.tA(`حجم ملف الفيديو (${sizeMB} ميجابايت) يتجاوز الحد الأقصى المسموح به (100 ميجابايت).`, `Video size (${sizeMB} MB) exceeds maximum allowed limit (100 MB).`)
+              : this.tA(`حجم الصورة (${sizeMB} ميجابايت) يتجاوز الحد الأقصى المسموح به (30 ميجابايت).`, `Image size (${sizeMB} MB) exceeds maximum allowed limit (30 MB).`);
+
+            this.showToast(this.tA('حجم الملف كبير', 'File Too Large'), errorMsg);
+            this.uploadProgress = {
+              active: true,
+              percent: 0,
+              filename: file.name,
+              fileSizeStr: `${sizeMB} MB`,
+              loadedStr: '0 MB',
+              phase: 'error',
+              statusText: errorMsg,
+              error: errorMsg
+            };
+            setTimeout(() => {
+              if (this.uploadProgress.phase === 'error') {
+                this.uploadProgress.active = false;
+              }
+            }, 5000);
+            return null;
+          }
+
+          // Fallback if environment lacks browser FileReader/XMLHttpRequest
+          if (typeof FileReader === 'undefined') {
+            return { success: true, url: 'assets/' + (isVideo ? 'videos/' : 'images/') + file.name, filename: file.name };
+          }
+
+          this.uploadProgress = {
+            active: true,
+            percent: 5,
+            filename: file.name,
+            fileSizeStr: `${sizeMB} MB`,
+            loadedStr: '0 MB',
+            phase: 'reading',
+            statusText: isVideo
+              ? this.tA('جاري قراءة وتجهيز ملف الفيديو من جهازك...', 'Reading and preparing video file...')
+              : this.tA('جاري قراءة وتجهيز ملف الصورة من جهازك...', 'Reading and preparing image file...'),
+            error: null
+          };
+
+          return new Promise((resolve) => {
+            const reader = new FileReader();
+
+            reader.onprogress = (e) => {
+              if (e.lengthComputable && e.total > 0) {
+                const readFraction = e.loaded / e.total;
+                this.uploadProgress.percent = Math.min(20, Math.round(5 + readFraction * 15));
+              }
+            };
+
+            reader.onerror = () => {
+              const err = this.tA('تعذر قراءة الملف من جهازك.', 'Failed to read file from disk.');
+              this.uploadProgress.phase = 'error';
+              this.uploadProgress.error = err;
+              this.uploadProgress.statusText = err;
+              this.showToast(this.tA('خطأ في القراءة', 'File Read Error'), err);
+              setTimeout(() => { if (this.uploadProgress.phase === 'error') this.uploadProgress.active = false; }, 4000);
+              resolve(null);
+            };
+
+            reader.onload = (e) => {
+              const base64Data = e.target.result;
+              this.uploadProgress.phase = 'uploading';
+              this.uploadProgress.percent = 20;
+              this.uploadProgress.statusText = isVideo
+                ? this.tA(`جاري رفع الفيديو إلى الخادم (${sizeMB} MB)...`, `Uploading video to server (${sizeMB} MB)...`)
+                : this.tA(`جاري رفع الصورة إلى الخادم (${sizeMB} MB)...`, `Uploading image to server (${sizeMB} MB)...`);
+
+              if (typeof XMLHttpRequest === 'undefined') {
+                fetch('/api/upload', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ filename: file.name, data: base64Data })
+                })
+                .then(r => r.json())
+                .then(r => resolve(r))
+                .catch(() => resolve(null));
+                return;
+              }
+
+              const xhr = new XMLHttpRequest();
+              xhr.open('POST', '/api/upload', true);
+              xhr.setRequestHeader('Content-Type', 'application/json');
+
+              xhr.upload.onprogress = (ev) => {
+                if (ev.lengthComputable && ev.total > 0) {
+                  const netFraction = ev.loaded / ev.total;
+                  const netPercent = Math.min(92, Math.round(20 + netFraction * 72));
+                  const loadedMB = (file.size * netFraction / (1024 * 1024)).toFixed(1);
+                  this.uploadProgress.percent = netPercent;
+                  this.uploadProgress.loadedStr = `${loadedMB} MB`;
+                  this.uploadProgress.statusText = isVideo
+                    ? this.tA(`جاري رفع الفيديو: ${loadedMB} MB من ${sizeMB} MB (${netPercent}%)`, `Uploading video: ${loadedMB} MB of ${sizeMB} MB (${netPercent}%)`)
+                    : this.tA(`جاري رفع الصورة: ${loadedMB} MB من ${sizeMB} MB (${netPercent}%)`, `Uploading image: ${loadedMB} MB of ${sizeMB} MB (${netPercent}%)`);
+                }
+              };
+
+              xhr.upload.onload = () => {
+                this.uploadProgress.phase = 'processing';
+                this.uploadProgress.percent = 95;
+                this.uploadProgress.loadedStr = `${sizeMB} MB`;
+                this.uploadProgress.statusText = this.tA('اكتمل نقل الملف، جاري الحفظ والمعالجة على الخادم...', 'Upload transfer complete, saving on server...');
+              };
+
+              xhr.onload = () => {
+                try {
+                  const result = JSON.parse(xhr.responseText || '{}');
+                  if (xhr.status >= 200 && xhr.status < 300 && result.success) {
+                    this.uploadProgress.phase = 'done';
+                    this.uploadProgress.percent = 100;
+                    this.uploadProgress.loadedStr = `${sizeMB} MB`;
+                    this.uploadProgress.statusText = isVideo
+                      ? this.tA('تم حفظ ورفع الفيديو بنجاح! (100%)', 'Video uploaded and saved successfully! (100%)')
+                      : this.tA('تم حفظ ورفع الصورة بنجاح! (100%)', 'Image uploaded and saved successfully! (100%)');
+
+                    this.showToast(
+                      this.tA('تم الرفع بنجاح!', 'Upload Complete!'),
+                      isVideo
+                        ? this.tA(`تم حفظ ملف الفيديو: ${file.name}`, `Video saved: ${file.name}`)
+                        : this.tA(`تم حفظ الصورة: ${file.name}`, `Image saved: ${file.name}`)
+                    );
+
+                    setTimeout(() => {
+                      if (this.uploadProgress.phase === 'done') {
+                        this.uploadProgress.active = false;
+                      }
+                    }, 2200);
+
+                    resolve(result);
+                  } else {
+                    const err = result.error || this.tA('فشل الخادم في حفظ الملف.', 'Server failed to save file.');
+                    this.uploadProgress.phase = 'error';
+                    this.uploadProgress.error = err;
+                    this.uploadProgress.statusText = err;
+                    this.showToast(this.tA('فشل الرفع', 'Upload Failed'), err);
+                    setTimeout(() => { if (this.uploadProgress.phase === 'error') this.uploadProgress.active = false; }, 5000);
+                    resolve(null);
+                  }
+                } catch(e) {
+                  const err = this.tA('خطأ في معالجة استجابة الخادم.', 'Error parsing server response.');
+                  this.uploadProgress.phase = 'error';
+                  this.uploadProgress.error = err;
+                  this.uploadProgress.statusText = err;
+                  this.showToast(this.tA('فشل الرفع', 'Upload Failed'), err);
+                  setTimeout(() => { if (this.uploadProgress.phase === 'error') this.uploadProgress.active = false; }, 5000);
+                  resolve(null);
+                }
+              };
+
+              xhr.onerror = () => {
+                const err = this.tA('انقطع الاتصال بالخادم أثناء الرفع.', 'Connection to server interrupted.');
+                this.uploadProgress.phase = 'error';
+                this.uploadProgress.error = err;
+                this.uploadProgress.statusText = err;
+                this.showToast(this.tA('خطأ في الاتصال', 'Connection Error'), err);
+                setTimeout(() => { if (this.uploadProgress.phase === 'error') this.uploadProgress.active = false; }, 5000);
+                resolve(null);
+              };
+
+              xhr.ontimeout = () => {
+                const err = this.tA('استغرقت عملية الرفع وقتاً أطول من المتوقع.', 'Upload timed out.');
+                this.uploadProgress.phase = 'error';
+                this.uploadProgress.error = err;
+                this.uploadProgress.statusText = err;
+                this.showToast(this.tA('مهلة الرفع انتهت', 'Upload Timed Out'), err);
+                setTimeout(() => { if (this.uploadProgress.phase === 'error') this.uploadProgress.active = false; }, 5000);
+                resolve(null);
+              };
+
+              xhr.send(JSON.stringify({ filename: file.name, data: base64Data }));
+            };
+
+            reader.readAsDataURL(file);
+          });
+        },
+
         async handlePillarUpload(event, pillar) {
           const file = event.target.files && event.target.files[0];
           if (!file) return;
-          const isVideo = file.type.startsWith('video/') || file.name.endsWith('.mp4') || file.name.endsWith('.webm');
-          const maxBytes = isVideo ? 100 * 1024 * 1024 : 30 * 1024 * 1024;
-          if (file.size > maxBytes) {
-            this.showToast(
-              this.tA('حجم كبير', 'File too large'),
-              isVideo
-                ? this.tA('الحد الأقصى لملفات الفيديو هو 100 ميجابايت.', 'Max size for videos is 100MB.')
-                : this.tA('الحد الأقصى للصور هو 30 ميجابايت.', 'Max size for images is 30MB.')
-            );
-            event.target.value = '';
-            return;
+          const result = await this.uploadMediaWithProgress(file);
+          if (result && result.success) {
+            pillar.image = result.url;
           }
-          this.showToast(
-            this.tA('جاري الرفع...', 'Uploading...'),
-            isVideo ? this.tA('يتم الآن رفع وحفظ ملف الفيديو...', 'Uploading video file...') : this.tA('يتم الآن رفع وحفظ الصورة...', 'Uploading image...')
-          );
-          const reader = new FileReader();
-          reader.onload = async (e) => {
-            try {
-              const res = await fetch('/api/upload', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ filename: file.name, data: e.target.result })
-              });
-              const r = await res.json();
-              if (res.ok && r.success) {
-                pillar.image = r.url;
-                this.showToast(
-                  this.tA('تم الرفع بنجاح!', 'Upload complete!'),
-                  isVideo ? this.tA('تم تعيين فيديو الركيزة بنجاح.', 'Pillar video set successfully.') : this.tA('تم تعيين صورة الركيزة بنجاح.', 'Pillar image set successfully.')
-                );
-              } else {
-                this.showToast(this.tA('فشل الرفع', 'Upload failed'), r.error || this.tA('تعذر حفظ الملف.', 'Failed to save file.'));
-              }
-            } catch(err) {
-              this.showToast(this.tA('خطأ في الاتصال', 'Connection error'), this.tA('تعذر رفع الملف.', 'Failed to upload file.'));
-            } finally {
-              event.target.value = '';
-            }
-          };
-          reader.readAsDataURL(file);
+          event.target.value = '';
         },
 
         addGalleryItem() {
@@ -3758,47 +4021,11 @@
         async handleGalleryUpload(event, item) {
           const file = event.target.files && event.target.files[0];
           if (!file) return;
-          const isVideo = file.type.startsWith('video/') || file.name.endsWith('.mp4') || file.name.endsWith('.webm');
-          const maxBytes = isVideo ? 100 * 1024 * 1024 : 30 * 1024 * 1024;
-          if (file.size > maxBytes) {
-            this.showToast(
-              this.tA('حجم كبير', 'File too large'),
-              isVideo
-                ? this.tA('الحد الأقصى لملفات الفيديو هو 100 ميجابايت.', 'Max size for videos is 100MB.')
-                : this.tA('الحد الأقصى للصور هو 30 ميجابايت.', 'Max size for images is 30MB.')
-            );
-            event.target.value = '';
-            return;
+          const result = await this.uploadMediaWithProgress(file);
+          if (result && result.success) {
+            item.image = result.url;
           }
-          this.showToast(
-            this.tA('جاري الرفع...', 'Uploading...'),
-            isVideo ? this.tA('يتم الآن رفع وحفظ ملف الفيديو...', 'Uploading video file...') : this.tA('يتم الآن رفع وحفظ الصورة...', 'Uploading image...')
-          );
-          const reader = new FileReader();
-          reader.onload = async (e) => {
-            try {
-              const res = await fetch('/api/upload', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ filename: file.name, data: e.target.result })
-              });
-              const r = await res.json();
-              if (res.ok && r.success) {
-                item.image = r.url;
-                this.showToast(
-                  this.tA('تم الرفع بنجاح!', 'Upload complete!'),
-                  isVideo ? this.tA('تم تعيين فيديو المشروع بنجاح.', 'Project video set successfully.') : this.tA('تم تعيين صورة المشروع بنجاح.', 'Project image set successfully.')
-                );
-              } else {
-                this.showToast(this.tA('فشل الرفع', 'Upload failed'), r.error || this.tA('تعذر حفظ الملف.', 'Failed to save file.'));
-              }
-            } catch(err) {
-              this.showToast(this.tA('خطأ في الاتصال', 'Connection error'), this.tA('تعذر رفع الملف.', 'Failed to upload file.'));
-            } finally {
-              event.target.value = '';
-            }
-          };
-          reader.readAsDataURL(file);
+          event.target.value = '';
         },
 
         addTechStandard() {
@@ -4238,132 +4465,57 @@
         async handleNewBlockFileUpload(event) {
           const file = event.target.files && event.target.files[0];
           if (!file) return;
-
-          if (file.size > 100 * 1024 * 1024) {
-            this.showToast(this.tA('حجم كبير', 'File too large'), this.tA('الحد الأقصى المسموح به هو 100 ميجابايت.', 'Maximum allowed size is 100MB.'));
-            event.target.value = '';
-            return;
-          }
-
-          const isVideo = file.type.startsWith('video/') || file.name.endsWith('.mp4') || file.name.endsWith('.webm');
-          this.showToast(this.tA('جاري الرفع...', 'Uploading...'), isVideo ? this.tA('يتم الآن رفع وحفظ ملف الفيديو...', 'Uploading video file...') : this.tA('يتم الآن رفع وحفظ الصورة...', 'Uploading image...'));
-          const reader = new FileReader();
-          reader.onload = async (e) => {
-            try {
-              const res = await fetch('/api/upload', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ filename: file.name, data: e.target.result })
-              });
-              const result = await res.json();
-              if (res.ok && result.success) {
-                this.newBlockForm.image = result.url;
-                if (isVideo) {
-                  this.newBlockForm.video = result.url;
-                  this.newBlockForm.mediaType = 'video';
-                }
-                this.showToast(this.tA('تم الرفع بنجاح!', 'Upload complete!'), isVideo ? this.tA('تم تعيين فيديو البلوك الجديد بنجاح.', 'Block video has been set.') : this.tA('تم تعيين صورة البلوك الجديد بنجاح.', 'Block image has been set.'));
-              } else {
-                this.showToast(this.tA('فشل الرفع', 'Upload failed'), result.error || this.tA('تعذر حفظ الملف.', 'Failed to save file.'));
-              }
-            } catch(err) {
-              this.showToast(this.tA('خطأ في الاتصال', 'Connection error'), this.tA('تعذر رفع الملف.', 'Failed to upload file.'));
-            } finally {
-              event.target.value = '';
+          const isVideo = file.type.startsWith('video/') || /\.(mp4|webm|mov|ogg|m4v)$/i.test(file.name);
+          const result = await this.uploadMediaWithProgress(file);
+          if (result && result.success) {
+            this.newBlockForm.image = result.url;
+            if (isVideo) {
+              this.newBlockForm.video = result.url;
+              this.newBlockForm.mediaType = 'video';
             }
-          };
-          reader.readAsDataURL(file);
+          }
+          event.target.value = '';
         },
 
         async handleExistingBlockUpload(event, block) {
           const file = event.target.files && event.target.files[0];
           if (!file) return;
-
-          if (file.size > 100 * 1024 * 1024) {
-            this.showToast(this.tA('حجم كبير', 'File too large'), this.tA('الحد الأقصى المسموح به هو 100 ميجابايت.', 'Maximum allowed size is 100MB.'));
-            event.target.value = '';
-            return;
-          }
-
-          const isVideo = file.type.startsWith('video/') || file.name.endsWith('.mp4') || file.name.endsWith('.webm');
-          this.showToast(this.tA('جاري الرفع...', 'Uploading...'), isVideo ? this.tA('يتم الآن رفع وحفظ ملف الفيديو...', 'Uploading video file...') : this.tA('يتم الآن رفع وحفظ الصورة...', 'Uploading image...'));
-          const reader = new FileReader();
-          reader.onload = async (e) => {
-            try {
-              const res = await fetch('/api/upload', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ filename: file.name, data: e.target.result })
-              });
-              const result = await res.json();
-              if (res.ok && result.success) {
-                block.image = result.url;
-                if (isVideo) {
-                  block.video = result.url;
-                  block.mediaType = 'video';
-                }
-                if (Array.isArray(block.images) && block.images.length > 0) {
-                  block.images[0] = result.url;
-                }
-                if (Array.isArray(block.posters) && block.posters.length > 0) {
-                  block.posters[0].image = result.url;
-                }
-                this.showToast(this.tA('تم الرفع بنجاح!', 'Upload complete!'), isVideo ? this.tA('تم تحديث فيديو هذا البلوك بنجاح.', 'Block video updated.') : this.tA('تم تحديث صورة هذا البلوك بنجاح.', 'Block image updated.'));
-              } else {
-                this.showToast(this.tA('فشل الرفع', 'Upload failed'), result.error || this.tA('تعذر حفظ الملف.', 'Failed to save file.'));
-              }
-            } catch(err) {
-              this.showToast(this.tA('خطأ في الاتصال', 'Connection error'), this.tA('تعذر رفع الملف.', 'Failed to upload file.'));
-            } finally {
-              event.target.value = '';
+          const isVideo = file.type.startsWith('video/') || /\.(mp4|webm|mov|ogg|m4v)$/i.test(file.name);
+          const result = await this.uploadMediaWithProgress(file);
+          if (result && result.success) {
+            block.image = result.url;
+            if (isVideo) {
+              block.video = result.url;
+              block.mediaType = 'video';
             }
-          };
-          reader.readAsDataURL(file);
+            if (Array.isArray(block.images) && block.images.length > 0) {
+              block.images[0] = result.url;
+            }
+            if (Array.isArray(block.posters) && block.posters.length > 0) {
+              block.posters[0].image = result.url;
+            }
+          }
+          event.target.value = '';
         },
 
         async handleExistingBlockSecondaryUpload(event, block) {
           const file = event.target.files && event.target.files[0];
           if (!file) return;
-
-          if (file.size > 100 * 1024 * 1024) {
-            this.showToast(this.tA('حجم كبير', 'File too large'), this.tA('الحد الأقصى المسموح به هو 100 ميجابايت.', 'Maximum allowed size is 100MB.'));
-            event.target.value = '';
-            return;
-          }
-
-          const isVideo = file.type.startsWith('video/') || file.name.endsWith('.mp4') || file.name.endsWith('.webm');
-          this.showToast(this.tA('جاري الرفع...', 'Uploading...'), isVideo ? this.tA('يتم الآن رفع وحفظ ملف الفيديو...', 'Uploading video file...') : this.tA('يتم الآن رفع وحفظ الصورة...', 'Uploading image...'));
-          const reader = new FileReader();
-          reader.onload = async (e) => {
-            try {
-              const res = await fetch('/api/upload', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ filename: file.name, data: e.target.result })
-              });
-              const result = await res.json();
-              if (res.ok && result.success) {
-                block.secondaryImage = result.url;
-                if (!Array.isArray(block.images)) block.images = [block.image || ''];
-                if (block.images.length > 1) {
-                  block.images[1] = result.url;
-                } else {
-                  block.images.push(result.url);
-                }
-                if (Array.isArray(block.posters) && block.posters.length > 1) {
-                  block.posters[1].image = result.url;
-                }
-                this.showToast(this.tA('تم الرفع بنجاح!', 'Upload complete!'), isVideo ? this.tA('تم تحديث الوسائط الثانوية للبلوك بنجاح.', 'Secondary media updated.') : this.tA('تم تحديث البوستر الثاني للبلوك بنجاح.', 'Secondary poster updated.'));
-              } else {
-                this.showToast(this.tA('فشل الرفع', 'Upload failed'), result.error || this.tA('تعذر حفظ الملف.', 'Failed to save file.'));
-              }
-            } catch(err) {
-              this.showToast(this.tA('خطأ في الاتصال', 'Connection error'), this.tA('تعذر رفع الملف.', 'Failed to upload file.'));
-            } finally {
-              event.target.value = '';
+          const isVideo = file.type.startsWith('video/') || /\.(mp4|webm|mov|ogg|m4v)$/i.test(file.name);
+          const result = await this.uploadMediaWithProgress(file);
+          if (result && result.success) {
+            block.secondaryImage = result.url;
+            if (!Array.isArray(block.images)) block.images = [block.image || ''];
+            if (block.images.length > 1) {
+              block.images[1] = result.url;
+            } else {
+              block.images.push(result.url);
             }
-          };
-          reader.readAsDataURL(file);
+            if (Array.isArray(block.posters) && block.posters.length > 1) {
+              block.posters[1].image = result.url;
+            }
+          }
+          event.target.value = '';
         },
 
         verifyPin() {
@@ -4809,72 +4961,21 @@
           const file = event.target.files && event.target.files[0];
           if (!file) return;
 
-          const isVideo = file.type.startsWith('video/') || file.name.endsWith('.mp4') || file.name.endsWith('.webm') || file.name.endsWith('.mov') || file.name.endsWith('.ogg');
-          const maxBytes = isVideo ? 100 * 1024 * 1024 : 30 * 1024 * 1024;
-          if (file.size > maxBytes) {
-            this.showToast(
-              this.tA('حجم الملف كبير', 'File Too Large'),
-              isVideo
-                ? this.tA('الحد الأقصى المسموح به لملفات الفيديو هو 100 ميجابايت.', 'Maximum allowed size for videos is 100MB.')
-                : this.tA('الحد الأقصى المسموح به للصور هو 30 ميجابايت.', 'Maximum allowed size for images is 30MB.')
-            );
-            event.target.value = '';
-            return;
-          }
-
-          this.showToast(
-            this.tA('جاري الرفع...', 'Uploading...'),
-            isVideo
-              ? this.tA('يتم الآن رفع وحفظ ملف الفيديو على السيرفر...', 'Uploading and saving video file on server...')
-              : this.tA('يتم الآن رفع وحفظ الصورة على السيرفر...', 'Uploading and saving image on server...')
-          );
-          const reader = new FileReader();
-          reader.onload = async (e) => {
-            try {
-              const base64Data = e.target.result;
-              const res = await fetch('/api/upload', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  filename: file.name,
-                  data: base64Data
-                })
-              });
-              const result = await res.json();
-              if (res.ok && result.success) {
-                if (imageKey === 'video') {
-                  if (!this.cms.video) this.cms.video = {};
-                  this.cms.video.url = result.url;
-                } else if (imageKey === 'videoPoster') {
-                  if (!this.cms.video) this.cms.video = {};
-                  this.cms.video.poster = result.url;
-                } else {
-                  if (!this.cms.images) this.cms.images = {};
-                  this.cms.images[imageKey] = result.url;
-                }
-                this.showToast(
-                  this.tA('تم الرفع بنجاح!', 'Upload Complete!'),
-                  isVideo
-                    ? this.tA(`تم حفظ ملف الفيديو وتعيين مساره: ${result.url}`, `Video saved and path set: ${result.url}`)
-                    : this.tA(`تم حفظ الصورة وتعيين مسارها: ${result.url}`, `Image saved and path set: ${result.url}`)
-                );
-              } else {
-                this.showToast(
-                  this.tA('فشل الرفع', 'Upload Failed'),
-                  result.error || this.tA('تعذر حفظ الملف على الخادم.', 'Failed to save file on server.')
-                );
-              }
-            } catch (err) {
-              console.error('Upload failed:', err);
-              this.showToast(
-                this.tA('خطأ في الاتصال', 'Connection Error'),
-                this.tA('تعذر إرسال الملف إلى الخادم.', 'Failed to send file to server.')
-              );
-            } finally {
-              event.target.value = '';
+          const isVideo = file.type.startsWith('video/') || /\.(mp4|webm|mov|ogg|m4v)$/i.test(file.name);
+          const result = await this.uploadMediaWithProgress(file);
+          if (result && result.success) {
+            if (imageKey === 'video') {
+              if (!this.cms.video) this.cms.video = {};
+              this.cms.video.url = result.url;
+            } else if (imageKey === 'videoPoster') {
+              if (!this.cms.video) this.cms.video = {};
+              this.cms.video.poster = result.url;
+            } else {
+              if (!this.cms.images) this.cms.images = {};
+              this.cms.images[imageKey] = result.url;
             }
-          };
-          reader.readAsDataURL(file);
+          }
+          event.target.value = '';
         },
 
         async saveContent() {
