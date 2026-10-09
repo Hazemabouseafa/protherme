@@ -12,10 +12,10 @@
   <!-- Favicon -->
   <link rel="icon" type="image/jpeg" href="assets/images/protherme-logo.jpg">
   
-  <!-- Google Fonts: Cairo, Plus Jakarta Sans, JetBrains Mono -->
+  <!-- Google Fonts: Cairo, Plus Jakarta Sans, Inter, JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -36,7 +36,8 @@
           fontFamily: {
             cairo: ['Cairo', 'sans-serif'],
             sans: ['Cairo', 'Plus Jakarta Sans', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace']
+            mono: ['Plus Jakarta Sans', 'Inter', 'JetBrains Mono', 'monospace'],
+            numeric: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif']
           }
         }
       }
@@ -50,11 +51,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <!-- AOS (Animate on Scroll) -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   
   <!-- Custom Styles (Embedded for 100% reliable self-contained Vercel rendering) -->
   <style>
 /* Custom Stylesheet for ProTherme Engineering Solutions */
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 :root {
   --primary-cyan: #0284c7;
@@ -84,6 +86,96 @@ html {
 
 [dir=rtl] {
   font-family: 'Cairo', 'Plus Jakarta Sans', sans-serif;
+}
+
+/* ========================================================
+   HIGH-CLARITY NUMBERS & STATS TYPOGRAPHY
+   ======================================================== */
+.font-mono, .font-numeric, .stat-num, [data-number] {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-feature-settings: 'tnum' 1, 'lnum' 1, 'cv11' 1, 'zero' 0 !important;
+  font-variant-numeric: tabular-nums lining-nums !important;
+  letter-spacing: -0.015em;
+}
+
+[dir="rtl"] .font-mono, [dir="rtl"] .font-numeric {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif !important;
+}
+
+/* ========================================================
+   PREVENT TEXT CLIPPING & HERO SECTION CUTOFF
+   ======================================================== */
+.animate-gradient-text, [class*="bg-clip-text"] {
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding-bottom: 0.22em;
+  padding-top: 0.04em;
+  display: inline-block;
+}
+
+/* ========================================================
+   SUBTLE MODERN ANIMATIONS & MICRO-INTERACTIONS
+   ======================================================== */
+#scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #0284c7, #06b6d4, #10b981);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  z-index: 9999;
+  pointer-events: none;
+  transition: transform 0.08s ease-out;
+  box-shadow: 0 1px 8px rgba(6, 182, 212, 0.45);
+}
+[dir="rtl"] #scroll-progress-bar {
+  transform-origin: 100% 50%;
+}
+
+.card-hover-elevate {
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+.card-hover-elevate:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px -6px rgba(2, 132, 199, 0.12), 0 4px 8px -2px rgba(0, 0, 0, 0.04);
+}
+
+@keyframes gentleFloatSlow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+.animate-float-slow {
+  animation: gentleFloatSlow 4.5s ease-in-out infinite;
+}
+
+/* Fast Pure-CSS Compositor-Accelerated Hero Entrance */
+@keyframes heroFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero-fade-1 {
+  animation: heroFadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.hero-fade-2 {
+  animation: heroFadeInUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+}
+.hero-fade-3 {
+  animation: heroFadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+.hero-fade-4 {
+  animation: heroFadeInUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
 }
 
 /* Custom Scrollbar for Light Theme */
@@ -1803,6 +1895,9 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
 <body x-data="prothermeApp()" class="bg-[#f8fafc] text-slate-800 min-h-screen selection:bg-cyan-500 selection:text-white overflow-x-hidden relative">
 
+  <!-- Top Scroll Progress Bar (Lightweight Ambient Animation) -->
+  <div id="scroll-progress-bar"></div>
+
   <!-- Ambient Floating Neon Gradient Blobs (Contained to prevent any horizontal scroll) -->
   <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
     <div class="gradient-blob w-[500px] h-[500px] bg-cyan-200/50 top-[-100px] right-[-100px]"></div>
@@ -1961,59 +2056,59 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
   <!-- ========================================== -->
   <!-- LIGHT ARCHITECTURAL HERO SECTION           -->
   <!-- ========================================== -->
-  <section class="relative w-full min-h-[86vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-white via-slate-50/70 to-cyan-50/20 text-slate-900 border-b border-slate-200/80 z-10">
+  <section class="relative w-full min-h-[86vh] lg:min-h-[90vh] flex items-center justify-center overflow-x-clip overflow-y-visible bg-gradient-to-b from-white via-slate-50/70 to-cyan-50/20 text-slate-900 border-b border-slate-200/80 z-10">
     
     <!-- Subtle Architectural Ambient Radial Glows (No Dark Scrims) -->
     <div class="absolute inset-0 pointer-events-none select-none overflow-hidden z-0">
-      <div class="absolute -top-32 start-1/4 w-96 h-96 bg-cyan-200/30 rounded-full blur-3xl"></div>
-      <div class="absolute top-1/3 end-10 w-96 h-96 bg-emerald-200/25 rounded-full blur-3xl"></div>
-      <div class="absolute -bottom-20 start-10 w-80 h-80 bg-teal-200/20 rounded-full blur-3xl"></div>
+      <div class="absolute -top-32 start-1/4 w-96 h-96 bg-cyan-200/30 rounded-full blur-3xl animate-float-slow"></div>
+      <div class="absolute top-1/3 end-10 w-96 h-96 bg-emerald-200/25 rounded-full blur-3xl" style="animation-delay: -2s;"></div>
+      <div class="absolute -bottom-20 start-10 w-80 h-80 bg-teal-200/20 rounded-full blur-3xl" style="animation-delay: -4s;"></div>
       <!-- Fine Architectural Grid Pattern Overlay -->
       <div class="absolute inset-0 opacity-[0.035]" style="background-image: radial-gradient(#0f172a 1px, transparent 1px); background-size: 24px 24px;"></div>
     </div>
 
     <!-- Content & Dual-View Architectural Container -->
-    <div class="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+    <div class="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10 pb-10 sm:pb-14">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
         
         <!-- Hero Text & Conversions (Minimalist, Punchy & High-Converting) -->
-        <div class="lg:col-span-7 space-y-6 text-start">
+        <div class="lg:col-span-7 space-y-4 sm:space-y-5 text-start">
           
           <!-- Authorized Partner Top Badge -->
-          <div x-show="cms.visibility.heroBadge" data-aos="fade-down" data-aos-duration="600" class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-cyan-50 border border-cyan-200/90 text-cyan-800 text-xs sm:text-sm font-bold shadow-xs">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 beacon-dot"></span>
+          <div x-show="cms.visibility.heroBadge" class="hero-fade-1 inline-flex items-center gap-2.5 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-cyan-50 border border-cyan-200/90 text-cyan-800 text-xs sm:text-sm font-bold shadow-xs max-w-full text-start flex-wrap sm:flex-nowrap leading-normal animate-float-slow">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 beacon-dot shrink-0"></span>
             <span x-text="cms.imageBadges?.heroTop?.[lang] || t('hero.badge')"></span>
           </div>
 
-          <!-- Impactful Headline -->
-          <h1 data-aos="fade-up" data-aos-duration="700" class="text-2xl sm:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tight text-slate-950 leading-[1.2] break-words">
-            <span class="block" x-text="t('hero.title_p1')"></span>
-            <span class="block bg-gradient-to-r from-cyan-700 via-teal-600 to-emerald-600 bg-clip-text text-transparent animate-gradient-text" x-text="t('hero.title_p2')"></span>
+          <!-- Impactful Headline (Tuned proportion, full descender space, non-clipping) -->
+          <h1 class="hero-fade-2 text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight text-slate-950 leading-[1.24] sm:leading-[1.28] lg:leading-[1.3] break-words">
+            <span class="block pb-1 sm:pb-1.5" x-text="t('hero.title_p1')"></span>
+            <span class="block pb-2 sm:pb-2.5 pt-0.5 bg-gradient-to-r from-cyan-700 via-teal-600 to-emerald-600 bg-clip-text text-transparent animate-gradient-text" x-text="t('hero.title_p2')"></span>
           </h1>
 
           <!-- Straight-to-the-point Subtitle -->
-          <p data-aos="fade-up" data-aos-duration="700" data-aos-delay="100" class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl font-normal" x-text="t('hero.subtitle')"></p>
+          <p class="hero-fade-3 text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl font-normal pb-0.5" x-text="t('hero.subtitle')"></p>
 
           <!-- Quick Sector Jump Pills -->
-          <div data-aos="fade-up" data-aos-duration="700" data-aos-delay="120" class="flex flex-wrap items-center gap-2.5 pt-1">
-            <button @click="activeSector = 'villas'; scrollTo('sectors')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 shadow-xs hover:border-cyan-400 transition-all hover:scale-105 active:scale-95 cursor-pointer">
+          <div class="hero-fade-3 flex flex-wrap items-center gap-2 pt-0.5">
+            <button @click="activeSector = 'villas'; scrollTo('sectors')" class="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-bold bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 shadow-xs hover:border-cyan-400 transition-all hover:scale-105 active:scale-95 cursor-pointer">
               <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
               <span x-text="t('hero.sector_villas')"></span>
             </button>
-            <button @click="activeSector = 'enterprise'; scrollTo('sectors')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 shadow-xs hover:border-emerald-500 transition-all hover:scale-105 active:scale-95 cursor-pointer">
+            <button @click="activeSector = 'enterprise'; scrollTo('sectors')" class="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-bold bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 shadow-xs hover:border-emerald-500 transition-all hover:scale-105 active:scale-95 cursor-pointer">
               <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
               <span x-text="t('hero.sector_hotels')"></span>
             </button>
           </div>
 
           <!-- Direct Frictionless CTAs (WhatsApp Instant Quote & Phone + Video Anchor) -->
-          <div data-aos="fade-up" data-aos-duration="700" data-aos-delay="150" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-2">
+          <div class="hero-fade-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3.5 pt-1">
             <a 
               x-show="cms.buttons.heroPrimary.visible"
               :href="'https://wa.me/' + cms.contacts.whatsapp.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent(lang === 'ar' ? 'مرحبا بروتيرم، أود حجز معاينة مجانية بالعينات واختبار العزل بموقعي' : 'Hello ProTherme, I would like to book a free sample survey and on-site insulation test')" 
-              target="_blank"
-              rel="noopener noreferrer"
-              class="w-full sm:w-auto justify-center px-7 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-black text-sm sm:text-base shadow-lg shadow-emerald-600/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2.5 cursor-pointer btn-shimmer">
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="w-full sm:w-auto justify-center px-5 py-3 sm:px-6 sm:py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white font-black text-sm sm:text-base shadow-lg shadow-emerald-600/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 flex items-center gap-2 cursor-pointer btn-shimmer">
               <i class="fa-brands fa-whatsapp text-lg"></i>
               <span x-text="cms.buttons.heroPrimary[lang] || t('hero.cta_primary')">احجز معاينة مجانية بالعينات الآن</span>
             </a>
@@ -2021,8 +2116,8 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
             <a 
               x-show="cms.buttons.heroCall.visible"
               :href="'tel:' + cms.contacts.phone" 
-              class="w-full sm:w-auto justify-center px-6 py-4 rounded-2xl bg-white hover:bg-slate-50 text-slate-900 border border-slate-300 hover:border-cyan-500 font-bold text-sm sm:text-base hover:scale-[1.02] active:scale-[0.98] shadow-xs transition-all duration-200 flex items-center gap-2.5">
-              <div class="w-8 h-8 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center">
+              class="w-full sm:w-auto justify-center px-5 py-3 sm:px-6 sm:py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-900 border border-slate-300 hover:border-cyan-500 font-bold text-sm sm:text-base hover:scale-[1.02] active:scale-[0.98] shadow-xs transition-all duration-200 flex items-center gap-2.5">
+              <div class="w-7 h-7 rounded-lg bg-cyan-100 text-cyan-700 flex items-center justify-center">
                 <i class="fa-solid fa-phone text-xs"></i>
               </div>
               <span x-text="cms.buttons.heroCall[lang] || ((lang === 'ar' ? 'اتصال بمهندس: ' : 'Call Engineer: ') + cms.contacts.phone)"></span>
@@ -2030,7 +2125,7 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
 
             <button 
               @click="scrollTo('thermal-proof')" 
-              class="w-full sm:w-auto justify-center px-4 py-3.5 rounded-2xl bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs sm:text-sm font-bold flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
+              class="w-full sm:w-auto justify-center px-4 py-3 sm:px-4 sm:py-3 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs sm:text-sm font-bold flex items-center gap-2 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer">
               <i class="fa-solid fa-circle-play text-cyan-600 text-base"></i>
               <span x-text="lang === 'ar' ? 'فيديو اختبار الحرارة ↓' : 'Thermal Test Video ↓'">فيديو اختبار الحرارة ↓</span>
             </button>
@@ -2040,22 +2135,22 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               <a x-show="cbtn.visible !== false"
                  :href="cbtn.target || '#contact'"
                  @click="if ((cbtn.target || '').startsWith('#')) { $event.preventDefault(); scrollTo((cbtn.target || '').replace('#', '')); }"
-                 class="w-full sm:w-auto justify-center px-6 py-4 rounded-2xl bg-white hover:bg-slate-50 text-slate-900 border border-slate-300 hover:border-cyan-500 font-bold text-sm sm:text-base hover:scale-[1.02] active:scale-[0.98] shadow-xs transition-all duration-200 flex items-center gap-2.5">
+                 class="w-full sm:w-auto justify-center px-5 py-3 sm:px-6 sm:py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-900 border border-slate-300 hover:border-cyan-500 font-bold text-sm sm:text-base hover:scale-[1.02] active:scale-[0.98] shadow-xs transition-all duration-200 flex items-center gap-2">
                 <i class="fa-solid fa-arrow-up-right-from-square text-cyan-600"></i>
                 <span x-text="cbtn.title ? (cbtn.title[lang] || cbtn.title.ar || '') : ''"></span>
               </a>
             </template>
           </div>
 
-          <!-- Core Trust & Performance Stats (Light Cards) -->
-          <div x-show="cms.visibility.heroStats" data-aos="fade-up" data-aos-duration="700" data-aos-delay="200" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-6 border-t border-slate-200">
+          <!-- Core Trust & Performance Stats (High Clarity Numbers + Non-Clipping Cards) -->
+          <div x-show="cms.visibility.heroStats" class="hero-fade-4 grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5 pt-4 sm:pt-5 border-t border-slate-200">
             <template x-for="(stat, sIdx) in getHeroStatsList()" :key="'hero-stat-' + sIdx">
-              <div class="p-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-xs transition-colors"
+              <div class="p-3 sm:p-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-md card-hover-elevate cursor-default"
                    :class="sIdx % 2 === 0 ? 'hover:border-cyan-400' : 'hover:border-emerald-400'">
-                <div class="text-2xl sm:text-3xl font-black font-mono"
+                <div class="text-2xl sm:text-3xl lg:text-3xl font-black font-mono tracking-tight leading-none mb-1.5"
                      :class="sIdx % 2 === 0 ? 'text-cyan-700' : 'text-emerald-700'"
                      x-text="stat.num"></div>
-                <div class="text-xs text-slate-600 font-semibold mt-1"
+                <div class="text-[11px] sm:text-xs text-slate-600 font-semibold leading-tight pb-0.5"
                      x-text="stat.label ? (stat.label[lang] || stat.label.ar || '') : (stat['label_' + lang] || '')"></div>
               </div>
             </template>
@@ -2064,9 +2159,9 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         </div>
 
         <!-- Hero Visual Showcase Card (Real Building Split Visual + Interactive 3D) -->
-        <div class="lg:col-span-5 relative" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+        <div class="lg:col-span-5 relative hero-fade-2">
           
-          <div class="relative rounded-3xl p-3 sm:p-4 bg-white border border-slate-200/90 shadow-xl shadow-slate-200/60">
+          <div class="relative rounded-3xl p-3 sm:p-4 bg-white border border-slate-200/90 shadow-xl shadow-slate-200/60 card-hover-elevate">
             
             <!-- Dual-View Mode Switcher Tab Bar -->
             <div class="flex items-center justify-between pb-3 mb-3 border-b border-slate-100">
@@ -2111,19 +2206,19 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
               <!-- Right Side: Before Badge (Hot side of reversed photo - RTL natural reading) -->
               <div class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-orange-400 text-[11px] font-bold text-orange-800 flex items-center gap-1.5 shadow-md">
                 <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
-                <span x-text="lang === 'ar' ? 'قبل: لهيب ووهج 41°C' : 'Before: 41°C Heat & Glare'">قبل: لهيب ووهج 41°C</span>
+                <span class="font-mono font-bold" x-text="lang === 'ar' ? 'قبل: لهيب ووهج 41°C' : 'Before: 41°C Heat & Glare'">قبل: لهيب ووهج 41°C</span>
               </div>
 
               <!-- Left Side: After Badge (Cool side of reversed photo - RTL natural reading) -->
               <div class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-cyan-400 text-[11px] font-bold text-cyan-800 flex items-center gap-1.5 shadow-md">
                 <span class="w-2 h-2 rounded-full bg-cyan-500 beacon-dot"></span>
-                <span x-text="lang === 'ar' ? 'بعد: راحة وبرودة 25°C' : 'After: 25°C Cool Comfort'">بعد: راحة وبرودة 25°C</span>
+                <span class="font-mono font-bold" x-text="lang === 'ar' ? 'بعد: راحة وبرودة 25°C' : 'After: 25°C Cool Comfort'">بعد: راحة وبرودة 25°C</span>
               </div>
 
               <!-- Bottom Bar: Value Statement (Light Architectural Aesthetic) -->
-              <div class="absolute bottom-3 inset-x-3 p-2.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 text-center shadow-md">
-                <p class="text-[11px] sm:text-xs font-bold text-slate-800 flex items-center justify-center gap-2">
-                  <i class="fa-solid fa-circle-check text-emerald-600 text-xs"></i>
+              <div class="absolute bottom-2.5 sm:bottom-3 inset-x-2.5 sm:inset-x-3 p-2 sm:p-2.5 rounded-xl bg-white/95 backdrop-blur-md border border-slate-200 text-center shadow-md">
+                <p class="text-[11px] sm:text-xs font-bold text-slate-800 leading-normal flex items-center justify-center gap-1.5 sm:gap-2">
+                  <i class="fa-solid fa-circle-check text-emerald-600 text-xs shrink-0"></i>
                   <span x-text="lang === 'ar' ? 'عزل حراري حقيقي يصل إلى 88% مع الحفاظ الكامل على الرؤية النقية 100%' : 'True heat insulation up to 88% while preserving 100% crystal optical clarity'">عزل حراري حقيقي يصل إلى 88% مع الحفاظ الكامل على الرؤية النقية 100%</span>
                 </p>
               </div>
@@ -3787,8 +3882,47 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
     </div>
   </div>
 
-  <!-- AOS Script Init -->
+  <!-- AOS Script Init & Smooth Animation Enhancements -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+  (function() {
+    function initAnimations() {
+      // 1. Initialize AOS Animate On Scroll
+      if (typeof AOS !== 'undefined') {
+        AOS.init({
+          once: true,
+          duration: 650,
+          offset: 40,
+          easing: 'ease-out-cubic',
+          delay: 40
+        });
+      }
+
+      // 2. Top Scroll Progress Bar
+      var progressBar = document.getElementById('scroll-progress-bar');
+      if (progressBar) {
+        var onScroll = function() {
+          var total = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          var pct = total > 0 ? (window.pageYOffset || document.documentElement.scrollTop) / total : 0;
+          progressBar.style.transform = 'scaleX(' + Math.min(Math.max(pct, 0), 1) + ')';
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAnimations);
+    } else {
+      initAnimations();
+    }
+    window.addEventListener('load', function() {
+      if (typeof AOS !== 'undefined') {
+        AOS.refresh();
+      }
+    });
+  })();
+  </script>
 
 
   <!-- ========================================== -->
