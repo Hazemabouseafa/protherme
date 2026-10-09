@@ -1,49 +1,95 @@
 const { getUpload } = require('../lib/db');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
+
+const TMP_UPLOAD_DIR = path.join(os.tmpdir(), 'protherme_uploads');
+
+const mimeTypes = {
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.gif': 'image/gif',
+  '.svg': 'image/svg+xml',
+  '.ico': 'image/x-icon',
+  '.mp4': 'video/mp4',
+  '.webm': 'video/webm',
+  '.mov': 'video/quicktime',
+  '.ogg': 'video/ogg'
+};
 
 module.exports = async function handler(req, res) {
   const { id } = req.query;
   if (!id) {
-    return res.status(400).send('Missing image id');
+    return res.status(400).send('Missing media id');
   }
 
   try {
-    // 1. Try Neon Database first
+    // 1. Try getUpload (checks Neon DB, /tmp buffer, and local assets)
     const record = await getUpload(id);
     if (record && record.data) {
       let rawBase64 = record.data;
-      let contentType = 'image/jpeg';
-      const matches = record.data.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-      if (matches && matches.length === 3) {
-        contentType = matches[1];
-        rawBase64 = matches[2];
+      const ext = path.extname(id).toLowerCase();
+      let contentType = mimeTypes[ext] || 'image/jpeg';
+
+      const commaIdx = record.data.indexOf('base64,');
+      if (commaIdx !== -1) {
+        const header = record.data.substring(0, commaIdx);
+        const m = header.match(/^data:([^;]+)/);
+        if (m && !mimeTypes[ext]) contentType = m[1];
+        rawBase64 = record.data.substring(commaIdx + 7);
       }
       const buffer = Buffer.from(rawBase64, 'base64');
+
+      // Video HTTP Range (206 Partial Content) Streaming Support
+      const range = req.headers.range;
+      if (range) {
+        const parts = range.replace(/bytes=/, '').split('-');
+        const start = parseInt(parts[0], 10);
+        const end = parts[1] ? parseInt(parts[1], 10) : buffer.length - 1;
+        const chunkSize = (end - start) + 1;
+        res.writeHead(206, {
+          'Content-Range': `bytes ${start}-${end}/${buffer.length}`,
+          'Accept-Ranges': 'bytes',
+          'Content-Length': chunkSize,
+          'Content-Type': contentType,
+          'Cache-Control': 'public, max-age=31536000, immutable'
+        });
+        return res.end(buffer.subarray(start, end + 1));
+      }
+
       res.setHeader('Content-Type', contentType);
+      res.setHeader('Accept-Ranges', 'bytes');
       res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
       return res.status(200).send(buffer);
     }
 
-    // 2. Try Local File fallback
-    const localPath = path.join(__dirname, '..', 'assets', 'images', id);
-    if (fs.existsSync(localPath)) {
+    // 2. Try /tmp file buffer
+    const tmpPath = path.join(TMP_UPLOAD_DIR, id);
+    if (fs.existsSync(tmpPath)) {
       const ext = path.extname(id).toLowerCase();
-      const mimeMap = {
-        '.jpg': 'image/jpeg',
-        '.jpeg': 'image/jpeg',
-        '.png': 'image/png',
-        '.webp': 'image/webp',
-        '.gif': 'image/gif',
-        '.svg': 'image/svg+xml'
-      };
-      res.setHeader('Content-Type', mimeMap[ext] || 'application/octet-stream');
-      return res.status(200).send(fs.readFileSync(localPath));
+      const contentType = mimeTypes[ext] || 'application/octet-stream';
+      res.setHeader('Content-Type', contentType);
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      return res.status(200).send(fs.readFileSync(tmpPath));
     }
 
-    return res.status(404).send('Image not found');
+    // 3. Try Local Assets fallback
+    for (const folder of ['images', 'videos']) {
+      const localPath = path.join(process.cwd(), 'assets', folder, id);
+      if (fs.existsSync(localPath)) {
+        const ext = path.extname(id).toLowerCase();
+        const contentType = mimeTypes[ext] || 'application/octet-stream';
+        res.setHeader('Content-Type', contentType);
+        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        return res.status(200).send(fs.readFileSync(localPath));
+      }
+    }
+
+    return res.status(404).send('Media not found');
   } catch (err) {
     console.error('API /api/image error:', err);
-    return res.status(500).send('Error loading image');
+    return res.status(500).send('Error loading media');
   }
 };

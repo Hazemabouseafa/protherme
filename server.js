@@ -1,10 +1,12 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const db = require('./lib/db');
 
 const PORT = process.env.PORT || 8080;
 const BASE_DIR = __dirname;
+const TMP_UPLOAD_DIR = path.join(os.tmpdir(), 'protherme_uploads');
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -130,37 +132,117 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // --- API: GET /api/image (Serve DB-stored image) ---
+  // --- API: GET /api/image (Serve DB, /tmp, or asset stored media) ---
   if ((subPath === '/api/image' || urlPath === '/api/image') && req.method === 'GET') {
     const urlObj = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const id = urlObj.searchParams.get('id');
     if (!id) {
       res.writeHead(400, { 'Content-Type': 'text/plain' });
-      res.end('Missing image id');
+      res.end('Missing media id');
       return;
     }
-    const record = await db.getUpload(id);
-    if (record && record.data) {
-      let rawBase64 = record.data;
-      let contentType = 'image/jpeg';
-      const commaIdx = record.data.indexOf('base64,');
-      if (commaIdx !== -1) {
-        const header = record.data.substring(0, commaIdx);
-        const m = header.match(/^data:([^;]+)/);
-        if (m) contentType = m[1];
-        rawBase64 = record.data.substring(commaIdx + 7);
+
+    try {
+      const record = await db.getUpload(id);
+      if (record && record.data) {
+        let rawBase64 = record.data;
+        const ext = path.extname(id).toLowerCase();
+        let contentType = mimeTypes[ext] || 'image/jpeg';
+        const commaIdx = record.data.indexOf('base64,');
+        if (commaIdx !== -1) {
+          const header = record.data.substring(0, commaIdx);
+          const m = header.match(/^data:([^;]+)/);
+          if (m && !mimeTypes[ext]) contentType = m[1];
+          rawBase64 = record.data.substring(commaIdx + 7);
+        }
+        const buffer = Buffer.from(rawBase64, 'base64');
+
+        const range = req.headers.range;
+        if (range) {
+          const parts = range.replace(/bytes=/, '').split('-');
+          const start = parseInt(parts[0], 10);
+          const end = parts[1] ? parseInt(parts[1], 10) : buffer.length - 1;
+          const chunkSize = (end - start) + 1;
+          res.writeHead(206, {
+            'Content-Range': `bytes ${start}-${end}/${buffer.length}`,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunkSize,
+            'Content-Type': contentType,
+            'Cache-Control': 'public, max-age=31536000, immutable'
+          });
+          res.end(buffer.subarray(start, end + 1));
+          return;
+        }
+
+        res.writeHead(200, {
+          'Content-Type': contentType,
+          'Accept-Ranges': 'bytes',
+          'Content-Length': buffer.length,
+          'Cache-Control': 'public, max-age=31536000, immutable'
+        });
+        res.end(buffer);
+        return;
       }
-      const buffer = Buffer.from(rawBase64, 'base64');
-      res.writeHead(200, {
-        'Content-Type': contentType,
-        'Cache-Control': 'public, max-age=31536000'
-      });
-      res.end(buffer);
+
+      // Check /tmp file buffer
+      const tmpPath = path.join(TMP_UPLOAD_DIR, id);
+      if (fs.existsSync(tmpPath)) {
+        const ext = path.extname(id).toLowerCase();
+        const contentType = mimeTypes[ext] || 'application/octet-stream';
+        const buf = fs.readFileSync(tmpPath);
+        const range = req.headers.range;
+        if (range) {
+          const parts = range.replace(/bytes=/, '').split('-');
+          const start = parseInt(parts[0], 10);
+          const end = parts[1] ? parseInt(parts[1], 10) : buf.length - 1;
+          const chunkSize = (end - start) + 1;
+          res.writeHead(206, {
+            'Content-Range': `bytes ${start}-${end}/${buf.length}`,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunkSize,
+            'Content-Type': contentType,
+            'Cache-Control': 'public, max-age=31536000, immutable'
+          });
+          res.end(buf.subarray(start, end + 1));
+          return;
+        }
+        res.writeHead(200, {
+          'Content-Type': contentType,
+          'Accept-Ranges': 'bytes',
+          'Content-Length': buf.length,
+          'Cache-Control': 'public, max-age=31536000, immutable'
+        });
+        res.end(buf);
+        return;
+      }
+
+      // Check local assets fallback
+      for (const folder of ['images', 'videos']) {
+        const localPath = path.join(BASE_DIR, 'assets', folder, id);
+        if (fs.existsSync(localPath)) {
+          const ext = path.extname(id).toLowerCase();
+          const contentType = mimeTypes[ext] || 'application/octet-stream';
+          const buf = fs.readFileSync(localPath);
+          res.writeHead(200, {
+            'Content-Type': contentType,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': buf.length,
+            'Cache-Control': 'public, max-age=31536000, immutable'
+          });
+          res.end(buf);
+          return;
+        }
+      }
+
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      res.end('Media not found');
+      return;
+    } catch (err) {
+      console.error('API /api/image error:', err);
+      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.end('Error loading media');
       return;
     }
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
-    res.end('Media not found');
-    return;
   }
 
   // --- API: /api/video (Video Stream) ---
@@ -352,6 +434,53 @@ const server = http.createServer(async (req, res) => {
       res.end(content);
     });
     return;
+  }
+
+  // Handle direct upload asset paths that might only exist in DB or /tmp
+  const uploadMatch = subPath.match(/^\/assets\/(?:images|videos)\/(upload-[^/]+)$/);
+  if (uploadMatch && req.method === 'GET') {
+    const uploadId = uploadMatch[1];
+    const directFilePath = path.join(BASE_DIR, subPath);
+    if (!fs.existsSync(directFilePath)) {
+      const record = await db.getUpload(uploadId);
+      if (record && record.data) {
+        let rawBase64 = record.data;
+        const ext = path.extname(uploadId).toLowerCase();
+        let contentType = mimeTypes[ext] || 'image/jpeg';
+        const commaIdx = record.data.indexOf('base64,');
+        if (commaIdx !== -1) {
+          const header = record.data.substring(0, commaIdx);
+          const m = header.match(/^data:([^;]+)/);
+          if (m && !mimeTypes[ext]) contentType = m[1];
+          rawBase64 = record.data.substring(commaIdx + 7);
+        }
+        const buffer = Buffer.from(rawBase64, 'base64');
+        const range = req.headers.range;
+        if (range) {
+          const parts = range.replace(/bytes=/, '').split('-');
+          const start = parseInt(parts[0], 10);
+          const end = parts[1] ? parseInt(parts[1], 10) : buffer.length - 1;
+          const chunkSize = (end - start) + 1;
+          res.writeHead(206, {
+            'Content-Range': `bytes ${start}-${end}/${buffer.length}`,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunkSize,
+            'Content-Type': contentType,
+            'Cache-Control': 'public, max-age=31536000, immutable'
+          });
+          res.end(buffer.subarray(start, end + 1));
+          return;
+        }
+        res.writeHead(200, {
+          'Content-Type': contentType,
+          'Accept-Ranges': 'bytes',
+          'Content-Length': buffer.length,
+          'Cache-Control': 'public, max-age=31536000, immutable'
+        });
+        res.end(buffer);
+        return;
+      }
+    }
   }
 
   // Static File Serving
