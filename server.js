@@ -117,12 +117,18 @@ const server = http.createServer(async (req, res) => {
           return;
         }
 
-        const result = await db.saveUpload(parsed.filename, parsed.data);
+        let result;
+        if (parsed.isChunk) {
+          result = await db.saveUploadChunk(parsed);
+        } else {
+          result = await db.saveUpload(parsed.filename, parsed.data);
+        }
+
         res.writeHead(200, {
           'Content-Type': 'application/json; charset=utf-8',
           'Access-Control-Allow-Origin': '*'
         });
-        res.end(JSON.stringify({ success: true, url: result.url, filename: result.filename }));
+        res.end(JSON.stringify(result));
       } catch (err) {
         console.error('Upload API processing error:', err);
         res.writeHead(500, { 'Content-Type': 'application/json' });

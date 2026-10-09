@@ -1,4 +1,4 @@
-const { saveUpload } = require('../lib/db');
+const { saveUpload, saveUploadChunk } = require('../lib/db');
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -19,9 +19,15 @@ module.exports = async function handler(req, res) {
         return res.status(400).json({ error: 'Missing data or filename' });
       }
 
-      const result = await saveUpload(body.filename, body.data);
+      let result;
+      if (body.isChunk) {
+        result = await saveUploadChunk(body);
+      } else {
+        result = await saveUpload(body.filename, body.data);
+      }
+
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
-      return res.status(200).json({ success: true, url: result.url, filename: result.filename });
+      return res.status(200).json(result);
     } catch (err) {
       console.error('API POST /api/upload error:', err);
       return res.status(500).json({ error: 'Failed to process uploaded image' });

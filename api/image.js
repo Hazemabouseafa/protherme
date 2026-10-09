@@ -1,4 +1,4 @@
-const { getUpload } = require('../lib/db');
+const { getUpload, getUploadChunk } = require('../lib/db');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -28,6 +28,41 @@ module.exports = async function handler(req, res) {
   try {
     // 1. Try getUpload (checks Neon DB, /tmp buffer, and local assets)
     const record = await getUpload(id);
+
+    // 1.a If stored as chunked stream in Neon
+    if (record && record.data && record.data.startsWith('chunked:')) {
+      const ext = path.extname(id).toLowerCase();
+      const contentType = mimeTypes[ext] || 'video/mp4';
+      const range = req.headers.range;
+      const CHUNK_SIZE = 2 * 1024 * 1024;
+      let chunkIdx = 0;
+      let startOffset = 0;
+
+      if (range) {
+        const parts = range.replace(/bytes=/, '').split('-');
+        const start = parseInt(parts[0], 10) || 0;
+        chunkIdx = Math.floor(start / CHUNK_SIZE);
+        startOffset = start % CHUNK_SIZE;
+      }
+
+      const chunkData = await getUploadChunk(id, chunkIdx);
+      if (chunkData) {
+        let rawBase64 = chunkData;
+        const commaIdx = chunkData.indexOf('base64,');
+        if (commaIdx !== -1) rawBase64 = chunkData.substring(commaIdx + 7);
+        const buf = Buffer.from(rawBase64, 'base64');
+        const slice = buf.subarray(startOffset);
+
+        res.writeHead(206, {
+          'Content-Range': `bytes ${startOffset}-${startOffset + slice.length - 1}/${buf.length}`,
+          'Accept-Ranges': 'bytes',
+          'Content-Length': slice.length,
+          'Content-Type': contentType,
+          'Cache-Control': 'public, max-age=31536000, immutable'
+        });
+        return res.end(slice);
+      }
+    }
     if (record && record.data) {
       let rawBase64 = record.data;
       const ext = path.extname(id).toLowerCase();
