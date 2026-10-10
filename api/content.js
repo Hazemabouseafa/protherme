@@ -36,11 +36,13 @@ module.exports = async function handler(req, res) {
     try {
       let body = req.body;
       if (typeof body === 'string') {
-        body = JSON.parse(body);
+        try { body = JSON.parse(body); } catch (e) {}
       }
-      if (!body) {
-        return res.status(400).json({ error: 'Empty body' });
-      }
+      return res.status(200).json({
+        type: typeof body,
+        keys: body ? Object.keys(body) : [],
+        action: body ? body.action : null
+      });
       if (body.action === 'clean_maintenance') {
         const { getSql } = require('../lib/db');
         const sql = getSql();
