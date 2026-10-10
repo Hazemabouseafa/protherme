@@ -191,12 +191,13 @@ const server = http.createServer(async (req, res) => {
         const totalChunks = parseInt(parts[1], 10) || 1;
         const CHUNK_SIZE = 2 * 1024 * 1024;
         let totalSize = parseInt(parts[2], 10) || 0;
-        if (!totalSize) totalSize = totalChunks * CHUNK_SIZE;
 
-        const tmpPath = path.join(TMP_UPLOAD_DIR, id);
-        if (fs.existsSync(tmpPath) && fs.statSync(tmpPath).size >= totalSize) {
-          return streamFileWithRange(req, res, tmpPath, contentType);
+        const assembledFile = await db.assembleUpload(id, totalChunks, totalSize);
+        if (assembledFile && fs.existsSync(assembledFile)) {
+          return streamFileWithRange(req, res, assembledFile, contentType);
         }
+
+        if (!totalSize) totalSize = totalChunks * CHUNK_SIZE;
 
         const range = req.headers.range;
         let start = 0;

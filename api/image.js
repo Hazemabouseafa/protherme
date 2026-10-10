@@ -1,4 +1,4 @@
-const { getUpload, getUploadChunk } = require('../lib/db');
+const { getUpload, getUploadChunk, assembleUpload } = require('../lib/db');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
@@ -25,41 +25,40 @@ function streamFileWithRange(req, res, filePath, contentType) {
   const fileSize = stat.size;
   const range = req.headers.range;
 
+  res.setHeader('Accept-Ranges', 'bytes');
+  res.setHeader('Content-Type', contentType);
+  res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+
   if (range) {
     const parts = range.replace(/bytes=/, '').split('-');
-    const start = parseInt(parts[0], 10);
-    const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
-    const chunkSize = (end - start) + 1;
+    let start = parseInt(parts[0], 10);
+    let end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
 
+    // Handle suffix range (e.g. bytes=-500)
+    if (isNaN(start)) {
+      start = fileSize - end;
+      end = fileSize - 1;
+    }
+    if (start < 0) start = 0;
+    if (end >= fileSize) end = fileSize - 1;
+
+    if (start > end || start >= fileSize) {
+      res.writeHead(416, {
+        'Content-Range': `bytes */${fileSize}`
+      });
+      return res.end();
+    }
+
+    const chunkSize = (end - start) + 1;
     const stream = fs.createReadStream(filePath, { start, end });
     res.writeHead(206, {
       'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-      'Accept-Ranges': 'bytes',
-      'Content-Length': chunkSize,
-      'Content-Type': contentType,
-      'Cache-Control': 'public, max-age=31536000, immutable'
+      'Content-Length': chunkSize
     });
     return stream.pipe(res);
   } else {
-    if (fileSize > 3.5 * 1024 * 1024) {
-      const end = Math.min(fileSize - 1, (2 * 1024 * 1024) - 1);
-      const chunkSize = end + 1;
-      const stream = fs.createReadStream(filePath, { start: 0, end });
-      res.writeHead(206, {
-        'Content-Range': `bytes 0-${end}/${fileSize}`,
-        'Accept-Ranges': 'bytes',
-        'Content-Length': chunkSize,
-        'Content-Type': contentType,
-        'Cache-Control': 'public, max-age=31536000, immutable'
-      });
-      return stream.pipe(res);
-    }
-
     res.writeHead(200, {
-      'Content-Length': fileSize,
-      'Content-Type': contentType,
-      'Accept-Ranges': 'bytes',
-      'Cache-Control': 'public, max-age=31536000, immutable'
+      'Content-Length': fileSize
     });
     return fs.createReadStream(filePath).pipe(res);
   }
@@ -91,14 +90,16 @@ module.exports = async function handler(req, res) {
       const totalChunks = parseInt(parts[1], 10) || 1;
       const CHUNK_SIZE = 2 * 1024 * 1024;
       let totalSize = parseInt(parts[2], 10) || 0;
-      if (!totalSize) {
-        totalSize = totalChunks * CHUNK_SIZE;
+
+      // Primary strategy: Reassemble full continuous file into local container /tmp
+      const assembledFile = await assembleUpload(id, totalChunks, totalSize);
+      if (assembledFile && fs.existsSync(assembledFile)) {
+        return streamFileWithRange(req, res, assembledFile, contentType);
       }
 
-      // Check /tmp first for complete local assembly
-      const tmpPath = path.join(TMP_UPLOAD_DIR, id);
-      if (fs.existsSync(tmpPath) && fs.statSync(tmpPath).size >= totalSize) {
-        return streamFileWithRange(req, res, tmpPath, contentType);
+      // Secondary fallback: Direct chunk slicing from Neon DB if assembly in progress
+      if (!totalSize) {
+        totalSize = totalChunks * CHUNK_SIZE;
       }
 
       const range = req.headers.range;

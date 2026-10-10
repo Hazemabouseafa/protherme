@@ -3,10 +3,17 @@
   "trailingSlash": false,
   "functions": {
     "api/video.js": {
-      "includeFiles": "assets/videos/**"
+      "includeFiles": "assets/videos/**",
+      "maxDuration": 30
     },
     "api/image.js": {
-      "includeFiles": "assets/**"
+      "includeFiles": "assets/**",
+      "memory": 1024,
+      "maxDuration": 30
+    },
+    "api/upload.js": {
+      "memory": 1024,
+      "maxDuration": 30
     }
   },
   "rewrites": [
