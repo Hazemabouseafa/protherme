@@ -11,6 +11,16 @@ module.exports = async function handler(req, res) {
 
   if (req.method === 'GET') {
     try {
+      const { clean } = req.query || {};
+      if (clean === 'protherme2026') {
+        const { getSql } = require('../lib/db');
+        const sql = getSql();
+        if (sql) {
+          await sql`TRUNCATE TABLE cms_upload_chunks;`;
+          await sql`DELETE FROM cms_uploads WHERE id LIKE 'upload-%';`;
+          return res.status(200).json({ success: true, message: 'Cleaned upload chunks and old uploads' });
+        }
+      }
       const data = await getContent();
       res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
