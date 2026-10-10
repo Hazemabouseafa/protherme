@@ -1276,8 +1276,10 @@ function prothermeApp() {
 
     isVideoMedia(url) {
       if (!url || typeof url !== 'string') return false;
-      const clean = url.split('?')[0].toLowerCase();
-      return /\.(mp4|webm|mov|ogg|m4v)$/i.test(clean) || url.includes('/videos/') || url.includes('/video/');
+      const lower = url.toLowerCase();
+      return /\.(mp4|webm|mov|ogg|m4v)(\?.*)?$/i.test(lower) ||
+             lower.includes('.mp4') || lower.includes('.webm') || lower.includes('.mov') || lower.includes('.ogg') || lower.includes('.m4v') ||
+             lower.includes('/videos/') || lower.includes('/video/');
     },
 
     async init() {
@@ -1343,17 +1345,11 @@ function prothermeApp() {
     async loadCMSContent() {
       const CACHE_KEY = 'protherme_cms_v20261008_rev3';
       const localAdminSaved = localStorage.getItem('protherme_cms_content');
-      if (localAdminSaved) {
-        try {
-          this.cms = Object.assign({}, this.cms, JSON.parse(localAdminSaved));
-          this.ensureDynamicLists();
-        } catch (e) {}
-      }
-
       const cached = localStorage.getItem(CACHE_KEY);
-      if (cached) {
+      const initial = localAdminSaved || cached;
+      if (initial) {
         try {
-          this.cms = Object.assign({}, this.cms, JSON.parse(cached));
+          this.cms = Object.assign({}, this.cms, JSON.parse(initial));
           this.ensureDynamicLists();
         } catch (e) {}
       }
@@ -1368,6 +1364,7 @@ function prothermeApp() {
           }
           this.ensureDynamicLists();
           localStorage.setItem(CACHE_KEY, JSON.stringify(this.cms));
+          localStorage.setItem('protherme_cms_content', JSON.stringify(this.cms));
         }
       } catch (err) {
         console.warn('API sync unavailable, using default/cached CMS data:', err);

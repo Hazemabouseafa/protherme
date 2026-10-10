@@ -529,44 +529,10 @@ const server = http.createServer(async (req, res) => {
     const uploadId = uploadMatch[1];
     const directFilePath = path.join(BASE_DIR, subPath);
     if (!fs.existsSync(directFilePath)) {
-      const record = await db.getUpload(uploadId);
-      if (record && record.data) {
-        let rawBase64 = record.data;
-        const ext = path.extname(uploadId).toLowerCase();
-        let contentType = mimeTypes[ext] || 'image/jpeg';
-        const commaIdx = record.data.indexOf('base64,');
-        if (commaIdx !== -1) {
-          const header = record.data.substring(0, commaIdx);
-          const m = header.match(/^data:([^;]+)/);
-          if (m && !mimeTypes[ext]) contentType = m[1];
-          rawBase64 = record.data.substring(commaIdx + 7);
-        }
-        const buffer = Buffer.from(rawBase64, 'base64');
-        const range = req.headers.range;
-        if (range) {
-          const parts = range.replace(/bytes=/, '').split('-');
-          const start = parseInt(parts[0], 10);
-          const end = parts[1] ? parseInt(parts[1], 10) : buffer.length - 1;
-          const chunkSize = (end - start) + 1;
-          res.writeHead(206, {
-            'Content-Range': `bytes ${start}-${end}/${buffer.length}`,
-            'Accept-Ranges': 'bytes',
-            'Content-Length': chunkSize,
-            'Content-Type': contentType,
-            'Cache-Control': 'public, max-age=31536000, immutable'
-          });
-          res.end(buffer.subarray(start, end + 1));
-          return;
-        }
-        res.writeHead(200, {
-          'Content-Type': contentType,
-          'Accept-Ranges': 'bytes',
-          'Content-Length': buffer.length,
-          'Cache-Control': 'public, max-age=31536000, immutable'
-        });
-        res.end(buffer);
-        return;
-      }
+      req.query = req.query || {};
+      req.query.id = uploadId;
+      const imageApi = require('./api/image');
+      return imageApi(req, res);
     }
   }
 
@@ -586,7 +552,7 @@ const server = http.createServer(async (req, res) => {
   const contentType = mimeTypes[ext] || 'application/octet-stream';
 
   // Video Streaming with HTTP Range (206) Support
-  if ((ext === '.mp4' || ext === '.webm' || ext === '.mov' || ext === '.ogg') && fs.existsSync(filePath)) {
+  if ((ext === '.mp4' || ext === '.webm' || ext === '.mov' || ext === '.ogg' || ext === '.m4v') && fs.existsSync(filePath)) {
     const stat = fs.statSync(filePath);
     const fileSize = stat.size;
     const range = req.headers.range;

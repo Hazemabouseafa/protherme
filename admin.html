@@ -2829,26 +2829,45 @@
                 </div>
 
                 <!-- Preview Thumbnail: Image or Video -->
-                <div x-show="newBlockForm.image" class="pt-2 flex items-center gap-3">
-                  <div class="relative w-fit">
-                    <template x-if="newBlockForm.image && (isVideoMedia(newBlockForm.image) || newBlockForm.mediaType === 'video' || newBlockForm.video)">
-                      <video :src="newBlockForm.video || newBlockForm.image" controls playsinline class="h-28 w-auto rounded-xl border border-slate-300 object-cover shadow-xs"></video>
-                    </template>
-                    <template x-if="newBlockForm.image && !(isVideoMedia(newBlockForm.image) || newBlockForm.mediaType === 'video' || newBlockForm.video)">
-                      <img :src="newBlockForm.image" alt="Preview" class="h-20 w-auto rounded-xl border border-slate-300 object-cover shadow-xs">
-                    </template>
+                <div x-show="newBlockForm.image" class="pt-2 space-y-3">
+                  <div class="flex items-center gap-3">
+                    <div class="relative w-fit">
+                      <template x-if="newBlockForm.image && (isVideoMedia(newBlockForm.image) || newBlockForm.mediaType === 'video' || newBlockForm.video)">
+                        <video :src="newBlockForm.video || newBlockForm.image" controls playsinline preload="metadata" class="h-32 w-auto max-w-xs rounded-xl border border-slate-300 object-cover shadow-xs bg-black"></video>
+                      </template>
+                      <template x-if="newBlockForm.image && !(isVideoMedia(newBlockForm.image) || newBlockForm.mediaType === 'video' || newBlockForm.video)">
+                        <img :src="newBlockForm.image" alt="Preview" class="h-20 w-auto rounded-xl border border-slate-300 object-cover shadow-xs">
+                      </template>
+                      <button 
+                        type="button" 
+                        @click="newBlockForm.image = ''; newBlockForm.video = ''; newBlockForm.mediaType = 'image'" 
+                        class="absolute -top-2 -end-2 w-6 h-6 rounded-full bg-rose-600 text-white text-xs flex items-center justify-center hover:bg-rose-700 transition" 
+                        title="إزالة الوسائط">
+                        <i class="fa-solid fa-xmark"></i>
+                      </button>
+                    </div>
+                    <span class="text-xs text-emerald-700 font-bold flex items-center gap-1.5">
+                      <i class="fa-solid fa-circle-check text-sm"></i>
+                      <span x-text="tA('جاهزة للعرض بالموقع', 'Ready to display')">جاهزة للعرض بالموقع</span>
+                    </span>
+                  </div>
+
+                  <!-- Quick Add & Save Action Bar -->
+                  <div class="p-3 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-cyan-500/10 border border-emerald-500/30 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-2">
+                      <div class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] shrink-0">
+                        <i class="fa-solid fa-check"></i>
+                      </div>
+                      <div class="text-[11px] font-bold text-slate-800" x-text="tA('تم رفع الوسائط بنجاح! يمكنك إضافة هذا البلوك وحفظه فورياً في الموقع:', 'Media uploaded successfully! You can add and save this block directly:')">تم رفع الوسائط بنجاح! يمكنك إضافة هذا البلوك وحفظه فورياً في الموقع:</div>
+                    </div>
                     <button 
                       type="button" 
-                      @click="newBlockForm.image = ''; newBlockForm.video = ''; newBlockForm.mediaType = 'image'" 
-                      class="absolute -top-2 -end-2 w-6 h-6 rounded-full bg-rose-600 text-white text-xs flex items-center justify-center hover:bg-rose-700 transition" 
-                      title="إزالة الوسائط">
-                      <i class="fa-solid fa-xmark"></i>
+                      @click="createCompleteBlock(true)" 
+                      class="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs font-bold shadow-md shadow-emerald-600/20 flex items-center gap-1.5 transition active:scale-95 shrink-0">
+                      <i class="fa-solid fa-plus-circle"></i>
+                      <span x-text="tA('إضافة وحفظ البلوك للموقع فورياً', 'Add & Save Block Now')">إضافة وحفظ البلوك للموقع فورياً</span>
                     </button>
                   </div>
-                  <span class="text-xs text-emerald-700 font-bold flex items-center gap-1">
-                    <i class="fa-solid fa-circle-check"></i>
-                    <span x-text="tA('جاهزة للعرض بالموقع', 'Ready to display')">جاهزة للعرض بالموقع</span>
-                  </span>
                 </div>
               </div>
 
@@ -3456,8 +3475,10 @@
         },
         isVideoMedia(url) {
           if (!url || typeof url !== 'string') return false;
-          const clean = url.split('?')[0].toLowerCase();
-          return /\.(mp4|webm|mov|ogg|m4v)$/i.test(clean) || url.includes('/videos/') || url.includes('/video/');
+          const lower = url.toLowerCase();
+          return /\.(mp4|webm|mov|ogg|m4v)(\?.*)?$/i.test(lower) ||
+                 lower.includes('.mp4') || lower.includes('.webm') || lower.includes('.mov') || lower.includes('.ogg') || lower.includes('.m4v') ||
+                 lower.includes('/videos/') || lower.includes('/video/');
         },
         activeTab: 'visibility',
         saving: false,
@@ -4490,11 +4511,12 @@
           this.showToast('تمت استعادة الروابط', 'تمت استعادة عناصر وترتيب شريط التنقل الافتراضية.');
         },
 
-        createCompleteBlock() {
-          const arTitle = (this.newBlockForm.title.ar || '').trim();
+        createCompleteBlock(autoSave = false) {
+          let arTitle = (this.newBlockForm.title.ar || '').trim();
           if (!arTitle) {
-            alert('يرجى كتابة عنوان البلوك بالعربية على الأقل.');
-            return;
+            const isVidForm = this.isVideoMedia(this.newBlockForm.image) || this.newBlockForm.mediaType === 'video' || !!this.newBlockForm.video;
+            arTitle = isVidForm ? 'فيديو تعريفي - بروتيرم' : 'قسم مميز - بروتيرم';
+            this.newBlockForm.title.ar = arTitle;
           }
 
           if (!this.cms.blocks) this.cms.blocks = [];
@@ -4589,7 +4611,12 @@
             insertAfter: 'after_hero'
           };
 
-          this.showToast('تمت إضافة البلوك بنجاح!', 'تم إدراج البلوك الجديد في تسلسل الصفحة. اضغط حفظ التغييرات لحفظه.');
+          if (autoSave && typeof this.saveContent === 'function') {
+            this.saveContent().catch(() => {});
+            this.showToast('تمت إضافة وحفظ البلوك بنجاح!', 'تم حفظ البلوك الجديد في الموقع فورياً وهو معروض في الصفحة الرئيسية.');
+          } else {
+            this.showToast('تمت إضافة البلوك بنجاح!', 'تم إدراج البلوك الجديد في تسلسل الصفحة. اضغط حفظ التغييرات لحفظه.');
+          }
         },
 
         addNewBlock() {
@@ -4620,6 +4647,10 @@
               this.newBlockForm.video = '';
               this.newBlockForm.mediaType = 'image';
             }
+            if (!this.newBlockForm.title.ar) {
+              this.newBlockForm.title.ar = isVideo ? 'فيديو تعريفي - بروتيرم' : 'قسم مميز - بروتيرم';
+              this.newBlockForm.title.en = isVideo ? 'ProTherme Video Showcase' : 'ProTherme Feature';
+            }
           }
           event.target.value = '';
         },
@@ -4644,6 +4675,10 @@
             if (Array.isArray(block.posters) && block.posters.length > 0) {
               block.posters[0].image = result.url;
             }
+            if (typeof this.saveContent === 'function') {
+              this.saveContent().catch(() => {});
+            }
+            this.showToast('تم تحديث وحفظ الوسائط بنجاح!', 'تم حفظ ملف الوسائط الجديد للبلوك وتحديث الموقع فورياً.');
           }
           event.target.value = '';
         },
@@ -5150,6 +5185,7 @@
               // Also sync to localStorage for instant client reflection across tabs
               localStorage.setItem('protherme_cms_content', JSON.stringify(this.cms));
               localStorage.setItem('protherme_cms_v20261008_rev', JSON.stringify(this.cms));
+              localStorage.setItem('protherme_cms_v20261008_rev3', JSON.stringify(this.cms));
             } else {
               this.showToast('خطأ في الحفظ', 'حدث خطأ أثناء الاتصال بالخادم.');
             }
