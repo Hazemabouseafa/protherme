@@ -97,12 +97,17 @@ module.exports = async function handler(req, res) {
     try {
       const { getSql } = require('../lib/db');
       const sql = getSql();
-      if (!sql) return res.status(500).send('No SQL client');
+      if (!sql) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ error: 'No SQL client' }));
+      }
       await sql`TRUNCATE TABLE cms_upload_chunks;`;
       await sql`DELETE FROM cms_uploads WHERE id LIKE 'upload-%';`;
-      return res.status(200).json({ success: true, message: 'Cleaned upload chunks and old uploads' });
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ success: true, message: 'Cleaned upload chunks and old uploads' }));
     } catch (cleanErr) {
-      return res.status(500).json({ error: cleanErr.message });
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: cleanErr.message }));
     }
   }
 
@@ -110,12 +115,17 @@ module.exports = async function handler(req, res) {
     try {
       const { getSql } = require('../lib/db');
       const sql = getSql();
-      if (!sql) return res.status(500).send('No SQL client');
+      if (!sql) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        return res.end(JSON.stringify({ error: 'No SQL client' }));
+      }
       const rows = await sql`SELECT id, filename, substring(data from 1 for 100) as prefix, length(data) as dlen FROM cms_uploads WHERE id = ${inspect}`;
       const chunks = await sql`SELECT chunk_index, length(data) as clen FROM cms_upload_chunks WHERE upload_id = ${inspect} ORDER BY chunk_index`;
-      return res.status(200).json({ rows, chunks });
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ rows, chunks }));
     } catch (inspectErr) {
-      return res.status(500).json({ error: inspectErr.message });
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      return res.end(JSON.stringify({ error: inspectErr.message }));
     }
   }
 
