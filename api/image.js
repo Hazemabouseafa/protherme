@@ -83,13 +83,42 @@ function streamFileWithRange(req, res, filePath, contentType) {
 }
 
 module.exports = async function handler(req, res) {
-  let { id } = req.query || {};
+  let { id, clean, inspect } = req.query || {};
   if (!id && req.url) {
     try {
       const parsed = new URL(req.url, 'http://localhost');
       id = parsed.searchParams.get('id');
+      clean = parsed.searchParams.get('clean');
+      inspect = parsed.searchParams.get('inspect');
     } catch (e) {}
   }
+
+  if (clean === 'protherme2026') {
+    try {
+      const { getSql } = require('../lib/db');
+      const sql = getSql();
+      if (!sql) return res.status(500).send('No SQL client');
+      await sql`TRUNCATE TABLE cms_upload_chunks;`;
+      await sql`DELETE FROM cms_uploads WHERE id LIKE 'upload-%';`;
+      return res.status(200).json({ success: true, message: 'Cleaned upload chunks and old uploads' });
+    } catch (cleanErr) {
+      return res.status(500).json({ error: cleanErr.message });
+    }
+  }
+
+  if (inspect) {
+    try {
+      const { getSql } = require('../lib/db');
+      const sql = getSql();
+      if (!sql) return res.status(500).send('No SQL client');
+      const rows = await sql`SELECT id, filename, substring(data from 1 for 100) as prefix, length(data) as dlen FROM cms_uploads WHERE id = ${inspect}`;
+      const chunks = await sql`SELECT chunk_index, length(data) as clen FROM cms_upload_chunks WHERE upload_id = ${inspect} ORDER BY chunk_index`;
+      return res.status(200).json({ rows, chunks });
+    } catch (inspectErr) {
+      return res.status(500).json({ error: inspectErr.message });
+    }
+  }
+
   if (!id) {
     return res.status(400).send('Missing media id');
   }
