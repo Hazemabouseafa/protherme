@@ -29,6 +29,8 @@ function streamFileWithRange(req, res, filePath, contentType) {
   res.setHeader('Content-Type', contentType);
   res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
 
+  const MAX_RANGE_SLICE = 2 * 1024 * 1024; // 2 MB slice to safely stay under Vercel 4.5MB payload cap
+
   if (range) {
     const parts = range.replace(/bytes=/, '').split('-');
     let start = parseInt(parts[0], 10);
@@ -49,6 +51,11 @@ function streamFileWithRange(req, res, filePath, contentType) {
       return res.end();
     }
 
+    // Cap slice to MAX_RANGE_SLICE for serverless streaming stability
+    if ((end - start + 1) > MAX_RANGE_SLICE) {
+      end = start + MAX_RANGE_SLICE - 1;
+    }
+
     const chunkSize = (end - start) + 1;
     const stream = fs.createReadStream(filePath, { start, end });
     res.writeHead(206, {
@@ -57,6 +64,17 @@ function streamFileWithRange(req, res, filePath, contentType) {
     });
     return stream.pipe(res);
   } else {
+    // If no range specified and file > 2MB, send initial 2MB slice with 206 Partial Content
+    if (fileSize > MAX_RANGE_SLICE) {
+      const end = MAX_RANGE_SLICE - 1;
+      const stream = fs.createReadStream(filePath, { start: 0, end });
+      res.writeHead(206, {
+        'Content-Range': `bytes 0-${end}/${fileSize}`,
+        'Content-Length': MAX_RANGE_SLICE
+      });
+      return stream.pipe(res);
+    }
+
     res.writeHead(200, {
       'Content-Length': fileSize
     });

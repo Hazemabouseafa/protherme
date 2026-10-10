@@ -32,27 +32,53 @@ function streamFileWithRange(req, res, filePath, contentType) {
   const fileSize = stat.size;
   const range = req.headers.range;
 
+  res.setHeader('Accept-Ranges', 'bytes');
+  res.setHeader('Content-Type', contentType);
+  res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+
+  const MAX_RANGE_SLICE = 2 * 1024 * 1024; // 2 MB slice
+
   if (range) {
     const parts = range.replace(/bytes=/, '').split('-');
-    const start = parseInt(parts[0], 10);
-    const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
-    const chunkSize = (end - start) + 1;
+    let start = parseInt(parts[0], 10);
+    let end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
 
+    if (isNaN(start)) {
+      start = fileSize - end;
+      end = fileSize - 1;
+    }
+    if (start < 0) start = 0;
+    if (end >= fileSize) end = fileSize - 1;
+
+    if (start > end || start >= fileSize) {
+      res.writeHead(416, { 'Content-Range': `bytes */${fileSize}` });
+      return res.end();
+    }
+
+    if ((end - start + 1) > MAX_RANGE_SLICE) {
+      end = start + MAX_RANGE_SLICE - 1;
+    }
+
+    const chunkSize = (end - start) + 1;
     const stream = fs.createReadStream(filePath, { start, end });
     res.writeHead(206, {
       'Content-Range': `bytes ${start}-${end}/${fileSize}`,
-      'Accept-Ranges': 'bytes',
-      'Content-Length': chunkSize,
-      'Content-Type': contentType,
-      'Cache-Control': 'public, max-age=31536000, immutable'
+      'Content-Length': chunkSize
     });
     return stream.pipe(res);
   } else {
+    if (fileSize > MAX_RANGE_SLICE) {
+      const end = MAX_RANGE_SLICE - 1;
+      const stream = fs.createReadStream(filePath, { start: 0, end });
+      res.writeHead(206, {
+        'Content-Range': `bytes 0-${end}/${fileSize}`,
+        'Content-Length': MAX_RANGE_SLICE
+      });
+      return stream.pipe(res);
+    }
+
     res.writeHead(200, {
-      'Content-Length': fileSize,
-      'Content-Type': contentType,
-      'Accept-Ranges': 'bytes',
-      'Cache-Control': 'public, max-age=31536000, immutable'
+      'Content-Length': fileSize
     });
     return fs.createReadStream(filePath).pipe(res);
   }
