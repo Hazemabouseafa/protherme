@@ -162,7 +162,7 @@ module.exports = async function handler(req, res) {
       }
     }
 
-    if (record && record.data) {
+    if (record && record.data && !record.data.startsWith('chunked:')) {
       let rawBase64 = record.data;
       const ext = path.extname(id).toLowerCase();
       let contentType = mimeTypes[ext] || 'image/jpeg';

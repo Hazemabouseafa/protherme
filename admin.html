@@ -3913,60 +3913,73 @@
                   chunkReader.readAsDataURL(blobChunk);
                 });
 
-                // Transmit chunk with real-time network progress
-                lastResult = await new Promise((resolveXhr, rejectXhr) => {
-                  const xhr = new XMLHttpRequest();
-                  xhr.open('POST', '/api/upload', true);
-                  xhr.setRequestHeader('Content-Type', 'application/json');
+                // Transmit chunk with real-time network progress and automatic retries
+                let chunkAttempts = 0;
+                let chunkOk = false;
+                while (chunkAttempts < 3 && !chunkOk) {
+                  chunkAttempts++;
+                  try {
+                    lastResult = await new Promise((resolveXhr, rejectXhr) => {
+                      const xhr = new XMLHttpRequest();
+                      xhr.open('POST', '/api/upload', true);
+                      xhr.setRequestHeader('Content-Type', 'application/json');
 
-                  xhr.upload.onprogress = (ev) => {
-                    if (ev.lengthComputable && ev.total > 0) {
-                      const chunkFraction = ev.loaded / ev.total;
-                      const currentBytes = start + (blobChunk.size * chunkFraction);
-                      const currentPercent = Math.min(95, Math.round((currentBytes / file.size) * 95));
-                      const currentMB = (currentBytes / (1024 * 1024)).toFixed(1);
-                      this.uploadProgress.percent = currentPercent;
-                      this.uploadProgress.loadedStr = `${currentMB} MB`;
-                      this.uploadProgress.statusText = isVideo
-                        ? this.tA(`جاري رفع الفيديو (جزء ${chunkIndex + 1} من ${totalChunks}): ${currentMB} MB من ${sizeMB} MB (${currentPercent}%)`, `Uploading video (part ${chunkIndex + 1} of ${totalChunks}): ${currentMB} MB of ${sizeMB} MB (${currentPercent}%)`)
-                        : this.tA(`جاري الرفع (جزء ${chunkIndex + 1} من ${totalChunks}): ${currentMB} MB من ${sizeMB} MB (${currentPercent}%)`, `Uploading (part ${chunkIndex + 1} of ${totalChunks}): ${currentMB} MB of ${sizeMB} MB (${currentPercent}%)`);
+                      xhr.upload.onprogress = (ev) => {
+                        if (ev.lengthComputable && ev.total > 0) {
+                          const chunkFraction = ev.loaded / ev.total;
+                          const currentBytes = start + (blobChunk.size * chunkFraction);
+                          const currentPercent = Math.min(95, Math.round((currentBytes / file.size) * 95));
+                          const currentMB = (currentBytes / (1024 * 1024)).toFixed(1);
+                          this.uploadProgress.percent = currentPercent;
+                          this.uploadProgress.loadedStr = `${currentMB} MB`;
+                          this.uploadProgress.statusText = isVideo
+                            ? this.tA(`جاري رفع الفيديو (جزء ${chunkIndex + 1} من ${totalChunks}): ${currentMB} MB من ${sizeMB} MB (${currentPercent}%)`, `Uploading video (part ${chunkIndex + 1} of ${totalChunks}): ${currentMB} MB of ${sizeMB} MB (${currentPercent}%)`)
+                            : this.tA(`جاري الرفع (جزء ${chunkIndex + 1} من ${totalChunks}): ${currentMB} MB من ${sizeMB} MB (${currentPercent}%)`, `Uploading (part ${chunkIndex + 1} of ${totalChunks}): ${currentMB} MB of ${sizeMB} MB (${currentPercent}%)`);
+                        }
+                      };
+
+                      xhr.onload = () => {
+                        let resData = null;
+                        try {
+                          resData = JSON.parse(xhr.responseText || '{}');
+                        } catch (e) {
+                          resData = null;
+                        }
+
+                        if (xhr.status >= 200 && xhr.status < 300 && resData && resData.success) {
+                          resolveXhr(resData);
+                        } else {
+                          let errText = (resData && resData.error) || '';
+                          if (!errText) {
+                            if (xhr.status === 413) errText = this.tA('حجم البيانات تجاوز حد الخادم المسموح به (413 Payload Too Large)', 'Payload exceeded server limit (413 Payload Too Large)');
+                            else if (xhr.status === 502 || xhr.status === 504) errText = this.tA('انتهت مهلة استجابة الخادم (HTTP ' + xhr.status + ')', 'Server gateway timeout (HTTP ' + xhr.status + ')');
+                            else errText = this.tA('خطأ في استجابة الخادم (كود ' + xhr.status + ')', 'Server response error (HTTP ' + xhr.status + ')');
+                          }
+                          rejectXhr(new Error(errText));
+                        }
+                      };
+
+                      xhr.onerror = () => rejectXhr(new Error(this.tA('انقطع الاتصال بالخادم أثناء رفع الملف', 'Connection to server interrupted')));
+                      xhr.ontimeout = () => rejectXhr(new Error(this.tA('انتهت مهلة الاتصال بالخادم', 'Connection to server timed out')));
+
+                      xhr.send(JSON.stringify({
+                        isChunk: true,
+                        uploadId: uploadId,
+                        chunkIndex: chunkIndex,
+                        totalChunks: totalChunks,
+                        filename: file.name,
+                        totalSize: file.size,
+                        data: chunkBase64
+                      }));
+                    });
+                    chunkOk = true;
+                  } catch (cErr) {
+                    if (chunkAttempts >= 3) {
+                      throw cErr;
                     }
-                  };
-
-                  xhr.onload = () => {
-                    let resData = null;
-                    try {
-                      resData = JSON.parse(xhr.responseText || '{}');
-                    } catch (e) {
-                      resData = null;
-                    }
-
-                    if (xhr.status >= 200 && xhr.status < 300 && resData && resData.success) {
-                      resolveXhr(resData);
-                    } else {
-                      let errText = (resData && resData.error) || '';
-                      if (!errText) {
-                        if (xhr.status === 413) errText = this.tA('حجم البيانات تجاوز حد الخادم المسموح به (413 Payload Too Large)', 'Payload exceeded server limit (413 Payload Too Large)');
-                        else if (xhr.status === 502 || xhr.status === 504) errText = this.tA('انتهت مهلة استجابة الخادم (HTTP ' + xhr.status + ')', 'Server gateway timeout (HTTP ' + xhr.status + ')');
-                        else errText = this.tA('خطأ في استجابة الخادم (كود ' + xhr.status + ')', 'Server response error (HTTP ' + xhr.status + ')');
-                      }
-                      rejectXhr(new Error(errText));
-                    }
-                  };
-
-                  xhr.onerror = () => rejectXhr(new Error(this.tA('انقطع الاتصال بالخادم أثناء رفع الملف', 'Connection to server interrupted')));
-                  xhr.ontimeout = () => rejectXhr(new Error(this.tA('انتهت مهلة الاتصال بالخادم', 'Connection to server timed out')));
-
-                  xhr.send(JSON.stringify({
-                    isChunk: true,
-                    uploadId: uploadId,
-                    chunkIndex: chunkIndex,
-                    totalChunks: totalChunks,
-                    filename: file.name,
-                    totalSize: file.size,
-                    data: chunkBase64
-                  }));
-                });
+                    await new Promise(r => setTimeout(r, 1000 * chunkAttempts));
+                  }
+                }
               }
 
               // All chunks completed!
