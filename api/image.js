@@ -84,16 +84,16 @@ function streamFileWithRange(req, res, filePath, contentType) {
 
 module.exports = async function handler(req, res) {
   let { id, clean, inspect } = req.query || {};
-  if (!id && req.url) {
+  if (req.url) {
     try {
       const parsed = new URL(req.url, 'http://localhost');
-      id = parsed.searchParams.get('id');
-      clean = parsed.searchParams.get('clean');
-      inspect = parsed.searchParams.get('inspect');
+      if (!id) id = parsed.searchParams.get('id');
+      if (!clean) clean = parsed.searchParams.get('clean');
+      if (!inspect) inspect = parsed.searchParams.get('inspect');
     } catch (e) {}
   }
 
-  if (clean === 'protherme2026') {
+  if (id === 'clean' || clean === 'protherme2026') {
     try {
       const { getSql } = require('../lib/db');
       const sql = getSql();
