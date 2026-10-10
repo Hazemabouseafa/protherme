@@ -83,6 +83,20 @@ function streamFileWithRange(req, res, filePath, contentType) {
 }
 
 module.exports = async function handler(req, res) {
+  if (typeof res.status !== 'function') {
+    res.status = function(code) {
+      this.statusCode = code;
+      return this;
+    };
+  }
+  if (typeof res.send !== 'function') {
+    res.send = function(body) {
+      if (!this.headersSent && typeof body === 'string') {
+        this.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      }
+      return this.end(body);
+    };
+  }
   let { id, clean, inspect } = req.query || {};
   if (req.url) {
     try {

@@ -558,6 +558,12 @@ const server = http.createServer(async (req, res) => {
     if (!fs.existsSync(directFilePath)) {
       req.query = req.query || {};
       req.query.id = uploadId;
+      if (typeof res.status !== 'function') {
+        res.status = function(code) { this.statusCode = code; return this; };
+      }
+      if (typeof res.send !== 'function') {
+        res.send = function(body) { return this.end(body); };
+      }
       const imageApi = require('./api/image');
       return imageApi(req, res);
     }
