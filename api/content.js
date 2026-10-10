@@ -11,7 +11,8 @@ module.exports = async function handler(req, res) {
 
   if (req.method === 'GET') {
     try {
-      const { clean } = req.query || {};
+      const parsedUrl = new URL(req.url, 'http://localhost');
+      const clean = parsedUrl.searchParams.get('clean');
       if (clean === 'protherme2026') {
         const { getSql } = require('../lib/db');
         const sql = getSql();
