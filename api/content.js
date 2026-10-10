@@ -38,20 +38,8 @@ module.exports = async function handler(req, res) {
       if (typeof body === 'string') {
         try { body = JSON.parse(body); } catch (e) {}
       }
-      return res.status(200).json({
-        type: typeof body,
-        keys: body ? Object.keys(body) : [],
-        action: body ? body.action : null
-      });
-      if (body.action === 'clean_maintenance') {
-        const { getSql } = require('../lib/db');
-        const sql = getSql();
-        if (sql) {
-          await sql`TRUNCATE TABLE cms_upload_chunks;`;
-          await sql`DELETE FROM cms_uploads WHERE id LIKE 'upload-%';`;
-          return res.status(200).json({ success: true, message: 'Cleaned upload chunks and old uploads' });
-        }
-        return res.status(500).json({ error: 'No SQL client' });
+      if (!body) {
+        return res.status(400).json({ error: 'Empty body' });
       }
       await saveContent(body);
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
