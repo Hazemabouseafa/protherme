@@ -696,79 +696,199 @@
                   <i class="fa-solid fa-share-nodes text-emerald-600"></i>
                   <span>روابط وسائل التواصل الاجتماعي (Social Media Channels):</span>
                 </div>
-                <span class="text-[11px] text-slate-500">تظهر الروابط المكتملة في الفوتر تلقائياً</span>
+                <span class="text-[11px] text-slate-500">تظهر الروابط المفعلة كأيقونات صغيرة في أعلى الصفحة (Header/Topbar) وأسفل الصفحة (Footer)</span>
               </div>
 
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
                 <!-- Facebook -->
-                <div class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200 space-y-1.5 shadow-xs">
-                  <label class="flex items-center gap-2 text-xs font-bold text-blue-700">
+                <div class="p-3 rounded-xl bg-slate-50/80 border border-slate-200 space-y-1.5 shadow-xs">
+                  <label class="flex items-center gap-1.5 text-xs font-bold text-blue-700">
                     <i class="fa-brands fa-facebook text-sm"></i>
-                    <span>صفحة فيسبوك (Facebook URL):</span>
+                    <span>فيسبوك (Facebook):</span>
                   </label>
                   <input 
                     type="url" 
                     x-model="cms.social.facebook" 
                     dir="ltr" 
-                    placeholder="https://facebook.com/your-page"
-                    class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-blue-600">
+                    placeholder="https://facebook.com/..."
+                    class="w-full px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-blue-600">
                 </div>
 
                 <!-- Instagram -->
-                <div class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200 space-y-1.5 shadow-xs">
-                  <label class="flex items-center gap-2 text-xs font-bold text-pink-700">
+                <div class="p-3 rounded-xl bg-slate-50/80 border border-slate-200 space-y-1.5 shadow-xs">
+                  <label class="flex items-center gap-1.5 text-xs font-bold text-pink-700">
                     <i class="fa-brands fa-instagram text-sm"></i>
-                    <span>حساب انستغرام (Instagram URL):</span>
+                    <span>انستغرام (Instagram):</span>
                   </label>
                   <input 
                     type="url" 
                     x-model="cms.social.instagram" 
                     dir="ltr" 
-                    placeholder="https://instagram.com/your-account"
-                    class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-pink-600">
+                    placeholder="https://instagram.com/..."
+                    class="w-full px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-pink-600">
                 </div>
 
                 <!-- LinkedIn -->
-                <div class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200 space-y-1.5 shadow-xs">
-                  <label class="flex items-center gap-2 text-xs font-bold text-cyan-800">
+                <div class="p-3 rounded-xl bg-slate-50/80 border border-slate-200 space-y-1.5 shadow-xs">
+                  <label class="flex items-center gap-1.5 text-xs font-bold text-cyan-800">
                     <i class="fa-brands fa-linkedin text-sm"></i>
-                    <span>لينكد إن (LinkedIn URL):</span>
+                    <span>لينكد إن (LinkedIn):</span>
                   </label>
                   <input 
                     type="url" 
                     x-model="cms.social.linkedin" 
                     dir="ltr" 
-                    placeholder="https://linkedin.com/company/your-company"
-                    class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-cyan-600">
+                    placeholder="https://linkedin.com/..."
+                    class="w-full px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-cyan-600">
                 </div>
 
                 <!-- TikTok -->
-                <div class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200 space-y-1.5 shadow-xs">
-                  <label class="flex items-center gap-2 text-xs font-bold text-slate-800">
+                <div class="p-3 rounded-xl bg-slate-50/80 border border-slate-200 space-y-1.5 shadow-xs">
+                  <label class="flex items-center gap-1.5 text-xs font-bold text-slate-800">
                     <i class="fa-brands fa-tiktok text-sm"></i>
-                    <span>تيك توك (TikTok URL):</span>
+                    <span>تيك توك (TikTok):</span>
                   </label>
                   <input 
                     type="url" 
                     x-model="cms.social.tiktok" 
                     dir="ltr" 
-                    placeholder="https://tiktok.com/@your-profile"
-                    class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-slate-600">
+                    placeholder="https://tiktok.com/@..."
+                    class="w-full px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-slate-600">
                 </div>
 
                 <!-- YouTube -->
-                <div class="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200 space-y-1.5 sm:col-span-2 shadow-xs">
-                  <label class="flex items-center gap-2 text-xs font-bold text-red-700">
+                <div class="p-3 rounded-xl bg-slate-50/80 border border-slate-200 space-y-1.5 shadow-xs">
+                  <label class="flex items-center gap-1.5 text-xs font-bold text-red-700">
                     <i class="fa-brands fa-youtube text-sm"></i>
-                    <span>قناة يوتيوب (YouTube Channel URL):</span>
+                    <span>يوتيوب (YouTube):</span>
                   </label>
                   <input 
                     type="url" 
                     x-model="cms.social.youtube" 
                     dir="ltr" 
-                    placeholder="https://youtube.com/@your-channel"
-                    class="w-full px-3 py-2 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-red-600">
+                    placeholder="https://youtube.com/@..."
+                    class="w-full px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-red-600">
                 </div>
+
+                <!-- X (Twitter) -->
+                <div class="p-3 rounded-xl bg-slate-50/80 border border-slate-200 space-y-1.5 shadow-xs">
+                  <label class="flex items-center gap-1.5 text-xs font-bold text-slate-900">
+                    <i class="fa-brands fa-x-twitter text-sm"></i>
+                    <span>منصة إكس (X / Twitter):</span>
+                  </label>
+                  <input 
+                    type="url" 
+                    x-model="cms.social.twitter" 
+                    dir="ltr" 
+                    placeholder="https://x.com/..."
+                    class="w-full px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-slate-800">
+                </div>
+
+                <!-- Snapchat -->
+                <div class="p-3 rounded-xl bg-slate-50/80 border border-slate-200 space-y-1.5 shadow-xs">
+                  <label class="flex items-center gap-1.5 text-xs font-bold text-amber-600">
+                    <i class="fa-brands fa-snapchat text-sm"></i>
+                    <span>سناب شات (Snapchat):</span>
+                  </label>
+                  <input 
+                    type="url" 
+                    x-model="cms.social.snapchat" 
+                    dir="ltr" 
+                    placeholder="https://snapchat.com/add/..."
+                    class="w-full px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-amber-500">
+                </div>
+
+                <!-- WhatsApp Link / Channel -->
+                <div class="p-3 rounded-xl bg-slate-50/80 border border-slate-200 space-y-1.5 shadow-xs">
+                  <label class="flex items-center gap-1.5 text-xs font-bold text-emerald-700">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <span>قناة / رابط واتساب (WhatsApp Link):</span>
+                  </label>
+                  <input 
+                    type="url" 
+                    x-model="cms.social.whatsapp" 
+                    dir="ltr" 
+                    placeholder="https://wa.me/... أو رابط القناة"
+                    class="w-full px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-emerald-600">
+                </div>
+              </div>
+
+              <!-- Custom Additional Social Links Builder -->
+              <div class="mt-4 pt-4 border-t border-slate-200/80 space-y-3">
+                <div class="flex items-center justify-between">
+                  <label class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-plus-circle text-cyan-600"></i>
+                    <span>منصات وروابط تواصل إضافية مخصصة (Custom Social Links):</span>
+                  </label>
+                  <button 
+                    type="button" 
+                    @click="addSocialLink()" 
+                    class="px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-xs cursor-pointer">
+                    <i class="fa-solid fa-plus text-[10px]"></i>
+                    <span>إضافة رابط منصة جديدة</span>
+                  </button>
+                </div>
+
+                <template x-for="(sLink, sIdx) in (cms.socialLinks || [])" :key="sLink.id || sIdx">
+                  <div class="p-3 rounded-xl bg-white border border-slate-200 shadow-xs space-y-2.5">
+                    <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                      <div class="flex items-center gap-2">
+                        <span class="w-6 h-6 rounded-md bg-cyan-100 text-cyan-700 flex items-center justify-center text-xs">
+                          <i :class="sLink.icon || 'fa-solid fa-globe'"></i>
+                        </span>
+                        <span class="text-xs font-bold text-slate-800" x-text="(sLink.title && (sLink.title[editLang] || sLink.title.ar || sLink.title.en)) || sLink.name || 'رابط جديد'"></span>
+                      </div>
+                      <div class="flex items-center gap-2">
+                        <label class="flex items-center gap-1 text-[11px] text-slate-600 cursor-pointer">
+                          <input type="checkbox" x-model="sLink.visible" class="rounded text-cyan-600 focus:ring-0">
+                          <span>مفعل</span>
+                        </label>
+                        <button 
+                          type="button" 
+                          @click="deleteSocialLink(sIdx)" 
+                          class="w-6 h-6 rounded-md bg-rose-50 text-rose-600 hover:bg-rose-100 flex items-center justify-center text-xs transition cursor-pointer">
+                          <i class="fa-solid fa-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">اسم المنصة / العنوان:</label>
+                        <input 
+                          type="text" 
+                          x-model="sLink.title[editLang]" 
+                          placeholder="مثال: قناة تيليجرام" 
+                          class="w-full px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-cyan-600">
+                      </div>
+                      <div>
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">الأيقونة (FontAwesome):</label>
+                        <select 
+                          x-model="sLink.icon" 
+                          class="w-full px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-cyan-600">
+                          <option value="fa-brands fa-telegram">Telegram (تيليجرام)</option>
+                          <option value="fa-brands fa-threads">Threads (ثريدز)</option>
+                          <option value="fa-brands fa-pinterest">Pinterest (بنترست)</option>
+                          <option value="fa-brands fa-discord">Discord (ديسكورد)</option>
+                          <option value="fa-brands fa-whatsapp">WhatsApp (واتساب)</option>
+                          <option value="fa-brands fa-x-twitter">X / Twitter</option>
+                          <option value="fa-brands fa-snapchat">Snapchat</option>
+                          <option value="fa-solid fa-globe">Website (موقع ويب)</option>
+                          <option value="fa-solid fa-link">Custom Link (رابط عام)</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-[11px] font-bold text-slate-600 mb-1">الرابط (URL):</label>
+                        <input 
+                          type="url" 
+                          x-model="sLink.url" 
+                          dir="ltr" 
+                          placeholder="https://..." 
+                          class="w-full px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-300 text-xs font-mono text-slate-900 focus:outline-none focus:border-cyan-600">
+                      </div>
+                    </div>
+                  </div>
+                </template>
               </div>
             </div>
 
@@ -3540,7 +3660,8 @@
         cms: {
           visibility: {},
           contacts: { hours: { ar: '', en: '' } },
-          social: { facebook: '', instagram: '', linkedin: '', tiktok: '', youtube: '' },
+          social: { facebook: '', instagram: '', linkedin: '', tiktok: '', youtube: '', twitter: '', snapchat: '', whatsapp: '' },
+          socialLinks: [],
           images: {},
           buttons: {},
           heroStats: {},
@@ -4323,6 +4444,24 @@
           this.showToast('تم الحذف', 'تم حذف الزر.');
         },
 
+        addSocialLink() {
+          if (!this.cms.socialLinks) this.cms.socialLinks = [];
+          this.cms.socialLinks.push({
+            id: 'soc_' + Date.now(),
+            platform: 'custom',
+            title: { ar: 'رابط جديد', en: 'New Link' },
+            url: '',
+            icon: 'fa-solid fa-globe',
+            visible: true
+          });
+          this.showToast('تمت إضافة رابط جديد', 'تمت إضافة حقل رابط تواصل اجتماعي مخصص.');
+        },
+        deleteSocialLink(idx) {
+          if (!confirm('هل تريد حذف هذا الرابط؟')) return;
+          this.cms.socialLinks.splice(idx, 1);
+          this.showToast('تم الحذف', 'تم حذف رابط التواصل بنجاح.');
+        },
+
         notify(title, msg) {
           this.showToast(title, msg);
         },
@@ -4855,7 +4994,8 @@
               if (!data.heroStats) data.heroStats = {};
               if (!data.contacts) data.contacts = { hours: {} };
               if (!data.contacts.hours) data.contacts.hours = {};
-              if (!data.social) data.social = { facebook: '', instagram: '', linkedin: '', tiktok: '', youtube: '' };
+              if (!data.social) data.social = { facebook: '', instagram: '', linkedin: '', tiktok: '', youtube: '', twitter: '', snapchat: '', whatsapp: '' };
+              if (!Array.isArray(data.socialLinks)) data.socialLinks = [];
 
               this.cms = data;
               this.ensureDynamicLists();
@@ -4981,6 +5121,14 @@
           // Custom Buttons
           if (!this.cms.customButtonsList || !Array.isArray(this.cms.customButtonsList)) {
             this.cms.customButtonsList = [];
+          }
+
+          // Social Links
+          if (!this.cms.social) {
+            this.cms.social = { facebook: '', instagram: '', linkedin: '', tiktok: '', youtube: '', twitter: '', snapchat: '', whatsapp: '' };
+          }
+          if (!this.cms.socialLinks || !Array.isArray(this.cms.socialLinks)) {
+            this.cms.socialLinks = [];
           }
         },
 

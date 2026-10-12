@@ -1763,6 +1763,65 @@ function prothermeApp() {
           { id: 'contact', target: 'contact', title: { ar: 'اتصل بنا', en: 'Contact' }, visible: true, isExternal: false, order: 7 }
         ];
       }
+
+      // 12. Social Media Channels & Custom Links
+      if (!this.cms.social) {
+        this.cms.social = { facebook: '', instagram: '', linkedin: '', tiktok: '', youtube: '', twitter: '', snapchat: '', whatsapp: '' };
+      }
+      if (!this.cms.socialLinks || !Array.isArray(this.cms.socialLinks)) {
+        this.cms.socialLinks = [];
+      }
+    },
+
+    getSocialLinks() {
+      this.ensureDynamicLists();
+      const list = [];
+      const standardKeys = [
+        { key: 'facebook', title: 'Facebook', icon: 'fa-brands fa-facebook-f', color: 'hover:text-blue-600 hover:border-blue-400 hover:bg-blue-50' },
+        { key: 'instagram', title: 'Instagram', icon: 'fa-brands fa-instagram', color: 'hover:text-pink-600 hover:border-pink-400 hover:bg-pink-50' },
+        { key: 'linkedin', title: 'LinkedIn', icon: 'fa-brands fa-linkedin-in', color: 'hover:text-cyan-700 hover:border-cyan-400 hover:bg-cyan-50' },
+        { key: 'tiktok', title: 'TikTok', icon: 'fa-brands fa-tiktok', color: 'hover:text-slate-900 hover:border-slate-400 hover:bg-slate-100' },
+        { key: 'youtube', title: 'YouTube', icon: 'fa-brands fa-youtube', color: 'hover:text-red-600 hover:border-red-400 hover:bg-red-50' },
+        { key: 'twitter', title: 'X (Twitter)', icon: 'fa-brands fa-x-twitter', color: 'hover:text-slate-900 hover:border-slate-400 hover:bg-slate-100' },
+        { key: 'snapchat', title: 'Snapchat', icon: 'fa-brands fa-snapchat', color: 'hover:text-amber-500 hover:border-amber-400 hover:bg-amber-50' },
+        { key: 'whatsapp', title: 'WhatsApp', icon: 'fa-brands fa-whatsapp', color: 'hover:text-emerald-600 hover:border-emerald-400 hover:bg-emerald-50' }
+      ];
+
+      if (this.cms && this.cms.social) {
+        for (const s of standardKeys) {
+          const url = this.cms.social[s.key];
+          if (url && typeof url === 'string' && url.trim() !== '') {
+            list.push({
+              id: 'std_' + s.key,
+              platform: s.key,
+              title: s.title,
+              url: url.trim(),
+              icon: s.icon,
+              color: s.color,
+              visible: true
+            });
+          }
+        }
+      }
+
+      if (this.cms && Array.isArray(this.cms.socialLinks)) {
+        for (const item of this.cms.socialLinks) {
+          if (item && item.url && typeof item.url === 'string' && item.url.trim() !== '' && item.visible !== false) {
+            const t = (typeof item.title === 'object' ? (item.title[this.lang] || item.title.ar || item.title.en) : item.title) || item.name || 'Link';
+            list.push({
+              id: item.id || ('custom_' + Math.random()),
+              platform: item.platform || 'custom',
+              title: t,
+              url: item.url.trim(),
+              icon: item.icon || 'fa-solid fa-globe',
+              color: item.color || 'hover:text-cyan-700 hover:border-cyan-400 hover:bg-cyan-50',
+              visible: true
+            });
+          }
+        }
+      }
+
+      return list;
     },
 
     getNavList() {
@@ -1977,6 +2036,23 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <i class="fa-solid fa-envelope text-cyan-600"></i>
           <span x-text="cms.contacts.email"></span>
         </a>
+
+        <!-- Small Social Media Icons in Topbar -->
+        <template x-if="getSocialLinks().length > 0">
+          <div class="flex items-center gap-1 border-s border-slate-300/80 ps-2.5 sm:ps-3 ms-0.5 sm:ms-1">
+            <template x-for="soc in getSocialLinks()" :key="'topbar-soc-' + soc.id">
+              <a :href="soc.url" 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 :title="soc.title" 
+                 :aria-label="soc.title"
+                 class="w-6 h-6 rounded-md bg-white/90 text-slate-600 border border-slate-200/90 flex items-center justify-center transition-all duration-200 text-[11px] shadow-2xs hover:scale-110"
+                 :class="soc.color">
+                <i :class="soc.icon"></i>
+              </a>
+            </template>
+          </div>
+        </template>
       </div>
     </div>
   </div>
@@ -2092,6 +2168,23 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           <span dir="ltr" x-text="cms.contacts.phone"></span>
         </a>
         <button @click="scrollTo('contact')" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-cyan-600 to-teal-600 text-white font-black text-sm shadow-md shadow-cyan-600/25 active:scale-[0.99] transition-all btn-shimmer" x-text="cms.buttons.navCta[lang] || t('nav.cta')"></button>
+        
+        <!-- Social Media Icons in Mobile Menu -->
+        <template x-if="getSocialLinks().length > 0">
+          <div class="flex items-center justify-center gap-2 pt-2 border-t border-slate-200/60 flex-wrap">
+            <template x-for="soc in getSocialLinks()" :key="'mobile-soc-' + soc.id">
+              <a :href="soc.url" 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 :title="soc.title" 
+                 :aria-label="soc.title"
+                 class="w-8 h-8 rounded-lg bg-slate-50 text-slate-700 border border-slate-200 flex items-center justify-center transition-all text-xs shadow-2xs hover:scale-105"
+                 :class="soc.color">
+                <i :class="soc.icon"></i>
+              </a>
+            </template>
+          </div>
+        </template>
       </div>
     </div>
   </header>
@@ -3787,30 +3880,16 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
           </div>
 
           <!-- Dynamic Social Media Links -->
-          <div x-show="cms.social && (cms.social.facebook || cms.social.instagram || cms.social.linkedin || cms.social.tiktok || cms.social.youtube)" class="flex items-center gap-2.5 pt-2 flex-wrap">
-            <template x-if="cms.social && cms.social.facebook">
-              <a :href="cms.social.facebook" target="_blank" rel="noopener noreferrer" title="Facebook" class="w-9 h-9 rounded-xl bg-white hover:bg-blue-50 text-slate-600 hover:text-blue-600 border border-slate-200 hover:border-blue-400 flex items-center justify-center transition-all shadow-xs">
-                <i class="fa-brands fa-facebook-f text-sm"></i>
-              </a>
-            </template>
-            <template x-if="cms.social && cms.social.instagram">
-              <a :href="cms.social.instagram" target="_blank" rel="noopener noreferrer" title="Instagram" class="w-9 h-9 rounded-xl bg-white hover:bg-pink-50 text-slate-600 hover:text-pink-600 border border-slate-200 hover:border-pink-400 flex items-center justify-center transition-all shadow-xs">
-                <i class="fa-brands fa-instagram text-sm"></i>
-              </a>
-            </template>
-            <template x-if="cms.social && cms.social.linkedin">
-              <a :href="cms.social.linkedin" target="_blank" rel="noopener noreferrer" title="LinkedIn" class="w-9 h-9 rounded-xl bg-white hover:bg-cyan-50 text-slate-600 hover:text-cyan-700 border border-slate-200 hover:border-cyan-400 flex items-center justify-center transition-all shadow-xs">
-                <i class="fa-brands fa-linkedin-in text-sm"></i>
-              </a>
-            </template>
-            <template x-if="cms.social && cms.social.tiktok">
-              <a :href="cms.social.tiktok" target="_blank" rel="noopener noreferrer" title="TikTok" class="w-9 h-9 rounded-xl bg-white hover:bg-slate-100 text-slate-600 hover:text-slate-900 border border-slate-200 hover:border-slate-400 flex items-center justify-center transition-all shadow-xs">
-                <i class="fa-brands fa-tiktok text-sm"></i>
-              </a>
-            </template>
-            <template x-if="cms.social && cms.social.youtube">
-              <a :href="cms.social.youtube" target="_blank" rel="noopener noreferrer" title="YouTube" class="w-9 h-9 rounded-xl bg-white hover:bg-red-50 text-slate-600 hover:text-red-600 border border-slate-200 hover:border-red-400 flex items-center justify-center transition-all shadow-xs">
-                <i class="fa-brands fa-youtube text-sm"></i>
+          <div x-show="getSocialLinks().length > 0" class="flex items-center gap-2.5 pt-2 flex-wrap">
+            <template x-for="soc in getSocialLinks()" :key="'footer-soc-' + soc.id">
+              <a :href="soc.url" 
+                 target="_blank" 
+                 rel="noopener noreferrer" 
+                 :title="soc.title" 
+                 :aria-label="soc.title" 
+                 class="w-9 h-9 rounded-xl bg-white text-slate-600 border border-slate-200 flex items-center justify-center transition-all duration-200 shadow-xs hover:scale-105"
+                 :class="soc.color">
+                <i :class="soc.icon + ' text-sm'"></i>
               </a>
             </template>
           </div>
@@ -3923,7 +4002,9 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
         <i class="fa-solid fa-xmark text-lg"></i>
       </button>
       <div class="max-h-[75vh] overflow-hidden flex items-center justify-center bg-slate-950">
-        <img :src="lightboxImage" alt="Enlarged Project View" class="max-h-[75vh] w-auto object-contain">
+        <template x-if="lightboxImage">
+          <img :src="lightboxImage" alt="Enlarged Project View" class="max-h-[75vh] w-auto object-contain">
+        </template>
       </div>
       <div class="p-6 bg-white border-t border-slate-200">
         <h4 class="text-lg font-bold text-slate-950" x-text="lightboxTitle"></h4>

@@ -227,6 +227,13 @@ async function runAudit() {
   cmsInstance.deleteFaq(cmsInstance.cms.faqList.length - 1);
   assert(cmsInstance.cms.faqList.length === initialFaqCount, 'deleteFaq() decrements faqList');
 
+  // Social Links
+  const initialSocialCount = (cmsInstance.cms.socialLinks || []).length;
+  cmsInstance.addSocialLink();
+  assert(cmsInstance.cms.socialLinks.length === initialSocialCount + 1, 'addSocialLink() increments socialLinks');
+  cmsInstance.deleteSocialLink(cmsInstance.cms.socialLinks.length - 1);
+  assert(cmsInstance.cms.socialLinks.length === initialSocialCount, 'deleteSocialLink() decrements socialLinks');
+
   // Sequencer & Custom Blocks
   console.log('\n--- 4. Testing Sequencer & Custom Block Builder ---');
   cmsInstance.ensureSectionOrder();

@@ -34,8 +34,12 @@
     "instagram": "",
     "linkedin": "",
     "tiktok": "",
-    "youtube": ""
+    "youtube": "",
+    "twitter": "",
+    "snapchat": "",
+    "whatsapp": ""
   },
+  "socialLinks": [],
   "images": {
     "logo": "assets/images/protherme-logo.jpg",
     "heroVisual": "assets/images/hero-beforeafter.jpg",
