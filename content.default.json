@@ -1128,5 +1128,228 @@
       "order": 12,
       "type": "builtin"
     }
+  ],
+  "pillarsList": [
+    {
+      "key": "p1",
+      "enabled": true,
+      "name": {
+        "ar": "عزل زجاج المباني والفلل",
+        "en": "Architectural & Villa Glass Film"
+      },
+      "tag": {
+        "ar": "Nano Ceramic Architecture",
+        "en": "Nano Ceramic Architecture"
+      },
+      "desc": {
+        "ar": "أفلام نانو سيراميك متطورة لعزل واجهات الفلل والمباني الإدارية، توفر حتى 88% عزل حراري وحجب كامل للأشعة فوق البنفسجية 99.9%.",
+        "en": "Advanced Nano Ceramic films for villa facades and commercial glass, rejecting up to 88% heat and 99.9% harmful UV."
+      },
+      "f1": {
+        "ar": "عزل حراري حقيقي يصل إلى 88% (IRR)",
+        "en": "True heat rejection up to 88% (IRR)"
+      },
+      "f2": {
+        "ar": "حجب 99.9% من الأشعة فوق البنفسجية (UV)",
+        "en": "99.9% UV protection prevents fading"
+      },
+      "f3": {
+        "ar": "شفافية بصرية عالية مع خفض التوهج",
+        "en": "High clarity with glare reduction"
+      },
+      "f4": {
+        "ar": "ضمان معتمد من 5 إلى 10 سنوات",
+        "en": "5 to 10 years certified warranty"
+      },
+      "specs": {
+        "ar": "IRR: 88% | UV: 99.9% | VLT: 35-70%",
+        "en": "IRR: 88% | UV: 99.9% | VLT: 35-70%"
+      },
+      "cta": {
+        "ar": "طلب معاينة للفيلا أو المبنى",
+        "en": "Request On-Site Facade Survey"
+      },
+      "image": "assets/images/compound-villa-new.jpg",
+      "badge": {
+        "ar": "IRR: 88% | UV: 99.9%",
+        "en": "IRR: 88% | UV: 99.9%"
+      }
+    },
+    {
+      "key": "p2",
+      "enabled": true,
+      "name": {
+        "ar": "حماية الرخام والأسطح الفاخرة",
+        "en": "Luxury Marble & Surface Protection"
+      },
+      "tag": {
+        "ar": "Self-Healing TPU Film",
+        "en": "Self-Healing TPU Film"
+      },
+      "desc": {
+        "ar": "أفلام حماية هيدروفوبيك ثورية بسماكة 8.5 ميل مع ميزة المعالجة الذاتية للخدوش، تحمي أسطح الرخام الطبيعي والمطابخ من البقع والأحماض.",
+        "en": "Revolutionary 8.5 Mil hydrophobic TPU film with self-healing capabilities, protecting natural marble from acids and stains."
+      },
+      "f1": {
+        "ar": "سماكة 8.5 ميل من مادة TPU المرنة",
+        "en": "8.5 Mil premium aliphatic TPU"
+      },
+      "f2": {
+        "ar": "معالجة ذاتية سريعة للخدوش السطحية",
+        "en": "Instant self-healing against fine scratches"
+      },
+      "f3": {
+        "ar": "مقاومة تامة للأحماض والمواد الكيميائية",
+        "en": "Total resistance to lemon, vinegar & wine"
+      },
+      "f4": {
+        "ar": "طبقة هيدروفوبيك فائقة طاردة للزيوت والسوائل",
+        "en": "Super hydrophobic oleophobic coating"
+      },
+      "specs": {
+        "ar": "Thickness: 8.5 Mil | Self-Healing | Hydrophobic",
+        "en": "Thickness: 8.5 Mil | Self-Healing | Hydrophobic"
+      },
+      "cta": {
+        "ar": "طلب حماية رخام وأسطح",
+        "en": "Request Surface Protection Survey"
+      },
+      "image": "assets/images/marble-surface-new.jpg",
+      "badge": {
+        "ar": "8.5 Mil | Self-Healing TPU",
+        "en": "8.5 Mil | Self-Healing TPU"
+      }
+    },
+    {
+      "key": "p3",
+      "enabled": true,
+      "name": {
+        "ar": "أفلام حماية السيارات (PPF)",
+        "en": "Automotive Paint Protection (PPF)"
+      },
+      "tag": {
+        "ar": "Wholesale & Pro Install",
+        "en": "Wholesale & Pro Install"
+      },
+      "desc": {
+        "ar": "توزيع حصري وتوريد لأعلى فئات أفلام حماية طلاء السيارات (PPF) لمراكز العناية بالسيارات والوكلاء، مع خيارات اللمعان والمط.",
+        "en": "Authorized wholesale supply and certified application of top-tier PPF films for automotive detailing studios and dealers."
+      },
+      "f1": {
+        "ar": "أفلام TPU بصرية فائقة النقاء واللمعان",
+        "en": "Ultra-clarity optical grade TPU"
+      },
+      "f2": {
+        "ar": "مقاومة قوية لضربات الحصى والاحتكاك",
+        "en": "Robust stone chip and scratch defense"
+      },
+      "f3": {
+        "ar": "معالجة ذاتية حرارية وفلاتر مضادة للاصفرار",
+        "en": "Thermal self-healing & anti-yellowing"
+      },
+      "f4": {
+        "ar": "ضمان عالمي معتمد حتى 10 سنوات",
+        "en": "Certified manufacturer warranty up to 10 yrs"
+      },
+      "specs": {
+        "ar": "Gloss & Matte | 8.5 Mil TPU | 10 Yr Warranty",
+        "en": "Gloss & Matte | 8.5 Mil TPU | 10 Yr Warranty"
+      },
+      "cta": {
+        "ar": "طلب توريد تجاري أو فحص لسيارتك",
+        "en": "Inquire Wholesale or Auto Application"
+      },
+      "image": "assets/images/supercar-ppf-new.jpg",
+      "badge": {
+        "ar": "Direct Wholesale Supply",
+        "en": "Direct Wholesale Supply"
+      }
+    }
+  ],
+  "galleryList": [
+    {
+      "id": "gallery1",
+      "category": "arch",
+      "image": "assets/images/hotel-enterprise-new.jpg",
+      "title": {
+        "ar": "عزل واجهات زجاجية لفندق ومطاعم سياحية فاخرة",
+        "en": "Luxury Hotel & Commercial Facade Thermal Insulation"
+      },
+      "desc": {
+        "ar": "تركيب أفلام نانو سيراميك عالية الأداء لواجهات الفندق الزجاجية لخفض الحرارة بنسبة 85% وتوفير استهلاك الطاقة.",
+        "en": "High-performance nano-ceramic film installation on hotel glass facades, reducing heat by 85% and saving HVAC power."
+      },
+      "badge": {
+        "ar": "المشاريع التجارية والفنادق",
+        "en": "Commercial & Hospitality"
+      },
+      "footer": {
+        "ar": "القاهرة الجديدة",
+        "en": "New Cairo"
+      }
+    },
+    {
+      "id": "gallery2",
+      "category": "surface",
+      "image": "assets/images/marble-surface-new.jpg",
+      "title": {
+        "ar": "حماية رخام استاتوريو إيطالي في فيلا خاصة بالكمبوند",
+        "en": "Statuario Italian Marble Surface Protection"
+      },
+      "desc": {
+        "ar": "تطبيق فيلم TPU الشفاف بسماكة 8.5 ميل مع خاصية المعالجة الذاتية لحماية طاولات المطبخ والمغاسل من التصبغ والأحماض.",
+        "en": "Application of 8.5 Mil transparent self-healing TPU film protecting marble countertops and vanities from acids and stains."
+      },
+      "badge": {
+        "ar": "حماية الرخام الفاخر",
+        "en": "Luxury Marble Protection"
+      },
+      "footer": {
+        "ar": "الشيخ زايد",
+        "en": "Sheikh Zayed"
+      }
+    },
+    {
+      "id": "gallery3",
+      "category": "arch",
+      "image": "assets/images/compound-villa-new.jpg",
+      "title": {
+        "ar": "عزل حراري لفيلا فاخرة بالتجمع الخامس (كمبوند)",
+        "en": "Luxury Compound Villa Thermal Insulation"
+      },
+      "desc": {
+        "ar": "عزل زجاج واجهات الفيلا والمسبح بنسبة 88% حجب حراري مع الحفاظ الكامل على الرؤية البانورامية والضوء الطبيعي.",
+        "en": "88% solar heat rejection on villa panoramic facade and pool glass while maintaining full optical clarity."
+      },
+      "badge": {
+        "ar": "فلل وقصور سكنية",
+        "en": "Residential Villas"
+      },
+      "footer": {
+        "ar": "التجمع الخامس",
+        "en": "Fifth Settlement"
+      }
+    },
+    {
+      "id": "gallery4",
+      "category": "auto",
+      "image": "assets/images/supercar-ppf-new.jpg",
+      "title": {
+        "ar": "باقة PPF متكاملة لسيارة رياضية فارهة",
+        "en": "Full-Body PPF on Luxury Sports Car"
+      },
+      "desc": {
+        "ar": "تغليف كامل بفيلم الحماية المتطور فائق اللمعان مع معالجة ذاتية ومقاومة الصدمات الحصوية.",
+        "en": "Full-body installation of ultra-gloss self-healing PPF shielding high-speed paint from rock chips and scratches."
+      },
+      "badge": {
+        "ar": "أفلام حماية السيارات",
+        "en": "Automotive PPF"
+      },
+      "footer": {
+        "ar": "مركز التوزيع المعتمد",
+        "en": "Certified Hub"
+      }
+    }
   ]
 }

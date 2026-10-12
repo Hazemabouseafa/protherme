@@ -5026,6 +5026,11 @@
           }
 
           // Pillars / Services List
+          const defaultPillarImages = [
+            'assets/images/compound-villa-new.jpg',
+            'assets/images/marble-surface-new.jpg',
+            'assets/images/supercar-ppf-new.jpg'
+          ];
           if (!this.cms.pillarsList || !Array.isArray(this.cms.pillarsList) || this.cms.pillarsList.length === 0) {
             this.cms.pillarsList = ['p1', 'p2', 'p3'].map((pKey, i) => ({
               key: pKey,
@@ -5039,22 +5044,41 @@
               f4: { ar: this.cms.texts?.ar?.pillars?.[pKey]?.f4 || '', en: this.cms.texts?.en?.pillars?.[pKey]?.f4 || '' },
               specs: { ar: this.cms.texts?.ar?.pillars?.[pKey]?.specs || '', en: this.cms.texts?.en?.pillars?.[pKey]?.specs || '' },
               cta: { ar: this.cms.texts?.ar?.pillars?.[pKey]?.cta || '', en: this.cms.texts?.en?.pillars?.[pKey]?.cta || '' },
-              image: this.cms.images?.['pillar' + (i + 1)] || '',
+              image: this.cms.images?.['pillar' + (i + 1)] || defaultPillarImages[i] || defaultPillarImages[0],
               badge: { ar: this.cms.imageBadges?.['pillar' + (i + 1)]?.ar || '', en: this.cms.imageBadges?.['pillar' + (i + 1)]?.en || '' }
             }));
+          } else {
+            this.cms.pillarsList.forEach((pillar, i) => {
+              if (!pillar.image || pillar.image === '' || pillar.image.includes('/api/image?id=upload-')) {
+                pillar.image = this.cms.images?.['pillar' + (i + 1)] || defaultPillarImages[i] || defaultPillarImages[0];
+              }
+            });
           }
 
           // Gallery Projects List
+          const defaultGalleryImages = [
+            'assets/images/hotel-enterprise-new.jpg',
+            'assets/images/marble-surface-new.jpg',
+            'assets/images/compound-villa-new.jpg',
+            'assets/images/supercar-ppf-new.jpg'
+          ];
           if (!this.cms.galleryList || !Array.isArray(this.cms.galleryList) || this.cms.galleryList.length === 0) {
-            this.cms.galleryList = ['1', '2', '3', '4'].map(gNum => ({
+            this.cms.galleryList = ['1', '2', '3', '4'].map((gNum, i) => ({
               id: 'gallery' + gNum,
               category: gNum === '1' || gNum === '3' ? 'arch' : gNum === '2' ? 'surface' : 'auto',
-              image: this.cms.images?.['gallery' + gNum] || '',
+              image: this.cms.images?.['gallery' + gNum] || defaultGalleryImages[i] || defaultGalleryImages[0],
               title: { ar: this.cms.texts?.ar?.gallery?.['item' + gNum + '_title'] || '', en: this.cms.texts?.en?.gallery?.['item' + gNum + '_title'] || '' },
               desc: { ar: this.cms.texts?.ar?.gallery?.['item' + gNum + '_desc'] || '', en: this.cms.texts?.en?.gallery?.['item' + gNum + '_desc'] || '' },
               badge: { ar: this.cms.imageBadges?.['gallery' + gNum + '_badge']?.ar || '', en: this.cms.imageBadges?.['gallery' + gNum + '_badge']?.en || '' },
               footer: { ar: this.cms.imageBadges?.['gallery' + gNum + '_footer']?.ar || '', en: this.cms.imageBadges?.['gallery' + gNum + '_footer']?.en || '' }
             }));
+          } else {
+            this.cms.galleryList.forEach((item, idx) => {
+              const gNum = (idx + 1).toString();
+              if (!item.image || item.image === '' || item.image.includes('/api/image?id=upload-')) {
+                item.image = this.cms.images?.['gallery' + gNum] || defaultGalleryImages[idx] || defaultGalleryImages[0];
+              }
+            });
           }
 
           // Tech Standards

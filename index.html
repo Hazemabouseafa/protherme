@@ -1343,7 +1343,7 @@ function prothermeApp() {
 
     // Fetch CMS Content from Server API (with cache invalidation)
     async loadCMSContent() {
-      const CACHE_KEY = 'protherme_cms_v20261008_rev3';
+      const CACHE_KEY = 'protherme_cms_v20261012_rev5';
       const localAdminSaved = localStorage.getItem('protherme_cms_content');
       const cached = localStorage.getItem(CACHE_KEY);
       const initial = localAdminSaved || cached;
@@ -1360,7 +1360,7 @@ function prothermeApp() {
           const remoteData = await res.json();
           this.cms = Object.assign({}, this.cms, remoteData);
           if (!this.cms.social) {
-            this.cms.social = { facebook: '', instagram: '', linkedin: '', tiktok: '', youtube: '' };
+            this.cms.social = { facebook: '', instagram: '', linkedin: '', tiktok: '', youtube: '', twitter: '', snapchat: '', whatsapp: '' };
           }
           this.ensureDynamicLists();
           localStorage.setItem(CACHE_KEY, JSON.stringify(this.cms));
@@ -1592,6 +1592,11 @@ function prothermeApp() {
       }
 
       // 3. Pillars / Services List
+      const defaultPillarImages = [
+        'assets/images/compound-villa-new.jpg',
+        'assets/images/marble-surface-new.jpg',
+        'assets/images/supercar-ppf-new.jpg'
+      ];
       if (!this.cms.pillarsList || !Array.isArray(this.cms.pillarsList) || this.cms.pillarsList.length === 0) {
         this.cms.pillarsList = ['p1', 'p2', 'p3'].map((pKey, i) => ({
           key: pKey,
@@ -1605,22 +1610,41 @@ function prothermeApp() {
           f4: { ar: this.t('pillars.' + pKey + '.f4', 'ar'), en: (this.cms.texts?.en?.pillars?.[pKey]?.f4 || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.f4 : '') || this.t('pillars.' + pKey + '.f4', 'en')) },
           specs: { ar: this.t('pillars.' + pKey + '.specs', 'ar'), en: (this.cms.texts?.en?.pillars?.[pKey]?.specs || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.specs : '') || this.t('pillars.' + pKey + '.specs', 'en')) },
           cta: { ar: this.t('pillars.' + pKey + '.cta', 'ar'), en: (this.cms.texts?.en?.pillars?.[pKey]?.cta || (typeof translations !== 'undefined' ? translations.en?.pillars?.[pKey]?.cta : '') || this.t('pillars.' + pKey + '.cta', 'en')) },
-          image: this.cms.images?.['pillar' + (i + 1)] || (i === 0 ? 'assets/images/compound-villa-new.jpg' : i === 1 ? 'assets/images/marble-surface-new.jpg' : 'assets/images/supercar-ppf-new.jpg'),
+          image: this.cms.images?.['pillar' + (i + 1)] || defaultPillarImages[i] || defaultPillarImages[0],
           badge: { ar: this.cms.imageBadges?.['pillar' + (i + 1)]?.ar || (i === 0 ? 'IRR: 88% | UV: 99.9%' : i === 1 ? '8.5 Mil | Self-Healing TPU' : 'Direct Wholesale Supply'), en: this.cms.imageBadges?.['pillar' + (i + 1)]?.en || (i === 0 ? 'IRR: 88% | UV: 99.9%' : i === 1 ? '8.5 Mil | Self-Healing TPU' : 'Direct Wholesale Supply') }
         }));
+      } else {
+        this.cms.pillarsList.forEach((pillar, i) => {
+          if (!pillar.image || pillar.image === '' || pillar.image.includes('/api/image?id=upload-')) {
+            pillar.image = this.cms.images?.['pillar' + (i + 1)] || defaultPillarImages[i] || defaultPillarImages[0];
+          }
+        });
       }
 
       // 4. Gallery List
+      const defaultGalleryImages = [
+        'assets/images/hotel-enterprise-new.jpg',
+        'assets/images/marble-surface-new.jpg',
+        'assets/images/compound-villa-new.jpg',
+        'assets/images/supercar-ppf-new.jpg'
+      ];
       if (!this.cms.galleryList || !Array.isArray(this.cms.galleryList) || this.cms.galleryList.length === 0) {
-        this.cms.galleryList = ['1', '2', '3', '4'].map(gNum => ({
+        this.cms.galleryList = ['1', '2', '3', '4'].map((gNum, i) => ({
           id: 'gallery' + gNum,
           category: gNum === '1' || gNum === '3' ? 'arch' : gNum === '2' ? 'surface' : 'auto',
-          image: this.cms.images?.['gallery' + gNum] || (gNum === '1' ? 'assets/images/hotel-enterprise-new.jpg' : gNum === '2' ? 'assets/images/marble-surface-new.jpg' : gNum === '3' ? 'assets/images/compound-villa-new.jpg' : 'assets/images/supercar-ppf-new.jpg'),
+          image: this.cms.images?.['gallery' + gNum] || defaultGalleryImages[i] || defaultGalleryImages[0],
           title: { ar: this.t('gallery.item' + gNum + '_title', 'ar'), en: (this.cms.texts?.en?.gallery?.['item' + gNum + '_title'] || (typeof translations !== 'undefined' ? translations.en?.gallery?.['item' + gNum + '_title'] : '') || this.t('gallery.item' + gNum + '_title', 'en')) },
           desc: { ar: this.t('gallery.item' + gNum + '_desc', 'ar'), en: (this.cms.texts?.en?.gallery?.['item' + gNum + '_desc'] || (typeof translations !== 'undefined' ? translations.en?.gallery?.['item' + gNum + '_desc'] : '') || this.t('gallery.item' + gNum + '_desc', 'en')) },
           badge: { ar: this.cms.imageBadges?.['gallery' + gNum + '_badge']?.ar || this.t('gallery.item' + gNum + '_badge', 'ar'), en: this.cms.imageBadges?.['gallery' + gNum + '_badge']?.en || this.t('gallery.item' + gNum + '_badge', 'en') },
           footer: { ar: this.cms.imageBadges?.['gallery' + gNum + '_footer']?.ar || '', en: this.cms.imageBadges?.['gallery' + gNum + '_footer']?.en || '' }
         }));
+      } else {
+        this.cms.galleryList.forEach((item, idx) => {
+          const gNum = (idx + 1).toString();
+          if (!item.image || item.image === '' || item.image.includes('/api/image?id=upload-')) {
+            item.image = this.cms.images?.['gallery' + gNum] || defaultGalleryImages[idx] || defaultGalleryImages[0];
+          }
+        });
       }
 
       // 5. Tech Standards List
@@ -1862,10 +1886,36 @@ function prothermeApp() {
     },
     getPillarsList() {
       this.ensureDynamicLists();
+      const defaultPillarImages = [
+        'assets/images/compound-villa-new.jpg',
+        'assets/images/marble-surface-new.jpg',
+        'assets/images/supercar-ppf-new.jpg'
+      ];
+      if (Array.isArray(this.cms.pillarsList)) {
+        this.cms.pillarsList.forEach((pillar, i) => {
+          if (!pillar.image || pillar.image === '' || pillar.image.includes('/api/image?id=upload-')) {
+            pillar.image = this.cms.images?.['pillar' + (i + 1)] || defaultPillarImages[i] || defaultPillarImages[0];
+          }
+        });
+      }
       return this.cms.pillarsList || [];
     },
     getGalleryList() {
       this.ensureDynamicLists();
+      const defaultGalleryImages = [
+        'assets/images/hotel-enterprise-new.jpg',
+        'assets/images/marble-surface-new.jpg',
+        'assets/images/compound-villa-new.jpg',
+        'assets/images/supercar-ppf-new.jpg'
+      ];
+      if (Array.isArray(this.cms.galleryList)) {
+        this.cms.galleryList.forEach((item, idx) => {
+          const gNum = (idx + 1).toString();
+          if (!item.image || item.image === '' || item.image.includes('/api/image?id=upload-')) {
+            item.image = this.cms.images?.['gallery' + gNum] || defaultGalleryImages[idx] || defaultGalleryImages[0];
+          }
+        });
+      }
       return this.cms.galleryList || [];
     },
     getTechList() {
@@ -2958,8 +3008,11 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                :class="pIdx % 2 === 0 ? 'hover:border-cyan-400' : 'hover:border-emerald-400'">
             <div class="relative h-60 overflow-hidden">
               <img :src="pillar.image || (pIdx === 0 ? 'assets/images/compound-villa-new.jpg' : pIdx === 1 ? 'assets/images/marble-surface-new.jpg' : 'assets/images/supercar-ppf-new.jpg')" 
+                   src="assets/images/compound-villa-new.jpg"
+                   @error="$event.target.src = (pIdx === 0 ? 'assets/images/compound-villa-new.jpg' : pIdx === 1 ? 'assets/images/marble-surface-new.jpg' : 'assets/images/supercar-ppf-new.jpg')"
                    :alt="pillar.name ? (pillar.name[lang] || pillar.name.ar || '') : 'ProTherme Service'" 
-                   class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out">
+                   class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                   loading="lazy">
               <div class="absolute inset-0 bg-gradient-to-t from-slate-900/50 via-transparent to-transparent"></div>
               
               <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/90 backdrop-blur-md border border-slate-200 text-xs font-bold shadow-xs"
@@ -3141,9 +3194,12 @@ document.addEventListener('alpine:init', () => { if (window.Alpine) { window.Alp
                class="glass-card-hover rounded-3xl overflow-hidden group border border-slate-200 bg-white shadow-sm hover:shadow-xl flex flex-col">
             <div class="relative h-72 sm:h-80 overflow-hidden cursor-pointer" 
                  @click="openLightbox(item.image, item.title, item.desc)">
-              <img :src="item.image || 'assets/images/hotel-enterprise-new.jpg'" 
+              <img :src="item.image || (gIdx === 0 ? 'assets/images/hotel-enterprise-new.jpg' : gIdx === 1 ? 'assets/images/marble-surface-new.jpg' : gIdx === 2 ? 'assets/images/compound-villa-new.jpg' : 'assets/images/supercar-ppf-new.jpg')" 
+                   src="assets/images/hotel-enterprise-new.jpg"
+                   @error="$event.target.src = (gIdx === 0 ? 'assets/images/hotel-enterprise-new.jpg' : gIdx === 1 ? 'assets/images/marble-surface-new.jpg' : gIdx === 2 ? 'assets/images/compound-villa-new.jpg' : 'assets/images/supercar-ppf-new.jpg')"
                    :alt="item.title ? (item.title[lang] || item.title.ar || '') : 'ProTherme Project'" 
-                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                   loading="lazy">
               <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
               
               <div class="absolute top-4 start-4 px-3 py-1 rounded-lg bg-white/95 backdrop-blur-md border border-slate-200 text-xs font-bold shadow-xs"
