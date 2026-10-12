@@ -1726,7 +1726,7 @@
 
             <div class="text-[11px] text-cyan-800 bg-cyan-50/70 border border-cyan-200/60 rounded-xl px-3.5 py-2 flex items-center gap-2">
               <i class="fa-solid fa-circle-info text-cyan-600"></i>
-              <span x-text="tA('مسموح برفع ملفات فيديو حتى 100 ميجابايت (100MB) بصيغ MP4 و WebM مع شريط تقدم مباشر لعملية التحميل.', 'Video uploads are allowed up to 100MB (MP4, WebM) with real-time progress loading bar.')"></span>
+              <span x-text="tA('لحماية سعة قاعدة البيانات، يُنصح بوضع رابط الفيديو من YouTube أو Vimeo أو اختيار أحد الفيديوهات المدمجة بالسيرفر أدناه.', 'To preserve database bandwidth, external links (YouTube / Vimeo) or preloaded server assets are recommended.')"></span>
             </div>
 
             <!-- Video & Poster Live Preview -->
@@ -3965,30 +3965,21 @@
           if (!file) return null;
 
           const isVideo = file.type.startsWith('video/') || /\.(mp4|webm|mov|ogg|m4v)$/i.test(file.name);
-          const maxBytes = isVideo ? (100 * 1024 * 1024) : (30 * 1024 * 1024);
+          if (isVideo) {
+            const errorMsg = this.tA(
+              'لحماية سعة قاعدة البيانات ومنع استهلاك باقة السيرفر، تم تعطيل رفع ملفات الفيديو المباشرة عبر لوحة التحكم. يُرجى وضع رابط الفيديو (YouTube أو Vimeo) مباشرة في خانة رابط الفيديو أو اختيار أحد الفيديوهات المدمجة بالسيرفر.',
+              'To preserve database bandwidth, direct video uploads are disabled. Please use an external link (YouTube / Vimeo) or select a preloaded server video.'
+            );
+            this.showToast(this.tA('تنبيه رفع الفيديو', 'Video Upload Notice'), errorMsg);
+            return null;
+          }
+
+          const maxBytes = 5 * 1024 * 1024; // 5 MB for images
           const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
 
           if (file.size > maxBytes) {
-            const errorMsg = isVideo
-              ? this.tA(`حجم ملف الفيديو (${sizeMB} ميجابايت) يتجاوز الحد الأقصى المسموح به (100 ميجابايت).`, `Video size (${sizeMB} MB) exceeds maximum allowed limit (100 MB).`)
-              : this.tA(`حجم الصورة (${sizeMB} ميجابايت) يتجاوز الحد الأقصى المسموح به (30 ميجابايت).`, `Image size (${sizeMB} MB) exceeds maximum allowed limit (30 MB).`);
-
-            this.showToast(this.tA('حجم الملف كبير', 'File Too Large'), errorMsg);
-            this.uploadProgress = {
-              active: true,
-              percent: 0,
-              filename: file.name,
-              fileSizeStr: `${sizeMB} MB`,
-              loadedStr: '0 MB',
-              phase: 'error',
-              statusText: errorMsg,
-              error: errorMsg
-            };
-            setTimeout(() => {
-              if (this.uploadProgress.phase === 'error') {
-                this.uploadProgress.active = false;
-              }
-            }, 5000);
+            const errorMsg = this.tA(`حجم الصورة (${sizeMB} ميجابايت) يتجاوز الحد الأقصى المسموح به (5 ميجابايت). يُرجى تقليل حجم الصورة.`, `Image size (${sizeMB} MB) exceeds maximum allowed limit (5 MB).`);
+            this.showToast(this.tA('حجم الصورة كبير', 'Image Too Large'), errorMsg);
             return null;
           }
 
