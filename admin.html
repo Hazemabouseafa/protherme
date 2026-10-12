@@ -4945,7 +4945,7 @@
 
         async fetchContent() {
           try {
-            const res = await fetch('/api/content');
+            const res = await fetch('/api/content?admin=1&t=' + Date.now(), { cache: 'no-store' });
             if (res.ok) {
               const data = await res.json();
               if (!data.imageBadges) data.imageBadges = {};

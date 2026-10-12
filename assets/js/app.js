@@ -189,7 +189,7 @@ document.addEventListener('alpine:init', () => {
       }
 
       try {
-        const res = await fetch('/api/content?v=' + Date.now(), { cache: 'no-store' });
+        const res = await fetch('/api/content');
         if (res.ok) {
           const remoteData = await res.json();
           this.cms = Object.assign({}, this.cms, remoteData);

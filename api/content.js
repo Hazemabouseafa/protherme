@@ -3,7 +3,7 @@ const { getContent, saveContent } = require('../lib/db');
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Cache-Control');
 
   if (req.method === 'OPTIONS') {
     return res.status(204).end();
@@ -22,8 +22,16 @@ module.exports = async function handler(req, res) {
           return res.status(200).json({ success: true, message: 'Cleaned upload chunks and old uploads' });
         }
       }
-      const data = await getContent();
-      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+
+      const isBypass = parsedUrl.searchParams.has('admin') || parsedUrl.searchParams.has('t') || req.headers['cache-control'] === 'no-cache';
+      const data = await getContent(isBypass);
+
+      if (isBypass) {
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+      } else {
+        // Edge CDN cache: 60s max-age with 5-minute background revalidation to save 95%+ DB bandwidth
+        res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=300');
+      }
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
       return res.status(200).json(data);
     } catch (err) {

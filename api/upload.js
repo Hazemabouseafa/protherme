@@ -37,8 +37,18 @@ module.exports = async function handler(req, res) {
 
       let result;
       if (body.isChunk) {
+        if ((body.totalSize || 0) > 5 * 1024 * 1024) {
+          return res.status(400).json({
+            error: 'حجم الملف كبير جداً للرفع المباشر عبر قاعدة البيانات (الحد الأقصى 5 ميجابايت). يُرجى استخدام رابط فيديو خارجي.'
+          });
+        }
         result = await saveUploadChunk(body);
       } else {
+        if (body.data.length > 7 * 1024 * 1024) {
+          return res.status(400).json({
+            error: 'حجم الصورة كبير جداً (الحد الأقصى هو 5 ميجابايت)'
+          });
+        }
         result = await saveUpload(body.filename, body.data);
       }
 
