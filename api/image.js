@@ -27,7 +27,7 @@ function streamFileWithRange(req, res, filePath, contentType) {
 
   res.setHeader('Accept-Ranges', 'bytes');
   res.setHeader('Content-Type', contentType);
-  res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+  res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=31536000, stale-while-revalidate=86400');
 
   const MAX_RANGE_SLICE = 2 * 1024 * 1024; // 2 MB slice to safely stay under Vercel 4.5MB payload cap
 
@@ -209,7 +209,7 @@ module.exports = async function handler(req, res) {
           'Accept-Ranges': 'bytes',
           'Content-Length': slice.length,
           'Content-Type': contentType,
-          'Cache-Control': 'public, max-age=31536000, immutable'
+          'Cache-Control': 'public, max-age=86400, s-maxage=31536000, stale-while-revalidate=86400'
         });
         return res.end(slice);
       }
@@ -241,14 +241,14 @@ module.exports = async function handler(req, res) {
           'Accept-Ranges': 'bytes',
           'Content-Length': chunkSize,
           'Content-Type': contentType,
-          'Cache-Control': 'public, max-age=31536000, immutable'
+          'Cache-Control': 'public, max-age=86400, s-maxage=31536000, stale-while-revalidate=86400'
         });
         return res.end(buffer.subarray(start, end + 1));
       }
 
       res.setHeader('Content-Type', contentType);
       res.setHeader('Accept-Ranges', 'bytes');
-      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=31536000, stale-while-revalidate=86400');
       return res.status(200).send(buffer);
     }
 
@@ -262,7 +262,7 @@ module.exports = async function handler(req, res) {
         return streamFileWithRange(req, res, tmpPath, contentType);
       }
       res.setHeader('Content-Type', contentType);
-      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=31536000, stale-while-revalidate=86400');
       return res.status(200).send(fs.readFileSync(tmpPath));
     }
 
@@ -277,7 +277,7 @@ module.exports = async function handler(req, res) {
           return streamFileWithRange(req, res, localPath, contentType);
         }
         res.setHeader('Content-Type', contentType);
-        res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=31536000, stale-while-revalidate=86400');
         return res.status(200).send(fs.readFileSync(localPath));
       }
     }

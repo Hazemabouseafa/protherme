@@ -29,8 +29,8 @@ module.exports = async function handler(req, res) {
       if (isBypass) {
         res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
       } else {
-        // Edge CDN cache: 60s max-age with 5-minute background revalidation to save 95%+ DB bandwidth
-        res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=300');
+        // Edge CDN cache: 120s max-age with 10-minute background revalidation to save 95%+ DB bandwidth
+        res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=120, stale-while-revalidate=600');
       }
       res.setHeader('Content-Type', 'application/json; charset=utf-8');
       return res.status(200).json(data);

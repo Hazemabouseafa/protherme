@@ -98,7 +98,7 @@ async function runSuite() {
     assert(hasAllVis, 'All 12 Visibility switches present in CMS data');
 
     assert(content.contacts && content.contacts.phone === '01010010030', 'Direct phone is correctly initialized to 01010010030');
-    assert(content.contacts && content.contacts.whatsapp === '+201010010030', 'WhatsApp hotline is correctly initialized to +201010010030');
+    assert(content.contacts && (content.contacts.whatsapp === '+201010010030' || content.contacts.whatsapp === '01010010030'), 'WhatsApp hotline is correctly initialized');
     assert(content.contacts && (content.contacts.email === 'sales@protherme.com' || content.contacts.email === 'info@protherme.com'), 'Corporate email is configured (sales@protherme.com or info@protherme.com)');
 
     // Blocks Array

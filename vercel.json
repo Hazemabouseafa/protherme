@@ -2,12 +2,8 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "functions": {
-    "api/video.js": {
-      "includeFiles": "assets/videos/**",
-      "maxDuration": 30
-    },
     "api/image.js": {
-      "includeFiles": "assets/**",
+      "includeFiles": "assets/images/**",
       "memory": 1024,
       "maxDuration": 30
     },
@@ -18,9 +14,7 @@
   },
   "rewrites": [
     { "source": "/assets/images/(upload-.*)", "destination": "/api/image?id=$1" },
-    { "source": "/assets/videos/(.*)", "destination": "/api/image?id=$1" },
     { "source": "/protherme/assets/images/(upload-.*)", "destination": "/api/image?id=$1" },
-    { "source": "/protherme/assets/videos/(.*)", "destination": "/api/image?id=$1" },
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/protherme/admin", "destination": "/admin.html" },
     { "source": "/protherme", "destination": "/index.html" },
@@ -28,11 +22,38 @@
   ],
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/assets/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/download/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(admin|admin.html|protherme/admin)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/((?!api|admin|protherme/admin).*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400"
         }
       ]
     }
